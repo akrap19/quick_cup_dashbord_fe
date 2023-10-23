@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs'
+
+<Meta title="UI/Inputs/IconButton/Docs" />
+
+# IconButton
+
+Icon button renders an icon within in a button.
+
+## Usage
+
+`IconButton` composes the `Button` component except that it renders only an icon.
+Since `IconButton` only renders an icon, you must pass the `aria-label` prop, so screen readers can give meaning to the button.
+
+```jsx
+<IconButton {...rest} aria-label="Checkmark">
+	<BlockIcon icon={CheckmarkBlockIcon} size="medium" />
+</IconButton>
+```
+
+## Variants
+
+You can customise the appearance of the button via the `variant` prop.
+
+## Sizes
+
+You can customise the size of the button via the `size` prop, which accepts either `large` or `small`.

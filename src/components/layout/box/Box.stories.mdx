@@ -1,0 +1,109 @@
+import { Box } from './Box'
+import { Canvas, Meta } from '@storybook/addon-docs'
+
+<Meta title="UI/Layout/Box/Docs" />
+
+# Box
+
+`Box` component is a versatile and flexible container that allows you to easily create and organize layout elements within your application.
+It's designed to simplify the process of creating and managing layout elements, by providing a variety of props and styles that you can use to customize its appearance and behavior.
+
+Think of it like a virtual box or container that you can place other components or elements inside.
+Additionally, you can customize its appearance and behavior by setting properties like padding, borders, background color, and more.
+
+Overall, the Box component is a powerful tool that makes it easy for developers to create and manage layout elements in their application.
+By using it, you can streamline your development process and create more responsive and visually appealing user interfaces.
+
+## Semantic elements
+
+By default, Box renders a div element. You can customise this via the `as` prop. Props will also be forwarded to the underlying element.
+
+```jsx
+<Box as="a" href="#" target="_self" padding="4">
+	This Box will act as HTML anchor
+</Box>
+```
+
+## Dynamic CSS classes
+
+The `className` prop is supported to handle any CSS side effects.
+
+```jsx
+<Box className="best-class-ever">...</Box>
+```
+
+## CSS utilities
+
+Box provides a suite of common CSS utility props. Styles that regularly differ across screen sizes can also be expressed as responsive props, e.g. `justifyContent={{ mobile: 'center', tablet: 'flexStart' }}`.
+
+These utilities are recommended where possible to reduce the amount of custom CSS in your application.
+
+For the list of all properties check the `atoms.css.ts` file.
+
+```jsx
+<Box
+	display="flex"
+	justifyContent={{
+		mobile: 'center',
+		tablet: 'flex-start'
+	}}
+	borderRadius="medium"
+	padding="4">
+	...
+</Box>
+```
+
+## Paddings and margins
+
+Padding can be applied in all directions using tokens as values.
+
+Margin is intentionally not supported to discurage developers from using it because of bad practices.
+
+```jsx
+<Box paddingX="2" paddingY="3">
+	...
+</Box>
+```
+
+## Responsive padding
+
+Padding can also differ across screen sizes by providing responsive values, e.g. `padding={{ mobile: 'small', tablet: 'medium', desktop: 'large' }}`.
+
+```jsx
+<Box
+	padding={{
+		mobile: '2',
+		tablet: '3',
+		desktop: '4'
+	}}>
+	...
+</Box>
+```
+
+## Colors and background
+
+You can set background color and text color of the Box component using the `color` and `backgroundColor` props.
+
+For the list of all colors check the `atoms.css.ts` file.
+
+```jsx
+<Box backgroundColor="primary.main" color="secondary.light">
+	...
+</Box>
+```
+
+If the background is not a simple color like gradients for example, use the following sythax:
+
+```jsx
+<Box background="gradient">...</Box>
+```
+
+## Shadows, borders and outlines
+
+Box also provides `boxShadow`, `borderRadius`, `borderWidth`, `borderColor` properties. You can use them like this:
+
+```jsx
+<Box boxShadow="medium" borderRadius="medium" borderWidth="thick" borderColor="primary.dark" borderStyle="solid">
+	...
+</Box>
+```

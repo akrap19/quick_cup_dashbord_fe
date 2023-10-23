@@ -1,0 +1,16 @@
+import { Canvas, Meta } from '@storybook/addon-docs'
+
+<Meta title="UI/Layout/Hidden/Docs" />
+
+# Hidden
+
+`Hidden` component is a component that renders its children based on screen/device size.
+
+You can hide content responsively via the `above` and `below` props which accept a breakpoint name, i.e. "mobile", "tablet", or "desktop".
+
+```jsx
+<Hidden below="desktop">...</Hidden>
+<Hidden below="tablet">...</Hidden>
+<Hidden above="mobile">...</Hidden>
+<Hidden above="tablet">...</Hidden>
+```

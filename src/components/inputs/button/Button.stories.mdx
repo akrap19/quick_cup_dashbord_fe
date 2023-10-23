@@ -1,0 +1,51 @@
+import { Meta } from '@storybook/addon-docs'
+
+<Meta title="UI/Inputs/Button/Docs" />
+
+# Button
+
+A `Button` component is a graphical element that is used to trigger an action or event when clicked or pressed.
+
+Buttons are commonly used to submit forms, navigate between pages, trigger an animation or interaction, or perform any other action that is associated with the functionality of the website or application.
+
+## Variants
+
+You can customise the appearance of the button via the `variant` prop.
+
+```jsx
+<Button variant="primary">Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="destructive">Destructive</Button>
+<Button variant="success">Success</Button>
+```
+
+## Sizes
+
+You can customise the size of the button via the `size` prop, which accepts either `large` or `small`.
+
+```jsx
+<Button variant="primary" size="small">Primary</Button>
+<Button variant="secondary" size="large">Secondary</Button>
+```
+
+## Icons
+
+You can add leading and trailing icons by passing `InlineIcon` as Button's children.
+
+```jsx
+<Button variant="primary">
+	<InlineIcon icon={CheckmarkInlineIcon} />
+	Primary
+</Button>
+```
+
+## Button as HTMLAnchor element
+
+`Button` with `href` prop acts as a `Anchor`. If `href` is passed, additional `Anchor` props can be added. Such as: `rel` and `target`.
+
+```jsx
+<Button variant="primary" href="#">
+	Link Button
+</Button>
+```

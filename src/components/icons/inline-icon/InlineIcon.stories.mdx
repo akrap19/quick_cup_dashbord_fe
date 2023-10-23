@@ -1,0 +1,31 @@
+import { Canvas, Meta } from '@storybook/addon-docs'
+
+<Meta title="UI/Icons/InlineIcon/Docs" />
+
+# InlineIcon
+
+An `InlineIcon` is a component that renders an SVG icon inline with text or other elements. The size of the icon is determined by the font size of the parent element.
+InlineIcon is useful when you want to integrate an icon with text or other elements, such as in a button or a link.
+It allows you to align the icon with the baseline of the text and adjust the size of the icon based on the font size of the parent element.
+
+## Size
+
+All the icons have a fixed with of `0.75em`. To see the rationale behind that specific number check this documentation https://every-layout.dev/layouts/icon/.
+
+## Colors
+
+To be able to change the color of SVGs, all assets must have `currentColor` set on the graphics.
+Check the storybook examples for more details.
+
+By default, color is inherited from the parent, however you can also change the color of the icon by passing `color` prop to the component.
+
+## Usage
+
+- All the assets must **NOT** have bounding box when exported from Figma
+- All the assets must have `currentColor` set for graphics
+
+## Conclusion
+
+In summary, `BlockIcon` and `InlineIcon` are two different components that can be used for working with icons on the frontend.
+`BlockIcon` is useful when you want to display an icon with a fixed size and a surrounding box, while `InlineIcon` is useful when you want to integrate an icon with text or other elements.
+By understanding the differences between these two components, developers can choose the appropriate one for their specific use case and create more effective and visually appealing user interfaces.

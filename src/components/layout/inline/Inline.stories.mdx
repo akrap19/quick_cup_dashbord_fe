@@ -1,0 +1,51 @@
+import { Inline } from './Inline'
+import { Canvas, Meta } from '@storybook/addon-docs'
+
+<Meta title="UI/Layout/Inline/Docs" />
+
+# Inline
+
+`Inline` component is a component that renders all its children inline and wraps them to new row if there is not enough space.
+
+# Spacing
+
+The spacing between children can be adjusted using the `gap` prop.
+
+Responsive values are supported, e.g. `gap={{ mobile: '4', tablet: '5', desktop: '6' }}`
+
+```jsx
+<Inline
+	gap={{
+		mobile: 'small',
+		tablet: 'medium',
+		desktop: 'large'
+	}}>
+	<div />
+	<div />
+	<div />
+</Inline>
+```
+
+## Vertical alignment
+
+Items of varying height can be vertically aligned using the `alignItems` prop. Responsive values are supported.
+
+```jsx
+<Inline alignItems="center">
+	<div />
+	<div />
+	<div />
+</Inline>
+```
+
+## Horizontal alignment
+
+Items can be aligned horizontally using the `justifyContent` prop. Responsive values are supported.
+
+```jsx
+<Stack gap={4} alignItems={{ mobile: 'center', tablet: 'left' }}>
+	<div />
+	<div />
+	<div />
+</Stack>
+```

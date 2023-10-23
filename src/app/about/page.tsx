@@ -1,10 +1,12 @@
 import { Metadata } from 'next'
 
+import { Text } from '@/components/typography/text'
+
 export const metadata: Metadata = {
-	title: 'About | Cinnamon Agency',
-	description: 'The one-stop shop to design, develop and deploy your next digital project.'
+	title: 'About | Barnahus',
+	description: 'Barnahus'
 }
 
-const AboutPage = () => <h1>About page</h1>
+const AboutPage = () => <Text>About page</Text>
 
 export default AboutPage

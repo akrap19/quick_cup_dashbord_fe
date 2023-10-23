@@ -14,12 +14,11 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-	title: 'Cinnamon Agency',
-	description: 'The one-stop shop to design, develop and deploy your next digital project.'
+	title: 'Journeys | Dashboard',
+	description: 'Barnahus Journeys'
 }
 
-// eslint-disable-next-line react/function-component-definition
-export default function RootLayout({ children }: { children: ReactNode }) {
+const RootLayout = ({ children }: { children: ReactNode }) => {
 	return (
 		<html lang="en">
 			<body className={inter.className}>
@@ -30,3 +29,5 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 		</html>
 	)
 }
+
+export default RootLayout

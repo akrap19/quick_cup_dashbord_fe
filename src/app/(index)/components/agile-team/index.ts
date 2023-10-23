@@ -1,1 +1,0 @@
-export { AgileTeam } from './AgileTeam'

@@ -1,17 +1,5 @@
-import { AgileTeam } from './components/agile-team'
-import { Contact } from './components/contact'
-import { Hero } from './components/hero'
-import { Projects } from './components/projects'
-import { Services } from './components/services'
+import { Text } from '@/components/typography/text'
 
-const HomePage = () => (
-	<>
-		<Hero />
-		<Projects />
-		<Services />
-		<AgileTeam />
-		<Contact />
-	</>
-)
+const HomePage = () => <Text>Index page</Text>
 
 export default HomePage

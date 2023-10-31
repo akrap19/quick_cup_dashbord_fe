@@ -18,34 +18,6 @@ export const button = recipe({
 		}
 	},
 	variants: {
-		variant: {
-			primary: {
-				backgroundColor: '#5135FF',
-				color: '#FFFFFF',
-				':hover': { backgroundColor: '#725CFF' }
-			},
-			secondary: {
-				backgroundColor: '#FFFFFF',
-				color: '#454545',
-				border: '1px solid #ADADAD',
-				':hover': { backgroundColor: '#F6F6F6' }
-			},
-			ghost: {
-				backgroundColor: '#FFFFFF',
-				color: '#5135FF',
-				':hover': { backgroundColor: '#F2F0FF' }
-			},
-			destructive: {
-				backgroundColor: '#FE5F55',
-				color: '#FCFCFC',
-				':hover': { backgroundColor: '#FF8B84' }
-			},
-			success: {
-				backgroundColor: '#198754',
-				color: '#FCFCFC',
-				':hover': { backgroundColor: '#20AC6B' }
-			}
-		},
 		size: {
 			small: {
 				height: '2.125rem',
@@ -57,7 +29,37 @@ export const button = recipe({
 				height: '3rem',
 				paddingLeft: tokens.spacing[8],
 				paddingRight: tokens.spacing[8],
-				fontSize: tokens.typography.size.medium
+				fontSize: tokens.typography.size.medium,
+				fontWeight: tokens.typography.weight.semibold
+			}
+		},
+		variant: {
+			primary: {
+				backgroundColor: '#6A35FF',
+				color: '#FFFFFF',
+				':hover': { backgroundColor: '#725CFF' }
+			},
+			secondary: {
+				backgroundColor: '#FFFFFF',
+				color: '#454545',
+				border: '1px solid #ADADAD',
+				':hover': { backgroundColor: '#F6F6F6' }
+			},
+			ghost: {
+				backgroundColor: '#FFFFFF',
+				color: '#6A35FF',
+				padding: 'unset',
+				fontWeight: tokens.typography.weight.semibold
+			},
+			destructive: {
+				backgroundColor: '#FE5F55',
+				color: '#FCFCFC',
+				':hover': { backgroundColor: '#FF8B84' }
+			},
+			success: {
+				backgroundColor: '#198754',
+				color: '#FCFCFC',
+				':hover': { backgroundColor: '#20AC6B' }
 			}
 		}
 	},

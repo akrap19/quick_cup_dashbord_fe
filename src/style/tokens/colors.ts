@@ -2,10 +2,10 @@ export const colors = {
 	// Check with design if you need this many colors...
 	// One color/token will be generated to one class during the build time.
 	// Less colors -> less classess -> faster website
-	'neutral.50': '#DBDBDB',
-	'neutral.100': '#D1D1D1',
+	'neutral.50': '#FCFCFC',
+	'neutral.100': '#F7F7F7',
 	'neutral.200': '#BEBEBE',
-	'neutral.300': '#ABABAB',
+	'neutral.300': '#D6D6D6',
 	'neutral.400': '#848484',
 	'neutral.500': '#707070',
 	'neutral.600': '#5D5D5D',

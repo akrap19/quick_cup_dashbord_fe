@@ -36,7 +36,7 @@ export const Checkbox = ({ name, label, value, checked, onChange }: Props) => {
 					</span>
 				)}
 			</span>
-			<Text as="span" color="neutral.500">
+			<Text as="span" fontWeight="semibold" fontSize="small" color="neutral.900">
 				{label}
 			</Text>
 		</label>

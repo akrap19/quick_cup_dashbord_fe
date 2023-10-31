@@ -1,5 +1,3 @@
-'use client'
-
 import { ComponentProps, ReactNode } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { getChildByType, overridePropsDeep } from 'react-nanny'
@@ -12,17 +10,18 @@ import { NumericInput } from '../numeric-input'
 import { PatternInput } from '../pattern-input'
 import { Select } from '../select'
 import { TextInput } from '../text-input'
+import { PasswordInput } from '../password-input'
 
-type Props = { name: string; children: ReactNode }
+type Props = { name: string; required?: boolean; children: ReactNode }
 
-export const FormControl = ({ name, children }: Props) => {
+export const FormControl = ({ name, required, children }: Props) => {
 	const {
 		control,
 		formState: { errors }
 	} = useFormContext()
 	const label = getChildByType(children, [FormControl.Label])
 	const message = getChildByType(children, [FormControl.Message])
-	const input = getChildByType(children, [TextInput, Select, NumericInput, PatternInput])
+	const input = getChildByType(children, [TextInput, Select, NumericInput, PatternInput, PasswordInput])
 
 	return (
 		<Controller
@@ -41,8 +40,8 @@ export const FormControl = ({ name, children }: Props) => {
 
 				return (
 					<div>
-						<Stack gap={2}>
-							{overridePropsDeep(label, props => ({ props, htmlFor: name }))}
+						<Stack gap={1}>
+							{overridePropsDeep(label, props => ({ props, htmlFor: name, required }))}
 							{overriddenInput}
 						</Stack>
 						{overridePropsDeep(message, () => ({ children: errorMessage }))}
@@ -53,12 +52,21 @@ export const FormControl = ({ name, children }: Props) => {
 	)
 }
 
-FormControl.Label = ({ children, htmlFor }: ComponentProps<typeof Label>) => <Label htmlFor={htmlFor}>{children}</Label>
+FormControl.Label = ({ children, htmlFor, required }: ComponentProps<typeof Label> & { required?: boolean }) => (
+	<Label htmlFor={htmlFor}>
+		{children}
+		{required && (
+			<Text as="span" color="destructive.500" fontSize="small">
+				*
+			</Text>
+		)}
+	</Label>
+)
 
 FormControl.Message = ({ children }: { children?: string }) => {
 	if (children) {
 		return (
-			<Text color="destructive.500" lineHeight="large">
+			<Text color="destructive.500" fontSize="small" paddingTop={1} position="absolute">
 				{children}
 			</Text>
 		)

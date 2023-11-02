@@ -11,6 +11,7 @@ export const spacing = {
 	10: '2.5rem',
 	11: '2.75rem',
 	12: '3rem',
+	13: '3.25rem',
 	15: '3.75rem',
 	16: '4rem',
 	20: '5rem',

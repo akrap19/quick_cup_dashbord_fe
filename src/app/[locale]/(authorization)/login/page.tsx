@@ -50,7 +50,7 @@ const LoginPage = () => {
 								</FormControl>
 								<FormControl name="password" required={true}>
 									<FormControl.Label>{t('General.password')}</FormControl.Label>
-									<PasswordInput type="password" placeholder={t('General.passwordPlaceholder')} />
+									<PasswordInput placeholder={t('General.passwordPlaceholder')} />
 									<FormControl.Message />
 								</FormControl>
 							</Stack>

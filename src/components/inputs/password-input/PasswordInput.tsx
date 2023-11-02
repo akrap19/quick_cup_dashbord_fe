@@ -2,16 +2,14 @@
 import { BlockIcon } from '@/components/icons/block-icon'
 import { InputHTMLAttributes, useState } from 'react'
 import { TextInput } from '../text-input'
-import HiddenPasswordIcon from '/public/images/hidden-password.svg'
-
-interface CustomInputProps {
-	hasError?: boolean
-}
+import CrossedEyeIcon from '@/components/icons/block-icon/assets/crossed-eye.svg'
+import { CustomInputProps } from '../text-input/TextInput'
+import { Button } from '../button'
 
 type Props = InputHTMLAttributes<HTMLInputElement> & CustomInputProps
 
 export const PasswordInput = ({ hasError, ...rest }: Props) => {
-	const [passwordVisible, setPasswordVisible] = useState(false)
+	const [passwordVisible, setPasswordVisible] = useState<boolean>(false)
 
 	const togglePasswordVisibility = () => {
 		setPasswordVisible(!passwordVisible)
@@ -23,11 +21,9 @@ export const PasswordInput = ({ hasError, ...rest }: Props) => {
 			type={passwordVisible ? 'text' : 'password'}
 			hasError={hasError}
 			endIcon={
-				<BlockIcon
-					icon={passwordVisible ? HiddenPasswordIcon : HiddenPasswordIcon}
-					cursor="pointer"
-					onClick={togglePasswordVisibility}
-				/>
+				<Button size="small" variant="ghost" onClick={togglePasswordVisibility}>
+					<BlockIcon icon={passwordVisible ? CrossedEyeIcon : CrossedEyeIcon} />
+				</Button>
 			}
 		/>
 	)

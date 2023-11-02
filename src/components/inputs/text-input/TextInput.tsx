@@ -5,7 +5,7 @@ import { InputHTMLAttributes } from 'react'
 import { InputWrapper } from '../input-wrapper'
 import { endIconSpacing, input, inputHasError, startIconSpacing } from '../input-wrapper/InputWrapper.css'
 
-interface CustomInputProps {
+export interface CustomInputProps {
 	hasError?: boolean
 	endIcon?: JSX.Element
 	startIcon?: JSX.Element

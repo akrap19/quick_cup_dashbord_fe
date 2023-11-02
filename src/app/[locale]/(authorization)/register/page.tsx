@@ -49,12 +49,12 @@ const RegisterPage = () => {
 							</FormControl>
 							<FormControl name="password" required={true}>
 								<FormControl.Label>{t('General.password')}</FormControl.Label>
-								<PasswordInput type="password" placeholder={t('Authorization.newPasswordPlaceholder')} />
+								<PasswordInput placeholder={t('Authorization.newPasswordPlaceholder')} />
 								<FormControl.Message />
 							</FormControl>
 							<FormControl name="password" required={true}>
 								<FormControl.Label>{t('Authorization.confirmPassword')}</FormControl.Label>
-								<PasswordInput type="password" placeholder={t('Authorization.confirmPassword')} />
+								<PasswordInput placeholder={t('Authorization.confirmPassword')} />
 								<FormControl.Message />
 							</FormControl>
 						</Stack>

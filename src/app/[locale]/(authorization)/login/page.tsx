@@ -56,7 +56,7 @@ const LoginPage = () => {
 							</Stack>
 							<Inline justifyContent="space-between">
 								<Checkbox name="remeberMe" label="Remeber me" />
-								<Button variant="ghost" size="small">
+								<Button variant="adaptive" size="small">
 									{t('Authorization.LogIn.forgotPassword')}
 								</Button>
 							</Inline>

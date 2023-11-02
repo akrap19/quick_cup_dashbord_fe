@@ -13,7 +13,7 @@ const AuthorizationLayout = ({ children }: { children: ReactNode }) => {
 	return (
 		<Box width="100vw" height="100vh" display="flex" justify="center" align="center" backgroundColor="neutral.100">
 			<Stack gap={10} alignItems="center">
-				<Image alt="journeyLogo" src="@/components/icons/block-icon/assets/journeys-logo.svg" width={120} height={28} />
+				<Image alt="journeyLogo" src="/images/journeys-logo.svg" width={120} height={28} />
 				<Box
 					backgroundColor="neutral.50"
 					boxShadow="medium"

@@ -18,8 +18,7 @@ const AuthorizationLayout = ({ children }: { children: ReactNode }) => {
 			width="100vw"
 			height="100vh"
 			backgroundColor="neutral.100"
-			gap={10}
-			paddingBottom={48}>
+			gap={10}>
 			<Image src="/images/journeys-logo.svg" width={120} height={28} alt="logo" />
 			<Box
 				display="flex"

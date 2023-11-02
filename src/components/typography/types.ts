@@ -9,4 +9,5 @@ export interface TextAtomsProps {
 	textTransform?: Atoms['textTransform']
 	textDecoration?: Atoms['textDecoration']
 	fontStyle?: Atoms['fontStyle']
+	whiteSpace?: Atoms['whiteSpace']
 }

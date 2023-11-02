@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 
 const DashboardLayout = async ({ children }: { children: ReactNode }) => {
 	return (
-		<>
+		<div style={{ backgroundColor: 'black', height: '100vh', width: '100vw' }}>
 			<Navbar />
 			{children}
-		</>
+		</div>
 	)
 }
 

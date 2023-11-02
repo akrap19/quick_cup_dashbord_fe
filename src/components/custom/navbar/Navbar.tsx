@@ -5,10 +5,10 @@ import * as styles from './Navbar.css'
 
 export const Navbar = () => {
 	return (
-		<div className={styles.navbar}>
+		<Box className={styles.navbar}>
 			<Container>
 				<Box>Navbar</Box>
 			</Container>
-		</div>
+		</Box>
 	)
 }

@@ -7,7 +7,7 @@ export const navbar = style({
 	paddingBottom: tokens.spacing[4],
 	color: tokens.colors['primary.500'],
 	fontWeight: tokens.typography.weight.bold,
-	backgroundColor: '#1C1C1C'
+	backgroundColor: tokens.colors['neutral.50']
 })
 
 export const link = style({

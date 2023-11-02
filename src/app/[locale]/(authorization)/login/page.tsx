@@ -36,7 +36,7 @@ const LoginPage = () => {
 	return (
 		<>
 			<Heading variant="h3" textTransform="uppercase">
-				{t('Authorization.LogIn.title')}
+				{t('Authorization.logIn')}
 			</Heading>
 			<FormProvider {...form}>
 				<form className={atoms({ width: '100%' })} onSubmit={form.handleSubmit(onSubmit)}>
@@ -49,19 +49,19 @@ const LoginPage = () => {
 									<FormControl.Message />
 								</FormControl>
 								<FormControl name="password" required={true}>
-									<FormControl.Label>{t('General.password')}</FormControl.Label>
-									<PasswordInput type="password" placeholder={t('General.passwordPlaceholder')} />
+									<FormControl.Label>{t('Authorization.password')}</FormControl.Label>
+									<PasswordInput type="password" placeholder={t('Authorization.passwordPlaceholder')} />
 									<FormControl.Message />
 								</FormControl>
 							</Stack>
 							<Inline justifyContent="space-between">
 								<Checkbox name="remeberMe" label="Remeber me" />
 								<Button variant="ghost" size="small">
-									{t('Authorization.LogIn.forgotPassword')}
+									{t('Authorization.forgotPassword')}
 								</Button>
 							</Inline>
 						</Stack>
-						<Button type="submit">{t('Authorization.LogIn.title')}</Button>
+						<Button type="submit">{t('Authorization.logIn')}</Button>
 					</Stack>
 				</form>
 			</FormProvider>

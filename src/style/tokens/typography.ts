@@ -13,11 +13,13 @@ export const typography = {
 	weight: {
 		regular: '400',
 		semibold: '600',
-		bold: '700'
+		bold: '700',
+		heavy: '800',
+		black: '900'
 	},
 	lineHeight: {
 		small: '100%',
 		medium: '132%',
-		large: '148%'
+		large: '140%'
 	}
 }

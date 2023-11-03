@@ -6,7 +6,7 @@ export const checkboxWrapper = style({
 	display: 'inline-flex',
 	alignItems: 'center',
 	cursor: 'pointer',
-	gap: tokens.spacing[3]
+	gap: tokens.spacing[2]
 })
 
 export const hiddenCheckbox = style({
@@ -24,9 +24,9 @@ export const checkboxField = style({
 })
 
 export const checkboxDecorator = style({
-	borderColor: tokens.colors['primary.500'],
-	borderWidth: '2px',
-	borderRadius: tokens.borders.radius.small,
+	borderColor: tokens.colors['neutral.300'],
+	borderWidth: '1px',
+	borderRadius: tokens.borders.radius.xsmall,
 	borderStyle: 'solid',
 	width: '1.5rem',
 	height: '1.5rem',
@@ -42,6 +42,9 @@ export const checkboxDecorator = style({
 
 export const checked = style({
 	position: 'absolute',
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
 	top: '50%',
 	left: '50%',
 	transform: 'translate(-50%, -50%)'

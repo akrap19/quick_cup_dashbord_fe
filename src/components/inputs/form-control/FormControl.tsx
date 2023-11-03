@@ -1,5 +1,3 @@
-'use client'
-
 import { ComponentProps, ReactNode } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { getChildByType, overridePropsDeep } from 'react-nanny'
@@ -12,6 +10,8 @@ import { NumericInput } from '../numeric-input'
 import { PatternInput } from '../pattern-input'
 import { Select } from '../select'
 import { TextInput } from '../text-input'
+import { PasswordInput } from '../password-input'
+import { Box } from '@/components/layout/box'
 
 type Props = { name: string; children: ReactNode }
 
@@ -22,7 +22,7 @@ export const FormControl = ({ name, children }: Props) => {
 	} = useFormContext()
 	const label = getChildByType(children, [FormControl.Label])
 	const message = getChildByType(children, [FormControl.Message])
-	const input = getChildByType(children, [TextInput, Select, NumericInput, PatternInput])
+	const input = getChildByType(children, [TextInput, Select, NumericInput, PatternInput, PasswordInput])
 
 	return (
 		<Controller
@@ -41,7 +41,7 @@ export const FormControl = ({ name, children }: Props) => {
 
 				return (
 					<div>
-						<Stack gap={2}>
+						<Stack gap={1}>
 							{overridePropsDeep(label, props => ({ props, htmlFor: name }))}
 							{overriddenInput}
 						</Stack>
@@ -58,9 +58,11 @@ FormControl.Label = ({ children, htmlFor }: ComponentProps<typeof Label>) => <La
 FormControl.Message = ({ children }: { children?: string }) => {
 	if (children) {
 		return (
-			<Text color="destructive.500" lineHeight="large">
-				{children}
-			</Text>
+			<Box position="absolute" paddingTop={1}>
+				<Text color="destructive.500" fontSize="small">
+					{children}
+				</Text>
+			</Box>
 		)
 	}
 

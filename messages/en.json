@@ -1,0 +1,20 @@
+{
+	"General": {
+		"email": "Email",
+		"emailPlaceholder": "e.g. john.doe@gmail.com",
+		"password": "Password",
+		"passwordPlaceholder": "Enter password"
+	},
+	"Authorization": {
+		"confirmPassword": "Confirm password",
+		"newPasswordPlaceholder": "Enter new password",
+		"LogIn": {
+			"title": "Log in",
+			"forgotPassword": "Forgot password?"
+		},
+		"Register": {
+			"title": "Register",
+			"forgotPassword": "Forgot password?" 
+		}
+	}
+}

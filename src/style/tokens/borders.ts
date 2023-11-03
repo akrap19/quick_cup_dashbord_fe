@@ -3,6 +3,7 @@ import { colors } from './colors'
 export const borders = {
 	radius: {
 		none: '0',
+		xsmall: '0.25rem',
 		small: '0.5rem',
 		medium: '1rem',
 		large: '1.5rem',

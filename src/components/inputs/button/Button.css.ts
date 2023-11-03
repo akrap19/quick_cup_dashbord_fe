@@ -18,9 +18,24 @@ export const button = recipe({
 		}
 	},
 	variants: {
+		size: {
+			small: {
+				height: '2.125rem',
+				paddingLeft: tokens.spacing[6],
+				paddingRight: tokens.spacing[6],
+				fontSize: tokens.typography.size.small
+			},
+			large: {
+				height: '3rem',
+				paddingLeft: tokens.spacing[8],
+				paddingRight: tokens.spacing[8],
+				fontSize: tokens.typography.size.medium,
+				fontWeight: tokens.typography.weight.semibold
+			}
+		},
 		variant: {
 			primary: {
-				backgroundColor: '#5135FF',
+				backgroundColor: '#6A35FF',
 				color: '#FFFFFF',
 				':hover': { backgroundColor: '#725CFF' }
 			},
@@ -35,6 +50,11 @@ export const button = recipe({
 				color: '#5135FF',
 				':hover': { backgroundColor: '#F2F0FF' }
 			},
+			adaptive: {
+				backgroundColor: '#FFFFFF',
+				color: '#6A35FF',
+				padding: 'unset'
+			},
 			destructive: {
 				backgroundColor: '#FE5F55',
 				color: '#FCFCFC',
@@ -44,20 +64,6 @@ export const button = recipe({
 				backgroundColor: '#198754',
 				color: '#FCFCFC',
 				':hover': { backgroundColor: '#20AC6B' }
-			}
-		},
-		size: {
-			small: {
-				height: '2.125rem',
-				paddingLeft: tokens.spacing[6],
-				paddingRight: tokens.spacing[6],
-				fontSize: tokens.typography.size.small
-			},
-			large: {
-				height: '3rem',
-				paddingLeft: tokens.spacing[8],
-				paddingRight: tokens.spacing[8],
-				fontSize: tokens.typography.size.medium
 			}
 		}
 	},

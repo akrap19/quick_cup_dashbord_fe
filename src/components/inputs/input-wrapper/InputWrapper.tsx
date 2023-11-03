@@ -21,7 +21,7 @@ export const InputWrapper = ({ startIcon, endIcon, children }: Props) => {
 			)}
 			{children}
 			{endIcon && (
-				<div className={iconSlot} style={{ right: tokens.spacing[3] }}>
+				<div className={iconSlot} style={{ top: tokens.spacing[1], right: tokens.spacing[2] }}>
 					{endIcon}
 				</div>
 			)}

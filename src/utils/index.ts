@@ -1,1 +1,1 @@
-export {}
+export { handleRequiredSign } from './handleRequiredSign'

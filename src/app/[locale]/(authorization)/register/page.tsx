@@ -7,8 +7,6 @@ import { Stack } from '@/components/layout/stack'
 import { Button } from '@/components/inputs/button'
 import { FormControl } from '@/components/inputs/form-control'
 import { TextInput } from '@/components/inputs/text-input'
-import { Inline } from '@/components/layout/inline'
-import { Checkbox } from '@/components/inputs/checkbox'
 import { useTranslations } from 'next-intl'
 import { atoms } from 'style/atoms.css'
 import { PasswordInput } from '@/components/inputs/password-input'
@@ -42,17 +40,17 @@ const RegisterPage = () => {
 				<form className={atoms({ width: '100%' })} onSubmit={form.handleSubmit(onSubmit)}>
 					<Stack gap={15}>
 						<Stack gap={11}>
-							<FormControl name="email" required={true}>
+							<FormControl name="email" >
 								<FormControl.Label>{t('General.email')}</FormControl.Label>
 								<TextInput placeholder={t('General.emailPlaceholder')} />
 								<FormControl.Message />
 							</FormControl>
-							<FormControl name="password" required={true}>
+							<FormControl name="password" >
 								<FormControl.Label>{t('General.password')}</FormControl.Label>
 								<PasswordInput placeholder={t('Authorization.newPasswordPlaceholder')} />
 								<FormControl.Message />
 							</FormControl>
-							<FormControl name="password" required={true}>
+							<FormControl name="password" >
 								<FormControl.Label>{t('Authorization.confirmPassword')}</FormControl.Label>
 								<PasswordInput placeholder={t('Authorization.confirmPassword')} />
 								<FormControl.Message />

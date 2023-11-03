@@ -12,6 +12,7 @@ import { Checkbox } from '@/components/inputs/checkbox'
 import { useTranslations } from 'next-intl'
 import { atoms } from 'style/atoms.css'
 import { PasswordInput } from '@/components/inputs/password-input'
+import { handleRequiredSign } from '@/utils/handleRequiredSign'
 
 const formSchema = z.object({
 	email: z.string().min(1, { message: 'This field is required' }),
@@ -43,13 +44,13 @@ const LoginPage = () => {
 					<Stack gap={6}>
 						<Stack gap={10}>
 							<Stack gap={11}>
-								<FormControl name="email" required={true}>
-									<FormControl.Label>{t('General.email')}</FormControl.Label>
+								<FormControl name="email">
+									<FormControl.Label>{handleRequiredSign(t('General.email'))}</FormControl.Label>
 									<TextInput placeholder={t('General.emailPlaceholder')} />
 									<FormControl.Message />
 								</FormControl>
-								<FormControl name="password" required={true}>
-									<FormControl.Label>{t('General.password')}</FormControl.Label>
+								<FormControl name="password">
+									<FormControl.Label>{handleRequiredSign(t('General.password'))}</FormControl.Label>
 									<PasswordInput placeholder={t('General.passwordPlaceholder')} />
 									<FormControl.Message />
 								</FormControl>

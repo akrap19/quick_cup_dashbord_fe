@@ -3,8 +3,8 @@ import { ReactNode } from 'react'
 
 import { Navbar } from '@/components/custom/navbar'
 import { Drawer } from '@/components/custom/drawer'
-import { Stack } from '@/components/layout/stack'
 import { Box } from '@/components/layout/box'
+import { Stack } from '@/components/layout/stack'
 
 export const metadata: Metadata = {
 	title: 'Journeys | Dashboard',
@@ -13,11 +13,11 @@ export const metadata: Metadata = {
 
 const DashboardLayout = async ({ children }: { children: ReactNode }) => {
 	return (
-		<Box display="flex">
+		<Box display="flex" height="100vh">
 			<Drawer />
-			<Stack>
+			<Stack flex="1">
 				<Navbar />
-				<div style={{ backgroundColor: 'green', height: '100%', width: 'auto' }}>{children}</div>
+				<Box flex="1">{children}</Box>
 			</Stack>
 		</Box>
 	)

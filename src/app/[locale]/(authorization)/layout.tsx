@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
-import Image from 'next/image'
 import { Metadata } from 'next'
 import { Box } from '@/components/layout/box'
+import { BrandLogo } from '@/components/custom/brandLogo/BrandLogo'
 
 export const metadata: Metadata = {
 	title: 'Journeys | Authorization',
@@ -19,7 +19,7 @@ const AuthorizationLayout = ({ children }: { children: ReactNode }) => {
 			height="100vh"
 			backgroundColor="neutral.100"
 			gap={10}>
-			<Image src="/images/journeys-logo.svg" width={120} height={28} alt="logo" />
+			<BrandLogo />
 			<Box
 				display="flex"
 				align="center"

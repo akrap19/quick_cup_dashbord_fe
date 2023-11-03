@@ -30,7 +30,8 @@ const responsiveProperties = defineProperties({
 		fontSize: tokens.typography.size,
 		textAlign: ['left', 'right', 'center', 'justify'],
 		width: ['100vw', '100%'],
-		height: ['100vh', '100%']
+		height: ['100vh', '100%'],
+		flex: ['1']
 	},
 	shorthands: {
 		padding: ['paddingTop', 'paddingBottom', 'paddingLeft', 'paddingRight'],

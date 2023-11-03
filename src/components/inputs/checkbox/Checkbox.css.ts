@@ -26,7 +26,7 @@ export const checkboxField = style({
 export const checkboxDecorator = style({
 	borderColor: tokens.colors['neutral.300'],
 	borderWidth: '1px',
-	borderRadius: tokens.borders.radius.xSmall,
+	borderRadius: tokens.borders.radius.xsmall,
 	borderStyle: 'solid',
 	width: '1.5rem',
 	height: '1.5rem',

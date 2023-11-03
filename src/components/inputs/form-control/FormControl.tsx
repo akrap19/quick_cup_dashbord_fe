@@ -11,6 +11,7 @@ import { PatternInput } from '../pattern-input'
 import { Select } from '../select'
 import { TextInput } from '../text-input'
 import { PasswordInput } from '../password-input'
+import { Box } from '@/components/layout/box'
 
 type Props = { name: string; children: ReactNode }
 
@@ -52,18 +53,16 @@ export const FormControl = ({ name, children }: Props) => {
 	)
 }
 
-FormControl.Label = ({ children, htmlFor }: ComponentProps<typeof Label> ) => (
-	<Label htmlFor={htmlFor}>
-		{children}
-	</Label>
-)
+FormControl.Label = ({ children, htmlFor }: ComponentProps<typeof Label>) => <Label htmlFor={htmlFor}>{children}</Label>
 
 FormControl.Message = ({ children }: { children?: string }) => {
 	if (children) {
 		return (
-			<Text color="destructive.500" fontSize="small" paddingTop={1} position="absolute">
-				{children}
-			</Text>
+			<Box position="absolute" paddingTop={1}>
+				<Text color="destructive.500" fontSize="small">
+					{children}
+				</Text>
+			</Box>
 		)
 	}
 

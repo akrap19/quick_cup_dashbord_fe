@@ -1,20 +1,31 @@
 {
 	"General": {
 		"email": "Email",
-		"emailPlaceholder": "e.g. john.doe@gmail.com",
-		"password": "Password",
-		"passwordPlaceholder": "Enter password"
+		"emailPlaceholder": "e.g. john.doe@gmail.com"
 	},
 	"Authorization": {
+		"password": "Password",
+		"passwordPlaceholder": "Enter password",
 		"confirmPassword": "Confirm password",
+		"newPassword": "New password",
 		"newPasswordPlaceholder": "Enter new password",
-		"LogIn": {
-			"title": "Log in",
-			"forgotPassword": "Forgot password?"
+		"currentPassword": "Current password",
+		"currentPasswordPlaceholder": "Enter current password",
+		"forgotPassword": "Forgot password?",
+		"resetPassword": "Reset password",
+		"register": "Register",
+		"logIn": "Log in",
+		"ResetYourPassword": {
+			"title": "Reset your password",
+			"instructions": "Enter your new password and you are ready to go!"
 		},
-		"Register": {
-			"title": "Register",
-			"forgotPassword": "Forgot password?" 
+		"ForgotPassword": {
+			"instructions": "Enter your email address associated with your account and we will send you a link to reset your password.",
+			"sendInstructions": "Send instructions"
+		},
+		"PasswordSuccessfullyChanged": {
+			"title": "Password successfully changed",
+			"instructions": "Please login to your account again."
 		}
 	}
 }

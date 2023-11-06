@@ -29,7 +29,8 @@ const responsiveProperties = defineProperties({
 		fontSize: tokens.typography.size,
 		textAlign: ['left', 'right', 'center', 'justify'],
 		width: ['100vw', '100%'],
-		height: ['100vh', '100%']
+		height: ['100vh', '100%'],
+		flex: ['1']
 	},
 	shorthands: {
 		padding: ['paddingTop', 'paddingBottom', 'paddingLeft', 'paddingRight'],
@@ -54,6 +55,7 @@ const staticProperties = defineProperties({
 		borderColor: tokens.borders.color,
 		borderStyle: ['none', 'solid', 'dashed'],
 		cursor: ['default', 'pointer'],
+		whiteSpace: ['nowrap'],
 		zIndex: tokens.indices,
 		// Typography tokens
 		textTransform: ['none', 'capitalize', 'uppercase', 'lowercase'],

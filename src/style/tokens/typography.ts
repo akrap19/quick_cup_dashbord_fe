@@ -1,3 +1,5 @@
+import { colors } from './colors'
+
 export const typography = {
 	size: {
 		xxsmall: '0.625rem',
@@ -21,5 +23,9 @@ export const typography = {
 		small: '100%',
 		medium: '132%',
 		large: '140%'
+	},
+	color: {
+		'neutral.800': colors['neutral.800'],
+		'neutral.900': colors['neutral.900']
 	}
 }

@@ -11,10 +11,11 @@ import { PatternInput } from '../pattern-input'
 import { Select } from '../select'
 import { TextInput } from '../text-input'
 import { PasswordInput } from '../password-input'
+import { Box } from '@/components/layout/box'
 
-type Props = { name: string; required?: boolean; children: ReactNode }
+type Props = { name: string; children: ReactNode }
 
-export const FormControl = ({ name, required, children }: Props) => {
+export const FormControl = ({ name, children }: Props) => {
 	const {
 		control,
 		formState: { errors }
@@ -41,7 +42,7 @@ export const FormControl = ({ name, required, children }: Props) => {
 				return (
 					<div>
 						<Stack gap={1}>
-							{overridePropsDeep(label, props => ({ props, htmlFor: name, required }))}
+							{overridePropsDeep(label, props => ({ props, htmlFor: name }))}
 							{overriddenInput}
 						</Stack>
 						{overridePropsDeep(message, () => ({ children: errorMessage }))}
@@ -52,23 +53,16 @@ export const FormControl = ({ name, required, children }: Props) => {
 	)
 }
 
-FormControl.Label = ({ children, htmlFor, required }: ComponentProps<typeof Label> & { required?: boolean }) => (
-	<Label htmlFor={htmlFor}>
-		{children}
-		{required && (
-			<Text as="span" color="destructive.500" fontSize="small">
-				*
-			</Text>
-		)}
-	</Label>
-)
+FormControl.Label = ({ children, htmlFor }: ComponentProps<typeof Label>) => <Label htmlFor={htmlFor}>{children}</Label>
 
 FormControl.Message = ({ children }: { children?: string }) => {
 	if (children) {
 		return (
-			<Text color="destructive.500" fontSize="small" paddingTop={1} position="absolute">
-				{children}
-			</Text>
+			<Box position="absolute" paddingTop={1}>
+				<Text color="destructive.500" fontSize="small">
+					{children}
+				</Text>
+			</Box>
 		)
 	}
 

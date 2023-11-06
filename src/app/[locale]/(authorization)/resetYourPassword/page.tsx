@@ -10,6 +10,7 @@ import { useTranslations } from 'next-intl'
 import { atoms } from 'style/atoms.css'
 import { PasswordInput } from '@/components/inputs/password-input'
 import { Text } from '@/components/typography/text'
+import { RequiredLabel } from '@/components/inputs/required-label'
 
 const formSchema = z.object({
 	email: z.string().min(1, { message: 'This field is required' }),
@@ -45,18 +46,24 @@ const ResetYourPasswordPage = () => {
 				<form className={atoms({ width: '100%' })} onSubmit={form.handleSubmit(onSubmit)}>
 					<Stack gap={15}>
 						<Stack gap={11}>
-							<FormControl name="currentPassword" required={true}>
-								<FormControl.Label>{t('Authorization.currentPassword')}</FormControl.Label>
+							<FormControl name="currentPassword">
+								<FormControl.Label>
+									<RequiredLabel>{t('Authorization.currentPassword')}</RequiredLabel>
+								</FormControl.Label>
 								<PasswordInput type="password" placeholder={t('Authorization.currentPasswordPlaceholder')} />
 								<FormControl.Message />
 							</FormControl>
-							<FormControl name="newPassword" required={true}>
-								<FormControl.Label>{t('Authorization.newPassword')}</FormControl.Label>
+							<FormControl name="newPassword">
+								<FormControl.Label>
+									<RequiredLabel>{t('Authorization.newPassword')}</RequiredLabel>
+								</FormControl.Label>
 								<PasswordInput type="password" placeholder={t('Authorization.newPasswordPlaceholder')} />
 								<FormControl.Message />
 							</FormControl>
-							<FormControl name="confirmPassword" required={true}>
-								<FormControl.Label>{t('Authorization.confirmPassword')}</FormControl.Label>
+							<FormControl name="confirmPassword">
+								<FormControl.Label>
+									<RequiredLabel>{t('Authorization.confirmPassword')}</RequiredLabel>
+								</FormControl.Label>
 								<PasswordInput type="password" placeholder={t('Authorization.confirmPassword')} />
 								<FormControl.Message />
 							</FormControl>

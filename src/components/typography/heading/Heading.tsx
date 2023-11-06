@@ -8,6 +8,4 @@ interface Props extends TextAtomsProps {
 	children: ReactNode
 }
 
-export const Heading = ({ variant, ...rest }: Props) => (
-	<Text as={variant} color="neutral.900" variant={variant} {...rest} />
-)
+export const Heading = ({ variant, ...rest }: Props) => <Text as={variant} variant={variant} {...rest} />

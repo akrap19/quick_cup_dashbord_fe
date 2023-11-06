@@ -47,9 +47,13 @@ export const button = recipe({
 			},
 			ghost: {
 				backgroundColor: '#FFFFFF',
+				color: '#5135FF',
+				':hover': { backgroundColor: '#F2F0FF' }
+			},
+			adaptive: {
+				backgroundColor: '#FFFFFF',
 				color: '#6A35FF',
-				padding: 'unset',
-				fontWeight: tokens.typography.weight.semibold
+				padding: 'unset'
 			},
 			destructive: {
 				backgroundColor: '#FE5F55',

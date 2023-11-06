@@ -43,7 +43,7 @@ const ForgotPasswordPage = () => {
 			<FormProvider {...form}>
 				<form className={atoms({ width: '100%' })} onSubmit={form.handleSubmit(onSubmit)}>
 					<Stack gap={8}>
-						<FormControl name="email" required={true}>
+						<FormControl name="email">
 							<FormControl.Label>{t('General.email')}</FormControl.Label>
 							<TextInput placeholder={t('General.emailPlaceholder')} />
 							<FormControl.Message />

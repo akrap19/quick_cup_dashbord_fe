@@ -20,7 +20,6 @@ const responsiveProperties = defineProperties({
 		justifyContent: ['stretch', 'flex-start', 'center', 'flex-end', 'space-around', 'space-between', 'space-evenly'],
 		alignItems: ['stretch', 'flex-start', 'center', 'flex-end', 'baseline'],
 		flexWrap: ['nowrap', 'wrap', 'wrap-reverse'],
-		whiteSpace: ['nowrap'],
 		gap: tokens.spacing,
 		paddingTop: tokens.spacing,
 		paddingBottom: tokens.spacing,
@@ -56,6 +55,7 @@ const staticProperties = defineProperties({
 		borderColor: tokens.borders.color,
 		borderStyle: ['none', 'solid', 'dashed'],
 		cursor: ['default', 'pointer'],
+		whiteSpace: ['nowrap'],
 		zIndex: tokens.indices,
 		// Typography tokens
 		textTransform: ['none', 'capitalize', 'uppercase', 'lowercase'],

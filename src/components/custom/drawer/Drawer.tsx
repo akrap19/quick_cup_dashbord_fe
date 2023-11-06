@@ -2,7 +2,7 @@
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
-import { BrandLogo } from '../brandLogo/BrandLogo'
+import { BrandLogo } from '../brand-logo/BrandLogo'
 import { drawer, drawerItem, drawerItemSelected } from './Drawer.css'
 import House from '@/components/icons/block-icon/assets/house.svg'
 import Person from '@/components/icons/block-icon/assets/person.svg'

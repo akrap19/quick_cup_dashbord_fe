@@ -12,5 +12,5 @@ interface Props {
 }
 
 export const BlockIcon = ({ icon: Icon, size = 'large', color }: Props) => {
-	return <Icon className={clsx(sizes[size], atoms({ color }))} viewBox="0 0 24 24" />
+	return <Icon className={clsx(sizes[size], atoms({ color }))} />
 }

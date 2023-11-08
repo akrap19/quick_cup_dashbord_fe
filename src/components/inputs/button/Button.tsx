@@ -13,7 +13,7 @@ type AnchorProps = { onClick?: never; href: string } & Pick<
 	'target' | 'rel' | 'className'
 >
 // When onClick prop is passed also allow other button attributes
-type ButtonProps = { onClick?: MouseEventHandler<HTMLButtonElement>; href?: never } & Pick<
+type ButtonProps = { onClick?: MouseEventHandler<HTMLButtonElement>; href?: string } & Pick<
 	ButtonHTMLAttributes<HTMLButtonElement>,
 	'type' | 'className' | 'disabled'
 >

@@ -9,7 +9,7 @@ import UpDownIcon from '@/components/icons/block-icon/assets/up-down-icon.svg'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { SearchInput } from '../search-input/SearchInput'
-import { AddButton } from '../add-button/AddButton'
+import { AddButton } from '../add-button'
 import { Text } from '@/components/typography/text'
 import { Button } from '@/components/inputs/button'
 

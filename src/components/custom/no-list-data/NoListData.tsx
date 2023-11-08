@@ -4,7 +4,7 @@ import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
 import { useTranslations } from 'next-intl'
 import { Stack } from '@/components/layout/stack'
-import { AddButton } from '../add-button/AddButton'
+import { AddButton } from '../add-button'
 
 type NoListDataProps = { title: string; description: string; buttonLabel: string; buttonLink: string }
 

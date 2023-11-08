@@ -4,6 +4,20 @@ import { style } from '@vanilla-extract/css'
 const activeBorder = { borderColor: tokens.colors['primary.500'] }
 const placeholder = { color: tokens.colors['neutral.400'] }
 
+export const searchInputWrapper = style({
+	position: 'relative',
+	color: tokens.colors['neutral.800']
+})
+
+export const searchIconSlot = style({
+	position: 'absolute',
+	top: 0,
+	bottom: 0,
+	margin: 'auto 0',
+	display: 'flex',
+	alignItems: 'center'
+})
+
 export const searchInput = style({
 	display: 'flex',
 	alignItems: 'center',

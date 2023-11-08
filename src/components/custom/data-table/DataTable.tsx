@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/inputs/checkbox'
 import { Box } from '@/components/layout/box'
 import { useTranslations } from 'next-intl'
 import { dataTableContainer, dataTablePaginationContainer } from './DataTable.css'
-import UpDown from '@/components/icons/block-icon/assets/up-down.svg'
+import UpDownIcon from '@/components/icons/block-icon/assets/up-down-icon.svg'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { SearchInput } from '../search-input/SearchInput'
@@ -33,7 +33,9 @@ export const DataTable = ({ label, buttonLink, columns, data }: DataTableProps) 
 		<Box className={dataTableContainer}>
 			<Stack gap={7}>
 				<Inline justifyContent="space-between" alignItems="center">
-					<SearchInput placeholder={t('General.search' + label)} />
+					<Box style={{ width: '320px' }}>
+						<SearchInput placeholder={t('General.search' + label)} />
+					</Box>
 					<AddButton buttonLabel={t('General.add' + label)} buttonLink={buttonLink} />
 				</Inline>
 				<Table>
@@ -44,7 +46,7 @@ export const DataTable = ({ label, buttonLink, columns, data }: DataTableProps) 
 								<TableHead>
 									<Inline justifyContent="space-between">
 										{t(c.label)}
-										{c.hasSort && <BlockIcon icon={UpDown} color="primary.500"></BlockIcon>}
+										{c.hasSort && <BlockIcon icon={UpDownIcon} color="primary.500"></BlockIcon>}
 									</Inline>
 								</TableHead>
 							))}

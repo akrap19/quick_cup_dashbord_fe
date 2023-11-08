@@ -7,7 +7,7 @@ const placeholder = { color: tokens.colors['neutral.400'] }
 export const searchInput = style({
 	display: 'flex',
 	alignItems: 'center',
-	width: '320px',
+	width: '100%',
 	height: '2.5rem',
 	outline: 'none',
 	backgroundColor: tokens.colors['neutral.100'],

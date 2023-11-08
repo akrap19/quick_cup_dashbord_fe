@@ -2,7 +2,7 @@
 import { BlockIcon } from '@/components/icons/block-icon'
 import { ComponentProps, useState } from 'react'
 import { TextInput } from '../text-input'
-import CrossedEyeIcon from '@/components/icons/block-icon/assets/crossed-eye.svg'
+import CrossedEyeIcon from '@/components/icons/block-icon/assets/crossed-eye-icon.svg'
 import { Button } from '../button'
 
 type Props = ComponentProps<typeof TextInput>

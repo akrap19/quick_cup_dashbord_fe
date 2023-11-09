@@ -3,11 +3,24 @@
 		"email": "Email",
 		"emailPlaceholder": "e.g. john.doe@gmail.com",
 		"barnahus": "Barnahus",
-		"location": "Location",
+		"barnahuses": "Barnahuses",
+		"admins": "Admins",
 		"assignedAdmin": "Assigned Admin",
+		"practitioner": "Practitioner",
+		"practitioners": "Practitioners",
 		"numberOfPractitioners": "Number of Practitioners",
-		"addBarnahus": "Add Barnahus",
-		"searchBarnahus": "Search Barnahus"
+		"location": "Location",
+		"manageContent": "Manage content",
+		"settings": "Settings",
+		"role": "Role",
+		"contentType": "Content Type",
+		"caseFiles": "Case files",
+		"updated": "Updated",
+		"language": "Language",
+		"status": "Status",
+		"id": "ID",
+		"lastJourneySnapshot": "Last Journey snapshot",
+		"caseJourneyUpdates": "Case Journey updates"
 	},
 	"Authorization": {
 		"password": "Password",
@@ -38,6 +51,29 @@
 		"letsStart": "Lets get started!"
 	},
 	"Barnahuses": {
+		"add": "Add Barnahus",
+		"searchBarnahus": "Search Barnahus",
 		"noListDataDescription": "To begin, add all the Barnahuses to your library so that you can assign Admins to each one you've included."
+	},
+	"Admins": {
+		"add": "Add Admin",
+		"searchAdmin": "Search Admin",
+		"noListDataTitle": "Add Barnahus Admin/s",
+		"noListDataDescription": "For this Barnahus you are able to add multiple Admins. This individual will be in charge of overseeing content for this specific Barnahus and adding their Practitioners to it."
+	},
+	"Practitioners": {
+		"add": "Add Practitioners",
+		"searchPractitioners": "Search Practitioners",
+		"noListDataDescription": "You will see a list of all the practitioners at your Barnahus here. You can add new practitioners, whether or not they plan to use the dashboard for customizing case journeys."
+	},
+	"ManageContent": {
+		"add": "Add Content",
+		"description": "In this section, Admins must provide detailed Barnahus information. Once entered, practitioners can choose what to display based on the case type.",
+		"noListDataDescription": "In this section, Admins need to provide information about their Barnahus. This helps Practitioners choose the content they want to access in the application."
+	},
+	"CaseFiles": {
+		"add": "Add Case",
+		"searchCase": "Search Case",
+		"noListDataDescription": "To begin, add all your Cases to your library so you can customize the Journey based on each Case ID."
 	}
 }

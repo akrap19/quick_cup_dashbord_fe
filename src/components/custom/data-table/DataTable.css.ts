@@ -13,3 +13,8 @@ export const dataTablePaginationContainer = style({
 	display: 'flex',
 	color: tokens.colors['neutral.400']
 })
+
+export const dataTableSelect = style({
+	fontSize: tokens.typography.size.large,
+	color: 'red'
+})

@@ -13,15 +13,17 @@ export const metadata: Metadata = {
 
 const DashboardLayout = async ({ children }: { children: ReactNode }) => {
 	return (
-		<Box display="flex" height="100vh">
+		<>
 			<Drawer />
 			<Box flex="1">
 				<Stack>
 					<Navbar />
-					<Box flex="1">{children}</Box>
+					<Box display="flex" justify="center" align="center">
+						{children}
+					</Box>
 				</Stack>
 			</Box>
-		</Box>
+		</>
 	)
 }
 

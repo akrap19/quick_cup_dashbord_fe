@@ -10,7 +10,7 @@ export const button = recipe({
 		cursor: 'pointer',
 		border: 'none',
 		borderRadius: tokens.borders.radius.small,
-		gap: tokens.spacing[1],
+		gap: tokens.spacing[2],
 
 		':disabled': {
 			cursor: 'default',
@@ -27,8 +27,8 @@ export const button = recipe({
 			},
 			large: {
 				height: '3rem',
-				paddingLeft: tokens.spacing[8],
-				paddingRight: tokens.spacing[8],
+				paddingLeft: tokens.spacing[6],
+				paddingRight: tokens.spacing[6],
 				fontSize: tokens.typography.size.medium,
 				fontWeight: tokens.typography.weight.semibold
 			}
@@ -51,7 +51,7 @@ export const button = recipe({
 				':hover': { backgroundColor: '#F2F0FF' }
 			},
 			adaptive: {
-				backgroundColor: '#FFFFFF',
+				backgroundColor: 'transparent',
 				color: '#6A35FF',
 				padding: 'unset'
 			},

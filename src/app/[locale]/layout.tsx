@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { ReactNode } from 'react'
 
 import '@/style/app.css'
+import { Box } from '@/components/layout/box'
 
 const inter = Inter({
 	weight: ['400', '600', '700', '800'],
@@ -31,7 +32,9 @@ const LocaleLayout = async ({ children, params: { locale } }: Props) => {
 		<html lang={locale}>
 			<body className={inter.className}>
 				<NextIntlClientProvider locale={locale} messages={messages}>
-					{children}
+					<Box display="flex" height="100vh" backgroundColor="neutral.100">
+						{children}
+					</Box>
 				</NextIntlClientProvider>
 			</body>
 		</html>

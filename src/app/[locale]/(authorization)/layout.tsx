@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const AuthorizationLayout = ({ children }: { children: ReactNode }) => {
 	return (
-		<Box width="100vw" height="100vh" display="flex" justify="center" align="center" backgroundColor="neutral.100">
+		<Box display="flex" width="100vw" justify="center" align="center">
 			<Stack gap={10} alignItems="center">
 				<BrandLogo />
 				<Box

@@ -19,7 +19,7 @@ export const Checkbox = ({ name, label, value, checked, onChange }: Props) => {
 	const color = checked ? tokens.colors['primary.500'] : tokens.colors['shades.00']
 
 	return (
-		<label className={styles.checkboxWrapper}>
+		<label className={label && styles.checkboxWrapper}>
 			<span className={styles.checkboxField}>
 				<input
 					type="checkbox"

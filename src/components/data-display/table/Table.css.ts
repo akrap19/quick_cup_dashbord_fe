@@ -2,6 +2,17 @@ import { style } from '@vanilla-extract/css'
 
 import { tokens } from '../../../style/theme.css'
 
+const border = {
+	border: tokens.borders.border.thin,
+	borderColor: tokens.borders.color['neutral.300']
+}
+
+const font = {
+	fontSize: tokens.typography.size.medium,
+	lineHeight: tokens.typography.lineHeight.xlarge,
+	color: tokens.colors['neutral.900']
+}
+
 export const tableWrapper = style({
 	width: '100%',
 	overflow: 'auto'
@@ -10,15 +21,20 @@ export const tableWrapper = style({
 export const table = style({
 	width: '100%',
 	borderSpacing: 0,
-	borderCollapse: 'collapse'
+	borderCollapse: 'collapse',
+	borderRight: border.border,
+	borderColor: border.borderColor
 })
 
 export const tableHeader = style({
-	borderBottom: `1px solid ${tokens.colors['neutral.200']}`,
+	borderTop: border.border,
+	borderColor: border.borderColor,
 	backgroundColor: tokens.colors['neutral.100']
 })
 
-export const tableBody = style({})
+export const tableBody = style({
+	backgroundColor: tokens.colors['neutral.50']
+})
 
 export const tableFooter = style({
 	backgroundColor: tokens.colors['primary.100'],
@@ -26,22 +42,30 @@ export const tableFooter = style({
 })
 
 export const tableRow = style({
-	borderBottom: `1px solid ${tokens.colors['neutral.200']}`,
-	':last-child': { borderBottom: 'none' },
+	borderBottom: border.border,
+	borderColor: border.borderColor,
 	':hover': { background: tokens.colors['neutral.100'] }
 })
 
 export const tableHead = style({
-	padding: tokens.spacing[4],
-	fontSize: tokens.typography.size.medium,
-	fontWeight: tokens.typography.weight.bold,
+	padding: `${tokens.spacing[4]} ${tokens.spacing[6]}`,
+	fontWeight: tokens.typography.weight.semibold,
 	textAlign: 'left',
-	color: tokens.colors['neutral.500']
+	borderBottom: border.border,
+	borderLeft: border.border,
+	borderColor: border.borderColor,
+	...font
 })
 
 export const tableCell = style({
-	padding: tokens.spacing[4],
-	color: tokens.colors['neutral.500']
+	padding: `${tokens.spacing[4]} ${tokens.spacing[6]}`,
+	borderLeft: border.border,
+	borderColor: border.borderColor,
+	fontWeight: tokens.typography.weight.regular,
+	...font,
+	':first-child': {
+		width: '72px'
+	}
 })
 
 export const tableCaption = style({

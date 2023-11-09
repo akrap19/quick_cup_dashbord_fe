@@ -1,7 +1,13 @@
 {
 	"General": {
 		"email": "Email",
-		"emailPlaceholder": "e.g. john.doe@gmail.com"
+		"emailPlaceholder": "e.g. john.doe@gmail.com",
+		"barnahus": "Barnahus",
+		"location": "Location",
+		"assignedAdmin": "Assigned Admin",
+		"numberOfPractitioners": "Number of Practitioners",
+		"addBarnahus": "Add Barnahus",
+		"searchBarnahus": "Search Barnahus"
 	},
 	"Authorization": {
 		"password": "Password",
@@ -27,5 +33,11 @@
 			"title": "Password successfully changed",
 			"instructions": "Please login to your account again."
 		}
+	},
+	"NoListData": {
+		"letsStart": "Lets get started!"
+	},
+	"Barnahuses": {
+		"noListDataDescription": "To begin, add all the Barnahuses to your library so that you can assign Admins to each one you've included."
 	}
 }

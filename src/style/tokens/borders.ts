@@ -18,6 +18,7 @@ export const borders = {
 	color: {
 		'shades.100': colors['shades.100'],
 		'neutral.200': colors['neutral.200'],
-		'neutral.300': colors['neutral.300']
+		'neutral.300': colors['neutral.300'],
+		'neutral.400': colors['neutral.400']
 	}
 }

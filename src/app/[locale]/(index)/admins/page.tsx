@@ -1,35 +1,11 @@
-import { DataTableWrapper, DataTableHeader, DataTablePagination, DataTable } from '@/components/custom/data-table'
+import { ListLayoutWrapper } from '@/components/custom/layouts/ListLayoutWrapper'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
-import { ROUTES } from 'parameters'
-import { ComponentProps } from 'react'
-
-type DataTableProps = ComponentProps<typeof DataTable>
+import { DataTable } from '@/components/data-display/data-table'
+import { columns } from './columns'
+import { dummyData } from './data'
+import { Inputs } from './inputs'
 
 const AdminsPage = () => {
-	const dataTableData: DataTableProps = {
-		columns: [
-			{ field: 'admin', label: 'General.barnahus', hasSort: true },
-			{ field: 'barnahusLocation', label: 'General.location', hasSort: true }
-		],
-		data: [
-			{
-				admin: 'General.barnahus',
-				barnahusLocation: 'Zagreb, croatia'
-			},
-			{
-				admin: 'General.barnahus',
-				barnahusLocation: 'Zagreb, croatia'
-			},
-			{
-				admin: 'General.barnahus',
-				barnahusLocation: 'Zagreb, croatia'
-			},
-			{
-				admin: 'General.barnahus',
-				barnahusLocation: 'Zagreb, croatia'
-			}
-		]
-	}
 	return (
 		// <NoListData
 		// 	title="Admins.noListDataTitle"
@@ -37,15 +13,10 @@ const AdminsPage = () => {
 		// 	buttonLabel="Admins.add"
 		// 	buttonLink={ROUTES.ADD_ADMINS}
 		// />
-		<DataTableWrapper>
-			<DataTableHeader
-				buttonLabel={'Admins.add'}
-				buttonLink={ROUTES.ADD_BARNAHUS}
-				searchPlaceholder={'Admins.searchAdmin'}
-			/>
-			<DataTable {...dataTableData} />
-			<DataTablePagination />
-		</DataTableWrapper>
+		<ListLayoutWrapper>
+			<Inputs />
+			<DataTable columns={columns} data={dummyData} />
+		</ListLayoutWrapper>
 	)
 }
 

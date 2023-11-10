@@ -1,16 +1,15 @@
 'use client'
 import { Box } from '@/components/layout/box'
 import { ReactNode } from 'react'
-import { dataTableContainer } from './DataTable.css'
 import { Stack } from '@/components/layout/stack'
 
-type DataTablePaginationProps = {
+type ListLayoutWrapperProps = {
 	children: ReactNode
 }
 
-export const DataTableWrapper = ({ children }: DataTablePaginationProps) => {
+export const ListLayoutWrapper = ({ children }: ListLayoutWrapperProps) => {
 	return (
-		<Box className={dataTableContainer}>
+		<Box width="100%" paddingY={8} paddingRight={20} paddingLeft={10}>
 			<Stack gap={7}>{children}</Stack>
 		</Box>
 	)

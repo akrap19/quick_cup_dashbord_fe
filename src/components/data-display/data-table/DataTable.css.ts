@@ -1,12 +1,15 @@
+import { tokens } from '@/style/theme.css'
 import { style } from '@vanilla-extract/css'
 
-import { tokens } from '@/style/theme.css'
+export const dataTablePaginationContainer = style({
+	position: 'absolute',
+	right: tokens.spacing[20],
+	bottom: tokens.spacing[14],
+	display: 'flex',
+	color: tokens.colors['neutral.400']
+})
 
-export const navButton = style({
-	border: 'none',
-	background: 'transparent',
-	fontSize: tokens.typography.size.medium,
-	cursor: 'pointer',
-	fontWeight: tokens.typography.weight.semibold,
-	':disabled': { color: tokens.colors['neutral.200'] }
+export const dataTableSelect = style({
+	fontSize: tokens.typography.size.large,
+	color: 'red'
 })

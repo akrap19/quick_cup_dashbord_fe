@@ -28,7 +28,7 @@ export const DataTableHeader = ({
 	return (
 		<Inline justifyContent="space-between" alignItems="center">
 			{description && (
-				<Box width="60%" style={{ maxWidth: '600px' }}>
+				<Box>
 					<Text fontSize="small" lineHeight="large" color="neutral.800">
 						{t(description)}
 					</Text>

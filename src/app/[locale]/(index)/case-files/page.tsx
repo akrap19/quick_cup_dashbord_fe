@@ -1,3 +1,4 @@
+import { DataTableWrapper, DataTableHeader, DataTablePagination } from '@/components/custom/data-table'
 import { DataTable } from '@/components/custom/data-table/DataTable'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { ROUTES } from 'parameters'
@@ -7,10 +8,6 @@ type DataTableProps = ComponentProps<typeof DataTable>
 
 const CaseFilesPage = () => {
 	const dataTableData: DataTableProps = {
-		selectOptions: [{ value: 'all', label: 'All statuses' }],
-		searchPlaceholder: 'CaseFiles.searchCase',
-		buttonLabel: 'CaseFiles.add',
-		buttonLink: ROUTES.ADD_BARNAHUS,
 		columns: [
 			{ field: 'id', label: 'General.id' },
 			{ field: 'status', label: 'General.status' },
@@ -52,7 +49,16 @@ const CaseFilesPage = () => {
 		// 	buttonLabel="CaseFiles.add"
 		// 	buttonLink={ROUTES.ADD_CASE}
 		// />
-		<DataTable {...dataTableData} />
+		<DataTableWrapper>
+			<DataTableHeader
+				buttonLabel={'CaseFiles.add'}
+				buttonLink={ROUTES.ADD_BARNAHUS}
+				searchPlaceholder={'CaseFiles.searchCase'}
+				selectOptions={[{ value: 'all', label: 'All statuses' }]}
+			/>
+			<DataTable {...dataTableData} />
+			<DataTablePagination />
+		</DataTableWrapper>
 	)
 }
 

@@ -41,8 +41,8 @@ export const button = recipe({
 			},
 			secondary: {
 				backgroundColor: '#FFFFFF',
-				color: '#454545',
-				border: '1px solid #ADADAD',
+				color: tokens.colors['neutral.700'],
+				border: `1px solid ${tokens.colors['neutral.300']}`,
 				':hover': { backgroundColor: '#F6F6F6' }
 			},
 			ghost: {

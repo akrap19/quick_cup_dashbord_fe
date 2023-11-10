@@ -2,7 +2,7 @@ export const ROUTES = {
 	HOME: '/',
 	LOGIN: '/login',
 	BARNAHUSES: '/barnahuses',
-	ADD_BARNAHUS: '/add-barnahus',
+	ADD_BARNAHUS: '/barnahuses/add',
 	ADMINS: '/admins',
 	ADD_ADMINS: '/add-admins',
 	PRACTITIONERS: '/practitioners',

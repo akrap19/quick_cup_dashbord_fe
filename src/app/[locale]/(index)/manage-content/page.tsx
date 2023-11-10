@@ -1,4 +1,4 @@
-import { DataTable } from '@/components/custom/data-table/DataTable'
+import { DataTableHeader, DataTablePagination, DataTableWrapper, DataTable } from '@/components/custom/data-table'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { ROUTES } from 'parameters'
 import { ComponentProps } from 'react'
@@ -7,9 +7,6 @@ type DataTableProps = ComponentProps<typeof DataTable>
 
 const ManageContentPage = () => {
 	const dataTableData: DataTableProps = {
-		description: 'ManageContent.description',
-		buttonLabel: 'ManageContent.add',
-		buttonLink: ROUTES.ADD_BARNAHUS,
 		columns: [
 			{ field: 'contentType', label: 'General.contentType', hasSort: true },
 			{ field: 'updated', label: 'General.updated' },
@@ -50,7 +47,15 @@ const ManageContentPage = () => {
 		// 	buttonLabel="ManageContent.add"
 		// 	buttonLink={ROUTES.ADD_CONTENT}
 		// />
-		<DataTable {...dataTableData} />
+		<DataTableWrapper>
+			<DataTableHeader
+				buttonLabel={'Barnahuses.add'}
+				buttonLink={ROUTES.ADD_BARNAHUS}
+				description={'ManageContent.description'}
+			/>
+			<DataTable {...dataTableData} />
+			<DataTablePagination />
+		</DataTableWrapper>
 	)
 }
 

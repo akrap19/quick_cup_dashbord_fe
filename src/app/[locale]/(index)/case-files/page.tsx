@@ -1,3 +1,4 @@
+
 import { SearchInput } from '@/components/custom/search-input'
 import { DataTable } from '@/components/data-display/data-table'
 import { PlusIcon } from '@/components/icons/plus-icon'
@@ -11,7 +12,6 @@ import { columns } from './columns'
 import { dummyData } from './data'
 
 const CaseFilesPage = () => {
-	// TODO: Fetch data here and pass it to "DataTable".
 	return (
 		<Box padding={8} width="100%">
 			<Stack gap={8}>

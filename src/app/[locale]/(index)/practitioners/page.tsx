@@ -1,6 +1,5 @@
-import { DataTable } from '@/components/custom/data-table/DataTable'
+import { DataTableHeader, DataTablePagination, DataTableWrapper, DataTable } from '@/components/custom/data-table'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
-import { Text } from '@/components/typography/text'
 import { ROUTES } from 'parameters'
 import { ComponentProps } from 'react'
 
@@ -8,9 +7,6 @@ type DataTableProps = ComponentProps<typeof DataTable>
 
 const PractitionersPage = () => {
 	const dataTableData: DataTableProps = {
-		searchPlaceholder: 'Practitioners.searchPractitioners',
-		buttonLabel: 'Practitioners.add',
-		buttonLink: ROUTES.ADD_BARNAHUS,
 		columns: [
 			{ field: 'practitioner', label: 'General.practitioner', hasSort: true },
 			{ field: 'role', label: 'General.role' }
@@ -35,13 +31,21 @@ const PractitionersPage = () => {
 		]
 	}
 	return (
-		<NoListData
-			title="NoListData.letsStart"
-			description="Practitioners.noListDataDescription"
-			buttonLabel="Practitioners.add"
-			buttonLink={ROUTES.ADD_ADMINS}
-		/>
-		// <DataTable {...dataTableData} />
+		// <NoListData
+		// 	title="NoListData.letsStart"
+		// 	description="Practitioners.noListDataDescription"
+		// 	buttonLabel="Practitioners.add"
+		// 	buttonLink={ROUTES.ADD_ADMINS}
+		// />
+		<DataTableWrapper>
+			<DataTableHeader
+				buttonLabel={'Practitioners.add'}
+				buttonLink={ROUTES.ADD_BARNAHUS}
+				searchPlaceholder={'Practitioners.searchPractitioners'}
+			/>
+			<DataTable {...dataTableData} />
+			<DataTablePagination />
+		</DataTableWrapper>
 	)
 }
 

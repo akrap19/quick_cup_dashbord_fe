@@ -1,64 +1,34 @@
-import { DataTableWrapper, DataTableHeader, DataTablePagination } from '@/components/custom/data-table'
-import { DataTable } from '@/components/custom/data-table/DataTable'
-import { NoListData } from '@/components/custom/no-list-data/NoListData'
-import { ROUTES } from 'parameters'
-import { ComponentProps } from 'react'
 
-type DataTableProps = ComponentProps<typeof DataTable>
+import { SearchInput } from '@/components/custom/search-input'
+import { DataTable } from '@/components/data-display/data-table'
+import { PlusIcon } from '@/components/icons/plus-icon'
+import { Button } from '@/components/inputs/button'
+import { Select } from '@/components/inputs/select'
+import { Box } from '@/components/layout/box'
+import { Inline } from '@/components/layout/inline'
+import { Stack } from '@/components/layout/stack'
+
+import { columns } from './columns'
+import { dummyData } from './data'
 
 const CaseFilesPage = () => {
-	const dataTableData: DataTableProps = {
-		columns: [
-			{ field: 'id', label: 'General.id' },
-			{ field: 'status', label: 'General.status' },
-			{ field: 'lastJourneySnapshot', label: 'General.lastJourneySnapshot' },
-			{ field: 'caseJourneyUpdates', label: 'General.caseJourneyUpdates' }
-		],
-		data: [
-			{
-				id: 'General.barnahus',
-				status: 'Zagreb, croatia',
-				lastJourneySnapshot: 'Ivan ivan',
-				caseJourneyUpdates: 666
-			},
-			{
-				id: 'General.barnahus',
-				status: 'Zagreb, croatia',
-				lastJourneySnapshot: 'Ivan ivan',
-				caseJourneyUpdates: 666
-			},
-			{
-				id: 'General.barnahus',
-				status: 'Zagreb, croatia',
-				lastJourneySnapshot: 'Ivan ivan',
-				caseJourneyUpdates: 666
-			},
-			{
-				id: 'General.barnahus',
-				status: 'Zagreb, croatia',
-				lastJourneySnapshot: 'Ivan ivan',
-				caseJourneyUpdates: 666
-			}
-		]
-	}
-
 	return (
-		// <NoListData
-		// 	title="NoListData.letsStart"
-		// 	description="CaseFiles.noListDataDescription"
-		// 	buttonLabel="CaseFiles.add"
-		// 	buttonLink={ROUTES.ADD_CASE}
-		// />
-		<DataTableWrapper>
-			<DataTableHeader
-				buttonLabel={'CaseFiles.add'}
-				buttonLink={ROUTES.ADD_BARNAHUS}
-				searchPlaceholder={'CaseFiles.searchCase'}
-				selectOptions={[{ value: 'all', label: 'All statuses' }]}
-			/>
-			<DataTable {...dataTableData} />
-			<DataTablePagination />
-		</DataTableWrapper>
+		<Box padding={8} width="100%">
+			<Stack gap={8}>
+				{/* TODO: I would even abstract this Box to other component (inputs.tsx) */}
+				<Box display="flex" justify="space-between">
+					<Inline gap={4}>
+						{/* TODO: Add other options to select here and fix caret icon position */}
+						<Select options={[{ value: '', label: 'All Statuses' }]} />
+						<SearchInput />
+					</Inline>
+					<Button>
+						<PlusIcon /> Add Case
+					</Button>
+				</Box>
+				<DataTable columns={columns} data={dummyData} />
+			</Stack>
+		</Box>
 	)
 }
 

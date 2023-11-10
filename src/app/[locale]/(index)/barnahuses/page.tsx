@@ -1,45 +1,41 @@
-import { DataTableHeader, DataTablePagination, DataTable, DataTableWrapper } from '@/components/custom/data-table'
-import { NoListData } from '@/components/custom/no-list-data/NoListData'
-import { ROUTES } from 'parameters'
-import { ComponentProps } from 'react'
-
-type DataTableProps = ComponentProps<typeof DataTable>
+import { DataTableWrapper } from '@/components/custom/data-table'
+import { DataTable } from '@/components/custom/data-table/DataTable'
+import { ColumnDef } from '@tanstack/react-table'
+import { Inputs } from './inputs'
 
 const BarnahusesPage = () => {
-	const dataTableData: DataTableProps = {
-		columns: [
-			{ field: 'barnahus', label: 'General.barnahus', hasSort: true },
-			{ field: 'location', label: 'General.location', hasSort: true },
-			{ field: 'assignedAdmin', label: 'General.assignedAdmin', hasSort: false },
-			{ field: 'numberOfPractitioners', label: 'General.numberOfPractitioners', hasSort: false }
-		],
-		data: [
-			{
-				barnahus: 'General.barnahus',
-				location: 'Zagreb, croatia',
-				assignedAdmin: 'Ivan ivan',
-				numberOfPractitioners: 666
-			},
-			{
-				barnahus: 'General.barnahus',
-				location: 'Zagreb, croatia',
-				assignedAdmin: 'Ivan ivan',
-				numberOfPractitioners: 666
-			},
-			{
-				barnahus: 'General.barnahus',
-				location: 'Zagreb, croatia',
-				assignedAdmin: 'Ivan ivan',
-				numberOfPractitioners: 666
-			},
-			{
-				barnahus: 'General.barnahus',
-				location: 'Zagreb, croatia',
-				assignedAdmin: 'Ivan ivan',
-				numberOfPractitioners: 666
-			}
-		]
-	}
+	const columns: Array<ColumnDef<any>> = [
+		{ accessorKey: 'barnahus', header: 'General.barnahus' },
+		{ accessorKey: 'location', header: 'General.location' },
+		{ accessorKey: 'assignedAdmin', header: 'General.assignedAdmin' },
+		{ accessorKey: 'numberOfPractitioners', header: 'General.numberOfPractitioners' }
+	]
+	const data = [
+		{
+			barnahus: 'General.barnahus',
+			location: 'Zagreb, croatia',
+			assignedAdmin: 'Ivan ivan',
+			numberOfPractitioners: 666
+		},
+		{
+			barnahus: 'General.barnahus',
+			location: 'Zagreb, croatia',
+			assignedAdmin: 'Ivan ivan',
+			numberOfPractitioners: 666
+		},
+		{
+			barnahus: 'General.barnahus',
+			location: 'Zagreb, croatia',
+			assignedAdmin: 'Ivan ivan',
+			numberOfPractitioners: 666
+		},
+		{
+			barnahus: 'General.barnahus',
+			location: 'Zagreb, croatia',
+			assignedAdmin: 'Ivan ivan',
+			numberOfPractitioners: 666
+		}
+	]
 
 	return (
 		// <NoListData
@@ -49,13 +45,8 @@ const BarnahusesPage = () => {
 		// 	buttonLink={ROUTES.ADD_BARNAHUS}
 		// />
 		<DataTableWrapper>
-			<DataTableHeader
-				buttonLabel={'Barnahuses.add'}
-				buttonLink={ROUTES.ADD_BARNAHUS}
-				searchPlaceholder={'Barnahuses.searchBarnahus'}
-			/>
-			<DataTable {...dataTableData} />
-			<DataTablePagination />
+			<Inputs />
+			<DataTable columns={columns} data={data} />
 		</DataTableWrapper>
 	)
 }

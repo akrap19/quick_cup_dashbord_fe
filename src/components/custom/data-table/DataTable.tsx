@@ -2,49 +2,83 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/data-display/table/Table'
 import { BlockIcon } from '@/components/icons/block-icon'
 import { Checkbox } from '@/components/inputs/checkbox'
+import { Box } from '@/components/layout/box'
 import { useTranslations } from 'next-intl'
+import { dataTableContainer } from './DataTable.css'
 import UpDownIcon from '@/components/icons/block-icon/assets/up-down-icon.svg'
 import { Inline } from '@/components/layout/inline'
+import { Stack } from '@/components/layout/stack'
+import { DataTableHeader } from './DataTableHeader'
+import { DataTablePagination } from './DataTablePagination'
+import {
+	ColumnDef,
+	ColumnFiltersState,
+	flexRender,
+	getCoreRowModel,
+	getFilteredRowModel,
+	getPaginationRowModel,
+	useReactTable
+} from '@tanstack/react-table'
+import { useState } from 'react'
 
-type Columns = {
-	field: string
-	label: string
-	hasSort?: boolean
+interface DataTableProps<TData, TValue> {
+	columns: ColumnDef<TData, TValue>[]
+	data: TData[]
 }
 
-type DataTableProps = {
-	columns: Columns[]
-	data: any[]
-}
-
-export const DataTable = ({ columns, data }: DataTableProps) => {
+export const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) => {
 	const t = useTranslations()
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+
+	const table = useReactTable({
+		data,
+		columns,
+		getCoreRowModel: getCoreRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
+		onColumnFiltersChange: setColumnFilters,
+		getFilteredRowModel: getFilteredRowModel(),
+		state: {
+			columnFilters
+		}
+	})
 
 	return (
-		<Table>
-			<TableHeader>
-				<TableRow>
-					<TableHead>{<Checkbox />}</TableHead>
-					{columns.map((c: Columns) => (
-						<TableHead>
-							<Inline justifyContent="space-between">
-								{t(c.label)}
-								{c.hasSort && <BlockIcon icon={UpDownIcon} color="primary.500"></BlockIcon>}
-							</Inline>
-						</TableHead>
+		<>
+			<Table>
+				<TableHeader>
+					{table.getHeaderGroups().map(headerGroup => (
+						<TableRow key={headerGroup.id}>
+							<TableHead>{<Checkbox />}</TableHead>
+							{headerGroup.headers.map(header => {
+								return (
+									<TableHead key={header.id}>
+										{header.isPlaceholder ? null : flexRender(t(header.column.columnDef.header), header.getContext())}
+									</TableHead>
+								)
+							})}
+						</TableRow>
 					))}
-				</TableRow>
-			</TableHeader>
-			<TableBody>
-				{data.map((d: any) => (
-					<TableRow>
-						<TableCell>{<Checkbox />}</TableCell>
-						{columns.map((c: Columns) => (
-							<TableCell>{d[c.field]}</TableCell>
-						))}
-					</TableRow>
-				))}
-			</TableBody>
-		</Table>
+				</TableHeader>
+				<TableBody>
+					{table.getRowModel().rows?.length ? (
+						table.getRowModel().rows.map(row => (
+							<TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+								<TableCell>{<Checkbox />}</TableCell>
+								{row.getVisibleCells().map(cell => (
+									<TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+								))}
+							</TableRow>
+						))
+					) : (
+						<TableRow>
+							<TableCell colSpan={columns.length} className="h-24 text-center">
+								No results.
+							</TableCell>
+						</TableRow>
+					)}
+				</TableBody>
+			</Table>
+			<DataTablePagination table={table} />
+		</>
 	)
 }

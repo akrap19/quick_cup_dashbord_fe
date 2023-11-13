@@ -10,6 +10,8 @@ import { Text } from '@/components/typography/text'
 import { Label } from '@/components/inputs/label'
 import { Stack } from '@/components/layout/stack'
 import { InputInfo } from '@/components/inputs/input-info'
+import { useEffect } from 'react'
+import { useNavbarItemsStore } from 'store/NavbarStore'
 
 const formSchema = z.object({
 	barnahusName: z.string().min(1, { message: 'This field is required' }),
@@ -20,11 +22,16 @@ type Schema = z.infer<typeof formSchema>
 
 const AddBarnahusPage = () => {
 	const t = useTranslations()
+	const { setNavbarItems } = useNavbarItemsStore()
 	const defaultValues = { barnahusName: '', barnahusLocation: '' }
 
 	const onSubmit = async (data: Schema) => {
 		console.log(data)
 	}
+
+	useEffect(() => {
+		setNavbarItems({ title: 'Barnahuses.add', backLabel: 'barnahuses' })
+	}, [])
 
 	return (
 		<FormWrapper formSchema={formSchema} defaultValues={defaultValues} onSubmit={onSubmit}>

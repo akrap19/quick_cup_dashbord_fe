@@ -27,6 +27,9 @@
 		"cancel": "Cancel",
 		"requiredFieldWarning": "Fields marked with an asterisk (*) indicate their mandatory nature."
 	},
+	"Back": {
+		"barnahuses": "Back to Barnahuses"
+	},
 	"Authorization": {
 		"password": "Password",
 		"passwordPlaceholder": "Enter password",

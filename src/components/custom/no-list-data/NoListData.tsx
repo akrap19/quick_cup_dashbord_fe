@@ -21,7 +21,7 @@ export const NoListData = ({ title, description, buttonLabel, buttonLink }: NoLi
 			style={{ width: '500px', marginTop: '20vh' }}>
 			<Stack gap={6}>
 				<Stack gap={4}>
-					<Heading variant="h2" textTransform="capitalize" lineHeight="medium">
+					<Heading variant="h2" lineHeight="medium">
 						{t(title)}
 					</Heading>
 					<Text lineHeight="xlarge">{t(description)}</Text>

@@ -1,16 +1,19 @@
 import { ListLayoutWrapper } from '@/components/custom/layouts'
+import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { DataTable } from '@/components/data-display/data-table'
 import { columns } from './columns'
 import { dummyData } from './data'
 import { Inputs } from './inputs'
 
-const BarnahusesPage = () => {
+// type DataTableProps = ComponentProps<typeof DataTable>
+
+const ManageContentPage = () => {
 	return (
 		// <NoListData
 		// 	title="NoListData.letsStart"
-		// 	description="Barnahuses.noListDataDescription"
-		// 	buttonLabel="Barnahuses.add"
-		// 	buttonLink={ROUTES.ADD_BARNAHUS}
+		// 	description="ManageContent.noListDataDescription"
+		// 	buttonLabel="ManageContent.add"
+		// 	buttonLink={ROUTES.ADD_CONTENT}
 		// />
 		<ListLayoutWrapper>
 			<Inputs />
@@ -19,4 +22,4 @@ const BarnahusesPage = () => {
 	)
 }
 
-export default BarnahusesPage
+export default ManageContentPage

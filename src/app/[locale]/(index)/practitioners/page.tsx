@@ -4,13 +4,13 @@ import { columns } from './columns'
 import { dummyData } from './data'
 import { Inputs } from './inputs'
 
-const BarnahusesPage = () => {
+const PractitionersPage = () => {
 	return (
 		// <NoListData
 		// 	title="NoListData.letsStart"
-		// 	description="Barnahuses.noListDataDescription"
-		// 	buttonLabel="Barnahuses.add"
-		// 	buttonLink={ROUTES.ADD_BARNAHUS}
+		// 	description="Practitioners.noListDataDescription"
+		// 	buttonLabel="Practitioners.add"
+		// 	buttonLink={ROUTES.ADD_ADMINS}
 		// />
 		<ListLayoutWrapper>
 			<Inputs />
@@ -19,4 +19,4 @@ const BarnahusesPage = () => {
 	)
 }
 
-export default BarnahusesPage
+export default PractitionersPage

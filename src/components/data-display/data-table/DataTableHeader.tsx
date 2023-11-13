@@ -1,12 +1,12 @@
 'use client'
+import { AddButton } from '@/components/custom/add-button'
+import { SearchInput } from '@/components/custom/search-input'
 import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Text } from '@/components/typography/text'
 import { tokens } from '@/style/theme.css'
 import { useTranslations } from 'next-intl'
-import { AddButton } from '../add-button'
-import { SearchInput } from '../search-input'
 
 type DataTableHeaderProps = {
 	buttonLabel: string
@@ -28,7 +28,7 @@ export const DataTableHeader = ({
 	return (
 		<Inline justifyContent="space-between" alignItems="center">
 			{description && (
-				<Box width="60%" style={{ maxWidth: '600px' }}>
+				<Box>
 					<Text fontSize="small" lineHeight="large" color="neutral.800">
 						{t(description)}
 					</Text>
@@ -36,7 +36,7 @@ export const DataTableHeader = ({
 			)}
 			<Inline gap={4} alignItems="center">
 				{selectOptions && (
-					<Box style={{ width: '200px' }}>
+					<Box width="100%">
 						<Select
 							name="dataTableSelect"
 							style={{

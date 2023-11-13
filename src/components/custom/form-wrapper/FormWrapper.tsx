@@ -12,7 +12,7 @@ import { Text } from '@/components/typography/text'
 import { ReactNode } from 'react'
 
 interface FormWrapperProps {
-	children: ReactNode
+	children: ReactNode[]
 	formSchema: z.ZodObject<any>
 	defaultValues?: any
 	onSubmit: (data: any) => Promise<void>
@@ -41,7 +41,13 @@ export const FormWrapper = ({ children, formSchema, defaultValues, onSubmit }: F
 							<Text fontSize="small" color="destructive.500">
 								{t('General.requiredFieldWarning')}
 							</Text>
-							<Columns gap={6}>{children}</Columns>
+							<Columns gap={6}>
+								{children?.map((m, i) => (
+									<Columns.Item columns={6}>
+										<Box paddingBottom={i < children.length - 2 ? 3 : 0}>{m}</Box>
+									</Columns.Item>
+								))}
+							</Columns>
 							<Divider />
 							<Inline gap={4}>
 								<Button variant="secondary">{t('General.cancel')}</Button>

@@ -19,6 +19,9 @@ export const button = recipe({
 	},
 	variants: {
 		size: {
+			auto: {
+				height: 'auto'
+			},
 			small: {
 				height: '2.125rem',
 				paddingLeft: tokens.spacing[6],

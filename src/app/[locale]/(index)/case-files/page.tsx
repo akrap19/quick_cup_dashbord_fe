@@ -1,4 +1,4 @@
-import { ListLayoutWrapper } from '@/components/custom/layouts/ListLayoutWrapper'
+import { ListLayoutWrapper } from '@/components/custom/layouts'
 import { DataTable } from '@/components/data-display/data-table'
 
 import { columns } from './columns'

@@ -1,5 +1,4 @@
-// import { DataTableHeader, DataTablePagination, DataTableWrapper, DataTable } from '@/components/custom/data-table'
-import { ListLayoutWrapper } from '@/components/custom/layouts/ListLayoutWrapper'
+import { ListLayoutWrapper } from '@/components/custom/layouts'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { DataTable } from '@/components/data-display/data-table'
 import { columns } from './columns'

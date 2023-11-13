@@ -20,7 +20,10 @@
 		"status": "Status",
 		"id": "ID",
 		"lastJourneySnapshot": "Last Journey snapshot",
-		"caseJourneyUpdates": "Case Journey updates"
+		"caseJourneyUpdates": "Case Journey updates",
+		"save&Add": "Save & add",
+		"cancel": "Cancel",
+		"requiredFieldWarning": "Fields marked with an asterisk (*) indicate their mandatory nature."
 	},
 	"Authorization": {
 		"password": "Password",

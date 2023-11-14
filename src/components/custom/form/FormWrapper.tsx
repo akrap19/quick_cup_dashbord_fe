@@ -1,11 +1,11 @@
 import { Box } from '@/components/layout/box'
 import { ReactNode } from 'react'
 
-interface FormWrapperProps {
+interface Props {
 	children: ReactNode
 }
 
-export const FormWrapper = ({ children }: FormWrapperProps) => {
+export const FormWrapper = ({ children }: Props) => {
 	return (
 		<Box padding={10} width="100%">
 			<Box

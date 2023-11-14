@@ -6,25 +6,23 @@ import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 import { FormWrapper } from '@/components/custom/add-form/FormWrapper'
 import { Select } from '@/components/inputs/select'
-import { Text } from '@/components/typography/text'
-import { Label } from '@/components/inputs/label'
-import { Stack } from '@/components/layout/stack'
 import { InputInfo } from '@/components/inputs/input-info'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, FormProvider } from 'react-hook-form'
 import { FormItems } from '@/components/custom/add-form/FormItems'
-import { Inline } from '@/components/layout/inline'
+import { Box } from '@/components/layout/box'
 
 const formSchema = z.object({
-	barnahusName: z.string().min(1, { message: 'This field is required' }),
-	barnahusLocation: z.string().min(1, { message: 'This field is required' })
+	caseId: z.string().min(1, { message: 'This field is required' }),
+	status: z.string().min(1, { message: 'This field is required' }),
+	barnahus: z.string().min(1, { message: 'This field is required' })
 })
 
 type Schema = z.infer<typeof formSchema>
 
 const AddBarnahusPage = () => {
 	const t = useTranslations()
-	const defaultValues = { barnahusName: '', barnahusLocation: '' }
+	const defaultValues = { caseId: '', status: '', barnahus: '' }
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
@@ -41,29 +39,34 @@ const AddBarnahusPage = () => {
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
 					<FormItems primaryButtonLabel="General.save&Add" secondaryButtonLabel="General.cancel">
-						<FormControl name="barnahusName">
+						<FormControl name="caseId">
 							<FormControl.Label>
-								<RequiredLabel>{t('Barnahuses.barnahusName')}</RequiredLabel>
+								<RequiredLabel>{t('General.caseId')}</RequiredLabel>
 							</FormControl.Label>
-							<TextInput placeholder={t('Barnahuses.barnahusNamePlaceholder')} />
+							<TextInput placeholder={t('General.caseIdPlaceholder')} />
 							<FormControl.Message />
 						</FormControl>
-						<FormControl name="barnahusLocation">
+						<FormControl name="status">
 							<FormControl.Label>
-								<RequiredLabel>{t('Barnahuses.barnahusLocation')}</RequiredLabel>
+								<RequiredLabel>{t('General.status')}</RequiredLabel>
 							</FormControl.Label>
-							<Select options={[]} placeholder={t('Barnahuses.emailPlaceholder')} />
+							<Select options={[]} />
 							<FormControl.Message />
 						</FormControl>
-						<Stack gap={4}>
-							<Inline alignItems="center" gap={4}>
-								<Label>{t('Barnahuses.assignedMasterAdmin')}</Label>
-								<InputInfo infoText={'Barnahuses.assignedMasterAdminInfoText'} />
-							</Inline>
-							<Text fontSize="small" color="neutral.300">
-								{t('Barnahuses.assignedMasterAdminPlaceholder')}
-							</Text>
-						</Stack>
+						<FormControl name="barnahus">
+							<FormControl.Label>
+								<RequiredLabel>{t('General.barnahus')}</RequiredLabel>
+							</FormControl.Label>
+							<TextInput
+								placeholder={t('General.barnahusPlaceholder')}
+								endIcon={
+									<Box>
+										<InputInfo infoText={'General.barnahusInfoText'} />
+									</Box>
+								}
+							/>
+							<FormControl.Message />
+						</FormControl>
 					</FormItems>
 				</form>
 			</FormProvider>

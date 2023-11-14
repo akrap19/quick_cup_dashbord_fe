@@ -4,18 +4,18 @@ import { tokens } from '../../../style/theme.css'
 
 export const tabsWrapper = style({
 	width: '100%',
-	borderBottom: `1px solid ${tokens.borders.color['neutral.200']}`
+	borderBottom: `1px solid ${tokens.borders.color['neutral.300']}`
 })
 
 export const tab = style({
-	paddingLeft: tokens.spacing[4],
-	paddingRight: tokens.spacing[4],
+	paddingLeft: tokens.spacing[3],
+	paddingRight: tokens.spacing[3],
 	paddingTop: tokens.spacing[2],
 	paddingBottom: tokens.spacing[2],
 	fontWeight: tokens.typography.weight.regular,
 	fontSize: tokens.typography.size.medium,
-	lineHeight: tokens.typography.lineHeight.large,
-	color: tokens.colors['neutral.400'],
+	lineHeight: tokens.typography.lineHeight.xlarge,
+	color: tokens.colors['neutral.800'],
 	border: 'none',
 	background: 'transparent',
 	cursor: 'pointer',
@@ -24,12 +24,13 @@ export const tab = style({
 
 export const activeTab = style({
 	color: tokens.colors['shades.100'],
+	fontWeight: tokens.typography.weight.semibold,
 
 	'::after': {
 		content: ' ',
 		display: 'block',
 		width: '100%',
-		height: '1px',
+		height: '2px',
 		background: tokens.colors['primary.500'],
 		position: 'absolute',
 		left: 0,

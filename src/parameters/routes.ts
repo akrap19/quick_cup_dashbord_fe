@@ -4,11 +4,12 @@ export const ROUTES = {
 	BARNAHUSES: '/barnahuses',
 	ADD_BARNAHUS: '/barnahuses/add',
 	ADMINS: '/admins',
-	ADD_ADMINS: '/add-admins',
+	ADD_ADMINS: '/admins/add',
 	PRACTITIONERS: '/practitioners',
+	ADD_PRACTITIONERS: '/practitioners/add',
 	MANAGE_CONTENT: '/manage-content',
 	ADD_CONTENT: '/add-content',
 	CASE_FILES: '/case-files',
-	ADD_CASE: '/add-case',
+	ADD_CASE: '/case-files/add',
 	SETTINGS: '/settings'
 }

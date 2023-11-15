@@ -11,6 +11,7 @@
 		"practitioners": "Practitioners",
 		"numberOfPractitioners": "Number of Practitioners",
 		"location": "Location",
+		"loading": "Loading...",
 		"barnahusLocation": "Barnahus location",
 		"manageContent": "Manage content",
 		"settings": "Settings",
@@ -26,6 +27,9 @@
 		"save&Add": "Save & add",
 		"cancel": "Cancel",
 		"requiredFieldWarning": "Fields marked with an asterisk (*) indicate their mandatory nature."
+	},
+	"Back": {
+		"barnahuses": "Back to Barnahuses"
 	},
 	"Authorization": {
 		"password": "Password",

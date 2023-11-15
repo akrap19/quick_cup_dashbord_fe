@@ -31,7 +31,7 @@ export const Navbar = () => {
 				</Box>
 			)}
 			<Heading variant="h2" textTransform="capitalize" lineHeight="medium" color="neutral.800">
-				{t(navbarItems?.title)}
+				{t(navbarItems?.title ?? 'General.loading')}
 			</Heading>
 		</Box>
 	)

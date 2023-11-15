@@ -9,12 +9,10 @@ import { Text } from '@/components/typography/text'
 import { ReactNode } from 'react'
 
 interface FormItemsProps {
-	primaryButtonLabel: string
-	secondaryButtonLabel: string
 	children: ReactNode[]
 }
 
-export const FormItems = ({ primaryButtonLabel, secondaryButtonLabel, children }: FormItemsProps) => {
+export const FormItems = ({ children }: FormItemsProps) => {
 	const t = useTranslations()
 
 	return (
@@ -31,8 +29,8 @@ export const FormItems = ({ primaryButtonLabel, secondaryButtonLabel, children }
 			</Columns>
 			<Divider />
 			<Inline gap={4}>
-				<Button variant="secondary">{t(secondaryButtonLabel)}</Button>
-				<Button type="submit">{t(primaryButtonLabel)}</Button>
+				<Button variant="secondary">{t('General.save&Add')}</Button>
+				<Button type="submit">{t('General.cancel')}</Button>
 			</Inline>
 		</Stack>
 	)

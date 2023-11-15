@@ -38,7 +38,7 @@ const AddBarnahusPage = () => {
 		<FormWrapper>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<FormItems primaryButtonLabel="General.save&Add" secondaryButtonLabel="General.cancel">
+					<FormItems>
 						<FormControl name="email">
 							<FormControl.Label>
 								<RequiredLabel>{t('General.email')}</RequiredLabel>

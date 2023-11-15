@@ -2,6 +2,8 @@
 import { Box } from '@/components/layout/box'
 import { Tabs } from '@/components/navigation/tabs/Tabs'
 import { useTranslations } from 'next-intl'
+import { PasswordForm } from './passwordForm'
+import { PersonalInfoForm } from './personalInfoForm'
 
 const SettingsPage = () => {
 	const t = useTranslations()
@@ -12,8 +14,12 @@ const SettingsPage = () => {
 				<Tabs>
 					<Tabs.Tab value="personalInfo">{t('General.personalInfo')}</Tabs.Tab>
 					<Tabs.Tab value="password">{t('Authorization.password')}</Tabs.Tab>
-					{/* <Tabs.Panel value="personalInfo">Panel 1</Tabs.Panel>
-					<Tabs.Panel value="password">Panel 2</Tabs.Panel> */}
+					<Tabs.Panel value="personalInfo">
+						<PersonalInfoForm />
+					</Tabs.Panel>
+					<Tabs.Panel value="password">
+						<PasswordForm />
+					</Tabs.Panel>
 				</Tabs>
 			</Box>
 		</Box>

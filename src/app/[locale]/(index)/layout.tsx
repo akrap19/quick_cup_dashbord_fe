@@ -18,7 +18,7 @@ const DashboardLayout = async ({ children }: { children: ReactNode }) => {
 			<Box flex="1">
 				<Stack>
 					<Navbar />
-					<Box display="flex" justify="center" align="center">
+					<Box display="flex" align="center">
 						{children}
 					</Box>
 				</Stack>

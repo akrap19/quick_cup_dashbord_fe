@@ -39,7 +39,7 @@ export const Drawer = () => {
 				<Stack gap={4}>
 					{drawerItems.map(item => (
 						<Link href={item.route} className={atoms({ textDecoration: 'none' })}>
-							<Box className={clsx(drawerItem, pathname === item.route && drawerItemSelected)}>
+							<Box className={clsx(drawerItem, pathname.includes(item.route) && drawerItemSelected)}>
 								<Inline gap="4" alignItems="center">
 									{item.icon}
 									<Text fontSize="big" fontWeight="semibold">

@@ -25,7 +25,6 @@ const responsiveProperties = defineProperties({
 		paddingBottom: tokens.spacing,
 		paddingLeft: tokens.spacing,
 		paddingRight: tokens.spacing,
-		top: tokens.spacing,
 		// Typography tokens
 		fontSize: tokens.typography.size,
 		textAlign: ['left', 'right', 'center', 'justify'],

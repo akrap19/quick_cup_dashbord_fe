@@ -10,11 +10,10 @@ import { Text } from '@/components/typography/text'
 import { Label } from '@/components/inputs/label'
 import { Stack } from '@/components/layout/stack'
 import { InputInfo } from '@/components/inputs/input-info'
-import { useEffect } from 'react'
-import { useNavbarItemsStore } from 'store/NavbarStore'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, FormProvider } from 'react-hook-form'
 import { Inline } from '@/components/layout/inline'
+import { useNavbarItems } from '@/hooks/use-navbar-items'
 
 const formSchema = z.object({
 	barnahusName: z.string().min(1, { message: 'This field is required' }),
@@ -25,7 +24,7 @@ type Schema = z.infer<typeof formSchema>
 
 const AddBarnahusPage = () => {
 	const t = useTranslations()
-	const { setNavbarItems } = useNavbarItemsStore()
+	useNavbarItems({ title: 'Barnahuses.add', backLabel: 'barnahuses' })
 	const defaultValues = { barnahusName: '', barnahusLocation: '' }
 
 	const form = useForm<Schema>({
@@ -37,10 +36,6 @@ const AddBarnahusPage = () => {
 	const onSubmit = async (data: Schema) => {
 		console.log(data)
 	}
-
-	useEffect(() => {
-		setNavbarItems({ title: 'Barnahuses.add', backLabel: 'barnahuses' })
-	}, [])
 
 	return (
 		<FormWrapper>

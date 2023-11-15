@@ -1,14 +1,9 @@
 import { create } from 'zustand'
-
-interface INavbarItems {
-	title: string
-	backLabel?: string
-	useUserDropdown?: boolean
-}
+import { NavbarItems } from './models/NavbarItems'
 
 type NavbarItemsStore = {
-	navbarItems: INavbarItems | undefined
-	setNavbarItems: (navbar: INavbarItems) => void
+	navbarItems?: NavbarItems
+	setNavbarItems: (navbar?: NavbarItems) => void
 	clearNavbarItems: () => void
 }
 

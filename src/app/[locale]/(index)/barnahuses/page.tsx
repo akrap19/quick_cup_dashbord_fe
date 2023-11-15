@@ -4,15 +4,10 @@ import { DataTable } from '@/components/data-display/data-table'
 import { columns } from './columns'
 import { dummyData } from './data'
 import { Inputs } from './inputs'
-import { useEffect } from 'react'
-import { useNavbarItemsStore } from 'store/NavbarStore'
+import { useNavbarItems } from '@/hooks/use-navbar-items'
 
 const BarnahusesPage = () => {
-	const { setNavbarItems } = useNavbarItemsStore()
-
-	useEffect(() => {
-		setNavbarItems({ title: 'General.barnahus', useUserDropdown: true })
-	}, [])
+	useNavbarItems({ title: 'General.barnahus', useUserDropdown: true })
 
 	return (
 		// <NoListData

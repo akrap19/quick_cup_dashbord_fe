@@ -24,7 +24,8 @@
 		"react-number-format": "^5.3.1",
 		"rooks": "^7.14.1",
 		"sharp": "^0.32.6",
-		"zod": "^3.22.4"
+		"zod": "^3.22.4",
+		"zustand": "^4.4.6"
 	},
 	"devDependencies": {
 		"@hookform/devtools": "^4.3.1",

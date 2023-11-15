@@ -13,6 +13,7 @@ import { InputInfo } from '@/components/inputs/input-info'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, FormProvider } from 'react-hook-form'
 import { Inline } from '@/components/layout/inline'
+import { useNavbarItems } from '@/hooks/use-navbar-items'
 
 const formSchema = z.object({
 	barnahusName: z.string().min(1, { message: 'This field is required' }),
@@ -23,6 +24,7 @@ type Schema = z.infer<typeof formSchema>
 
 const AddBarnahusPage = () => {
 	const t = useTranslations()
+	useNavbarItems({ title: 'Barnahuses.add', backLabel: 'barnahuses' })
 	const defaultValues = { barnahusName: '', barnahusLocation: '' }
 
 	const form = useForm<Schema>({

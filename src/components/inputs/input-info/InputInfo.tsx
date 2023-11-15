@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Button } from '../button'
 import { useTranslations } from 'next-intl'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/overlay/popover'
@@ -11,12 +10,11 @@ interface Props {
 
 export const InputInfo = ({ infoText }: Props) => {
 	const t = useTranslations()
-	const [isInfoVisible, setInfoVisible] = useState(false)
 
 	return (
 		<Popover>
 			<PopoverTrigger>
-				<Button onClick={() => setInfoVisible(!isInfoVisible)} variant="adaptive" size="auto">
+				<Button variant="adaptive" size="auto">
 					<InfoIcon color="neutral.900" />
 				</Button>
 			</PopoverTrigger>

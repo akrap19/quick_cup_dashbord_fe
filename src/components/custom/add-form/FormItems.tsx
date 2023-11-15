@@ -8,11 +8,11 @@ import { useTranslations } from 'next-intl'
 import { Text } from '@/components/typography/text'
 import { ReactNode } from 'react'
 
-interface FormItemsProps {
+interface Props {
 	children: ReactNode[]
 }
 
-export const FormItems = ({ children }: FormItemsProps) => {
+export const FormItems = ({ children }: Props) => {
 	const t = useTranslations()
 
 	return (

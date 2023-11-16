@@ -1,1 +1,2 @@
-export { ListLayoutWrapper } from './ListLayoutWrapper'
+export { ListWrapper } from './ListWrapper'
+export { DetailsWrapper } from './DetailsWrapper'

@@ -4,7 +4,6 @@ import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
-import { FormWrapper, FormItems } from '@/components/custom/add-form'
 import { Select } from '@/components/inputs/select'
 import { Text } from '@/components/typography/text'
 import { Label } from '@/components/inputs/label'
@@ -14,6 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, FormProvider } from 'react-hook-form'
 import { Inline } from '@/components/layout/inline'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { FormWrapper, FormItems } from '@/components/custom/layouts/add-form'
 
 const formSchema = z.object({
 	barnahusName: z.string().min(1, { message: 'This field is required' }),

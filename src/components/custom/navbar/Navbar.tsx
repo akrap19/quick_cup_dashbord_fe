@@ -23,16 +23,21 @@ export const Navbar = () => {
 					<Button onClick={() => router.back()} variant="adaptive" size="small">
 						<Inline gap={1} alignItems="center">
 							<LeftIcon size="small" />
-							<Text fontSize="small" fontWeight="semibold">
+							<Text lineHeight="small" fontSize="small" fontWeight="semibold">
 								{t('Back.' + navbarItems?.backLabel)}
 							</Text>
 						</Inline>
 					</Button>
 				</Box>
 			)}
-			<Heading variant="h2" textTransform="capitalize" lineHeight="medium" color="neutral.800">
-				{t(navbarItems?.title ?? 'General.loading')}
-			</Heading>
+			<Box width="100%">
+				<Inline justifyContent="space-between" alignItems="flex-start">
+					<Heading variant="h2" textTransform="capitalize" lineHeight="medium" color="neutral.800">
+						{t(navbarItems?.title ?? 'General.loading')}
+					</Heading>
+					{navbarItems?.actionButton && <Box style={{ marginTop: '-1rem' }}>{navbarItems?.actionButton}</Box>}
+				</Inline>
+			</Box>
 		</Box>
 	)
 }

@@ -21,7 +21,7 @@ export const FormItems = ({ children }: Props) => {
 				{t('General.requiredFieldWarning')}
 			</Text>
 			<Columns gap={6}>
-				{children?.map((m, i) => (
+				{children?.map(m => (
 					<Columns.Item columns={6}>
 						<Box paddingBottom={3}>{m}</Box>
 					</Columns.Item>

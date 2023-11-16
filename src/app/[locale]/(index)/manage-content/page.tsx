@@ -1,4 +1,4 @@
-import { ListLayoutWrapper } from '@/components/custom/layouts'
+import { ListWrapper } from '@/components/custom/layouts'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { DataTable } from '@/components/data-display/data-table'
 import { columns } from './columns'
@@ -15,10 +15,10 @@ const ManageContentPage = () => {
 		// 	buttonLabel="ManageContent.add"
 		// 	buttonLink={ROUTES.ADD_CONTENT}
 		// />
-		<ListLayoutWrapper>
+		<ListWrapper>
 			<Inputs />
 			<DataTable columns={columns} data={dummyData} />
-		</ListLayoutWrapper>
+		</ListWrapper>
 	)
 }
 

@@ -4,11 +4,10 @@ import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
-import { FormWrapper } from '@/components/custom/add-form/FormWrapper'
+import { FormWrapper, FormItems } from '@/components/custom/layouts/add-form'
 import { InputInfo } from '@/components/inputs/input-info'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, FormProvider } from 'react-hook-form'
-import { FormItems } from '@/components/custom/add-form/FormItems'
 import { Box } from '@/components/layout/box'
 
 const formSchema = z.object({

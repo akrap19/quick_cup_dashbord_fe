@@ -1,7 +1,8 @@
-import { ReactNode } from 'react'
 import { Metadata } from 'next'
-import { Box } from '@/components/layout/box'
+import { ReactNode } from 'react'
+
 import { BrandLogo } from '@/components/custom/brand-logo/BrandLogo'
+import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 
 export const metadata: Metadata = {

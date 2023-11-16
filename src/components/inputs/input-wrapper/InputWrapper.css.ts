@@ -3,7 +3,7 @@ import { style } from '@vanilla-extract/css'
 
 import { tokens } from 'style/theme.css'
 
-const activeBorder = { borderColor: tokens.colors['primary.300'], boxShadow: tokens.shadows['xlarge'] }
+const activeBorder = { borderColor: tokens.colors['primary.300'], boxShadow: tokens.shadows.xlarge }
 const placeholder = { color: tokens.colors['neutral.300'] }
 const disabled = { borderColor: tokens.colors['neutral.300'], color: tokens.colors['neutral.500'], opacity: '0.75' }
 const hasError = { color: tokens.colors['destructive.500'] }

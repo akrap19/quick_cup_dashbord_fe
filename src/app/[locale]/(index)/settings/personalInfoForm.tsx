@@ -1,17 +1,19 @@
 'use client'
-import { Button } from '@/components/inputs/button'
-import { Box } from '@/components/layout/box'
-import { Divider } from '@/components/layout/divider'
-import { Inline } from '@/components/layout/inline'
-import { Stack } from '@/components/layout/stack'
+
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
-import { Columns } from '@/components/layout/columns'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { Button } from '@/components/inputs/button'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { Box } from '@/components/layout/box'
+import { Columns } from '@/components/layout/columns'
+import { Divider } from '@/components/layout/divider'
+import { Inline } from '@/components/layout/inline'
+import { Stack } from '@/components/layout/stack'
 
 const formSchema = z.object({
 	email: z.string().min(1, { message: 'This field is required' }),
@@ -85,8 +87,8 @@ export const PersonalInfoForm = () => {
 							</Columns>
 							<Divider />
 							<Inline gap={4}>
-								<Button variant="secondary">{'Reset'}</Button>
-								<Button type="submit">{'Save changes'}</Button>
+								<Button variant="secondary">Reset</Button>
+								<Button type="submit">Save changes</Button>
 							</Inline>
 						</Stack>
 					</form>

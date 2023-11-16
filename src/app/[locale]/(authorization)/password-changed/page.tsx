@@ -1,11 +1,13 @@
 'use client'
-import { Heading } from '@/components/typography/heading'
-import { Stack } from '@/components/layout/stack'
-import { Button } from '@/components/inputs/button'
+
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+
+import { Button } from '@/components/inputs/button'
+import { Stack } from '@/components/layout/stack'
+import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
 import { atoms } from '@/style/atoms.css'
-import { useRouter } from 'next/navigation'
 import { ROUTES } from 'parameters'
 
 const PasswordSuccessfullyChangedPage = () => {

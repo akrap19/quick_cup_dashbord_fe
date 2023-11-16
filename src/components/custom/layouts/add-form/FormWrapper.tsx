@@ -1,5 +1,6 @@
-import { Box } from '@/components/layout/box'
 import { ReactNode } from 'react'
+
+import { Box } from '@/components/layout/box'
 
 interface Props {
 	children: ReactNode

@@ -1,10 +1,12 @@
 'use client'
-import { ListLayoutWrapper } from '@/components/custom/layouts'
+
+import { ListWrapper } from '@/components/custom/layouts'
 import { DataTable } from '@/components/data-display/data-table'
+import { useNavbarItems } from '@/hooks/use-navbar-items'
+
 import { columns } from './columns'
 import { dummyData } from './data'
 import { Inputs } from './inputs'
-import { useNavbarItems } from '@/hooks/use-navbar-items'
 
 const BarnahusesPage = () => {
 	useNavbarItems({ title: 'General.barnahus', useUserDropdown: true })
@@ -16,10 +18,10 @@ const BarnahusesPage = () => {
 		// 	buttonLabel="Barnahuses.add"
 		// 	buttonLink={ROUTES.ADD_BARNAHUS}
 		// />
-		<ListLayoutWrapper>
+		<ListWrapper>
 			<Inputs />
 			<DataTable columns={columns} data={dummyData} />
-		</ListLayoutWrapper>
+		</ListWrapper>
 	)
 }
 

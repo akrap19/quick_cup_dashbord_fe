@@ -1,8 +1,10 @@
-import { Button } from '../button'
 import { useTranslations } from 'next-intl'
+
+import { InfoIcon } from '@/components/icons/info-icon'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/overlay/popover'
 import { Text } from '@/components/typography/text'
-import { InfoIcon } from '@/components/icons/info-icon'
+
+import { Button } from '../button'
 
 interface Props {
 	infoText: string

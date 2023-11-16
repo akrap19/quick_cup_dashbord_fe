@@ -28,7 +28,7 @@ const responsiveProperties = defineProperties({
 		// Typography tokens
 		fontSize: tokens.typography.size,
 		textAlign: ['left', 'right', 'center', 'justify'],
-		width: ['100vw', '100%', '50%'],
+		width: ['100vw', '100%'],
 		height: ['100vh', '100%'],
 		flex: ['1']
 	},

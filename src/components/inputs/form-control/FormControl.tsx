@@ -2,16 +2,16 @@ import { ComponentProps, ReactNode } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { getChildByType, overridePropsDeep } from 'react-nanny'
 
+import { Box } from '@/components/layout/box'
 import { Stack } from 'components/layout/stack'
 import { Text } from 'components/typography/text'
 
 import { Label } from '../label'
 import { NumericInput } from '../numeric-input'
+import { PasswordInput } from '../password-input'
 import { PatternInput } from '../pattern-input'
 import { Select } from '../select'
 import { TextInput } from '../text-input'
-import { PasswordInput } from '../password-input'
-import { Box } from '@/components/layout/box'
 
 type Props = { name: string; children: ReactNode }
 

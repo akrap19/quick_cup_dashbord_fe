@@ -1,12 +1,14 @@
 'use client'
+
+import { useTranslations } from 'next-intl'
+
 import { AddButton } from '@/components/custom/add-button'
-import { SearchInput } from '@/components/custom/search-input'
+import { SearchInput } from '@/components/custom/inputs/search-input'
 import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Text } from '@/components/typography/text'
 import { tokens } from '@/style/theme.css'
-import { useTranslations } from 'next-intl'
 
 type DataTableHeaderProps = {
 	buttonLabel: string

@@ -6,6 +6,7 @@
 		"barnahusPlaceholder": "Stockholm, Sweden",
 		"barnahusInfoText": "The Admin cannot modify the selected Barnahus; they can only add Practitioners who are associated with the currently chosen Barnahus.",
 		"barnahuses": "Barnahuses",
+		"barnahusLocation": "Barnahus location",
 		"admin": "Admin",
 		"admins": "Admins",
 		"assignedAdmin": "Assigned Admin",
@@ -14,7 +15,6 @@
 		"numberOfPractitioners": "Number of Practitioners",
 		"location": "Location",
 		"loading": "Loading...",
-		"barnahusLocation": "Barnahus location",
 		"manageContent": "Manage content",
 		"settings": "Settings",
 		"role": "Role",
@@ -73,6 +73,7 @@
 	},
 	"Barnahuses": {
 		"add": "Add Barnahus",
+		"edit": "Edit Barnahus",
 		"searchBarnahus": "Search Barnahus",
 		"barnahusName": "Barnahus name",
 		"barnahusNamePlaceholder": "e.g. Barnahus Oslo",

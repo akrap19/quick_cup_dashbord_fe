@@ -1,18 +1,20 @@
 'use client'
-import { FormControl } from '@/components/inputs/form-control'
-import { RequiredLabel } from '@/components/inputs/required-label'
-import { TextInput } from '@/components/inputs/text-input'
-import { useTranslations } from 'next-intl'
-import { z } from 'zod'
-import { FormWrapper, FormItems } from '@/components/custom/add-form'
-import { Select } from '@/components/inputs/select'
-import { Text } from '@/components/typography/text'
-import { Label } from '@/components/inputs/label'
-import { Stack } from '@/components/layout/stack'
-import { InputInfo } from '@/components/inputs/input-info'
+
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, FormProvider } from 'react-hook-form'
+import { useTranslations } from 'next-intl'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { FormItems, FormWrapper } from '@/components/custom/layouts/add-form'
+import { FormControl } from '@/components/inputs/form-control'
+import { InputInfo } from '@/components/inputs/input-info'
+import { Label } from '@/components/inputs/label'
+import { RequiredLabel } from '@/components/inputs/required-label'
+import { Select } from '@/components/inputs/select'
+import { TextInput } from '@/components/inputs/text-input'
 import { Inline } from '@/components/layout/inline'
+import { Stack } from '@/components/layout/stack'
+import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 
 const formSchema = z.object({
@@ -25,12 +27,11 @@ type Schema = z.infer<typeof formSchema>
 const AddBarnahusPage = () => {
 	const t = useTranslations()
 	useNavbarItems({ title: 'Barnahuses.add', backLabel: 'barnahuses' })
-	const defaultValues = { barnahusName: '', barnahusLocation: '' }
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
-		defaultValues: defaultValues
+		defaultValues: { barnahusName: '', barnahusLocation: '' }
 	})
 
 	const onSubmit = async (data: Schema) => {
@@ -59,7 +60,7 @@ const AddBarnahusPage = () => {
 						<Stack gap={4}>
 							<Inline alignItems="center" gap={4}>
 								<Label>{t('Barnahuses.assignedMasterAdmin')}</Label>
-								<InputInfo infoText={'Barnahuses.assignedMasterAdminInfoText'} />
+								<InputInfo infoText="Barnahuses.assignedMasterAdminInfoText" />
 							</Inline>
 							<Text fontSize="small" color="neutral.300">
 								{t('Barnahuses.assignedMasterAdminPlaceholder')}

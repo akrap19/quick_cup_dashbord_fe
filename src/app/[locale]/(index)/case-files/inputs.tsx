@@ -1,15 +1,17 @@
 'use client'
-import { AddButton } from '@/components/custom/add-button'
+
+import { useSearchParams } from 'next/navigation'
+import router from 'next/router'
+import { useTranslations } from 'next-intl'
 import qs from 'query-string'
 import { useDebounce } from 'rooks'
-import { SearchInput } from '@/components/custom/search-input'
+
+import { AddButton } from '@/components/custom/add-button'
+import { SearchInput } from '@/components/custom/inputs/search-input'
+import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
-import { useTranslations } from 'next-intl'
-import { useSearchParams } from 'next/navigation'
 import { ROUTES } from 'parameters'
-import router from 'next/router'
-import { Select } from '@/components/inputs/select'
 
 export const Inputs = () => {
 	const t = useTranslations()
@@ -37,7 +39,7 @@ export const Inputs = () => {
 				<Box style={{ width: '200px' }}>
 					<Select
 						name="dataTableSelect"
-						size="large"
+						sizes="large"
 						options={[{ value: 'allStatuses', label: 'All Statuses' }]}
 						onChange={({ target: { name, value } }) => debouncedFilterChange(name, value)}
 					/>

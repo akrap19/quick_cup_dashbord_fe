@@ -1,4 +1,4 @@
-import { ListLayoutWrapper } from '@/components/custom/layouts'
+import { ListWrapper } from '@/components/custom/layouts'
 import { DataTable } from '@/components/data-display/data-table'
 
 import { columns } from './columns'
@@ -7,10 +7,10 @@ import { Inputs } from './inputs'
 
 const CaseFilesPage = () => {
 	return (
-		<ListLayoutWrapper>
+		<ListWrapper>
 			<Inputs />
 			<DataTable columns={columns} data={dummyData} />
-		</ListLayoutWrapper>
+		</ListWrapper>
 	)
 }
 

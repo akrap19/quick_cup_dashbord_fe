@@ -5,7 +5,7 @@ import { InputHTMLAttributes } from 'react'
 import { BlockIcon } from 'components/icons/block-icon'
 
 import CarretIcon from './assets/carret-icon.svg'
-import { select, SelectVariants } from './Select.css'
+import { SelectVariants, select } from './Select.css'
 import { InputWrapper } from '../input-wrapper'
 import { endIconSpacing, input, inputHasError, startIconSpacing } from '../input-wrapper/InputWrapper.css'
 
@@ -23,14 +23,14 @@ interface CustomInputProps {
 
 type Props = InputHTMLAttributes<HTMLSelectElement> & SelectVariants & CustomInputProps
 
-export const Select = ({ hasError, startIcon, size, options, ...rest }: Props) => {
+export const Select = ({ hasError, startIcon, sizes, options, ...rest }: Props) => {
 	return (
 		<InputWrapper startIcon={startIcon} endIcon={<BlockIcon icon={CarretIcon} size="medium" />}>
 			<select
 				{...rest}
 				className={clsx(
 					select({
-						size
+						sizes
 					}),
 					input,
 					hasError && inputHasError,

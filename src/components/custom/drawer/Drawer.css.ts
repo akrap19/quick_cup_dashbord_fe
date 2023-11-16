@@ -1,5 +1,6 @@
-import { tokens } from '@/style/theme.css'
 import { style } from '@vanilla-extract/css'
+
+import { tokens } from '@/style/theme.css'
 
 const selected = { backgroundColor: tokens.colors['primary.75'] }
 

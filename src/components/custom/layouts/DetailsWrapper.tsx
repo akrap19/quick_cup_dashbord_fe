@@ -1,11 +1,10 @@
 import { ReactNode } from 'react'
 
 import { Box } from '@/components/layout/box'
-import { Columns } from '@/components/layout/columns'
-import { Stack } from '@/components/layout/stack'
+import { tokens } from '@/style/theme.css'
 
 interface Props {
-	children: ReactNode[]
+	children: ReactNode
 }
 
 export const DetailsWrapper = ({ children }: Props) => {
@@ -17,15 +16,15 @@ export const DetailsWrapper = ({ children }: Props) => {
 				backgroundColor="neutral.50"
 				border="thin"
 				borderColor="neutral.300">
-				<Columns gap={6}>
-					{children?.map((c, i) => (
-						<Columns.Item columns={6}>
-							<Box paddingBottom={i < children.length - 2 ? 3 : 0}>
-								<Stack gap={4}>{c}</Stack>
-							</Box>
-						</Columns.Item>
-					))}
-				</Columns>
+				<div
+					style={{
+						display: 'grid',
+						gridTemplateColumns: 'repeat(2, 1fr)',
+						columnGap: tokens.spacing[6],
+						rowGap: tokens.spacing[8]
+					}}>
+					{children}
+				</div>
 			</Box>
 		</Box>
 	)

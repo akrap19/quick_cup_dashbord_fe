@@ -40,7 +40,7 @@ export const Inputs = () => {
 					onChange={({ target: { name, value } }) => debouncedFilterChange(name, value)}
 				/>
 			</Box>
-			<AddButton buttonLabel={t('Admins.add')} buttonLink={ROUTES.ADD_BARNAHUS} />
+			<AddButton buttonLabel={t('Admins.add')} buttonLink={ROUTES.ADD_ADMINS} />
 		</Inline>
 	)
 }

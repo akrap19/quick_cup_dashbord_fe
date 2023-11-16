@@ -23,14 +23,14 @@ export const FormItems = ({ children }: Props) => {
 			<Columns gap={6}>
 				{children?.map((m, i) => (
 					<Columns.Item columns={6}>
-						<Box paddingBottom={i < children.length - 2 ? 3 : 0}>{m}</Box>
+						<Box paddingBottom={3}>{m}</Box>
 					</Columns.Item>
 				))}
 			</Columns>
 			<Divider />
 			<Inline gap={4}>
-				<Button variant="secondary">{t('General.cancel')}</Button>
-				<Button type="submit">{t('General.save&Add')}</Button>
+				<Button variant="secondary">{t('General.save&Add')}</Button>
+				<Button type="submit">{t('General.cancel')}</Button>
 			</Inline>
 		</Stack>
 	)

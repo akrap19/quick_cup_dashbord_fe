@@ -8,6 +8,7 @@ import HouseIcon from '@/components/icons/block-icon/assets/house-icon.svg'
 import PersonIcon from '@/components/icons/block-icon/assets/person-icon.svg'
 import GearIcon from '@/components/icons/block-icon/assets/gear-icon.svg'
 import GroupIcon from '@/components/icons/block-icon/assets/group-icon.svg'
+import FileIcon from '@/components/icons/block-icon/assets/file-icon.svg'
 import TemplateIcon from '@/components/icons/block-icon/assets/template-icon.svg'
 import { Text } from '../../typography/text'
 import clsx from 'clsx'
@@ -22,7 +23,7 @@ const drawerItems = [
 	{ label: 'admins', icon: <PersonIcon />, route: ROUTES.ADMINS },
 	{ label: 'practitioners', icon: <GroupIcon />, route: ROUTES.PRACTITIONERS },
 	{ label: 'manageContent', icon: <TemplateIcon />, route: ROUTES.MANAGE_CONTENT },
-	{ label: 'caseFiles', icon: <TemplateIcon />, route: ROUTES.CASE_FILES },
+	{ label: 'caseFiles', icon: <FileIcon />, route: ROUTES.CASE_FILES },
 	{ label: 'settings', icon: <GearIcon />, route: ROUTES.SETTINGS }
 ]
 

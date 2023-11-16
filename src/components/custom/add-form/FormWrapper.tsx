@@ -10,7 +10,7 @@ export const FormWrapper = ({ children }: Props) => {
 		<Box padding={10} width="100%">
 			<Box
 				padding={6}
-				style={{ maxWidth: '50rem' }}
+				style={{ maxWidth: '60rem' }}
 				backgroundColor="neutral.50"
 				border="thin"
 				borderColor="neutral.300">

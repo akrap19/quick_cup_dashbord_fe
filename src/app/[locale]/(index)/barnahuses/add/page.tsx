@@ -25,12 +25,11 @@ type Schema = z.infer<typeof formSchema>
 const AddBarnahusPage = () => {
 	const t = useTranslations()
 	useNavbarItems({ title: 'Barnahuses.add', backLabel: 'barnahuses' })
-	const defaultValues = { barnahusName: '', barnahusLocation: '' }
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
-		defaultValues: defaultValues
+		defaultValues: { barnahusName: '', barnahusLocation: '' }
 	})
 
 	const onSubmit = async (data: Schema) => {

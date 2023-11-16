@@ -1,6 +1,6 @@
 'use client'
 import { AddButton } from '@/components/custom/add-button'
-import { SearchInput } from '@/components/custom/search-input'
+import { SearchInput } from '@/components/custom/inputs/search-input'
 import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'

@@ -2,7 +2,7 @@
 import { AddButton } from '@/components/custom/add-button'
 import qs from 'query-string'
 import { useDebounce } from 'rooks'
-import { SearchInput } from '@/components/custom/search-input'
+import { SearchInput } from '@/components/custom/inputs/search-input'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { useTranslations } from 'next-intl'

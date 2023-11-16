@@ -6,7 +6,7 @@ import { Atoms, atoms } from '../../../style/atoms.css'
 
 interface Props {
 	children: ReactNode
-	gap: Atoms['gap']
+	gap?: Atoms['gap']
 }
 
 interface Item {

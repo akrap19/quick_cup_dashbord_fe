@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { PasswordInput } from '@/components/inputs/password-input'
+import { Columns } from '@/components/layout/columns'
 
 const formSchema = z.object({
 	email: z.string().min(1, { message: 'This field is required' }),
@@ -38,42 +39,34 @@ export const PasswordForm = () => {
 				<FormProvider {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<Stack gap={4}>
-							<Box width="50%" paddingRight={3} paddingBottom={7}>
-								<Stack gap={12}>
-									{/* <Columns.Item columns={6}>
-									<Box paddingBottom={6}> */}
-									<FormControl name="currentPassword">
-										<FormControl.Label>
-											<RequiredLabel>{t('Authorization.currentPassword')}</RequiredLabel>
-										</FormControl.Label>
-										<PasswordInput type="password" placeholder={t('Authorization.currentPasswordPlaceholder')} />
-										<FormControl.Message />
-									</FormControl>
-									{/* </Box>
-								</Columns.Item> */}
-									{/* <Columns.Item columns={6}>
-									<Box paddingBottom={6}> */}
-									<FormControl name="newPassword">
-										<FormControl.Label>
-											<RequiredLabel>{t('Authorization.newPassword')}</RequiredLabel>
-										</FormControl.Label>
-										<PasswordInput type="password" placeholder={t('Authorization.newPasswordPlaceholder')} />
-										<FormControl.Message />
-									</FormControl>
-									{/* </Box>
-								</Columns.Item>
-								<Columns.Item columns={6}>
-									<Box paddingBottom={6}> */}
-									<FormControl name="confirmPassword">
-										<FormControl.Label>
-											<RequiredLabel>{t('Authorization.confirmPassword')}</RequiredLabel>
-										</FormControl.Label>
-										<PasswordInput type="password" placeholder={t('Authorization.confirmPassword')} />
-										<FormControl.Message />
-									</FormControl>
-									{/* </Box>
-								</Columns.Item> */}
-								</Stack>
+							<Box paddingRight={3} paddingBottom={7}>
+								<Columns>
+									<Columns.Item columns={6}>
+										<Stack gap={12}>
+											<FormControl name="currentPassword">
+												<FormControl.Label>
+													<RequiredLabel>{t('Authorization.currentPassword')}</RequiredLabel>
+												</FormControl.Label>
+												<PasswordInput type="password" placeholder={t('Authorization.currentPasswordPlaceholder')} />
+												<FormControl.Message />
+											</FormControl>
+											<FormControl name="newPassword">
+												<FormControl.Label>
+													<RequiredLabel>{t('Authorization.newPassword')}</RequiredLabel>
+												</FormControl.Label>
+												<PasswordInput type="password" placeholder={t('Authorization.newPasswordPlaceholder')} />
+												<FormControl.Message />
+											</FormControl>
+											<FormControl name="confirmPassword">
+												<FormControl.Label>
+													<RequiredLabel>{t('Authorization.confirmPassword')}</RequiredLabel>
+												</FormControl.Label>
+												<PasswordInput type="password" placeholder={t('Authorization.confirmPassword')} />
+												<FormControl.Message />
+											</FormControl>
+										</Stack>
+									</Columns.Item>
+								</Columns>
 							</Box>
 							<Divider />
 							<Inline gap={4}>

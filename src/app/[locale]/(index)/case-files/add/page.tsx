@@ -6,10 +6,9 @@ import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 import { FormWrapper, FormItems } from '@/components/custom/layouts/add-form'
 import { Select } from '@/components/inputs/select'
-import { InputInfo } from '@/components/inputs/input-info'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, FormProvider } from 'react-hook-form'
-import { Box } from '@/components/layout/box'
+import { InputWithInfo } from '@/components/custom/inputs/input-with-info/InputWithInfo'
 
 const formSchema = z.object({
 	caseId: z.string().min(1, { message: 'This field is required' }),
@@ -21,12 +20,11 @@ type Schema = z.infer<typeof formSchema>
 
 const AddBarnahusPage = () => {
 	const t = useTranslations()
-	const defaultValues = { caseId: '', status: '', barnahus: '' }
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
-		defaultValues: defaultValues
+		defaultValues: { caseId: '', status: '', barnahus: '' }
 	})
 
 	const onSubmit = async (data: Schema) => {
@@ -52,20 +50,15 @@ const AddBarnahusPage = () => {
 							<Select options={[]} />
 							<FormControl.Message />
 						</FormControl>
-						<FormControl name="barnahus">
-							<FormControl.Label>
-								<RequiredLabel>{t('General.barnahus')}</RequiredLabel>
-							</FormControl.Label>
-							<TextInput
-								placeholder={t('General.barnahusPlaceholder')}
-								endIcon={
-									<Box>
-										<InputInfo infoText={'General.barnahusInfoText'} />
-									</Box>
-								}
-							/>
-							<FormControl.Message />
-						</FormControl>
+						<InputWithInfo infoText={'General.barnahusInfoText'}>
+							<FormControl name="barnahus">
+								<FormControl.Label>
+									<RequiredLabel>{t('General.barnahus')}</RequiredLabel>
+								</FormControl.Label>
+								<TextInput placeholder={t('General.barnahusPlaceholder')} />
+								<FormControl.Message />
+							</FormControl>
+						</InputWithInfo>
 					</FormItems>
 				</form>
 			</FormProvider>

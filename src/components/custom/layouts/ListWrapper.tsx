@@ -1,6 +1,8 @@
 'use client'
-import { Box } from '@/components/layout/box'
+
 import { ReactNode } from 'react'
+
+import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 
 type ListWrapperProps = {

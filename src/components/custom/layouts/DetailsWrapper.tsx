@@ -1,7 +1,8 @@
+import { ReactNode } from 'react'
+
 import { Box } from '@/components/layout/box'
 import { Columns } from '@/components/layout/columns'
 import { Stack } from '@/components/layout/stack'
-import { ReactNode } from 'react'
 
 interface Props {
 	children: ReactNode[]

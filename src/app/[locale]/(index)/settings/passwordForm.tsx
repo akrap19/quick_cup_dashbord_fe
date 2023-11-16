@@ -1,17 +1,19 @@
 'use client'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod'
+
 import { Button } from '@/components/inputs/button'
+import { FormControl } from '@/components/inputs/form-control'
+import { PasswordInput } from '@/components/inputs/password-input'
+import { RequiredLabel } from '@/components/inputs/required-label'
 import { Box } from '@/components/layout/box'
+import { Columns } from '@/components/layout/columns'
 import { Divider } from '@/components/layout/divider'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
-import { useTranslations } from 'next-intl'
-import { FormControl } from '@/components/inputs/form-control'
-import { RequiredLabel } from '@/components/inputs/required-label'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { PasswordInput } from '@/components/inputs/password-input'
-import { Columns } from '@/components/layout/columns'
 
 const formSchema = z.object({
 	email: z.string().min(1, { message: 'This field is required' }),
@@ -70,8 +72,8 @@ export const PasswordForm = () => {
 							</Box>
 							<Divider />
 							<Inline gap={4}>
-								<Button variant="secondary">{'Reset'}</Button>
-								<Button type="submit">{'Update password'}</Button>
+								<Button variant="secondary">Reset</Button>
+								<Button type="submit">Update password</Button>
 							</Inline>
 						</Stack>
 					</form>

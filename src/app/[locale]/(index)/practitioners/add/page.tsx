@@ -1,21 +1,22 @@
 'use client'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { InputWithInfo } from '@/components/custom/inputs/input-with-info/InputWithInfo'
+import { FormItems, FormWrapper } from '@/components/custom/layouts/add-form'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
-import { useTranslations } from 'next-intl'
-import { z } from 'zod'
-import { FormWrapper, FormItems } from '@/components/custom/layouts/add-form'
-import { InputInfo } from '@/components/inputs/input-info'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, FormProvider } from 'react-hook-form'
-import { Box } from '@/components/layout/box'
-import { InputWithInfo } from '@/components/custom/inputs/input-with-info/InputWithInfo'
 
 const formSchema = z.object({
 	email: z.string().min(1, { message: 'This field is required' }),
 	barnahus: z.string().min(1, { message: 'This field is required' }),
 	firstName: z.string().min(1, { message: 'This field is required' }),
 	lastName: z.string().min(1, { message: 'This field is required' }),
+	phoneNumber: z.string().min(1, { message: 'This field is required' }),
 	role: z.string().min(1, { message: 'This field is required' })
 })
 
@@ -46,7 +47,7 @@ const AddBarnahusPage = () => {
 							<TextInput type="email" placeholder={t('General.emailPlaceholder')} />
 							<FormControl.Message />
 						</FormControl>
-						<InputWithInfo infoText={'General.barnahusInfoText'}>
+						<InputWithInfo infoText="General.barnahusInfoText">
 							<FormControl name="barnahus">
 								<FormControl.Label>
 									<RequiredLabel>{t('General.barnahus')}</RequiredLabel>

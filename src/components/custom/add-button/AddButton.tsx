@@ -1,7 +1,9 @@
 'use client'
-import { Button } from '@/components/inputs/button'
+
 import { useTranslations } from 'next-intl'
+
 import PlusIcon from '@/components/icons/block-icon/assets/plus-icon.svg'
+import { Button } from '@/components/inputs/button'
 
 type AddButtonProps = { buttonLabel: string; buttonLink: string }
 

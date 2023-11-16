@@ -1,12 +1,13 @@
+import { useTranslations } from 'next-intl'
+import { ReactNode } from 'react'
+
 import { Button } from '@/components/inputs/button'
 import { Box } from '@/components/layout/box'
 import { Columns } from '@/components/layout/columns'
 import { Divider } from '@/components/layout/divider'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
-import { useTranslations } from 'next-intl'
 import { Text } from '@/components/typography/text'
-import { ReactNode } from 'react'
 
 interface Props {
 	children: ReactNode[]

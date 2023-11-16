@@ -1,5 +1,6 @@
-import { tokens } from '@/style/theme.css'
 import { style } from '@vanilla-extract/css'
+
+import { tokens } from '@/style/theme.css'
 
 const activeBorder = { borderColor: tokens.colors['primary.500'] }
 const placeholder = { color: tokens.colors['neutral.400'] }

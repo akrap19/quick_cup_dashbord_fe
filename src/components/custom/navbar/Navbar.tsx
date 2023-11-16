@@ -1,15 +1,17 @@
 'use client'
-import { Box } from '@/components/layout/box'
-import { Heading } from '@/components/typography/heading'
-import { useTranslations } from 'next-intl'
+
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
+
+import { LeftIcon } from '@/components/icons/left-icon'
+import { Button } from '@/components/inputs/button'
+import { Box } from '@/components/layout/box'
+import { Inline } from '@/components/layout/inline'
+import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
+import { useNavbarItemsStore } from 'store/navbar'
 
 import * as styles from './Navbar.css'
-import { Button } from '@/components/inputs/button'
-import { Inline } from '@/components/layout/inline'
-import { LeftIcon } from '@/components/icons/left-icon'
-import { useNavbarItemsStore } from 'store/navbar'
 
 export const Navbar = () => {
 	const router = useRouter()
@@ -24,7 +26,7 @@ export const Navbar = () => {
 						<Inline gap={1} alignItems="center">
 							<LeftIcon size="small" />
 							<Text lineHeight="small" fontSize="small" fontWeight="semibold">
-								{t('Back.' + navbarItems?.backLabel)}
+								{t(`Back.${navbarItems?.backLabel}`)}
 							</Text>
 						</Inline>
 					</Button>

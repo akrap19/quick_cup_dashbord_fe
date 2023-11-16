@@ -1,7 +1,10 @@
 'use client'
+
+import { useTranslations } from 'next-intl'
+
 import { Box } from '@/components/layout/box'
 import { Tabs } from '@/components/navigation/tabs/Tabs'
-import { useTranslations } from 'next-intl'
+
 import { PasswordForm } from './passwordForm'
 import { PersonalInfoForm } from './personalInfoForm'
 

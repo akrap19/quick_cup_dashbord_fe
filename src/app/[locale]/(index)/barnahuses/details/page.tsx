@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import { EditButton } from '@/components/custom/edit-button'
 import { DetailsWrapper } from '@/components/custom/layouts/DetailsWrapper'
 import { InputInfo } from '@/components/inputs/input-info'
@@ -7,7 +9,6 @@ import { Label } from '@/components/inputs/label'
 import { Inline } from '@/components/layout/inline'
 import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
-import { useTranslations } from 'next-intl'
 
 const BarnahusDetailsPage = () => {
 	const t = useTranslations()
@@ -22,7 +23,7 @@ const BarnahusDetailsPage = () => {
 			<>
 				<Label>{t('Barnahuses.barnahusName')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{'Barnahus name'}
+					Barnahus name
 				</Text>
 			</>
 			<>
@@ -34,7 +35,7 @@ const BarnahusDetailsPage = () => {
 			<>
 				<Inline alignItems="center" gap={4}>
 					<Label>{t('Barnahuses.assignedMasterAdmin')}</Label>
-					<InputInfo infoText={'Barnahuses.assignedMasterAdminInfoText'} />
+					<InputInfo infoText="Barnahuses.assignedMasterAdminInfoText" />
 				</Inline>
 				<Text fontSize="small" color="neutral.800">
 					{t('Barnahuses.assignedMasterAdminPlaceholder')}

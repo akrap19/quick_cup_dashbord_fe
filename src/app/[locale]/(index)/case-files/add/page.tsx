@@ -1,14 +1,16 @@
 'use client'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { InputWithInfo } from '@/components/custom/inputs/input-with-info/InputWithInfo'
+import { FormItems, FormWrapper } from '@/components/custom/layouts/add-form'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
-import { TextInput } from '@/components/inputs/text-input'
-import { useTranslations } from 'next-intl'
-import { z } from 'zod'
-import { FormWrapper, FormItems } from '@/components/custom/layouts/add-form'
 import { Select } from '@/components/inputs/select'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, FormProvider } from 'react-hook-form'
-import { InputWithInfo } from '@/components/custom/inputs/input-with-info/InputWithInfo'
+import { TextInput } from '@/components/inputs/text-input'
 
 const formSchema = z.object({
 	caseId: z.string().min(1, { message: 'This field is required' }),
@@ -50,7 +52,7 @@ const AddBarnahusPage = () => {
 							<Select options={[]} />
 							<FormControl.Message />
 						</FormControl>
-						<InputWithInfo infoText={'General.barnahusInfoText'}>
+						<InputWithInfo infoText="General.barnahusInfoText">
 							<FormControl name="barnahus">
 								<FormControl.Label>
 									<RequiredLabel>{t('General.barnahus')}</RequiredLabel>

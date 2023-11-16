@@ -1,8 +1,9 @@
 /* eslint-disable no-undef */
+import { ReactNode } from 'react'
+
 import { InputInfo } from '@/components/inputs/input-info'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
-import { ReactNode } from 'react'
 
 interface Props {
 	children: ReactNode

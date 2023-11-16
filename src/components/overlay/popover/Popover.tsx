@@ -10,7 +10,7 @@ const Popover = PopoverPrimitive.Root
 const PopoverTrigger = React.forwardRef<
 	React.ElementRef<typeof PopoverPrimitive.Trigger>,
 	React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Trigger>
->(({ ...props }, ref) => <PopoverPrimitive.Trigger className={styles.trigger} {...props} />)
+>(({ ...props }) => <PopoverPrimitive.Trigger className={styles.trigger} {...props} />)
 
 const PopoverContent = React.forwardRef<
 	React.ElementRef<typeof PopoverPrimitive.Content>,

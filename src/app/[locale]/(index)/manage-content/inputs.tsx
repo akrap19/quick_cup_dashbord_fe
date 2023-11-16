@@ -1,9 +1,11 @@
 'use client'
+
+import { useTranslations } from 'next-intl'
+
 import { AddButton } from '@/components/custom/add-button'
-import { Text } from '@/components/typography/text'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
-import { useTranslations } from 'next-intl'
+import { Text } from '@/components/typography/text'
 import { ROUTES } from 'parameters'
 
 export const Inputs = () => {

@@ -1,13 +1,16 @@
 'use client'
-import { Button } from '@/components/inputs/button'
-import { Text } from '@/components/typography/text'
-import { Box } from '@/components/layout/box'
-import { Inline } from '@/components/layout/inline'
-import { dataTablePaginationContainer } from './DataTable.css'
+
 import { Table } from '@tanstack/react-table'
 
+import { Button } from '@/components/inputs/button'
+import { Box } from '@/components/layout/box'
+import { Inline } from '@/components/layout/inline'
+import { Text } from '@/components/typography/text'
+
+import { dataTablePaginationContainer } from './DataTable.css'
+
 type DataTablePaginationProps = {
-	table: Table<TData>
+	table: Table<any>
 }
 
 export const DataTablePagination = ({ table }: DataTablePaginationProps) => {
@@ -17,15 +20,15 @@ export const DataTablePagination = ({ table }: DataTablePaginationProps) => {
 	return (
 		<Box className={dataTablePaginationContainer}>
 			<Inline gap={4} alignItems="center">
-				<Text fontSize="small">{'Showing all results (10)'}</Text>
+				<Text fontSize="small">Showing all results (10)</Text>
 				{totalPages > 0 ? (
 					<>
 						<Button variant="adaptive" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
-							<Text color="neutral.200">{'Previous'}</Text>
+							<Text color="neutral.200">Previous</Text>
 						</Button>
 						<Inline gap={2} alignItems="center">
-							{[...Array(totalPages).keys()].map((_, index) => (
-								<Button key={index} variant="adaptive">
+							{Array.from({ length: totalPages }).map((_, index) => (
+								<Button variant="adaptive">
 									<Text
 										color={currentPage === index ? 'neutral.500' : 'neutral.400'}
 										onClick={() => table.setPageIndex(index)}>
@@ -35,7 +38,7 @@ export const DataTablePagination = ({ table }: DataTablePaginationProps) => {
 							))}
 						</Inline>
 						<Button variant="adaptive" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-							<Text color="neutral.200">{'Next'}</Text>
+							<Text color="neutral.200">Next</Text>
 						</Button>
 					</>
 				) : null}

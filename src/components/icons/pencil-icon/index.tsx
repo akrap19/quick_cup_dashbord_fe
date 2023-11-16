@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react'
 
-import PencilIconAsset from './Pencil-icon.svg'
+import PencilIconAsset from './pencil-icon.svg'
 import { BlockIcon } from '../block-icon'
 
 export const PencilIcon = (props: Omit<ComponentProps<typeof BlockIcon>, 'icon'>) => {

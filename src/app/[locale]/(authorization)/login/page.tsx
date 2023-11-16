@@ -1,18 +1,20 @@
 'use client'
-import { Heading } from '@/components/typography/heading'
+
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { Stack } from '@/components/layout/stack'
+
 import { Button } from '@/components/inputs/button'
-import { FormControl } from '@/components/inputs/form-control'
-import { TextInput } from '@/components/inputs/text-input'
-import { Inline } from '@/components/layout/inline'
 import { Checkbox } from '@/components/inputs/checkbox'
-import { useTranslations } from 'next-intl'
-import { atoms } from 'style/atoms.css'
+import { FormControl } from '@/components/inputs/form-control'
 import { PasswordInput } from '@/components/inputs/password-input'
 import { RequiredLabel } from '@/components/inputs/required-label'
+import { TextInput } from '@/components/inputs/text-input'
+import { Inline } from '@/components/layout/inline'
+import { Stack } from '@/components/layout/stack'
+import { Heading } from '@/components/typography/heading'
+import { atoms } from 'style/atoms.css'
 
 const formSchema = z.object({
 	email: z.string().min(1, { message: 'This field is required' }),

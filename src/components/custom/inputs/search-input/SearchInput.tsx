@@ -1,8 +1,10 @@
 /* eslint-disable no-undef */
-import { BlockIcon } from '@/components/icons/block-icon'
 import { InputHTMLAttributes } from 'react'
-import { searchInputWrapper, searchIconSlot, searchInput } from './SearchInput.css'
+
+import { BlockIcon } from '@/components/icons/block-icon'
 import SearchIcon from '@/components/icons/block-icon/assets/search-icon.svg'
+
+import { searchIconSlot, searchInput, searchInputWrapper } from './SearchInput.css'
 
 type Props = InputHTMLAttributes<HTMLInputElement>
 

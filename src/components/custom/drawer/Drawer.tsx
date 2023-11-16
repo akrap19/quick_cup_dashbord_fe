@@ -1,22 +1,25 @@
 'use client'
+
+import clsx from 'clsx'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
+
+import FileIcon from '@/components/icons/block-icon/assets/file-icon.svg'
+import GearIcon from '@/components/icons/block-icon/assets/gear-icon.svg'
+import GroupIcon from '@/components/icons/block-icon/assets/group-icon.svg'
+import HouseIcon from '@/components/icons/block-icon/assets/house-icon.svg'
+import PersonIcon from '@/components/icons/block-icon/assets/person-icon.svg'
+import TemplateIcon from '@/components/icons/block-icon/assets/template-icon.svg'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
-import { BrandLogo } from '../brand-logo/BrandLogo'
-import { drawer, drawerItem, drawerItemSelected } from './Drawer.css'
-import HouseIcon from '@/components/icons/block-icon/assets/house-icon.svg'
-import PersonIcon from '@/components/icons/block-icon/assets/person-icon.svg'
-import GearIcon from '@/components/icons/block-icon/assets/gear-icon.svg'
-import GroupIcon from '@/components/icons/block-icon/assets/group-icon.svg'
-import FileIcon from '@/components/icons/block-icon/assets/file-icon.svg'
-import TemplateIcon from '@/components/icons/block-icon/assets/template-icon.svg'
-import { Text } from '../../typography/text'
-import clsx from 'clsx'
 import { ROUTES } from 'parameters'
-import { usePathname } from 'next/navigation'
-import Link from 'next/link'
-import { useTranslations } from 'next-intl'
 import { atoms } from 'style/atoms.css'
+
+import { drawer, drawerItem, drawerItemSelected } from './Drawer.css'
+import { Text } from '../../typography/text'
+import { BrandLogo } from '../brand-logo/BrandLogo'
 
 const drawerItems = [
 	{ label: 'barnahuses', icon: <HouseIcon />, route: ROUTES.BARNAHUSES },
@@ -35,16 +38,16 @@ export const Drawer = () => {
 		<Box className={drawer}>
 			<Stack gap={13}>
 				<Box paddingLeft={6}>
-					<BrandLogo addHomeLink={true} />
+					<BrandLogo addHomeLink />
 				</Box>
 				<Stack gap={4}>
 					{drawerItems.map(item => (
 						<Link href={item.route} className={atoms({ textDecoration: 'none' })}>
 							<Box className={clsx(drawerItem, pathname.includes(item.route) && drawerItemSelected)}>
-								<Inline gap="4" alignItems="center">
+								<Inline gap={4} alignItems="center">
 									{item.icon}
 									<Text fontSize="big" fontWeight="semibold">
-										{t('General.' + item.label)}
+										{t(`General.${item.label}`)}
 									</Text>
 								</Inline>
 							</Box>

@@ -8,23 +8,21 @@ import { Label } from '@/components/inputs/label'
 import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { Stack } from '@/components/layout/stack'
-import { Inline } from '@/components/layout/inline'
-import { InputInfo } from '@/components/inputs/input-info'
 
-const BarnahusDetailsPage = () => {
+const PracticionersDetailsPage = () => {
 	const t = useTranslations()
 	useNavbarItems({
-		title: 'Barnahus name',
-		backLabel: 'Barnahuses.back',
-		actionButton: <EditButton buttonLabel="Barnahuses.edit" buttonLink="/" />
+		title: 'Admin name',
+		backLabel: 'Admins.back',
+		actionButton: <EditButton buttonLabel="Admins.edit" buttonLink="/" />
 	})
 
 	return (
 		<DetailsWrapper>
 			<Stack gap={4}>
-				<Label>{t('Barnahuses.barnahusName')}</Label>
+				<Label>{t('General.email')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					Barnahus name
+					lisa.andreson@gmail.com
 				</Text>
 			</Stack>
 			<Stack gap={4}>
@@ -34,16 +32,31 @@ const BarnahusDetailsPage = () => {
 				</Text>
 			</Stack>
 			<Stack gap={4}>
-				<Inline gap={4}>
-					<Label>{t('Barnahuses.assignedMasterAdmin')}</Label>
-					<InputInfo infoText="Barnahuses.assignedMasterAdminInfoText" />
-				</Inline>
+				<Label>{t('General.firstName')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{t('Barnahuses.assignedMasterAdminPlaceholder')}
+					Lisa
+				</Text>
+			</Stack>
+			<Stack gap={4}>
+				<Label>{t('General.lastName')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					Anderson
+				</Text>
+			</Stack>
+			<Stack gap={4}>
+				<Label>{t('General.role')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					Practicioner
+				</Text>
+			</Stack>
+			<Stack gap={4}>
+				<Label>{t('General.phoneNumber')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					+385 97 172 84 92
 				</Text>
 			</Stack>
 		</DetailsWrapper>
 	)
 }
 
-export default BarnahusDetailsPage
+export default PracticionersDetailsPage

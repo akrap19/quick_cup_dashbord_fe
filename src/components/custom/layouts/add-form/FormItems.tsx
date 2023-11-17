@@ -2,12 +2,11 @@ import { useTranslations } from 'next-intl'
 import { ReactNode } from 'react'
 
 import { Button } from '@/components/inputs/button'
-import { Box } from '@/components/layout/box'
-import { Columns } from '@/components/layout/columns'
 import { Divider } from '@/components/layout/divider'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
+import { tokens } from '@/style/theme.css'
 
 interface Props {
 	children: ReactNode[]
@@ -21,13 +20,15 @@ export const FormItems = ({ children }: Props) => {
 			<Text fontSize="small" color="destructive.500">
 				{t('General.requiredFieldWarning')}
 			</Text>
-			<Columns gap={6}>
-				{children?.map(m => (
-					<Columns.Item columns={6}>
-						<Box paddingBottom={3}>{m}</Box>
-					</Columns.Item>
-				))}
-			</Columns>
+			<div
+				style={{
+					display: 'grid',
+					gridTemplateColumns: 'repeat(2, 1fr)',
+					columnGap: tokens.spacing[6],
+					rowGap: tokens.spacing[8]
+				}}>
+				{children}
+			</div>
 			<Divider />
 			<Inline gap={4}>
 				<Button variant="secondary">{t('General.save&Add')}</Button>

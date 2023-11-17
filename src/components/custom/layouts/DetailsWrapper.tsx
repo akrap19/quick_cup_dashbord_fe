@@ -9,7 +9,7 @@ interface Props {
 
 export const DetailsWrapper = ({ children }: Props) => {
 	return (
-		<Box padding={10} width="100%">
+		<Box paddingX={10} paddingTop={10} paddingBottom={8} width="100%">
 			<Box
 				padding={6}
 				style={{ maxWidth: '60rem' }}

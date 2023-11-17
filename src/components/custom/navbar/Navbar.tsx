@@ -26,7 +26,7 @@ export const Navbar = () => {
 						<Inline gap={1} alignItems="center">
 							<LeftIcon size="small" />
 							<Text lineHeight="small" fontSize="small" fontWeight="semibold">
-								{t(`Back.${navbarItems?.backLabel}`)}
+								{t(navbarItems?.backLabel)}
 							</Text>
 						</Inline>
 					</Button>

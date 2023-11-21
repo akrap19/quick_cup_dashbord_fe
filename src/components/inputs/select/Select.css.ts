@@ -9,8 +9,8 @@ export const select = recipe({
 	variants: {
 		sizes: {
 			large: {
-				color: tokens.colors['neutral.500'],
-				fontSize: tokens.typography.size.medium,
+				color: `${tokens.colors['neutral.500']}!important`,
+				fontSize: `${tokens.typography.size.medium}!important`,
 				fontWeight: tokens.typography.weight.semibold,
 				lineHeight: tokens.typography.lineHeight.xlarge
 			}

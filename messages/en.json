@@ -74,6 +74,7 @@
 	"Barnahuses": {
 		"add": "Add Barnahus",
 		"edit": "Edit Barnahus",
+		"back": "Back to Barnahuses",
 		"searchBarnahus": "Search Barnahus",
 		"barnahusName": "Barnahus name",
 		"barnahusNamePlaceholder": "e.g. Barnahus Oslo",
@@ -85,6 +86,8 @@
 	},
 	"Admins": {
 		"add": "Add Admin",
+		"edit": "Edit Admin",
+		"back": "Back to Admins",
 		"searchAdmin": "Search Admin",
 		"noListDataTitle": "Add Barnahus Admin/s",
 		"noListDataDescription": "For this Barnahus you are able to add multiple Admins. This individual will be in charge of overseeing content for this specific Barnahus and adding their Practitioners to it."
@@ -101,6 +104,8 @@
 	},
 	"CaseFiles": {
 		"add": "Add Case",
+		"edit": "Edit Case",
+		"back": "Back to Case",
 		"searchCase": "Search Case",
 		"noListDataDescription": "To begin, add all your Cases to your library so you can customize the Journey based on each Case ID."
 	}

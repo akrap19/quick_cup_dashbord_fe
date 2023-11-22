@@ -7,9 +7,9 @@ import { DetailsWrapper } from '@/components/custom/layouts/DetailsWrapper'
 import { InputInfo } from '@/components/inputs/input-info'
 import { Label } from '@/components/inputs/label'
 import { Inline } from '@/components/layout/inline'
+import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
-import { Stack } from '@/components/layout/stack'
 
 const BarnahusDetailsPage = () => {
 	const t = useTranslations()

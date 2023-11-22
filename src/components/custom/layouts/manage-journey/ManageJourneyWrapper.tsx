@@ -15,7 +15,7 @@ export const ManageJourneyWrapper = ({ children }: Props) => {
 	return (
 		<Box width="100%" style={{ maxHeight: 'calc(100vh - 200px)' }} overflow="auto" paddingX={10} paddingY={8}>
 			<Box className={manageJourneyWrapper}>
-				<Box display="flex" flexDirection="row" gap={4}>
+				<Box display="flex" flexDirection="row" gap={4} paddingX={6}>
 					{currentStep &&
 						[...Array(currentStep)].map((_, index) => (
 							<Box key={index} className={stepIndicatior} backgroundColor="primary.500" />

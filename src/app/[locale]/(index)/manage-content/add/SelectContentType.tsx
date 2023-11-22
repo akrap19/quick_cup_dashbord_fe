@@ -11,6 +11,7 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useJourneyContentStore } from '@/store/journey-content'
 import { useManageContent } from '@/store/manage-content'
+import { ContentTypeEnum } from '@/store/models/ContentTypeEnum'
 
 const formSchema = z.object({
 	contentType: z.string().min(1, { message: 'This field is required' })
@@ -24,9 +25,9 @@ export const SelectContentType = () => {
 	const t = useTranslations()
 	const contentTypeOptions = [
 		{ value: '', label: t('ManageContent.selectContentType') },
-		{ value: 'barnahus', label: t('General.barnahus') },
-		{ value: 'staff', label: t('General.staff') },
-		{ value: 'rooms', label: t('General.rooms') }
+		{ value: ContentTypeEnum.Barnahus, label: t('General.barnahus') },
+		{ value: ContentTypeEnum.Staff, label: t('General.staff') },
+		{ value: ContentTypeEnum.Rooms, label: t('General.rooms') }
 	]
 
 	const form = useForm<Schema>({

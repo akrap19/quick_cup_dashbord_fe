@@ -4,13 +4,18 @@ import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey
 import { useJourneyContentSteps } from '@/hooks/use-journey-content-steps'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useJourneyContentStore } from '@/store/journey-content'
+import { useManageContent } from '@/store/manage-content'
 
-import { ManageContent } from './ManageContent'
 import { SelectContentType } from './SelectContentType'
 import { SelectLanguage } from './SelectLanguage'
+import { ContentTypeEnum } from '@/store/models/ContentTypeEnum'
+import { ManageBarnahusContent } from './ManageBarnahusContent'
+import { ManageStaffContent } from './ManageStaffContent'
+import { ManageRoomsContent } from './ManageRoomsConten'
 
 const AddContentPage = () => {
 	const { currentStep } = useJourneyContentStore()
+	const { contentType } = useManageContent()
 	useJourneyContentSteps({
 		totalSteps: 4,
 		currentStep: 1
@@ -25,7 +30,13 @@ const AddContentPage = () => {
 		<ManageJourneyWrapper>
 			{currentStep === 1 && <SelectContentType />}
 			{currentStep === 2 && <SelectLanguage />}
-			{currentStep === 3 && <ManageContent />}
+			{currentStep === 3 && (
+				<>
+					{contentType === ContentTypeEnum.Barnahus && <ManageBarnahusContent />}
+					{contentType === ContentTypeEnum.Staff && <ManageStaffContent />}
+					{contentType === ContentTypeEnum.Rooms && <ManageRoomsContent />}
+				</>
+			)}
 		</ManageJourneyWrapper>
 	)
 }

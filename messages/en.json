@@ -108,7 +108,11 @@
 		"selectLanguage": "Select language",
 		"selectLanguageDescription": "Please select the language in which you'll write the content for the chosen content type.",
 		"description": "In this section, Admins must provide detailed Barnahus information. Once entered, practitioners can choose what to display based on the case type.",
-		"noListDataDescription": "In this section, Admins need to provide information about their Barnahus. This helps Practitioners choose the content they want to access in the application."
+		"noListDataDescription": "In this section, Admins need to provide information about their Barnahus. This helps Practitioners choose the content they want to access in the application.",
+		"generalIntroductionTitle": "GENERAL INTRODUCTION (title)",
+		"generalIntroductionPlaceholderTitle": "Write the title of this section...",
+		"generalIntroductionDescription": "GENERAL INTRODUCTION (description)",
+		"generalIntroductionPlaceholderDescription": "Write some general intro text about your Barnahus..."
 	},
 	"CaseFiles": {
 		"add": "Add Case",

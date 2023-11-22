@@ -5,9 +5,9 @@ import { useTranslations } from 'next-intl'
 import { EditButton } from '@/components/custom/edit-button'
 import { DetailsWrapper } from '@/components/custom/layouts/DetailsWrapper'
 import { Label } from '@/components/inputs/label'
+import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
-import { Stack } from '@/components/layout/stack'
 
 const PracticionersDetailsPage = () => {
 	const t = useTranslations()

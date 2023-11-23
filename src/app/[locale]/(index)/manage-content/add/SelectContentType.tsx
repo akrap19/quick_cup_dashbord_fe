@@ -12,6 +12,7 @@ import { Text } from '@/components/typography/text'
 import { useJourneyContentStore } from '@/store/journey-content'
 import { useManageContent } from '@/store/manage-content'
 import { ContentTypeEnum } from '@/store/models/ContentTypeEnum'
+import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
 
 const formSchema = z.object({
 	contentType: z.string().min(1, { message: 'This field is required' })
@@ -44,9 +45,7 @@ export const SelectContentType = () => {
 	return (
 		<FormProvider {...form}>
 			<form style={{ width: '100%' }} onSubmit={form.handleSubmit(onSubmit)}>
-				<Box
-					position="absolute"
-					style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', maxWidth: '26rem' }}>
+				<ManageJourneyIntroWrapper>
 					<Stack gap={6} alignItems="center">
 						<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
 							{t('ManageContent.selectContentTitle')}
@@ -66,7 +65,7 @@ export const SelectContentType = () => {
 							</FormControl>
 						</Box>
 					</Stack>
-				</Box>
+				</ManageJourneyIntroWrapper>
 				<Actions />
 			</form>
 		</FormProvider>

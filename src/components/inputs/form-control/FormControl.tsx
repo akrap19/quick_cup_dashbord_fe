@@ -11,18 +11,33 @@ import { NumericInput } from '../numeric-input'
 import { PasswordInput } from '../password-input'
 import { PatternInput } from '../pattern-input'
 import { Select } from '../select'
+import { Textarea } from '../text-area'
 import { TextInput } from '../text-input'
+import { AudioUpload } from '@/components/custom/upload/audio-upload'
+import { PhotoUpload } from '@/components/custom/upload/photo-upload'
+import { useTranslations } from 'next-intl'
 
-type Props = { name: string; children: ReactNode }
+type Props = { name: string; maxLength?: string; children: ReactNode }
 
-export const FormControl = ({ name, children }: Props) => {
+export const FormControl = ({ name, maxLength, children }: Props) => {
 	const {
 		control,
-		formState: { errors }
+		formState: { errors },
+		watch
 	} = useFormContext()
 	const label = getChildByType(children, [FormControl.Label])
+	const charactersCount = getChildByType(children, [FormControl.CharactersCount])
 	const message = getChildByType(children, [FormControl.Message])
-	const input = getChildByType(children, [TextInput, Select, NumericInput, PatternInput, PasswordInput])
+	const input = getChildByType(children, [
+		TextInput,
+		Select,
+		Textarea,
+		NumericInput,
+		PatternInput,
+		PasswordInput,
+		AudioUpload,
+		PhotoUpload
+	])
 
 	return (
 		<Controller
@@ -35,18 +50,23 @@ export const FormControl = ({ name, children }: Props) => {
 					value: field.value,
 					id: name,
 					name: field.name,
+					maxLength: maxLength,
 					onChange: field.onChange,
 					onBlur: field.onBlur
 				}))
 
 				return (
-					<div>
+					<Box position="relative">
 						<Stack gap={1}>
 							{overridePropsDeep(label, props => ({ props, htmlFor: name }))}
 							{overriddenInput}
 						</Stack>
+						{overridePropsDeep(charactersCount, () => ({
+							length: watch(name)?.length === undefined ? 0 : watch(name)?.length,
+							maxLength
+						}))}
 						{overridePropsDeep(message, () => ({ children: errorMessage }))}
-					</div>
+					</Box>
 				)
 			}}
 		/>
@@ -54,6 +74,22 @@ export const FormControl = ({ name, children }: Props) => {
 }
 
 FormControl.Label = ({ children, htmlFor }: ComponentProps<typeof Label>) => <Label htmlFor={htmlFor}>{children}</Label>
+
+FormControl.CharactersCount = ({ length, maxLength }: { length?: number; maxLength?: string }) => {
+	const t = useTranslations()
+
+	if (maxLength) {
+		return (
+			<Box position="absolute" paddingTop={1} style={{ right: '0' }}>
+				<Text fontSize="xsmall" lineHeight="xxlarge" color="neutral.800">
+					{length?.toString() + '/' + maxLength + t('General.characters')}
+				</Text>
+			</Box>
+		)
+	}
+
+	return null
+}
 
 FormControl.Message = ({ children }: { children?: string }) => {
 	if (children) {

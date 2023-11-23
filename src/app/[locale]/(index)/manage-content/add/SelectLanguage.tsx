@@ -11,6 +11,7 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useJourneyContentStore } from '@/store/journey-content'
 import { useManageContent } from '@/store/manage-content'
+import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
 
 const formSchema = z.object({
 	language: z.string().min(1, { message: 'This field is required' })
@@ -42,9 +43,7 @@ export const SelectLanguage = () => {
 	return (
 		<FormProvider {...form}>
 			<form style={{ width: '100%' }} onSubmit={form.handleSubmit(onSubmit)}>
-				<Box
-					position="absolute"
-					style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', maxWidth: '26rem' }}>
+				<ManageJourneyIntroWrapper>
 					<Stack gap={6} alignItems="center">
 						<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
 							{t('ManageContent.selectLanguage')}
@@ -58,7 +57,7 @@ export const SelectLanguage = () => {
 							</FormControl>
 						</Box>
 					</Stack>
-				</Box>
+				</ManageJourneyIntroWrapper>
 				<Actions />
 			</form>
 		</FormProvider>

@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 
-import { AddButton } from '@/components/custom/add-button'
+import { AddButton } from '@/components/custom/button/add-button'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Text } from '@/components/typography/text'

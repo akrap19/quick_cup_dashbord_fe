@@ -1,18 +1,19 @@
-import { AudioUpload } from '@/components/custom/upload/audio-upload'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod'
+
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
+import { AudioUpload } from '@/components/custom/upload/audio-upload'
+import { PhotoUpload } from '@/components/custom/upload/photo-upload'
 import { FormControl } from '@/components/inputs/form-control'
+import { PatternInput } from '@/components/inputs/pattern-input'
 import { RequiredLabel } from '@/components/inputs/required-label'
 import { Textarea } from '@/components/inputs/text-area'
 import { TextInput } from '@/components/inputs/text-input'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useTranslations } from 'next-intl'
-import { useForm, FormProvider } from 'react-hook-form'
-import { z } from 'zod'
-import { PhotoUpload } from '@/components/custom/upload/photo-upload'
-import { PatternInput } from '@/components/inputs/pattern-input'
 import { tokens } from '@/style/theme.css'
 
 const formSchema = z.object({
@@ -48,7 +49,7 @@ export const ManageBarnahusContent = () => {
 									<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
 										<RequiredLabel>{t('ManageContent.generalIntroductionTitle')}</RequiredLabel>
 									</Text>
-									<FormControl name="generalIntrudactionTitle" maxLength={'50'}>
+									<FormControl name="generalIntrudactionTitle" maxLength="50">
 										<TextInput placeholder={t('ManageContent.generalIntroductionPlaceholderTitle')} />
 										<FormControl.CharactersCount />
 										<FormControl.Message />
@@ -56,7 +57,7 @@ export const ManageBarnahusContent = () => {
 									<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
 										<RequiredLabel>{t('ManageContent.generalIntroductionDescription')}</RequiredLabel>
 									</Text>
-									<FormControl name="generalIntroductionDescription" maxLength={'500'}>
+									<FormControl name="generalIntroductionDescription" maxLength="500">
 										<Textarea placeholder={t('ManageContent.generalIntroductionPlaceholderDescription')} />
 										<FormControl.CharactersCount />
 										<FormControl.Message />

@@ -18,11 +18,13 @@ export const ManageJourneyWrapper = ({ children }: Props) => {
 				<Box display="flex" flexDirection="row" gap={4} paddingX={6}>
 					{currentStep &&
 						[...Array(currentStep)].map((_, index) => (
+							// eslint-disable-next-line react/no-array-index-key
 							<Box key={index} className={stepIndicatior} backgroundColor="primary.500" />
 						))}
 					{totalSteps &&
 						currentStep &&
 						[...Array(totalSteps - currentStep)].map((_, index) => (
+							// eslint-disable-next-line react/no-array-index-key
 							<Box key={index} className={stepIndicatior} backgroundColor="neutral.150" />
 						))}
 				</Box>

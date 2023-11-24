@@ -4,6 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
+import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
 import { FormControl } from '@/components/inputs/form-control'
 import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
@@ -11,7 +12,6 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useJourneyContentStore } from '@/store/journey-content'
 import { useManageContent } from '@/store/manage-content'
-import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
 
 const formSchema = z.object({
 	language: z.string().min(1, { message: 'This field is required' })

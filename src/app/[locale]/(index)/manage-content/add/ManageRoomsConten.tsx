@@ -1,3 +1,8 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod'
+
 import { Actions } from '@/components/custom/layouts/manage-journey'
 import { AudioUpload } from '@/components/custom/upload/audio-upload'
 import { PhotoUpload } from '@/components/custom/upload/photo-upload'
@@ -8,10 +13,6 @@ import { TextInput } from '@/components/inputs/text-input'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useTranslations } from 'next-intl'
-import { useForm, FormProvider } from 'react-hook-form'
-import { z } from 'zod'
 
 const formSchema = z.object({
 	generalIntrudactionTitle: z.string().min(1, { message: 'This field is required' })
@@ -45,7 +46,7 @@ export const ManageRoomsContent = () => {
 								<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
 									<RequiredLabel>{t('ManageContent.waitingRoomTitle')}</RequiredLabel>
 								</Text>
-								<FormControl name="generalIntrudactionTitle" maxLength={'50'}>
+								<FormControl name="generalIntrudactionTitle" maxLength="50">
 									<TextInput placeholder={t('ManageContent.waitingRoomTitlePlaceholder')} />
 									<FormControl.CharactersCount />
 									<FormControl.Message />
@@ -53,7 +54,7 @@ export const ManageRoomsContent = () => {
 								<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
 									<RequiredLabel>{t('ManageContent.waitingRoomDescription')}</RequiredLabel>
 								</Text>
-								<FormControl name="generalIntroductionDescription" maxLength={'500'}>
+								<FormControl name="generalIntroductionDescription" maxLength="500">
 									<Textarea placeholder={t('ManageContent.waitingRoomDescriptionPlaceholder')} />
 									<FormControl.CharactersCount />
 									<FormControl.Message />

@@ -1,7 +1,10 @@
+import { useTranslations } from 'next-intl'
 import { ComponentProps, ReactNode } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { getChildByType, overridePropsDeep } from 'react-nanny'
 
+import { AudioUpload } from '@/components/custom/upload/audio-upload'
+import { PhotoUpload } from '@/components/custom/upload/photo-upload'
 import { Box } from '@/components/layout/box'
 import { Stack } from 'components/layout/stack'
 import { Text } from 'components/typography/text'
@@ -13,9 +16,6 @@ import { PatternInput } from '../pattern-input'
 import { Select } from '../select'
 import { Textarea } from '../text-area'
 import { TextInput } from '../text-input'
-import { AudioUpload } from '@/components/custom/upload/audio-upload'
-import { PhotoUpload } from '@/components/custom/upload/photo-upload'
-import { useTranslations } from 'next-intl'
 
 type Props = { name: string; maxLength?: string; children: ReactNode }
 
@@ -50,7 +50,7 @@ export const FormControl = ({ name, maxLength, children }: Props) => {
 					value: field.value,
 					id: name,
 					name: field.name,
-					maxLength: maxLength,
+					maxLength,
 					onChange: field.onChange,
 					onBlur: field.onBlur
 				}))
@@ -76,13 +76,14 @@ export const FormControl = ({ name, maxLength, children }: Props) => {
 FormControl.Label = ({ children, htmlFor }: ComponentProps<typeof Label>) => <Label htmlFor={htmlFor}>{children}</Label>
 
 FormControl.CharactersCount = ({ length, maxLength }: { length?: number; maxLength?: string }) => {
+	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const t = useTranslations()
 
 	if (maxLength) {
 		return (
 			<Box position="absolute" paddingTop={1} style={{ right: '0' }}>
 				<Text fontSize="xsmall" lineHeight="xxlarge" color="neutral.800">
-					{length?.toString() + '/' + maxLength + t('General.characters')}
+					{`${length?.toString()}/${maxLength}${t('General.characters')}`}
 				</Text>
 			</Box>
 		)

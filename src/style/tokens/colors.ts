@@ -4,6 +4,7 @@ export const colors = {
 	// Less colors -> less classess -> faster website
 	'neutral.50': '#FCFCFC',
 	'neutral.100': '#F7F7F7',
+	'neutral.150': '#F0F0F0',
 	'neutral.200': '#BEBEBE',
 	'neutral.300': '#D6D6D6',
 	'neutral.400': '#6D6D6D',

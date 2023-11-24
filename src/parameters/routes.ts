@@ -8,7 +8,7 @@ export const ROUTES = {
 	PRACTITIONERS: '/practitioners',
 	ADD_PRACTITIONERS: '/practitioners/add',
 	MANAGE_CONTENT: '/manage-content',
-	ADD_CONTENT: '/add-content',
+	ADD_CONTENT: '/manage-content/add',
 	CASE_FILES: '/case-files',
 	ADD_CASE: '/case-files/add',
 	SETTINGS: '/settings'

@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl'
 
 import FileIcon from '@/components/icons/block-icon/assets/file-icon.svg'
 import GearIcon from '@/components/icons/block-icon/assets/gear-icon.svg'
-import GroupIcon from '@/components/icons/block-icon/assets/group-icon.svg'
+import GroupIcon from '@/components/icons/block-icon/assets/group-Icon.svg'
 import HouseIcon from '@/components/icons/block-icon/assets/house-icon.svg'
 import PersonIcon from '@/components/icons/block-icon/assets/person-icon.svg'
 import TemplateIcon from '@/components/icons/block-icon/assets/template-icon.svg'

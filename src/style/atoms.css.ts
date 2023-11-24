@@ -51,10 +51,13 @@ const staticProperties = defineProperties({
 		backgroundColor: tokens.colors,
 		boxShadow: tokens.shadows,
 		border: tokens.borders.border,
+		borderTop: tokens.borders.border,
+		borderBottom: tokens.borders.border,
 		borderRadius: tokens.borders.radius,
 		borderColor: tokens.borders.color,
 		borderStyle: ['none', 'solid', 'dashed'],
 		cursor: ['default', 'pointer'],
+		float: ['left', 'right'],
 		whiteSpace: ['nowrap'],
 		zIndex: tokens.indices,
 		// Typography tokens

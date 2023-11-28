@@ -9,15 +9,14 @@ interface Props {
 export const ManageJourneyIntroWrapper = ({ children }: Props) => {
 	return (
 		<Box
+			display="flex"
+			align="center"
+			justify="center"
 			style={{
 				minHeight: '37rem'
 			}}>
 			<Box
-				position="absolute"
 				style={{
-					top: '50%',
-					left: '50%',
-					transform: 'translate(-50%, -50%)',
 					maxWidth: '26rem'
 				}}>
 				{children}

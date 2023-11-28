@@ -146,6 +146,14 @@
 	},
 	"CaseJourney": {
 		"selectCaseIdTitle": "Select Case ID to start",
-		"selectCaseIdDescription": "To tailor an individual Case Journey, please choose or search for the desired Case ID within which you'd like to configure the specific Case Journey."
+		"selectCaseIdDescription": "To tailor an individual Case Journey, please choose or search for the desired Case ID within which you'd like to configure the specific Case Journey.",
+		"selectCaseId": "Select Case ID",
+		"WaitingRoom": "Waiting room",
+		"InterviewRoom": "Interview room",
+		"ObservationRoom": "Observation room",
+		"TherapyRoom": "Therapy room",
+		"MedicalRoom": "Medical room",
+		"dragToRearrangeTitle": "Drag to rearrange the rooms",
+		"dragToRearrangeDescription": "Rearrange the rooms at Barnahus based on each case's needs. You can delete any unrelevant rooms."
 	}
 }

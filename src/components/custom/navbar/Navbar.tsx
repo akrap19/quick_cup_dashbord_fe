@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 
 import { LeftIcon } from '@/components/icons/left-icon'
+import { LocationIcon } from '@/components/icons/location-icon'
 import { Button } from '@/components/inputs/button'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
@@ -26,7 +27,7 @@ export const Navbar = () => {
 						<Inline gap={1} alignItems="center">
 							<LeftIcon size="small" />
 							<Text lineHeight="small" fontSize="small" fontWeight="semibold">
-								{t(`Back.${navbarItems?.backLabel}`)}
+								{t(navbarItems?.backLabel)}
 							</Text>
 						</Inline>
 					</Button>
@@ -38,6 +39,16 @@ export const Navbar = () => {
 						{t(navbarItems?.title ?? 'General.loading')}
 					</Heading>
 					{navbarItems?.actionButton && <Box style={{ marginTop: '-1rem' }}>{navbarItems?.actionButton}</Box>}
+					{navbarItems?.location && (
+						<Box paddingRight={4}>
+							<Inline gap={1}>
+								<Text fontWeight="semibold" color="neutral.800" lineHeight="xlarge">
+									{navbarItems?.location}
+								</Text>
+								<LocationIcon />
+							</Inline>
+						</Box>
+					)}
 				</Inline>
 			</Box>
 		</Box>

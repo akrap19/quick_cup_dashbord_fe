@@ -54,7 +54,7 @@ const getItemStyle = (
 ): React.CSSProperties => ({
 	// some basic styles to make the items look a bit nicer
 	userSelect: 'none',
-	// it breaks sometimes, try also with with marginBottom: '-1rem'
+	// it breaks sometimes, try also with with marginBottom: '1rem'
 	marginBottom: '-2.625rem',
 
 	// styles we need to apply on draggables

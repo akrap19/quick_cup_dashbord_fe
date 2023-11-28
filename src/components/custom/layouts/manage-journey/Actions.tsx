@@ -18,7 +18,9 @@ export const Actions = () => {
 	const { currentStep, setCurrentStep } = useJourneyContentStore()
 
 	const handleBack = () => {
-		currentStep && setCurrentStep(currentStep - 1)
+		if (currentStep) {
+			setCurrentStep(currentStep - 1)
+		}
 	}
 
 	return (

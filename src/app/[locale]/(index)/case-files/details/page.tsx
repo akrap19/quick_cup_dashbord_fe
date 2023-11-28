@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl'
 
 import { EditButton } from '@/components/custom/edit-button'
-import { DetailsWrapper } from '@/components/custom/layouts/details-wrapper'
+import { DetailsWrapper } from '@/components/custom/layouts'
 import { InputInfo } from '@/components/inputs/input-info'
 import { Label } from '@/components/inputs/label'
 import { Box } from '@/components/layout/box'

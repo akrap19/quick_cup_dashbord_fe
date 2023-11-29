@@ -1,6 +1,8 @@
+import { useTranslations } from 'next-intl'
+
 import { UploadIcon } from '@/components/icons/upload-icon'
 import { Box } from '@/components/layout/box'
-import { useTranslations } from 'next-intl'
+
 import * as styles from './PhotoUpload.css'
 
 export const PhotoUpload = () => {

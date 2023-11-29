@@ -4,6 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
+import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
 import { FormControl } from '@/components/inputs/form-control'
 import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
@@ -12,7 +13,6 @@ import { Text } from '@/components/typography/text'
 import { useJourneyContentStore } from '@/store/journey-content'
 import { useManageContent } from '@/store/manage-content'
 import { ContentTypeEnum } from '@/store/models/ContentTypeEnum'
-import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
 
 const formSchema = z.object({
 	contentType: z.string().min(1, { message: 'This field is required' })
@@ -52,6 +52,7 @@ export const SelectContentType = () => {
 						</Text>
 						<Text fontSize="small" color="neutral.800" textAlign="center">
 							{t.rich('ManageContent.selectContentDescription', {
+								// eslint-disable-next-line react/no-unstable-nested-components
 								guidelines: chunks => (
 									<Text as="span" fontSize="small" fontWeight="semibold">
 										{chunks}

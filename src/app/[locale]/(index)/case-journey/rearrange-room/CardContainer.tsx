@@ -1,12 +1,15 @@
+'use client'
+
+import type { CSSProperties } from 'react'
+import { useState } from 'react'
+import { DragDropContext, Draggable, DraggingStyle, DropResult, Droppable, NotDraggingStyle } from 'react-beautiful-dnd'
+
+import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
-import type { FC } from 'react'
 import { Text } from '@/components/typography/text'
-import { useState } from 'react'
-import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from 'react-beautiful-dnd'
 
 import { Card } from './Card'
-import { Box } from '@/components/layout/box'
 import { cardsData } from './CardData'
 
 const reorder = (list: any, startIndex: number, endIndex: number): any => {
@@ -17,10 +20,7 @@ const reorder = (list: any, startIndex: number, endIndex: number): any => {
 	return result
 }
 
-const getItemStyle = (
-	isDragging: boolean,
-	draggableStyle: DraggingStyle | NotDraggingStyle | any | undefined
-): React.CSSProperties => ({
+const getItemStyle = (draggableStyle: DraggingStyle | NotDraggingStyle | any | undefined): CSSProperties => ({
 	userSelect: 'none',
 	// it breaks sometimes, try also with with marginBottom: '1rem'
 	marginBottom: '-2.625rem',
@@ -29,11 +29,7 @@ const getItemStyle = (
 	...draggableStyle
 })
 
-const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({
-	minWidth: '28.375rem'
-})
-
-export const CardContainer: FC = () => {
+export const CardContainer = () => {
 	const [cards, setCards] = useState(cardsData)
 
 	const onDragEnd = ({ source, destination }: DropResult) => {
@@ -50,13 +46,18 @@ export const CardContainer: FC = () => {
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Droppable droppableId="droppable">
-				{(provided, snapshot) => (
-					<div {...provided.droppableProps} ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+				{provided => (
+					<div
+						{...provided.droppableProps}
+						ref={provided.innerRef}
+						style={{
+							minWidth: '28.375rem'
+						}}>
 						<Stack gap={4}>
 							{cards.map((card, i) => (
 								<Inline gap={6} alignItems="center">
 									<Text fontWeight="bold" fontSize="small" color="neutral.800">
-										{i + 1 + '.'}
+										{`${i + 1}.`}
 									</Text>
 									<Box
 										borderRadius="small"
@@ -66,12 +67,12 @@ export const CardContainer: FC = () => {
 											height: '2.625rem'
 										}}>
 										<Draggable key={card.id} draggableId={card.id} index={i}>
-											{(provided, snapshot) => (
+											{provided => (
 												<div
 													ref={provided.innerRef}
 													{...provided.draggableProps}
 													{...provided.dragHandleProps}
-													style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}>
+													style={getItemStyle(provided.draggableProps.style)}>
 													<Card>{card.text}</Card>
 												</div>
 											)}

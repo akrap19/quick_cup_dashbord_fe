@@ -1,11 +1,13 @@
 import { useTranslations } from 'next-intl'
 import { ReactNode } from 'react'
-import { card } from './Card.css'
-import { Text } from '@/components/typography/text'
+
 import { DragIcon } from '@/components/icons/drag-icon'
-import { Inline } from '@/components/layout/inline'
 import { TrashIcon } from '@/components/icons/trash-icon'
 import { Button } from '@/components/inputs/button'
+import { Inline } from '@/components/layout/inline'
+import { Text } from '@/components/typography/text'
+
+import { card } from './Card.css'
 
 interface Props {
 	children: ReactNode

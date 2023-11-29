@@ -48,7 +48,9 @@
 		"requiredFieldWarning": "Fields marked with an asterisk (*) indicate their mandatory nature.",
 		"uploadAudio": "Upload audio",
 		"maxPhotoUploadCountinstructions": "Upload max 10 photos",
-		"photoUploadInstructions": "(max size per photo 2 MB, .jpg)"
+		"photoUploadInstructions": "(max size per photo 2 MB, .jpg)",
+		"audio": "Audio",
+		"generalIntroduction": "General introduction"
 	},
 	"Languages": { "en": "English", "se": "Swedish" },
 	"Authorization": {
@@ -153,9 +155,13 @@
 		"ObservationRoom": "Observation room",
 		"TherapyRoom": "Therapy room",
 		"MedicalRoom": "Medical room",
-		"selectBarnahusContent": "Select Barnahus content",
+		"selectBarnahusContentTitle": "Select Barnahus content",
 		"selectBarnahusContentDescription": "Pick the language and sections you want for the chosen Case to customize the Journey.",
+		"selectRoomsContentTitle": "Select Rooms content",
+		"selectRoomsContentDescription": "Pick the language and sections you want for the chosen Case to customize the Journey.",
 		"dragToRearrangeTitle": "Drag to rearrange the rooms",
-		"dragToRearrangeDescription": "Rearrange the rooms at Barnahus based on each case's needs. You can delete any unrelevant rooms."
+		"dragToRearrangeDescription": "Rearrange the rooms at Barnahus based on each case's needs. You can delete any unrelevant rooms.",
+		"whatToExpect": "What to expect",
+		"contactInforamtion": "Contact information"
 	}
 }

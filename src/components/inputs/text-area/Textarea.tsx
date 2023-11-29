@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import clsx from 'clsx'
 import { TextareaHTMLAttributes } from 'react'
+
 import { textarea, textareaHasError } from './Textarea.css'
 
 interface CustomTextareaProps {

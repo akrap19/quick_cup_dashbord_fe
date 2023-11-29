@@ -1,3 +1,8 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod'
+
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { PhotoUpload } from '@/components/custom/upload/photo-upload'
 import { PlainPlusIcon } from '@/components/icons/plain-plus-icon'
@@ -9,10 +14,6 @@ import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useTranslations } from 'next-intl'
-import { useForm, FormProvider } from 'react-hook-form'
-import { z } from 'zod'
 
 const formSchema = z.object({
 	generalIntrudactionTitle: z.string().min(1, { message: 'This field is required' })
@@ -66,7 +67,7 @@ export const ManageStaffContent = () => {
 									<RequiredLabel>{t('ManageContent.staffDescription')}</RequiredLabel>
 								</Text>
 								<Box style={{ maxWidth: '30rem' }}>
-									<FormControl name="photos" maxLength={'30'}>
+									<FormControl name="photos" maxLength="30">
 										<TextInput placeholder={t('ManageContent.staffDescriptionPlaceholder')} />
 										<FormControl.CharactersCount />
 										<FormControl.Message />

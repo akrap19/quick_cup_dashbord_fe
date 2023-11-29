@@ -1,5 +1,6 @@
-import { tokens } from '@/style/theme.css'
 import { style } from '@vanilla-extract/css'
+
+import { tokens } from '@/style/theme.css'
 
 export const card = style({
 	display: 'flex',

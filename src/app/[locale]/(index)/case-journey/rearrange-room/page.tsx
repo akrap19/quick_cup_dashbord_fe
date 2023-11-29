@@ -1,15 +1,17 @@
+'use client'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
+import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useJourneyContentStore } from '@/store/journey-content'
-import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
+
 import { CardContainer } from './CardContainer'
-import { CardConteiner2 } from './CardContainer2'
 
 const formSchema = z.object({
 	caseId: z.string().min(1, { message: 'This field is required' })
@@ -27,7 +29,7 @@ const RearrangeRoom = () => {
 		defaultValues: { caseId: '' }
 	})
 
-	const onSubmit = async (data: any) => {
+	const onSubmit = async () => {
 		setCurrentStep(2)
 	}
 

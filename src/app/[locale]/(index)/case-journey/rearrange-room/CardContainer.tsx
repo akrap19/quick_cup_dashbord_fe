@@ -7,38 +7,7 @@ import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDr
 
 import { Card } from './Card'
 import { Box } from '@/components/layout/box'
-
-export interface Item {
-	id: number
-	text: string
-}
-
-export interface ContainerState {
-	cards: Item[]
-}
-
-const cardsData = [
-	{
-		id: '1',
-		text: 'CaseJourney.WaitingRoom'
-	},
-	{
-		id: '2',
-		text: 'CaseJourney.InterviewRoom'
-	},
-	{
-		id: '3',
-		text: 'CaseJourney.ObservationRoom'
-	},
-	{
-		id: '4',
-		text: 'CaseJourney.TherapyRoom'
-	},
-	{
-		id: '5',
-		text: 'CaseJourney.MedicalRoom'
-	}
-]
+import { cardsData } from './CardData'
 
 const reorder = (list: any, startIndex: number, endIndex: number): any => {
 	const result = Array.from(list)
@@ -52,7 +21,6 @@ const getItemStyle = (
 	isDragging: boolean,
 	draggableStyle: DraggingStyle | NotDraggingStyle | any | undefined
 ): React.CSSProperties => ({
-	// some basic styles to make the items look a bit nicer
 	userSelect: 'none',
 	// it breaks sometimes, try also with with marginBottom: '1rem'
 	marginBottom: '-2.625rem',
@@ -104,7 +72,7 @@ export const CardContainer: FC = () => {
 													{...provided.draggableProps}
 													{...provided.dragHandleProps}
 													style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}>
-													<Card key={card.id} index={i} id={card.id} text={card.text} />
+													<Card>{card.text}</Card>
 												</div>
 											)}
 										</Draggable>

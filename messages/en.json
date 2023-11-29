@@ -153,6 +153,8 @@
 		"ObservationRoom": "Observation room",
 		"TherapyRoom": "Therapy room",
 		"MedicalRoom": "Medical room",
+		"selectBarnahusContent": "Select Barnahus content",
+		"selectBarnahusContentDescription": "Pick the language and sections you want for the chosen Case to customize the Journey.",
 		"dragToRearrangeTitle": "Drag to rearrange the rooms",
 		"dragToRearrangeDescription": "Rearrange the rooms at Barnahus based on each case's needs. You can delete any unrelevant rooms."
 	}

@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl'
-import type { FC } from 'react'
+import { ReactNode } from 'react'
 import { card } from './Card.css'
 import { Text } from '@/components/typography/text'
 import { DragIcon } from '@/components/icons/drag-icon'
@@ -7,13 +7,11 @@ import { Inline } from '@/components/layout/inline'
 import { TrashIcon } from '@/components/icons/trash-icon'
 import { Button } from '@/components/inputs/button'
 
-export interface CardProps {
-	id: any
-	text: string
-	index: number
+interface Props {
+	children: ReactNode
 }
 
-export const Card: FC<CardProps> = ({ id, text, index }) => {
+export const Card = ({ children }: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -21,7 +19,7 @@ export const Card: FC<CardProps> = ({ id, text, index }) => {
 			<Inline gap={2}>
 				<DragIcon color="neutral.800" />
 				<Text fontWeight="semibold" color="neutral.500" lineHeight="xlarge">
-					{t(text)}
+					{t(children)}
 				</Text>
 			</Inline>
 			<Button variant="adaptive" size="auto">

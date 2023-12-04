@@ -5,4 +5,5 @@ export interface NavbarItems {
 	backLabel?: string
 	useUserDropdown?: boolean
 	actionButton?: ReactNode
+	location?: string
 }

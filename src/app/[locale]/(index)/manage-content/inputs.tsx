@@ -18,7 +18,7 @@ export const Inputs = () => {
 					{t('ManageContent.description')}
 				</Text>
 			</Box>
-			<AddButton buttonLabel={t('ManageContent.add')} buttonLink={ROUTES.ADD_BARNAHUS} />
+			<AddButton buttonLabel={t('ManageContent.add')} buttonLink={ROUTES.ADD_CONTENT} />
 		</Inline>
 	)
 }

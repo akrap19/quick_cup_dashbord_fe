@@ -38,11 +38,13 @@
 		"caseJourneyUpdates": "Case Journey updates",
 		"save&Add": "Save & add",
 		"cancel": "Cancel",
+		"next": "Next",
+		"back": "Back",
+		"staff": "Staff",
+		"rooms": "Rooms",
 		"requiredFieldWarning": "Fields marked with an asterisk (*) indicate their mandatory nature."
 	},
-	"Back": {
-		"barnahuses": "Back to Barnahuses"
-	},
+	"Languages": { "en": "English", "se": "Swedish" },
 	"Authorization": {
 		"password": "Password",
 		"passwordPlaceholder": "Enter password",
@@ -74,6 +76,7 @@
 	"Barnahuses": {
 		"add": "Add Barnahus",
 		"edit": "Edit Barnahus",
+		"back": "Back to Barnahuses",
 		"searchBarnahus": "Search Barnahus",
 		"barnahusName": "Barnahus name",
 		"barnahusNamePlaceholder": "e.g. Barnahus Oslo",
@@ -81,10 +84,12 @@
 		"assignedMasterAdmin": "Assigned master admin",
 		"assignedMasterAdminPlaceholder": "No Master-admin assigned yet.",
 		"assignedMasterAdminInfoText": "Once the assigned Master-admin for this Barnahus is added, the name will appear here.",
-		"noListDataDescription": "To begin, add all the Barnahuses to your library so that you can assign Admins to each one you've included."
+		"noListDataDescription": "To begin, add all the Barnahuses to your library so that you can assign Admins to each one you've included. "
 	},
 	"Admins": {
 		"add": "Add Admin",
+		"edit": "Edit Admin",
+		"back": "Back to Admins",
 		"searchAdmin": "Search Admin",
 		"noListDataTitle": "Add Barnahus Admin/s",
 		"noListDataDescription": "For this Barnahus you are able to add multiple Admins. This individual will be in charge of overseeing content for this specific Barnahus and adding their Practitioners to it."
@@ -96,11 +101,19 @@
 	},
 	"ManageContent": {
 		"add": "Add Content",
+		"back": "Back to Manage content",
+		"selectContentTitle": "Select Content type to start",
+		"selectContentDescription": "You can make <guidelines>one content type per language</guidelines>. If you want the same content type in another language, create a new one and choose the language. <guidelines>Our software will translate it automatically,</guidelines> and you can adjust it as needed.",
+		"selectContentType": "Select Content type",
+		"selectLanguage": "Select language",
+		"selectLanguageDescription": "Please select the language in which you'll write the content for the chosen content type.",
 		"description": "In this section, Admins must provide detailed Barnahus information. Once entered, practitioners can choose what to display based on the case type.",
 		"noListDataDescription": "In this section, Admins need to provide information about their Barnahus. This helps Practitioners choose the content they want to access in the application."
 	},
 	"CaseFiles": {
 		"add": "Add Case",
+		"edit": "Edit Case",
+		"back": "Back to Case files",
 		"searchCase": "Search Case",
 		"noListDataDescription": "To begin, add all your Cases to your library so you can customize the Journey based on each Case ID."
 	}

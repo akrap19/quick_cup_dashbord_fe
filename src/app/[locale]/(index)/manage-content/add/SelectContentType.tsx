@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
-import { ReactNode } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -20,12 +19,6 @@ const formSchema = z.object({
 })
 
 type Schema = z.infer<typeof formSchema>
-
-const SemiboldedText = (chunks: ReactNode) => (
-	<Text as="span" fontSize="small" fontWeight="semibold">
-		{chunks}
-	</Text>
-)
 
 export const SelectContentType = () => {
 	const { setCurrentStep } = useJourneyContentStore()

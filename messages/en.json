@@ -89,7 +89,7 @@
 		"assignedMasterAdmin": "Assigned master admin",
 		"assignedMasterAdminPlaceholder": "No Master-admin assigned yet.",
 		"assignedMasterAdminInfoText": "Once the assigned Master-admin for this Barnahus is added, the name will appear here.",
-		"noListDataDescription": "To begin, add all the Barnahuses to your library so that you can assign Admins to each one you've included."
+		"noListDataDescription": "To begin, add all the Barnahuses to your library so that you can assign Admins to each one you've included. "
 	},
 	"Admins": {
 		"add": "Add Admin",

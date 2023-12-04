@@ -59,7 +59,12 @@ export const SelectContentType = () => {
 						</Text>
 						<Text fontSize="small" color="neutral.800" textAlign="center">
 							{t.rich('ManageContent.selectContentDescription', {
-								guidelines: SemiboldedText
+								// eslint-disable-next-line
+								guidelines: chunks => (
+									<Text as="span" fontSize="small" fontWeight="semibold">
+										{chunks}
+									</Text>
+								)
 							})}
 						</Text>
 						<Box width="100%">

@@ -41,10 +41,7 @@ options:
 substitutions:
   _AR_HOSTNAME: europe-north1-docker.pkg.dev
   _PLATFORM: managed
-  _TRIGGER_ID: 682a943e-7831-438f-b8b2-fdd12c8c2363
-  _SERVICE_NAME: barnahus-journeys-fe
   _DEPLOY_REGION: europe-north1
 tags:
   - gcp-cloud-build-deploy-cloud-run
   - gcp-cloud-build-deploy-cloud-run-managed
-  - barnahus-journeys-fe

@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 
-import { EditButton } from '@/components/custom/edit-button'
+import { EditButton } from '@/components/custom/button/edit-button/EditButton'
 import { DetailsWrapper } from '@/components/custom/layouts'
 import { InputInfo } from '@/components/inputs/input-info'
 import { Label } from '@/components/inputs/label'

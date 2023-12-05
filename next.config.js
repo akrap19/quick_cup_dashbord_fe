@@ -3,12 +3,17 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 	enabled: process.env.ANALYZE === 'true'
 })
 
+const git = require('git-rev-sync')
+
 const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin')
 const withVanillaExtract = createVanillaExtractPlugin()
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: false,
+	env: {
+		GIT_BRANCH: git.branch()
+	},
 	images: {
 		domains: ['via.placeholder.com']
 	},
@@ -41,7 +46,7 @@ const nextConfig = {
 
 		return config
 	},
-  output: 'standalone'
+	output: 'standalone'
 }
 
 module.exports = withVanillaExtract(withBundleAnalyzer(nextConfig))

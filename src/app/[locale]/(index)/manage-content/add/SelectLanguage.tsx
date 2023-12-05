@@ -4,6 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
+import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
 import { FormControl } from '@/components/inputs/form-control'
 import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
@@ -42,9 +43,7 @@ export const SelectLanguage = () => {
 	return (
 		<FormProvider {...form}>
 			<form style={{ width: '100%' }} onSubmit={form.handleSubmit(onSubmit)}>
-				<Box
-					position="absolute"
-					style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', maxWidth: '26rem' }}>
+				<ManageJourneyIntroWrapper>
 					<Stack gap={6} alignItems="center">
 						<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
 							{t('ManageContent.selectLanguage')}
@@ -58,7 +57,7 @@ export const SelectLanguage = () => {
 							</FormControl>
 						</Box>
 					</Stack>
-				</Box>
+				</ManageJourneyIntroWrapper>
 				<Actions />
 			</form>
 		</FormProvider>

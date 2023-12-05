@@ -27,6 +27,7 @@ const drawerItems = [
 	{ label: 'practitioners', icon: <GroupsIcon />, route: ROUTES.PRACTITIONERS },
 	{ label: 'manageContent', icon: <TemplateIcon />, route: ROUTES.MANAGE_CONTENT },
 	{ label: 'caseFiles', icon: <FileIcon />, route: ROUTES.CASE_FILES },
+	{ label: 'caseJourney', icon: <TemplateIcon />, route: ROUTES.CASE_JOURNEY },
 	{ label: 'settings', icon: <GearIcon />, route: ROUTES.SETTINGS }
 ]
 

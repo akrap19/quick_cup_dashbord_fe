@@ -21,6 +21,7 @@ export const typography = {
 		small: '100%',
 		medium: '132%',
 		large: '140%',
-		xlarge: '150%'
+		xlarge: '150%',
+		xxlarge: '166%'
 	}
 }

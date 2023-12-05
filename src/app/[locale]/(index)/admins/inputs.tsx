@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl'
 import qs from 'query-string'
 import { useDebounce } from 'rooks'
 
-import { AddButton } from '@/components/custom/add-button'
+import { AddButton } from '@/components/custom/button/add-button'
 import { SearchInput } from '@/components/custom/inputs/search-input'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'

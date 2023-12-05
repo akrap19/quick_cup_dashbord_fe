@@ -17,11 +17,11 @@ export const actions = style({
 
 export const manageJourneyWrapper = style({
 	position: 'relative',
-	minHeight: '40rem',
 	maxWidth: '60rem',
-	padding: tokens.spacing[6],
+	paddingTop: tokens.spacing[6],
+	paddingBottom: tokens.spacing[6],
 	backgroundColor: tokens.colors['neutral.50'],
-	borderTop: tokens.borders.border.thin,
+	border: tokens.borders.border.thin,
 	borderColor: tokens.borders.color['neutral.300']
 })
 

@@ -7,7 +7,7 @@ import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
 
-import { AddButton } from '../add-button'
+import { AddButton } from '../button/add-button'
 
 type NoListDataProps = { title: string; description: string; buttonLabel: string; buttonLink: string }
 

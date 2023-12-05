@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 
-import { AddButton } from '@/components/custom/add-button'
+import { AddButton } from '@/components/custom/button/add-button'
 import { SearchInput } from '@/components/custom/inputs/search-input'
 import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'

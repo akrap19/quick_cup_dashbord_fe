@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react'
 
-import UploadIconAsset from './upload-Icon.svg'
+import UploadIconAsset from './uploading-icon.svg'
 import { BlockIcon } from '../block-icon'
 
 export const UploadIcon = (props: Omit<ComponentProps<typeof BlockIcon>, 'icon'>) => {

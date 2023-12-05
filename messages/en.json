@@ -37,6 +37,7 @@
 		"photos": "Photos",
 		"lastJourneySnapshot": "Last Journey snapshot",
 		"caseJourneyUpdates": "Case Journey updates",
+		"caseJourney": "Case Journey",
 		"save&Add": "Save & add",
 		"cancel": "Cancel",
 		"next": "Next",
@@ -47,7 +48,9 @@
 		"requiredFieldWarning": "Fields marked with an asterisk (*) indicate their mandatory nature.",
 		"uploadAudio": "Upload audio",
 		"maxPhotoUploadCountinstructions": "Upload max 10 photos",
-		"photoUploadInstructions": "(max size per photo 2 MB, .jpg)"
+		"photoUploadInstructions": "(max size per photo 2 MB, .jpg)",
+		"audio": "Audio",
+		"generalIntroduction": "General introduction"
 	},
 	"Languages": { "en": "English", "se": "Swedish" },
 	"Authorization": {
@@ -142,5 +145,23 @@
 		"back": "Back to Case files",
 		"searchCase": "Search Case",
 		"noListDataDescription": "To begin, add all your Cases to your library so you can customize the Journey based on each Case ID."
+	},
+	"CaseJourney": {
+		"selectCaseIdTitle": "Select Case ID to start",
+		"selectCaseIdDescription": "To tailor an individual Case Journey, please choose or search for the desired Case ID within which you'd like to configure the specific Case Journey.",
+		"selectCaseId": "Select Case ID",
+		"WaitingRoom": "Waiting room",
+		"InterviewRoom": "Interview room",
+		"ObservationRoom": "Observation room",
+		"TherapyRoom": "Therapy room",
+		"MedicalRoom": "Medical room",
+		"selectBarnahusContentTitle": "Select Barnahus content",
+		"selectBarnahusContentDescription": "Pick the language and sections you want for the chosen Case to customize the Journey.",
+		"selectRoomsContentTitle": "Select Rooms content",
+		"selectRoomsContentDescription": "Pick the language and sections you want for the chosen Case to customize the Journey.",
+		"dragToRearrangeTitle": "Drag to rearrange the rooms",
+		"dragToRearrangeDescription": "Rearrange the rooms at Barnahus based on each case's needs. You can delete any unrelevant rooms.",
+		"whatToExpect": "What to expect",
+		"contactInforamtion": "Contact information"
 	}
 }

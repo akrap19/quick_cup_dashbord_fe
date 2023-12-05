@@ -10,6 +10,7 @@ export const ROUTES = {
 	MANAGE_CONTENT: '/manage-content',
 	ADD_CONTENT: '/manage-content/add',
 	CASE_FILES: '/case-files',
+	CASE_JOURNEY: '/case-journey',
 	ADD_CASE: '/case-files/add',
 	SETTINGS: '/settings'
 }

@@ -9,6 +9,7 @@ import { Box } from '@/components/layout/box'
 import { Stack } from 'components/layout/stack'
 import { Text } from 'components/typography/text'
 
+import { Checkbox } from '../checkbox'
 import { Label } from '../label'
 import { NumericInput } from '../numeric-input'
 import { PasswordInput } from '../password-input'
@@ -36,7 +37,8 @@ export const FormControl = ({ name, maxLength, children }: Props) => {
 		PatternInput,
 		PasswordInput,
 		AudioUpload,
-		PhotoUpload
+		PhotoUpload,
+		Checkbox
 	])
 
 	return (

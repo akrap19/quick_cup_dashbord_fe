@@ -11,35 +11,29 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useJourneyContentStore } from '@/store/journey-content'
-import { useManageContent } from '@/store/manage-content'
-import { ContentTypeEnum } from '@/store/models/ContentTypeEnum'
 
 const formSchema = z.object({
-	contentType: z.string().min(1, { message: 'This field is required' })
+	caseId: z.string().min(1, { message: 'This field is required' })
 })
 
 type Schema = z.infer<typeof formSchema>
 
-export const SelectContentType = () => {
+export const SelectCaseId = () => {
 	const { setCurrentStep } = useJourneyContentStore()
-	const { setContentType } = useManageContent()
 	const t = useTranslations()
-	const contentTypeOptions = [
-		{ value: '', label: t('ManageContent.selectContentType') },
-		{ value: ContentTypeEnum.Barnahus, label: t('General.barnahus') },
-		{ value: ContentTypeEnum.Staff, label: t('General.staff') },
-		{ value: ContentTypeEnum.Rooms, label: t('General.rooms') }
+	const caseIds = [
+		{ value: '', label: t('CaseJourney.selectCaseId') },
+		{ value: 'BH-35618', label: 'BH-356182' }
 	]
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
-		defaultValues: { contentType: '' }
+		defaultValues: { caseId: '' }
 	})
 
-	const onSubmit = async (data: any) => {
+	const onSubmit = async () => {
 		setCurrentStep(2)
-		setContentType(data.contentType)
 	}
 
 	return (
@@ -48,21 +42,14 @@ export const SelectContentType = () => {
 				<ManageJourneyIntroWrapper>
 					<Stack gap={6} alignItems="center">
 						<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
-							{t('ManageContent.selectContentTitle')}
+							{t('CaseJourney.selectCaseIdTitle')}
 						</Text>
 						<Text fontSize="small" color="neutral.800" textAlign="center">
-							{t.rich('ManageContent.selectContentDescription', {
-								// eslint-disable-next-line react/no-unstable-nested-components
-								guidelines: chunks => (
-									<Text as="span" fontSize="small" fontWeight="semibold">
-										{chunks}
-									</Text>
-								)
-							})}
+							{t('CaseJourney.selectCaseIdDescription')}
 						</Text>
 						<Box width="100%">
-							<FormControl name="contentType">
-								<Select sizes="large" options={contentTypeOptions} />
+							<FormControl name="caseId">
+								<Select sizes="large" options={caseIds} />
 							</FormControl>
 						</Box>
 					</Stack>

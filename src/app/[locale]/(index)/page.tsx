@@ -6,9 +6,7 @@ import { Text } from '@/components/typography/text'
 
 const HomePage = () => {
 	useEffect(() => {
-		setTimeout(() => {
-			localStorage.setItem('b', process.env.GIT_BRANCH ?? 'none')
-		}, 1000)
+		console.log(process.env.GIT_BRANCH)
 	}, [])
 
 	return <Text>Index page</Text>

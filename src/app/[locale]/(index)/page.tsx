@@ -1,7 +1,8 @@
 'use client'
 
-import { Text } from '@/components/typography/text'
 import { useEffect } from 'react'
+
+import { Text } from '@/components/typography/text'
 
 const HomePage = () => {
 	useEffect(() => {

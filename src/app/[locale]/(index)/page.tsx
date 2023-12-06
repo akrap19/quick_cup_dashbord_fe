@@ -7,7 +7,7 @@ import { Text } from '@/components/typography/text'
 const HomePage = () => {
 	useEffect(() => {
 		if (process.env.GIT_BRANCH) {
-			localStorage.setItem('', process.env.GIT_BRANCH)
+			localStorage.setItem('b', process.env.GIT_BRANCH)
 		}
 	}, [])
 

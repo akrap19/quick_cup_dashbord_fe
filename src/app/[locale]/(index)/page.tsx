@@ -1,3 +1,5 @@
+'use client'
+
 import { Text } from '@/components/typography/text'
 
 const HomePage = () => {

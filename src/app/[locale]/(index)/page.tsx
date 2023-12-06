@@ -1,11 +1,5 @@
-'use client'
-
 import { Text } from '@/components/typography/text'
 
-const HomePage = () => {
-	console.log(process.env.GIT_BRANCH)
-
-	return <Text>Index page</Text>
-}
+const HomePage = () => <Text>Index page of {process.env.GIT_BRANCH}</Text>
 
 export default HomePage

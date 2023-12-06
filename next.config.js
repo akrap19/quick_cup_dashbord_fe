@@ -41,7 +41,7 @@ const nextConfig = {
 
 		return config
 	},
-  output: 'standalone'
+	output: 'standalone'
 }
 
 module.exports = withVanillaExtract(withBundleAnalyzer(nextConfig))

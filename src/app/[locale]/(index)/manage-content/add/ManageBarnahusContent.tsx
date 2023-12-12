@@ -19,8 +19,8 @@ import { tokens } from '@/style/theme.css'
 const formSchema = z.object({
 	generalIntrudactionTitle: z
 		.string()
-		.min(1, { message: 'This field is required' })
-		.max(1, { message: 'This field is required' })
+		.min(1, { message: 'ValidationMeseges.required' })
+		.max(1, { message: 'ValidationMeseges.required' })
 })
 
 type Schema = z.infer<typeof formSchema>

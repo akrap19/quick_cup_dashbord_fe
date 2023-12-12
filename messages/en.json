@@ -53,10 +53,18 @@
 		"generalIntroduction": "General introduction"
 	},
 	"Languages": { "en": "English", "se": "Swedish" },
+	"ValidationMeseges": {
+		"required": "This field is required.",
+		"email": "Invalid email. Please try again.",
+		"password": "Please make sure your password meets the criteria.",
+		"confirmPassword": "Please make sure your passwords match."
+	},
 	"Authorization": {
 		"password": "Password",
 		"passwordPlaceholder": "Enter password",
+		"passwordInstructions": "Min 8 characters, 1 number and 1 symbol",
 		"confirmPassword": "Confirm password",
+		"confirmPasswordSuccess": "Passwords are matching.",
 		"newPassword": "New password",
 		"newPasswordPlaceholder": "Enter new password",
 		"currentPassword": "Current password",
@@ -65,6 +73,8 @@
 		"resetPassword": "Reset password",
 		"register": "Register",
 		"logIn": "Log in",
+		"remeberMe": "Remeber me",
+		"allGood": "All good.",
 		"ResetYourPassword": {
 			"title": "Reset your password",
 			"instructions": "Enter your new password and you are ready to go!"

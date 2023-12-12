@@ -1,6 +1,7 @@
 export const ROUTES = {
 	HOME: '/',
 	LOGIN: '/login',
+	FORGOT_PASSWORD: 'forgot-password',
 	BARNAHUSES: '/barnahuses',
 	ADD_BARNAHUS: '/barnahuses/add',
 	ADMINS: '/admins',

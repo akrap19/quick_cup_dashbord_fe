@@ -3,17 +3,19 @@ import { ComponentProps, useState } from 'react'
 
 import { BlockIcon } from '@/components/icons/block-icon'
 import CrossedEyeIcon from '@/components/icons/block-icon/assets/crossed-eye-icon.svg'
-import EyeIcon from '@/components/icons/block-icon/assets/file-icon.svg'
+import EyeIcon from '@/components/icons/block-icon/assets/eye-icon.svg'
+import { CheckIcon } from '@/components/icons/check-icon'
 
 import { Button } from '../button'
 import { TextInput } from '../text-input'
 
 type Props = ComponentProps<typeof TextInput>
 
-export const PasswordInput = ({ hasError, ...rest }: Props) => {
+export const PasswordInput = ({ hasError, hasSuccess, ...rest }: Props) => {
 	const [passwordVisible, setPasswordVisible] = useState(false)
 
-	const togglePasswordVisibility = () => {
+	const togglePasswordVisibility = (e: any) => {
+		e.preventDefault()
 		setPasswordVisible(!passwordVisible)
 	}
 
@@ -22,10 +24,19 @@ export const PasswordInput = ({ hasError, ...rest }: Props) => {
 			{...rest}
 			type={passwordVisible ? 'text' : 'password'}
 			hasError={hasError}
+			hasSuccess={hasSuccess}
 			endIcon={
-				<Button size="small" variant="adaptive" onClick={togglePasswordVisibility}>
-					<BlockIcon color="neutral.500" icon={passwordVisible ? CrossedEyeIcon : EyeIcon} />
-				</Button>
+				!hasSuccess ? (
+					<Button size="small" variant="adaptive" onClick={togglePasswordVisibility}>
+						<BlockIcon
+							size="medium"
+							color={hasError ? 'destructive.500' : 'neutral.500'}
+							icon={passwordVisible ? EyeIcon : CrossedEyeIcon}
+						/>
+					</Button>
+				) : (
+					<CheckIcon size="medium" color="success.500" />
+				)
 			}
 		/>
 	)

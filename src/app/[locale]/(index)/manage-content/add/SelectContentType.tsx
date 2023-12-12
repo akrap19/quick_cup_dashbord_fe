@@ -15,7 +15,7 @@ import { useManageContent } from '@/store/manage-content'
 import { ContentTypeEnum } from '@/store/models/ContentTypeEnum'
 
 const formSchema = z.object({
-	contentType: z.string().min(1, { message: 'This field is required' })
+	contentType: z.string().min(1, { message: 'ValidationMeseges.required' })
 })
 
 type Schema = z.infer<typeof formSchema>

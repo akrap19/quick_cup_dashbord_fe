@@ -2,7 +2,9 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useMutation } from 'react-query'
 import * as z from 'zod'
 
 import { Button } from '@/components/inputs/button'
@@ -12,27 +14,60 @@ import { RequiredLabel } from '@/components/inputs/required-label'
 import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
+import { resetPassword } from 'api/services/auth'
+import { confirmPasswordSchema, passwordSchema } from 'schemas'
 import { atoms } from 'style/atoms.css'
 
-const formSchema = z.object({
-	email: z.string().min(1, { message: 'This field is required' }),
-	password: z.string().min(1, { message: 'This field is required' })
-})
+const formSchema = z
+	.object({
+		currentPassword: passwordSchema.shape.password,
+		newPassword: passwordSchema.shape.password,
+		...confirmPasswordSchema.shape
+	})
+	.refine(data => data.newPassword === data.confirmPassword, {
+		path: ['confirmPassword'],
+		message: 'ValidationMeseges.confirmPassword'
+	})
 
 type Schema = z.infer<typeof formSchema>
 
 const ResetYourPasswordPage = () => {
 	const t = useTranslations()
+	const { mutate: resetUsersPassword } = useMutation(resetPassword, {
+		onSuccess: data => {
+			console.log(data)
+		},
+		onError: error => {
+			console.log(error)
+		}
+	})
 
 	const form = useForm<Schema>({
-		mode: 'onBlur',
+		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { email: '', password: '' }
+		defaultValues: { currentPassword: '', newPassword: '', confirmPassword: '' }
 	})
 
 	const onSubmit = async (data: Schema) => {
-		console.log(data)
+		resetUsersPassword(data)
 	}
+
+	// this is because of bug on zod when password changes it dosen't matches confirm password and without this validation isn't trigered
+	const { newPassword, confirmPassword } = form.watch()
+
+	// Trigger validation on the "confirmPassword" field when the "password" field changes
+	useEffect(() => {
+		if (confirmPassword !== '') {
+			form.trigger('confirmPassword')
+		}
+
+		// Cleans password field of required error to see info label if it is empty
+		if (newPassword === '') {
+			setTimeout(() => {
+				form.clearErrors('newPassword')
+			}, 987)
+		}
+	}, [newPassword])
 
 	return (
 		<>
@@ -60,7 +95,7 @@ const ResetYourPasswordPage = () => {
 									<RequiredLabel>{t('Authorization.newPassword')}</RequiredLabel>
 								</FormControl.Label>
 								<PasswordInput type="password" placeholder={t('Authorization.newPasswordPlaceholder')} />
-								<FormControl.Message />
+								<FormControl.Message instructionMessage="Authorization.passwordInstructions" />
 							</FormControl>
 							<FormControl name="confirmPassword">
 								<FormControl.Label>
@@ -70,7 +105,9 @@ const ResetYourPasswordPage = () => {
 								<FormControl.Message />
 							</FormControl>
 						</Stack>
-						<Button type="submit">{t('Authorization.resetPassword')}</Button>
+						<Button type="submit" disabled={!form.formState.isValid}>
+							{t('Authorization.resetPassword')}
+						</Button>
 					</Stack>
 				</form>
 			</FormProvider>

@@ -18,8 +18,8 @@ import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 
 const formSchema = z.object({
-	barnahusName: z.string().min(1, { message: 'This field is required' }),
-	barnahusLocation: z.string().min(1, { message: 'This field is required' })
+	barnahusName: z.string().min(1, { message: 'ValidationMeseges.required' }),
+	barnahusLocation: z.string().min(1, { message: 'ValidationMeseges.required' })
 })
 
 type Schema = z.infer<typeof formSchema>

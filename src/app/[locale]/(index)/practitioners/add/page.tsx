@@ -12,12 +12,12 @@ import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
 
 const formSchema = z.object({
-	email: z.string().min(1, { message: 'This field is required' }),
-	barnahus: z.string().min(1, { message: 'This field is required' }),
-	firstName: z.string().min(1, { message: 'This field is required' }),
-	lastName: z.string().min(1, { message: 'This field is required' }),
-	phoneNumber: z.string().min(1, { message: 'This field is required' }),
-	role: z.string().min(1, { message: 'This field is required' })
+	email: z.string().min(1, { message: 'ValidationMeseges.required' }),
+	barnahus: z.string().min(1, { message: 'ValidationMeseges.required' }),
+	firstName: z.string().min(1, { message: 'ValidationMeseges.required' }),
+	lastName: z.string().min(1, { message: 'ValidationMeseges.required' }),
+	phoneNumber: z.string().min(1, { message: 'ValidationMeseges.required' }),
+	role: z.string().min(1, { message: 'ValidationMeseges.required' })
 })
 
 type Schema = z.infer<typeof formSchema>

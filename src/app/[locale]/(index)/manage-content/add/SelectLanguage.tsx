@@ -14,7 +14,7 @@ import { useJourneyContentStore } from '@/store/journey-content'
 import { useManageContent } from '@/store/manage-content'
 
 const formSchema = z.object({
-	language: z.string().min(1, { message: 'This field is required' })
+	language: z.string().min(1, { message: 'ValidationMeseges.required' })
 })
 
 type Schema = z.infer<typeof formSchema>

@@ -16,8 +16,8 @@ import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 
 const formSchema = z.object({
-	email: z.string().min(1, { message: 'This field is required' }),
-	password: z.string().min(1, { message: 'This field is required' })
+	email: z.string().min(1, { message: 'ValidationMeseges.required' }),
+	password: z.string().min(1, { message: 'ValidationMeseges.required' })
 })
 
 type Schema = z.infer<typeof formSchema>

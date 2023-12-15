@@ -13,9 +13,9 @@ import { Select } from '@/components/inputs/select'
 import { TextInput } from '@/components/inputs/text-input'
 
 const formSchema = z.object({
-	caseId: z.string().min(1, { message: 'This field is required' }),
-	status: z.string().min(1, { message: 'This field is required' }),
-	barnahus: z.string().min(1, { message: 'This field is required' })
+	caseId: z.string().min(1, { message: 'ValidationMeseges.required' }),
+	status: z.string().min(1, { message: 'ValidationMeseges.required' }),
+	barnahus: z.string().min(1, { message: 'ValidationMeseges.required' })
 })
 
 type Schema = z.infer<typeof formSchema>

@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useMutation } from 'react-query'
 import * as z from 'zod'
 
 import { Button } from '@/components/inputs/button'
@@ -14,26 +15,38 @@ import { TextInput } from '@/components/inputs/text-input'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
+import { login } from 'api/services/auth'
+import { ROUTES } from 'parameters'
+import { emailSchema, passwordSchema } from 'schemas'
 import { atoms } from 'style/atoms.css'
 
 const formSchema = z.object({
-	email: z.string().min(1, { message: 'This field is required' }),
-	password: z.string().min(1, { message: 'This field is required' })
+	...emailSchema.shape,
+	...passwordSchema.shape,
+	remeberMe: z.boolean()
 })
 
 type Schema = z.infer<typeof formSchema>
 
 const LoginPage = () => {
 	const t = useTranslations()
+	const { mutate: loginUser } = useMutation(login, {
+		onSuccess: data => {
+			console.log(data)
+		},
+		onError: error => {
+			console.log(error)
+		}
+	})
 
 	const form = useForm<Schema>({
-		mode: 'onBlur',
+		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { email: '', password: '' }
+		defaultValues: { email: '', password: '', remeberMe: false }
 	})
 
 	const onSubmit = async (data: Schema) => {
-		console.log(data)
+		loginUser(data)
 	}
 
 	return (
@@ -53,7 +66,9 @@ const LoginPage = () => {
 									<TextInput placeholder={t('General.emailPlaceholder')} />
 									<FormControl.Message />
 								</FormControl>
-								<FormControl name="password">
+								<FormControl
+									name="password"
+									successMessageString={form.formState.isValid ? 'Authorization.allGood' : undefined}>
 									<FormControl.Label>
 										<RequiredLabel>{t('Authorization.password')}</RequiredLabel>
 									</FormControl.Label>
@@ -62,13 +77,17 @@ const LoginPage = () => {
 								</FormControl>
 							</Stack>
 							<Inline justifyContent="space-between">
-								<Checkbox name="remeberMe" label="Remeber me" />
-								<Button variant="ghost" size="small">
+								<FormControl name="remeberMe">
+									<Checkbox checked={form.watch('remeberMe')} label={t('Authorization.remeberMe')} />
+								</FormControl>
+								<Button variant="ghost" href={ROUTES.FORGOT_PASSWORD} size="small">
 									{t('Authorization.forgotPassword')}
 								</Button>
 							</Inline>
 						</Stack>
-						<Button type="submit">{t('Authorization.logIn')}</Button>
+						<Button type="submit" disabled={!form.formState.isValid}>
+							{t('Authorization.logIn')}
+						</Button>
 					</Stack>
 				</form>
 			</FormProvider>

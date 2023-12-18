@@ -16,20 +16,29 @@ import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { requiredString } from 'schemas'
+import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdown'
+
+const options = [
+	{ value: '', label: 'Select an option' },
+	{ value: 'A', label: 'A', disabled: false },
+	{ value: 'B', label: 'B', disabled: false },
+	{ value: 'C', label: 'C', disabled: false }
+]
 
 const formSchema = z.object({
-	barnahusName: z.string().min(1, { message: 'ValidationMeseges.required' }),
-	barnahusLocation: z.string().min(1, { message: 'ValidationMeseges.required' })
+	barnahusName: requiredString.shape.scheme,
+	barnahusLocation: requiredString.shape.scheme
 })
 
 type Schema = z.infer<typeof formSchema>
 
 const AddBarnahusPage = () => {
 	const t = useTranslations()
-	useNavbarItems({ title: 'Barnahuses.add', backLabel: 'barnahuses' })
+	useNavbarItems({ title: 'Barnahuses.add', backLabel: 'Barnahuses.back' })
 
 	const form = useForm<Schema>({
-		mode: 'onBlur',
+		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: { barnahusName: '', barnahusLocation: '' }
 	})
@@ -54,7 +63,7 @@ const AddBarnahusPage = () => {
 							<FormControl.Label>
 								<RequiredLabel>{t('Barnahuses.barnahusLocation')}</RequiredLabel>
 							</FormControl.Label>
-							<Select options={[]} placeholder={t('Barnahuses.emailPlaceholder')} />
+							<SearchDropdown />
 							<FormControl.Message />
 						</FormControl>
 						<Stack gap={4}>

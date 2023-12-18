@@ -18,5 +18,6 @@ export const trigger = style({
 	padding: 'unset',
 	height: '1.5rem',
 	paddingBlock: 'unset',
-	paddingInline: 'unset'
+	paddingInline: 'unset',
+	cursor: 'pointer'
 })

@@ -4,8 +4,6 @@ import { InfoIcon } from '@/components/icons/info-icon'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/overlay/popover'
 import { Text } from '@/components/typography/text'
 
-import { Button } from '../button'
-
 interface Props {
 	infoText: string
 }
@@ -16,9 +14,7 @@ export const InputInfo = ({ infoText }: Props) => {
 	return (
 		<Popover>
 			<PopoverTrigger>
-				<Button variant="adaptive" size="auto">
-					<InfoIcon color="neutral.900" />
-				</Button>
+				<InfoIcon color="neutral.900" />
 			</PopoverTrigger>
 			<PopoverContent>
 				<Text textTransform="none" fontSize="small">

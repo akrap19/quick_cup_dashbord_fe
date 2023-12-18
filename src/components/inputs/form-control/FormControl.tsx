@@ -19,6 +19,7 @@ import { PatternInput } from '../pattern-input'
 import { Select } from '../select'
 import { Textarea } from '../text-area'
 import { TextInput } from '../text-input'
+import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdown'
 
 type Props = { name: string; maxLength?: string; successMessageString?: string; children: ReactNode }
 
@@ -40,7 +41,8 @@ export const FormControl = ({ name, maxLength, successMessageString, children }:
 		PasswordInput,
 		AudioUpload,
 		PhotoUpload,
-		Checkbox
+		Checkbox,
+		SearchDropdown
 	])
 
 	return (

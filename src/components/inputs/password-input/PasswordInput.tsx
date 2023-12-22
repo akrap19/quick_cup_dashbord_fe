@@ -1,11 +1,10 @@
 /* eslint-disable no-undef */
-import { ComponentProps, useState } from 'react'
+import { ComponentProps, MouseEvent, useState } from 'react'
 
 import { BlockIcon } from '@/components/icons/block-icon'
 import CrossedEyeIcon from '@/components/icons/block-icon/assets/crossed-eye-icon.svg'
 import EyeIcon from '@/components/icons/block-icon/assets/eye-icon.svg'
 import { CheckIcon } from '@/components/icons/check-icon'
-import { MouseEvent } from 'react'
 
 import { Button } from '../button'
 import { TextInput } from '../text-input'

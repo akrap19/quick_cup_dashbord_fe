@@ -1,9 +1,9 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { signIn } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useMutation } from 'react-query'
 import * as z from 'zod'
 
 import { Button } from '@/components/inputs/button'
@@ -15,7 +15,6 @@ import { TextInput } from '@/components/inputs/text-input'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
-import { login } from 'api/services/auth'
 import { ROUTES } from 'parameters'
 import { emailSchema, passwordSchema } from 'schemas'
 import { atoms } from 'style/atoms.css'
@@ -30,14 +29,6 @@ type Schema = z.infer<typeof formSchema>
 
 const LoginPage = () => {
 	const t = useTranslations()
-	const { mutate: loginUser } = useMutation(login, {
-		onSuccess: data => {
-			console.log(data)
-		},
-		onError: error => {
-			console.log(error)
-		}
-	})
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
@@ -46,7 +37,11 @@ const LoginPage = () => {
 	})
 
 	const onSubmit = async (data: Schema) => {
-		loginUser(data)
+		try {
+			await signIn('login', data)
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	return (
@@ -76,11 +71,11 @@ const LoginPage = () => {
 									<FormControl.Message />
 								</FormControl>
 							</Stack>
-							<Inline justifyContent="space-between">
+							<Inline justifyContent="space-between" alignItems="center">
 								<FormControl name="remeberMe">
 									<Checkbox checked={form.watch('remeberMe')} label={t('Authorization.remeberMe')} />
 								</FormControl>
-								<Button variant="ghost" href={ROUTES.FORGOT_PASSWORD} size="small">
+								<Button variant="adaptive" href={ROUTES.FORGOT_PASSWORD} size="small">
 									{t('Authorization.forgotPassword')}
 								</Button>
 							</Inline>

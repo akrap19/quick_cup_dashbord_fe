@@ -3,6 +3,7 @@ import { ComponentProps, ReactNode } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { getChildByType, overridePropsDeep } from 'react-nanny'
 
+import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdown'
 import { AudioUpload } from '@/components/custom/upload/audio-upload'
 import { PhotoUpload } from '@/components/custom/upload/photo-upload'
 import { CheckIcon } from '@/components/icons/check-icon'
@@ -19,7 +20,6 @@ import { PatternInput } from '../pattern-input'
 import { Select } from '../select'
 import { Textarea } from '../text-area'
 import { TextInput } from '../text-input'
-import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdown'
 
 type Props = { name: string; maxLength?: string; successMessageString?: string; children: ReactNode }
 

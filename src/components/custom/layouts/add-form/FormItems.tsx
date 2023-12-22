@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 import { ReactNode } from 'react'
+import { useFormContext } from 'react-hook-form'
 
 import { Button } from '@/components/inputs/button'
 import { Divider } from '@/components/layout/divider'
@@ -9,7 +10,7 @@ import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { tokens } from '@/style/theme.css'
-import { useFormContext } from 'react-hook-form'
+
 import { CancelButton } from '../../button/cancel-button'
 
 interface Props {

@@ -1,10 +1,10 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { MouseEvent } from 'react'
 
 import { Button } from '@/components/inputs/button'
-import { useRouter } from 'next/navigation'
-import { MouseEvent } from 'react'
 
 export const CancelButton = () => {
 	const t = useTranslations()

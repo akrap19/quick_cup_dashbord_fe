@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useMutation } from 'react-query'
 import * as z from 'zod'
 
 import { Button } from '@/components/inputs/button'
@@ -33,14 +32,6 @@ type Schema = z.infer<typeof formSchema>
 
 const ResetYourPasswordPage = () => {
 	const t = useTranslations()
-	const { mutate: resetUsersPassword } = useMutation(resetPassword, {
-		onSuccess: data => {
-			console.log(data)
-		},
-		onError: error => {
-			console.log(error)
-		}
-	})
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
@@ -49,7 +40,7 @@ const ResetYourPasswordPage = () => {
 	})
 
 	const onSubmit = async (data: Schema) => {
-		resetUsersPassword(data)
+		resetPassword(data)
 	}
 
 	// this is because of bug on zod when password changes it dosen't matches confirm password and without this validation isn't trigered

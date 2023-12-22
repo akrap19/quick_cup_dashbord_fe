@@ -1,10 +1,10 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { signIn } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useMutation } from 'react-query'
 import * as z from 'zod'
 
 import { Button } from '@/components/inputs/button'
@@ -14,7 +14,6 @@ import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
 import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
-import { register } from 'api/services/auth'
 import { confirmPasswordSchema, emailSchema, passwordSchema } from 'schemas'
 import { atoms } from 'style/atoms.css'
 
@@ -33,14 +32,6 @@ type Schema = z.infer<typeof formSchema>
 
 const RegisterPage = () => {
 	const t = useTranslations()
-	const { mutate: registerUser } = useMutation(register, {
-		onSuccess: data => {
-			console.log(data)
-		},
-		onError: error => {
-			console.log(error)
-		}
-	})
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
@@ -49,7 +40,11 @@ const RegisterPage = () => {
 	})
 
 	const onSubmit = async (data: Schema) => {
-		registerUser(data)
+		try {
+			await signIn('register', data)
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	// this is because of bug on zod when password changes it dosen't matches confirm password and without this validation isn't trigered

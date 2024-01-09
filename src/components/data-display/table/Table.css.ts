@@ -23,6 +23,7 @@ export const table = style({
 	borderSpacing: 0,
 	borderCollapse: 'collapse',
 	borderRight: border.border,
+	borderLeft: border.border,
 	borderColor: border.borderColor
 })
 
@@ -54,7 +55,10 @@ export const tableHead = style({
 	borderBottom: border.border,
 	borderLeft: border.border,
 	borderColor: border.borderColor,
-	...font
+	...font,
+	':first-child': {
+		width: '72px'
+	}
 })
 
 export const tableCell = style({
@@ -62,10 +66,7 @@ export const tableCell = style({
 	borderLeft: border.border,
 	borderColor: border.borderColor,
 	fontWeight: tokens.typography.weight.regular,
-	...font,
-	':first-child': {
-		width: '72px'
-	}
+	...font
 })
 
 export const tableCaption = style({

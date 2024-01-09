@@ -3,80 +3,62 @@
 import {
 	ColumnDef,
 	ColumnFiltersState,
-	flexRender,
+	SortingState,
 	getCoreRowModel,
 	getFilteredRowModel,
 	getPaginationRowModel,
 	useReactTable
 } from '@tanstack/react-table'
-import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/data-display/table/Table'
-import { Checkbox } from '@/components/inputs/checkbox'
+import { Table } from '@/components/data-display/table/Table'
+import { useTable } from '@/hooks/use-table'
+import { useTableStore } from '@/store/table'
+import { getObjectLength } from '@/utils/getObjectLength'
 
+import { DataTableBody } from './DataTableBody'
+import { DataTableHeader } from './DataTableHeader'
 import { DataTablePagination } from './DataTablePagination'
 
-interface DataTableProps<TData, TValue> {
+interface Props<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
 	data: TData[]
 }
 
-export const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) => {
-	const t = useTranslations()
+export const DataTable = <TData, TValue>({ columns, data }: Props<TData, TValue>) => {
+	const { checkedItems } = useTableStore()
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+	const [rowSelection, setRowSelection] = useState({})
+	const [sorting, setSorting] = useState<SortingState>([])
+	useTable(rowSelection)
 
 	const table = useReactTable({
 		data,
 		columns,
+		onSortingChange: setSorting,
 		getCoreRowModel: getCoreRowModel(),
+		onRowSelectionChange: setRowSelection,
 		getPaginationRowModel: getPaginationRowModel(),
 		onColumnFiltersChange: setColumnFilters,
 		getFilteredRowModel: getFilteredRowModel(),
 		state: {
+			sorting,
+			rowSelection,
 			columnFilters
 		}
 	})
 
+	useEffect(() => {
+		if (getObjectLength(checkedItems) === 0 && getObjectLength(rowSelection) > 0) {
+			setRowSelection(checkedItems)
+		}
+	}, [checkedItems])
+
 	return (
 		<>
 			<Table>
-				<TableHeader>
-					{table.getHeaderGroups().map(headerGroup => (
-						<TableRow key={headerGroup.id}>
-							<TableHead>
-								<Checkbox />
-							</TableHead>
-							{headerGroup.headers.map(header => {
-								return (
-									<TableHead key={header.id}>
-										{header.isPlaceholder ? null : flexRender(t(header.column.columnDef.header), header.getContext())}
-									</TableHead>
-								)
-							})}
-						</TableRow>
-					))}
-				</TableHeader>
-				<TableBody>
-					{table.getRowModel().rows?.length ? (
-						table.getRowModel().rows.map(row => (
-							<TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-								<TableCell>
-									<Checkbox />
-								</TableCell>
-								{row.getVisibleCells().map(cell => (
-									<TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-								))}
-							</TableRow>
-						))
-					) : (
-						<TableRow>
-							<TableCell colSpan={columns.length} className="h-24 text-center">
-								No results.
-							</TableCell>
-						</TableRow>
-					)}
-				</TableBody>
+				<DataTableHeader table={table} />
+				<DataTableBody table={table} />
 			</Table>
 			<DataTablePagination table={table} />
 		</>

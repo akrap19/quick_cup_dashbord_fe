@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { ReactNode } from 'react'
+import { MouseEvent, ReactNode } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { Button } from '@/components/inputs/button'
@@ -11,15 +11,21 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { tokens } from '@/style/theme.css'
 
-import { CancelButton } from '../../button/cancel-button'
-
 interface Props {
 	children: ReactNode[]
+	openCancelDialog?: () => void
 }
 
-export const FormItems = ({ children }: Props) => {
+export const FormItems = ({ children, openCancelDialog }: Props) => {
 	const t = useTranslations()
 	const formContext = useFormContext()
+
+	const handleCancel = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault()
+		if (openCancelDialog) {
+			openCancelDialog()
+		}
+	}
 
 	return (
 		<Stack gap={6}>
@@ -37,7 +43,9 @@ export const FormItems = ({ children }: Props) => {
 			</div>
 			<Divider />
 			<Inline gap={4}>
-				<CancelButton />
+				<Button variant="secondary" onClick={handleCancel}>
+					{t('General.cancel')}
+				</Button>
 				<Button type="submit" disabled={!formContext.formState.isValid}>
 					{t('General.save&Add')}
 				</Button>

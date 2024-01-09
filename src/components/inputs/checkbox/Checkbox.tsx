@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { ChangeEventHandler } from 'react'
 
+import { MinusIcon } from '@/components/icons/minus-icon'
 import { tokens } from 'style/theme.css'
 
 import * as styles from './Checkbox.css'
@@ -12,10 +13,11 @@ interface Props {
 	label?: string
 	value?: string
 	checked?: boolean
+	indeterminate?: boolean
 	onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
-export const Checkbox = ({ name, label, value, checked, onChange }: Props) => {
+export const Checkbox = ({ name, label, value, checked, indeterminate, onChange }: Props) => {
 	const color = checked ? tokens.colors['primary.500'] : tokens.colors['shades.00']
 
 	return (
@@ -30,11 +32,10 @@ export const Checkbox = ({ name, label, value, checked, onChange }: Props) => {
 					className={styles.hiddenCheckbox}
 				/>
 				<div className={styles.checkboxDecorator} style={{ color }} />
-				{checked && (
-					<span className={styles.checked}>
-						<CheckmarkIcon />
-					</span>
-				)}
+				<span className={styles.checked}>
+					{checked && <CheckmarkIcon />}
+					{indeterminate && <MinusIcon color="neutral.900" />}
+				</span>
 			</span>
 			<Text as="span" fontWeight="semibold" fontSize="small" color="neutral.900">
 				{label}

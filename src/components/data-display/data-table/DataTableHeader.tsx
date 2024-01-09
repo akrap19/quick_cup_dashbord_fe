@@ -1,64 +1,54 @@
 'use client'
 
+import { Table, flexRender } from '@tanstack/react-table'
 import { useTranslations } from 'next-intl'
 
-import { AddButton } from '@/components/custom/button/add-button'
-import { SearchInput } from '@/components/custom/inputs/search-input'
-import { Select } from '@/components/inputs/select'
-import { Box } from '@/components/layout/box'
+import { ChevronSelectorDownIcon } from '@/components/icons/chevron-selector-down-icon'
+import { ChevronSelectorIcon } from '@/components/icons/chevron-selector-icon'
+import { ChevronSelectorUpIcon } from '@/components/icons/chevron-selector-up-icon'
+import { Button } from '@/components/inputs/button'
+import { Checkbox } from '@/components/inputs/checkbox'
 import { Inline } from '@/components/layout/inline'
-import { Text } from '@/components/typography/text'
-import { tokens } from '@/style/theme.css'
 
-type DataTableHeaderProps = {
-	buttonLabel: string
-	buttonLink: string
-	description?: string
-	selectOptions?: any[]
-	searchPlaceholder?: string
+import { TableHead, TableHeader, TableRow } from '../table'
+
+// eslint-disable-next-line
+interface Props<TData, TValue> {
+	table: Table<TData>
 }
 
-export const DataTableHeader = ({
-	buttonLabel,
-	buttonLink,
-	description,
-	selectOptions,
-	searchPlaceholder
-}: DataTableHeaderProps) => {
+export const DataTableHeader = <TData, TValue>({ table }: Props<TData, TValue>) => {
 	const t = useTranslations()
 
 	return (
-		<Inline justifyContent="space-between" alignItems="center">
-			{description && (
-				<Box>
-					<Text fontSize="small" lineHeight="large" color="neutral.800">
-						{t(description)}
-					</Text>
-				</Box>
-			)}
-			<Inline gap={4} alignItems="center">
-				{selectOptions && (
-					<Box width="100%">
-						<Select
-							name="dataTableSelect"
-							style={{
-								color: tokens.colors['neutral.500'],
-								fontSize: tokens.typography.size.medium,
-								fontWeight: tokens.typography.weight.semibold,
-								lineHeight: tokens.typography.lineHeight.xlarge
-							}}
-							options={selectOptions}
-							onSelect={() => {}}
+		<TableHeader>
+			{table.getHeaderGroups().map(headerGroup => (
+				<TableRow key={headerGroup.id}>
+					<TableHead>
+						<Checkbox
+							checked={table.getIsAllRowsSelected()}
+							indeterminate={table.getIsSomeRowsSelected()}
+							onChange={table.getToggleAllRowsSelectedHandler()}
 						/>
-					</Box>
-				)}
-				{searchPlaceholder && (
-					<Box style={{ width: '320px' }}>
-						<SearchInput placeholder={t(searchPlaceholder)} />
-					</Box>
-				)}
-			</Inline>
-			<AddButton buttonLabel={t(buttonLabel)} buttonLink={buttonLink} />
-		</Inline>
+					</TableHead>
+					{headerGroup.headers.map(header => {
+						return (
+							<TableHead key={header.id}>
+								<Inline justifyContent="space-between">
+									{header.isPlaceholder ? null : flexRender(t(header.column.columnDef.header), header.getContext())}
+									<Button variant="adaptive" size="auto" onClick={header.column.getToggleSortingHandler()}>
+										{{
+											false: <ChevronSelectorIcon />,
+											asc: <ChevronSelectorUpIcon />,
+											desc: <ChevronSelectorDownIcon />
+										}[header.column.getIsSorted() as string] ?? null}
+									</Button>
+								</Inline>
+							</TableHead>
+						)
+					})}
+				</TableRow>
+			))}
+		</TableHeader>
 	)
 }

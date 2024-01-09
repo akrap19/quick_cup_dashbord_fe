@@ -5,13 +5,14 @@ import { getBarnahuses } from 'api/services/barnahuses'
 import { ROUTES } from 'parameters'
 
 import { columns } from './columns'
+import { Inputs } from './inputs'
 
 const BarnahusesPage = async () => {
 	const barnahuses = await getBarnahuses()
 
 	return barnahuses?.length > 0 ? (
 		<ListWrapper>
-			{/* <Inputs /> */}
+			<Inputs />
 			<DataTable columns={columns} data={barnahuses} />
 		</ListWrapper>
 	) : (

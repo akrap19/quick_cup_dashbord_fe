@@ -5,10 +5,8 @@ import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { ConfirmDialog } from '@/components/custom/confirm-dialog'
 import { FormItems, FormWrapper } from '@/components/custom/layouts/add-form'
 import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdown'
-import { Button } from '@/components/inputs/button'
 import { FormControl } from '@/components/inputs/form-control'
 import { InputInfo } from '@/components/inputs/input-info'
 import { Label } from '@/components/inputs/label'
@@ -21,6 +19,9 @@ import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
 import { requiredString } from 'schemas'
 
+import { CancelAddDialog } from './CancelAddDialog'
+import { ConfirmAddDialog } from './ConfirmAddDialog'
+
 const formSchema = z.object({
 	barnahusName: requiredString.shape.scheme,
 	barnahusLocation: requiredString.shape.scheme
@@ -31,6 +32,7 @@ type Schema = z.infer<typeof formSchema>
 const AddBarnahusPage = () => {
 	const t = useTranslations()
 	const confirmDialog = useOpened()
+	const cancelDialog = useOpened()
 	useNavbarItems({ title: 'Barnahuses.add', backLabel: 'Barnahuses.back' })
 
 	const form = useForm<Schema>({
@@ -49,7 +51,7 @@ const AddBarnahusPage = () => {
 			<FormWrapper>
 				<FormProvider {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
-						<FormItems>
+						<FormItems openCancelDialog={cancelDialog.toggleOpened}>
 							<FormControl name="barnahusName">
 								<FormControl.Label>
 									<RequiredLabel>{t('Barnahuses.barnahusName')}</RequiredLabel>
@@ -87,18 +89,8 @@ const AddBarnahusPage = () => {
 					</form>
 				</FormProvider>
 			</FormWrapper>
-			<ConfirmDialog
-				opened={confirmDialog.opened}
-				title={`${t('Barnahuses.add')}?`}
-				description={t('Barnahuses.addBarnahusDescription')}
-				onClose={confirmDialog.toggleOpened}>
-				<ConfirmDialog.Actions>
-					<Button variant="secondary" onClick={confirmDialog.toggleOpened}>
-						{t('General.cancel')}
-					</Button>
-					<Button onClick={() => {}}>{t('Barnahuses.save&Add')}</Button>
-				</ConfirmDialog.Actions>
-			</ConfirmDialog>
+			<ConfirmAddDialog confirmDialog={confirmDialog} />
+			<CancelAddDialog cancelDialog={cancelDialog} />
 		</>
 	)
 }

@@ -13,7 +13,7 @@ type Props = ComponentProps<typeof TextInput>
 
 export const PasswordInput = ({ hasError, hasSuccess, ...rest }: Props) => {
 	const [passwordVisible, setPasswordVisible] = useState(false)
-
+  
 	const togglePasswordVisibility = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault()
 		setPasswordVisible(!passwordVisible)

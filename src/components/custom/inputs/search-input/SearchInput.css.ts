@@ -25,7 +25,7 @@ export const searchInput = style({
 	width: '100%',
 	height: '2.5rem',
 	outline: 'none',
-	backgroundColor: tokens.colors['neutral.100'],
+	backgroundColor: 'inherit',
 	color: tokens.colors['neutral.900'],
 	paddingLeft: tokens.spacing[9],
 	border: 'unset',

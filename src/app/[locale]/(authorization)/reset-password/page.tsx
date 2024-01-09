@@ -14,14 +14,14 @@ import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
 import { resetPassword } from 'api/services/auth'
-import { confirmPasswordSchema, passwordSchema } from 'schemas'
+import { passwordSchema, requiredString } from 'schemas'
 import { atoms } from 'style/atoms.css'
 
 const formSchema = z
 	.object({
 		currentPassword: passwordSchema.shape.password,
 		newPassword: passwordSchema.shape.password,
-		...confirmPasswordSchema.shape
+		confirmPassword: requiredString.shape.scheme
 	})
 	.refine(data => data.newPassword === data.confirmPassword, {
 		path: ['confirmPassword'],
@@ -88,7 +88,7 @@ const ResetYourPasswordPage = () => {
 								<PasswordInput type="password" placeholder={t('Authorization.newPasswordPlaceholder')} />
 								<FormControl.Message instructionMessage="Authorization.passwordInstructions" />
 							</FormControl>
-							<FormControl name="confirmPassword">
+							<FormControl name="confirmPassword" successMessageString="Authorization.confirmPasswordSuccess">
 								<FormControl.Label>
 									<RequiredLabel>{t('Authorization.confirmPassword')}</RequiredLabel>
 								</FormControl.Label>

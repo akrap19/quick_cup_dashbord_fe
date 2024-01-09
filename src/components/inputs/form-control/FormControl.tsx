@@ -3,6 +3,7 @@ import { ComponentProps, ReactNode } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { getChildByType, overridePropsDeep } from 'react-nanny'
 
+import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdown'
 import { AudioUpload } from '@/components/custom/upload/audio-upload'
 import { PhotoUpload } from '@/components/custom/upload/photo-upload'
 import { CheckIcon } from '@/components/icons/check-icon'
@@ -40,7 +41,8 @@ export const FormControl = ({ name, maxLength, successMessageString, children }:
 		PasswordInput,
 		AudioUpload,
 		PhotoUpload,
-		Checkbox
+		Checkbox,
+		SearchDropdown
 	])
 
 	return (

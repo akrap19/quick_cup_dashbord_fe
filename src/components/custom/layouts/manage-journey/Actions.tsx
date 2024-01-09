@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useFormContext } from 'react-hook-form'
 
@@ -10,11 +9,11 @@ import { Inline } from '@/components/layout/inline'
 import { useJourneyContentStore } from '@/store/journey-content'
 
 import { actions } from './ManageJourney.css'
+import { CancelButton } from '../../button/cancel-button'
 
 export const Actions = () => {
 	const t = useTranslations()
 	const formContext = useFormContext()
-	const router = useRouter()
 	const { currentStep, setCurrentStep } = useJourneyContentStore()
 
 	const handleBack = () => {
@@ -33,9 +32,7 @@ export const Actions = () => {
 					{t('General.next')}
 				</Button>
 			</Inline>
-			<Button variant="secondary" onClick={() => router.back()}>
-				{t('General.cancel')}
-			</Button>
+			<CancelButton />
 		</Box>
 	)
 }

@@ -9,7 +9,7 @@ export const drawer = style({
 	backgroundColor: tokens.colors['neutral.50'],
 	borderRight: tokens.borders.border.thin,
 	borderColor: tokens.borders.color['neutral.300'],
-	zIndex: '100'
+	zIndex: tokens.indices.over
 })
 
 export const drawerItem = style({

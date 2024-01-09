@@ -1,7 +1,7 @@
 import { instance } from 'api/Instance'
-import { Login } from 'api/models/login'
-import { Register } from 'api/models/register'
-import { ResetPassword } from 'api/models/resetPassword'
+import { Login } from 'api/models/auth/login'
+import { Register } from 'api/models/auth/register'
+import { ResetPassword } from 'api/models/auth/resetPassword'
 
 export const register = async (requestData: Register) => {
 	const { data } = await instance.post(`/register`, requestData)

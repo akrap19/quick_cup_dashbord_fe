@@ -14,14 +14,14 @@ import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
 import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
-import { confirmPasswordSchema, emailSchema, passwordSchema } from 'schemas'
+import { emailSchema, passwordSchema, requiredString } from 'schemas'
 import { atoms } from 'style/atoms.css'
 
 const formSchema = z
 	.object({
 		...emailSchema.shape,
 		...passwordSchema.shape,
-		...confirmPasswordSchema.shape
+		confirmPassword: requiredString.shape.scheme
 	})
 	.refine(data => data.password === data.confirmPassword, {
 		path: ['confirmPassword'],

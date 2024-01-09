@@ -1,7 +1,9 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { signIn } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
@@ -12,12 +14,19 @@ import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
 import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
+import { emailSchema, passwordSchema, requiredString } from 'schemas'
 import { atoms } from 'style/atoms.css'
 
-const formSchema = z.object({
-	email: z.string().min(1, { message: 'This field is required' }),
-	password: z.string().min(1, { message: 'This field is required' })
-})
+const formSchema = z
+	.object({
+		...emailSchema.shape,
+		...passwordSchema.shape,
+		confirmPassword: requiredString.shape.scheme
+	})
+	.refine(data => data.password === data.confirmPassword, {
+		path: ['confirmPassword'],
+		message: 'ValidationMeseges.confirmPassword'
+	})
 
 type Schema = z.infer<typeof formSchema>
 
@@ -25,14 +34,35 @@ const RegisterPage = () => {
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
-		mode: 'onBlur',
+		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { email: '', password: '' }
+		defaultValues: { email: '', password: '', confirmPassword: '' }
 	})
 
 	const onSubmit = async (data: Schema) => {
-		console.log(data)
+		try {
+			await signIn('register', data)
+		} catch (error) {
+			console.log(error)
+		}
 	}
+
+	// this is because of bug on zod when password changes it dosen't matches confirm password and without this validation isn't trigered
+	const { password, confirmPassword } = form.watch()
+
+	// Trigger validation on the "confirmPassword" field when the "password" field changes
+	useEffect(() => {
+		if (confirmPassword !== '') {
+			form.trigger('confirmPassword')
+		}
+
+		// Cleans password field of required error to see info label if it is empty
+		if (password === '') {
+			setTimeout(() => {
+				form.clearErrors('password')
+			}, 987)
+		}
+	}, [password])
 
 	return (
 		<>
@@ -54,10 +84,10 @@ const RegisterPage = () => {
 								<FormControl.Label>
 									<RequiredLabel>{t('Authorization.password')}</RequiredLabel>
 								</FormControl.Label>
-								<PasswordInput type="password" placeholder={t('Authorization.newPasswordPlaceholder')} />
-								<FormControl.Message />
+								<PasswordInput placeholder={t('Authorization.newPasswordPlaceholder')} />
+								<FormControl.Message instructionMessage="Authorization.passwordInstructions" />
 							</FormControl>
-							<FormControl name="password">
+							<FormControl name="confirmPassword" successMessageString="Authorization.confirmPasswordSuccess">
 								<FormControl.Label>
 									<RequiredLabel>{t('Authorization.confirmPassword')}</RequiredLabel>
 								</FormControl.Label>
@@ -65,7 +95,9 @@ const RegisterPage = () => {
 								<FormControl.Message />
 							</FormControl>
 						</Stack>
-						<Button type="submit">{t('Authorization.register')}</Button>
+						<Button type="submit" variant="primary" disabled={!form.formState.isValid}>
+							{t('Authorization.register')}
+						</Button>
 					</Stack>
 				</form>
 			</FormProvider>

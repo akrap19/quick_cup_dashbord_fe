@@ -3,8 +3,11 @@ import { ComponentProps, ReactNode } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { getChildByType, overridePropsDeep } from 'react-nanny'
 
+import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdown'
 import { AudioUpload } from '@/components/custom/upload/audio-upload'
 import { PhotoUpload } from '@/components/custom/upload/photo-upload'
+import { CheckIcon } from '@/components/icons/check-icon'
+import { ErrorIcon } from '@/components/icons/error-icon'
 import { Box } from '@/components/layout/box'
 import { Stack } from 'components/layout/stack'
 import { Text } from 'components/typography/text'
@@ -18,9 +21,9 @@ import { Select } from '../select'
 import { Textarea } from '../text-area'
 import { TextInput } from '../text-input'
 
-type Props = { name: string; maxLength?: string; children: ReactNode }
+type Props = { name: string; maxLength?: string; successMessageString?: string; children: ReactNode }
 
-export const FormControl = ({ name, maxLength, children }: Props) => {
+export const FormControl = ({ name, maxLength, successMessageString, children }: Props) => {
 	const {
 		control,
 		formState: { errors },
@@ -38,7 +41,8 @@ export const FormControl = ({ name, maxLength, children }: Props) => {
 		PasswordInput,
 		AudioUpload,
 		PhotoUpload,
-		Checkbox
+		Checkbox,
+		SearchDropdown
 	])
 
 	return (
@@ -47,8 +51,17 @@ export const FormControl = ({ name, maxLength, children }: Props) => {
 			control={control}
 			render={({ field }) => {
 				const errorMessage = errors[field.name]?.message?.toString()
+				const successMessage = !errors[field.name] && field.value && (successMessageString ?? ' ')
 				const overriddenInput = overridePropsDeep(input, () => ({
-					hasError: errors[field.name] !== undefined,
+					hasError: errors[field.name] !== undefined && field.value,
+					hasSuccess: errors[field.name] === undefined && field.value,
+					endIcon: field.value ? (
+						errors[field.name] ? (
+							<ErrorIcon size="medium" color="destructive.500" />
+						) : (
+							<CheckIcon size="medium" color="success.500" />
+						)
+					) : undefined,
 					value: field.value,
 					id: name,
 					name: field.name,
@@ -67,7 +80,7 @@ export const FormControl = ({ name, maxLength, children }: Props) => {
 							length: watch(name)?.length === undefined ? 0 : watch(name)?.length,
 							maxLength
 						}))}
-						{overridePropsDeep(message, () => ({ children: errorMessage }))}
+						{overridePropsDeep(message, () => ({ errorMessage, successMessage }))}
 					</Box>
 				)
 			}}
@@ -94,16 +107,25 @@ FormControl.CharactersCount = ({ length, maxLength }: { length?: number; maxLeng
 	return null
 }
 
-FormControl.Message = ({ children }: { children?: string }) => {
-	if (children) {
-		return (
-			<Box position="absolute" paddingTop={1}>
-				<Text color="destructive.500" fontSize="small">
-					{children}
-				</Text>
-			</Box>
-		)
-	}
+FormControl.Message = ({
+	errorMessage,
+	successMessage,
+	instructionMessage
+}: {
+	errorMessage?: string
+	successMessage?: string
+	instructionMessage?: string
+}) => {
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const t = useTranslations()
+	const labelColor = errorMessage ? 'destructive.500' : successMessage ? 'success.500' : 'neutral.500'
+	const labelMessage = errorMessage || successMessage || instructionMessage
 
-	return null
+	return (
+		<Box position="absolute" paddingTop={1}>
+			<Text color={labelColor} fontSize="small">
+				{t(labelMessage)}
+			</Text>
+		</Box>
+	)
 }

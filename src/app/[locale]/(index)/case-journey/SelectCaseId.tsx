@@ -13,7 +13,7 @@ import { Text } from '@/components/typography/text'
 import { useJourneyContentStore } from '@/store/journey-content'
 
 const formSchema = z.object({
-	caseId: z.string().min(1, { message: 'This field is required' })
+	caseId: z.string().min(1, { message: 'ValidationMeseges.required' })
 })
 
 type Schema = z.infer<typeof formSchema>

@@ -11,10 +11,12 @@ import { TextInput } from '@/components/inputs/text-input'
 import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
+import { forgotPassword } from 'api/services/auth'
+import { emailSchema } from 'schemas'
 import { atoms } from 'style/atoms.css'
 
 const formSchema = z.object({
-	email: z.string().min(1, { message: 'This field is required' })
+	...emailSchema.shape
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -23,13 +25,13 @@ const ForgotPasswordPage = () => {
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
-		mode: 'onBlur',
+		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: { email: '' }
 	})
 
 	const onSubmit = async (data: Schema) => {
-		console.log(data)
+		forgotPassword(data.email)
 	}
 
 	return (
@@ -50,7 +52,9 @@ const ForgotPasswordPage = () => {
 							<TextInput placeholder={t('General.emailPlaceholder')} />
 							<FormControl.Message />
 						</FormControl>
-						<Button type="submit">{t('Authorization.ForgotPassword.sendInstructions')}</Button>
+						<Button type="submit" disabled={!form.formState.isValid}>
+							{t('Authorization.ForgotPassword.sendInstructions')}
+						</Button>
 					</Stack>
 				</form>
 			</FormProvider>

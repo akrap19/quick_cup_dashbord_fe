@@ -1,5 +1,6 @@
 'use client'
 
+import { SessionProvider } from 'next-auth/react'
 import { ReactNode } from 'react'
 
 type Props = {
@@ -7,7 +8,7 @@ type Props = {
 }
 
 const RootLayout = ({ children }: Props) => {
-	return children
+	return <SessionProvider>{children}</SessionProvider>
 }
 
 export default RootLayout

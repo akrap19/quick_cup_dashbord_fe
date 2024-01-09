@@ -15,7 +15,7 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 
 const formSchema = z.object({
-	generalIntrudactionTitle: z.string().min(1, { message: 'This field is required' })
+	generalIntrudactionTitle: z.string().min(1, { message: 'ValidationMeseges.required' })
 })
 
 type Schema = z.infer<typeof formSchema>

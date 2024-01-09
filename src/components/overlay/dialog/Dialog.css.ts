@@ -26,7 +26,8 @@ export const overlay = style({
 	backgroundColor: 'rgba(0, 0, 0, 0.75)',
 	position: 'fixed',
 	inset: 0,
-	animation: `${overlayShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`
+	animation: `${overlayShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
+	zIndex: tokens.indices.over2
 })
 
 export const content = style({
@@ -41,5 +42,6 @@ export const content = style({
 	maxWidth: '600px',
 	maxHeight: '85vh',
 	padding: tokens.spacing[6],
-	animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`
+	animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
+	zIndex: tokens.indices.over2
 })

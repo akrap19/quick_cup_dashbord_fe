@@ -13,6 +13,6 @@ export const passwordSchema = z.object({
 		})
 })
 
-export const confirmPasswordSchema = z.object({
-	confirmPassword: z.string().min(1, { message: 'ValidationMeseges.required' })
+export const requiredString = z.object({
+	scheme: z.string().min(1, { message: 'ValidationMeseges.required' })
 })

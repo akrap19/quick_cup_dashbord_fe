@@ -40,7 +40,7 @@ const ForgotPasswordPage = () => {
 	})
 
 	const onSubmit = async (data: Schema) => {
-		userForgotPassword(data.email)
+		forgotPassword(data.email)
 	}
 
 	return (

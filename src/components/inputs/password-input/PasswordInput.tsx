@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { ComponentProps, useState } from 'react'
+import { ComponentProps, MouseEvent, useState } from 'react'
 
 import { BlockIcon } from '@/components/icons/block-icon'
 import CrossedEyeIcon from '@/components/icons/block-icon/assets/crossed-eye-icon.svg'
@@ -13,8 +13,8 @@ type Props = ComponentProps<typeof TextInput>
 
 export const PasswordInput = ({ hasError, hasSuccess, ...rest }: Props) => {
 	const [passwordVisible, setPasswordVisible] = useState(false)
-
-	const togglePasswordVisibility = (e: any) => {
+  
+	const togglePasswordVisibility = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault()
 		setPasswordVisible(!passwordVisible)
 	}

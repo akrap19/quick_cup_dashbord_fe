@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { signIn } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -14,15 +15,14 @@ import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
 import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
-import { register } from 'api/services/auth'
-import { confirmPasswordSchema, emailSchema, passwordSchema } from 'schemas'
+import { emailSchema, passwordSchema, requiredString } from 'schemas'
 import { atoms } from 'style/atoms.css'
 
 const formSchema = z
 	.object({
 		...emailSchema.shape,
 		...passwordSchema.shape,
-		...confirmPasswordSchema.shape
+		confirmPassword: requiredString.shape.scheme
 	})
 	.refine(data => data.password === data.confirmPassword, {
 		path: ['confirmPassword'],
@@ -49,7 +49,11 @@ const RegisterPage = () => {
 	})
 
 	const onSubmit = async (data: Schema) => {
-		registerUser(data)
+		try {
+			await signIn('register', data)
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	// this is because of bug on zod when password changes it dosen't matches confirm password and without this validation isn't trigered

@@ -1,5 +1,8 @@
+'use client'
+
 import { useTranslations } from 'next-intl'
 import { ReactNode } from 'react'
+import { useFormContext } from 'react-hook-form'
 
 import { Button } from '@/components/inputs/button'
 import { Divider } from '@/components/layout/divider'
@@ -8,12 +11,15 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { tokens } from '@/style/theme.css'
 
+import { CancelButton } from '../../button/cancel-button'
+
 interface Props {
 	children: ReactNode[]
 }
 
 export const FormItems = ({ children }: Props) => {
 	const t = useTranslations()
+	const formContext = useFormContext()
 
 	return (
 		<Stack gap={6}>
@@ -31,8 +37,10 @@ export const FormItems = ({ children }: Props) => {
 			</div>
 			<Divider />
 			<Inline gap={4}>
-				<Button variant="secondary">{t('General.save&Add')}</Button>
-				<Button type="submit">{t('General.cancel')}</Button>
+				<CancelButton />
+				<Button type="submit" disabled={!formContext.formState.isValid}>
+					{t('General.save&Add')}
+				</Button>
 			</Inline>
 		</Stack>
 	)

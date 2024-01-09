@@ -1,27 +1,26 @@
-'use client'
-
 import { ListWrapper } from '@/components/custom/layouts'
+import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { DataTable } from '@/components/data-display/data-table'
-import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { getBarnahuses } from 'api/services/barnahuses'
+import { ROUTES } from 'parameters'
 
 import { columns } from './columns'
-import { dummyData } from './data'
-import { Inputs } from './inputs'
 
-const BarnahusesPage = () => {
-	useNavbarItems({ title: 'General.barnahus', useUserDropdown: true })
+const BarnahusesPage = async () => {
+	const barnahuses = await getBarnahuses()
 
-	return (
-		// <NoListData
-		// 	title="NoListData.letsStart"
-		// 	description="Barnahuses.noListDataDescription"
-		// 	buttonLabel="Barnahuses.add"
-		// 	buttonLink={ROUTES.ADD_BARNAHUS}
-		// />
+	return barnahuses?.length > 0 ? (
 		<ListWrapper>
-			<Inputs />
-			<DataTable columns={columns} data={dummyData} />
+			{/* <Inputs /> */}
+			<DataTable columns={columns} data={barnahuses} />
 		</ListWrapper>
+	) : (
+		<NoListData
+			title="NoListData.letsStart"
+			description="Barnahuses.noListDataDescription"
+			buttonLabel="Barnahuses.add"
+			buttonLink={ROUTES.ADD_BARNAHUS}
+		/>
 	)
 }
 

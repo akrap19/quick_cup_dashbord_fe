@@ -1,5 +1,6 @@
 'use client'
 
+import { SessionProvider } from 'next-auth/react'
 import { ReactNode } from 'react'
 import { QueryClientProvider } from 'react-query'
 
@@ -10,7 +11,7 @@ type Props = {
 }
 
 const RootLayout = ({ children }: Props) => {
-	return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+	return <SessionProvider>{children}</SessionProvider>
 }
 
 export default RootLayout

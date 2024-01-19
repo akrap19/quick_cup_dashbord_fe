@@ -44,7 +44,6 @@ const RearrangeRoom = () => {
 						<Text fontSize="small" color="neutral.800" textAlign="center">
 							{t('CaseJourney.dragToRearrangeDescription')}
 						</Text>
-						{/* <CardContainer /> */}
 						<CardContainer />
 					</Stack>
 				</ManageJourneyIntroWrapper>

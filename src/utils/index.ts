@@ -1,1 +1,1 @@
-export {}
+export { getObjectLength } from './getObjectLength'

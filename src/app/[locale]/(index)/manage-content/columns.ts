@@ -4,7 +4,7 @@ export type ManageContentColumn = {
 	contentType: string
 	updated: string
 	language: string
-	status: number
+	status: string
 }
 
 export const columns: Array<ColumnDef<ManageContentColumn>> = [

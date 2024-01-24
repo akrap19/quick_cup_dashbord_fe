@@ -1,18 +1,18 @@
 export const dummyData = [
 	{
-		practitioner: 'General.barnahus',
-		role: 'Zagreb, croatia'
+		practitioner: 'John Doe',
+		role: 'Pediatrician'
 	},
 	{
-		practitioner: 'General.barnahus',
-		role: 'Zagreb, croatia'
+		practitioner: 'Jane Smith',
+		role: 'Doctor'
 	},
 	{
-		practitioner: 'General.barnahus',
-		role: 'Zagreb, croatia'
+		practitioner: 'Alex Johnson',
+		role: 'Police officer'
 	},
 	{
-		practitioner: 'General.barnahus',
-		role: 'Zagreb, croatia'
+		practitioner: 'Emily Davis',
+		role: 'Psychiatrist'
 	}
 ]

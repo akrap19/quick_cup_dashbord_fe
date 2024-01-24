@@ -1,26 +1,26 @@
 export const dummyData = [
 	{
 		id: '1',
-		status: 'Cool status',
-		snapshot: 'Cool snapshot',
-		updates: 'Cool updates'
+		status: 'Open',
+		snapshot: 'None',
+		updates: '14/12/2023s'
 	},
 	{
 		id: '2',
-		status: 'Cool status',
-		snapshot: 'Cool snapshot',
-		updates: 'Cool updates'
+		status: 'In progress',
+		snapshot: '14/12/2023',
+		updates: '01/07/2023'
 	},
 	{
 		id: '3',
-		status: 'Cool status',
-		snapshot: 'Cool snapshot',
-		updates: 'Cool updates'
+		status: 'Closed',
+		snapshot: 'None',
+		updates: '14/12/2023'
 	},
 	{
 		id: '4',
-		status: 'Cool status',
-		snapshot: 'Cool snapshot',
-		updates: 'Cool updates'
+		status: 'In progress',
+		snapshot: '14/12/2023',
+		updates: '14/12/2023'
 	}
 ]

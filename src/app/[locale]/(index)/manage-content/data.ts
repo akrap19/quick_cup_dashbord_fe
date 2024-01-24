@@ -1,26 +1,26 @@
 export const dummyData = [
 	{
-		contentType: 'General.contentType',
-		updated: 'Zagreb, croatia',
-		language: 'Ivan ivan',
-		status: 666
+		contentType: 'General introduction',
+		updated: '07/09/2023',
+		language: 'English',
+		status: 'Open'
 	},
 	{
-		contentType: 'General.contentType',
-		updated: 'Zagreb, croatia',
-		language: 'Ivan ivan',
-		status: 666
+		contentType: 'What to expect',
+		updated: '07/09/2023',
+		language: 'Croatian',
+		status: 'Closed'
 	},
 	{
-		contentType: 'General.contentType',
-		updated: 'Zagreb, croatia',
-		language: 'Ivan ivan',
-		status: 666
+		contentType: 'What after Barnahus',
+		updated: '07/09/2023',
+		language: 'English',
+		status: 'Open'
 	},
 	{
-		contentType: 'General.contentType',
-		updated: 'Zagreb, croatia',
-		language: 'Ivan ivan',
-		status: 666
+		contentType: 'Working hours',
+		updated: '07/09/2023',
+		language: 'Swedish',
+		status: 'In progress'
 	}
 ]

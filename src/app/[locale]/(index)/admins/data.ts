@@ -1,18 +1,14 @@
 export const dummyData = [
 	{
-		admin: 'General.barnahus',
-		barnahusLocation: 'Zagreb, croatia'
+		admin: 'Karlo Kis',
+		barnahusLocation: 'Zagreb, Croatia'
 	},
 	{
-		admin: 'General.barnahus',
-		barnahusLocation: 'Zagreb, croatia'
+		admin: 'Jon Anderson',
+		barnahusLocation: 'Stockholm, Sweden'
 	},
 	{
-		admin: 'General.barnahus',
-		barnahusLocation: 'Zagreb, croatia'
-	},
-	{
-		admin: 'General.barnahus',
-		barnahusLocation: 'Zagreb, croatia'
+		admin: 'Clara Robinson',
+		barnahusLocation: 'Dublin, Ireland'
 	}
 ]

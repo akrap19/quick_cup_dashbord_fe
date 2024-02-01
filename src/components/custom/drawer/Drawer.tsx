@@ -24,6 +24,7 @@ import { BrandLogo } from '../brand-logo/BrandLogo'
 const drawerItems = [
 	{ label: 'barnahuses', icon: <HouseIcon />, route: ROUTES.BARNAHUSES },
 	{ label: 'admins', icon: <PersonIcon />, route: ROUTES.ADMINS },
+	{ label: 'masterAdmins', icon: <PersonIcon />, route: ROUTES.MASTER_ADMINS },
 	{ label: 'practitioners', icon: <GroupsIcon />, route: ROUTES.PRACTITIONERS },
 	{ label: 'manageContent', icon: <TemplateIcon />, route: ROUTES.MANAGE_CONTENT },
 	{ label: 'caseFiles', icon: <FileIcon />, route: ROUTES.CASE_FILES },

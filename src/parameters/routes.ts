@@ -7,6 +7,8 @@ export const ROUTES = {
 	ADD_BARNAHUS: '/barnahuses/add',
 	ADMINS: '/admins',
 	ADD_ADMINS: '/admins/add',
+	MASTER_ADMINS: '/master-admins',
+	ADD_MASTER_ADMINS: '/master-admins/add',
 	PRACTITIONERS: '/practitioners',
 	ADD_PRACTITIONERS: '/practitioners/add',
 	MANAGE_CONTENT: '/manage-content',

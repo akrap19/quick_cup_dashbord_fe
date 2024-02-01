@@ -9,6 +9,7 @@
 		"barnahusLocation": "Barnahus location",
 		"admin": "Admin",
 		"admins": "Admins",
+		"masterAdmins": "Master-admins",
 		"assignedAdmin": "Assigned Admin",
 		"practitioner": "Practitioner",
 		"practitioners": "Practitioners",
@@ -84,6 +85,7 @@
 		"logIn": "Log in",
 		"remeberMe": "Remeber me",
 		"allGood": "All good.",
+		"invalidLogin": "Your password or/and email are invalid. Try again.",
 		"ResetYourPassword": {
 			"title": "Reset your password",
 			"instructions": "Enter your new password and you are ready to go!"

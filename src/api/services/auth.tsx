@@ -10,7 +10,15 @@ export const register = async (requestData: Register) => {
 }
 
 export const login = async (requestData: Login) => {
-	const { data } = await instance.post(`/login`, requestData)
+	const { data } = await instance.post(`/auth/login`, requestData)
+
+	return data
+}
+
+export const refresh = async (refreshToken: string) => {
+	instance.defaults.headers['refresh-token'] = refreshToken
+
+	const { data } = await instance.post(`/auth/refresh`)
 
 	return data
 }

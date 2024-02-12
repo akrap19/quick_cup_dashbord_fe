@@ -17,6 +17,7 @@ const BarnahusesPage = async () => {
 		</ListWrapper>
 	) : (
 		<NoListData
+			navbarTitle=""
 			title="NoListData.letsStart"
 			description="Barnahuses.noListDataDescription"
 			buttonLabel="Barnahuses.add"

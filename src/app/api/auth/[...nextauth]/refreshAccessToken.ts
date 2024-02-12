@@ -1,5 +1,6 @@
-import { refresh } from 'api/services/auth'
 import { JWT } from 'next-auth/jwt'
+
+import { refresh } from 'api/services/auth'
 
 export const refreshAccessToken = async (token: JWT) => {
 	const response = await refresh(token.refreshToken)
@@ -9,9 +10,9 @@ export const refreshAccessToken = async (token: JWT) => {
 	if (accessToken) {
 		return {
 			...token,
-			accessToken: accessToken,
-			accessTokenExpiresAt: accessTokenExpiresAt,
-			refreshToken: refreshToken
+			accessToken,
+			accessTokenExpiresAt,
+			refreshToken
 		}
 	}
 

@@ -60,7 +60,7 @@ const RegisterPage = () => {
 		if (password === '') {
 			setTimeout(() => {
 				form.clearErrors('password')
-			}, 987)
+			}, 1)
 		}
 	}, [password])
 

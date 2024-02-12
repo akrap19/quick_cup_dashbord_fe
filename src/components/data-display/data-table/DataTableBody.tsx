@@ -1,7 +1,8 @@
 'use client'
 
-import { Table, flexRender } from '@tanstack/react-table'
+import { Cell, Table, flexRender } from '@tanstack/react-table'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 
 import { Checkbox } from '@/components/inputs/checkbox'
@@ -10,7 +11,7 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { columns } from 'app/[locale]/(index)/admins/columns'
 
-import { TableBody, TableCell, TableRow } from '../table'
+import { TableBody, TableCell, TableCellWithLink, TableRow } from '../table'
 
 // eslint-disable-next-line
 interface Props<TData, TValue> {
@@ -19,11 +20,12 @@ interface Props<TData, TValue> {
 
 export const DataTableBody = <TData, TValue>({ table }: Props<TData, TValue>) => {
 	const t = useTranslations()
+	const pathname = usePathname()
 
 	return (
 		<TableBody>
 			{table.getRowModel().rows?.length ? (
-				table.getRowModel().rows.map(row => (
+				table.getRowModel().rows.map((row: any) => (
 					<TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
 						<TableCell>
 							<Checkbox
@@ -32,8 +34,10 @@ export const DataTableBody = <TData, TValue>({ table }: Props<TData, TValue>) =>
 								onChange={row.getToggleSelectedHandler()}
 							/>
 						</TableCell>
-						{row.getVisibleCells().map(cell => (
-							<TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+						{row.getVisibleCells().map((cell: Cell<TData, unknown>) => (
+							<TableCellWithLink key={cell.id} href={`${pathname}/${row.original?.id}`}>
+								{flexRender(cell.column.columnDef.cell, cell.getContext())}
+							</TableCellWithLink>
 						))}
 					</TableRow>
 				))

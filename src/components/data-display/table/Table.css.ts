@@ -61,11 +61,20 @@ export const tableHead = style({
 	}
 })
 
-export const tableCell = style({
-	padding: `${tokens.spacing[4]} ${tokens.spacing[6]}`,
+const tableCellStyle = {
 	borderLeft: border.border,
 	borderColor: border.borderColor,
-	fontWeight: tokens.typography.weight.regular,
+	fontWeight: tokens.typography.weight.regular
+}
+
+export const tableCell = style({
+	padding: `${tokens.spacing[4]} ${tokens.spacing[6]}`,
+	...tableCellStyle,
+	...font
+})
+
+export const tableCellWithLink = style({
+	...tableCellStyle,
 	...font
 })
 

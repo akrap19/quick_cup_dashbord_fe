@@ -1,28 +1,40 @@
-'use client'
-
 import { ListWrapper } from '@/components/custom/layouts'
+import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { DataTable } from '@/components/data-display/data-table'
-import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { replaceNullInListWithDash } from '@/utils/replaceNullInListWithDash'
+import { getMasterAdmins } from 'api/services/masterAdmins'
+import { ROUTES } from 'parameters/routes'
 
 import { columns } from './columns'
-import { dummyData } from './data'
 import { Inputs } from './inputs'
 
-const AdminsPage = () => {
-	useNavbarItems({ title: 'General.admins', useUserDropdown: true })
+interface Props {
+	searchParams: {
+		search: string
+		location: string
+		page: number
+		limit: number
+	}
+}
 
-	return (
-		// <NoListData
-		// 	title="Admins.noListDataTitle"
-		// 	description="Admins.noListDataDescription"
-		// 	buttonLabel="Admins.add"
-		// 	buttonLink={ROUTES.ADD_ADMINS}
-		// />
+const MasterAdminsPage = async ({ searchParams }: Props) => {
+	const { data: masterAdminsData } = await getMasterAdmins(searchParams)
+	const isInitialListEmpty = masterAdminsData?.users.length === 0 && !searchParams.search && !searchParams.location
+
+	return isInitialListEmpty ? (
+		<NoListData
+			navbarTitle="General.masterAdmins"
+			title="MasterAdmins.noListDataTitle"
+			description="MasterAdmins.noListDataDescription"
+			buttonLabel="MasterAdmins.add"
+			buttonLink={ROUTES.ADD_MASTER_ADMINS}
+		/>
+	) : (
 		<ListWrapper>
-			<Inputs />
-			<DataTable columns={columns} data={dummyData} />
+			<Inputs data={masterAdminsData?.users} />
+			<DataTable columns={columns} data={replaceNullInListWithDash(masterAdminsData?.users)} />
 		</ListWrapper>
 	)
 }
 
-export default AdminsPage
+export default MasterAdminsPage

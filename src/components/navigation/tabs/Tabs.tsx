@@ -1,7 +1,7 @@
 'use client'
 
 import clsx from 'clsx'
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, useEffect } from 'react'
 import { getChildrenByType } from 'react-nanny'
 
 import * as styles from './Tabs.css'
@@ -13,6 +13,7 @@ interface Props {
 
 interface Tab {
 	value: string
+	defaultTab?: boolean
 	children: ReactNode
 }
 
@@ -38,9 +39,16 @@ export const Tabs: FC<Props> & TabsComposition = ({ children }: Props) => {
 	)
 }
 
-Tabs.Tab = ({ value, children }: Tab) => {
+Tabs.Tab = ({ value, children, defaultTab }: Tab) => {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const { activeTab, onActiveTabChange } = useTabsProvider()
+
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	useEffect(() => {
+		if (defaultTab) {
+			onActiveTabChange(value)
+		}
+	}, [])
 
 	return (
 		<button

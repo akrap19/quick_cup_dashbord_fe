@@ -1,4 +1,7 @@
+import Link from 'next/link'
 import * as React from 'react'
+
+import { Box } from '@/components/layout/box'
 
 import * as styles from './Table.css'
 
@@ -39,9 +42,23 @@ const TableCell = React.forwardRef<HTMLTableCellElement, React.TdHTMLAttributes<
 )
 TableCell.displayName = 'TableCell'
 
+const TableCellWithLink = React.forwardRef<
+	HTMLTableCellElement,
+	React.TdHTMLAttributes<HTMLTableCellElement> & { href: string }
+>(({ href, ...props }, ref) => (
+	<td ref={ref} className={styles.tableCellWithLink} {...props}>
+		<Link href={href} style={{ color: 'inherit', textDecoration: 'none' }}>
+			<Box paddingY={4} paddingX={6}>
+				{props.children}
+			</Box>
+		</Link>
+	</td>
+))
+TableCellWithLink.displayName = 'TableCellWithLink'
+
 const TableCaption = React.forwardRef<HTMLTableCaptionElement, React.HTMLAttributes<HTMLTableCaptionElement>>(
 	({ ...props }, ref) => <caption ref={ref} className={styles.tableCaption} {...props} />
 )
 TableCaption.displayName = 'TableCaption'
 
-export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption }
+export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCellWithLink, TableCaption }

@@ -5,6 +5,7 @@ import { Drawer } from '@/components/custom/drawer'
 import { Navbar } from '@/components/custom/navbar'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
+import { getSettings } from 'api/services/settings'
 
 export const metadata: Metadata = {
 	title: 'Journeys | Dashboard',
@@ -12,12 +13,14 @@ export const metadata: Metadata = {
 }
 
 const DashboardLayout = async ({ children }: { children: ReactNode }) => {
+	const { data: settings } = await getSettings()
+
 	return (
 		<>
 			<Drawer />
 			<Box flex="1">
 				<Stack>
-					<Navbar />
+					<Navbar settings={settings} />
 					<Box display="flex" align="center">
 						{children}
 					</Box>

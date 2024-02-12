@@ -1,8 +1,10 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
@@ -15,17 +17,14 @@ import { TextInput } from '@/components/inputs/text-input'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
-import { ROUTES } from 'parameters'
-import { emailSchema, requiredString } from 'schemas'
-import { atoms } from 'style/atoms.css'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
 import { useLoading } from '@/hooks/use-loading'
+import { ROUTES } from 'parameters'
+import { emailSchema, passwordSchema } from 'schemas'
+import { atoms } from 'style/atoms.css'
 
 const formSchema = z.object({
 	...emailSchema.shape,
-	// ...passwordSchema.shape,
-	password: requiredString.shape.scheme,
+	...passwordSchema.shape,
 	remeberMe: z.boolean()
 })
 

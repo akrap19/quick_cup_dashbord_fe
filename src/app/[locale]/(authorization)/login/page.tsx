@@ -1,8 +1,10 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
@@ -15,6 +17,7 @@ import { TextInput } from '@/components/inputs/text-input'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
+import { useLoading } from '@/hooks/use-loading'
 import { ROUTES } from 'parameters'
 import { emailSchema, passwordSchema } from 'schemas'
 import { atoms } from 'style/atoms.css'
@@ -29,6 +32,8 @@ type Schema = z.infer<typeof formSchema>
 
 const LoginPage = () => {
 	const t = useTranslations()
+	const { push } = useRouter()
+	const loading = useLoading()
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
@@ -37,12 +42,28 @@ const LoginPage = () => {
 	})
 
 	const onSubmit = async (data: Schema) => {
-		try {
-			await signIn('login', data)
-		} catch (error) {
-			console.log(error)
+		loading.toggleLoading()
+		const result = await signIn('login', { ...data, redirect: false })
+
+		if (result?.status === 200) {
+			push(ROUTES.HOME)
+		} else {
+			loading.toggleLoading()
+			form.setError('email', {
+				type: 'manual'
+			})
+			form.setError('password', {
+				type: 'manual',
+				message: 'Authorization.invalidLogin'
+			})
 		}
 	}
+
+	useEffect(() => {
+		if (form.formState.isValid && Object.keys(form.formState.errors).length > 0) {
+			form.clearErrors()
+		}
+	}, [form.formState.isValid])
 
 	return (
 		<>
@@ -80,8 +101,8 @@ const LoginPage = () => {
 								</Button>
 							</Inline>
 						</Stack>
-						<Button type="submit" disabled={!form.formState.isValid}>
-							{t('Authorization.logIn')}
+						<Button type="submit" disabled={!form.formState.isValid || loading.isLoading}>
+							{loading.isLoading ? 'Loading...' : t('Authorization.logIn')}
 						</Button>
 					</Stack>
 				</form>

@@ -10,11 +10,17 @@ import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
+import { Settings } from 'api/models/settings/settings'
 import { useNavbarItemsStore } from 'store/navbar'
 
 import * as styles from './Navbar.css'
+import { UserDropdown } from '../user-dropdown'
 
-export const Navbar = () => {
+interface Props {
+	settings: Settings
+}
+
+export const Navbar = ({ settings }: Props) => {
 	const router = useRouter()
 	const t = useTranslations()
 	const { navbarItems } = useNavbarItemsStore()
@@ -35,7 +41,7 @@ export const Navbar = () => {
 			)}
 			<Box width="100%">
 				<Inline justifyContent="space-between" alignItems="flex-start">
-					<Heading variant="h2" textTransform="capitalize" lineHeight="medium" color="neutral.800">
+					<Heading variant="h2" lineHeight="medium" color="neutral.800">
 						{t(navbarItems?.title ?? 'General.loading')}
 					</Heading>
 					{navbarItems?.actionButton && <Box style={{ marginTop: '-1rem' }}>{navbarItems?.actionButton}</Box>}
@@ -47,6 +53,11 @@ export const Navbar = () => {
 								</Text>
 								<LocationIcon />
 							</Inline>
+						</Box>
+					)}
+					{navbarItems?.useUserDropdown && (
+						<Box style={{ marginTop: '-0.5rem' }}>
+							<UserDropdown settings={settings} />
 						</Box>
 					)}
 				</Inline>

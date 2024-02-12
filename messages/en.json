@@ -9,6 +9,8 @@
 		"barnahusLocation": "Barnahus location",
 		"admin": "Admin",
 		"admins": "Admins",
+		"masterAdmin": "Master-admin",
+		"masterAdmins": "Master-admins",
 		"assignedAdmin": "Assigned Admin",
 		"practitioner": "Practitioner",
 		"practitioners": "Practitioners",
@@ -35,6 +37,7 @@
 		"personalInfo": "Personal info",
 		"id": "ID",
 		"photos": "Photos",
+		"profileSettings": "Profile settings",
 		"select": "Select",
 		"search": "Search",
 		"lastJourneySnapshot": "Last Journey snapshot",
@@ -46,27 +49,34 @@
 		"back": "Back",
 		"edit": "Edit",
 		"delete": "Delete",
+		"saveChanges": "Save changes",
 		"stay": "Stay",
 		"staff": "Staff",
 		"rooms": "Rooms",
 		"characters": " characters",
+		"logOut": "Log out",
 		"requiredFieldWarning": "Fields marked with an asterisk (*) indicate their mandatory nature.",
 		"uploadAudio": "Upload audio",
 		"maxPhotoUploadCountinstructions": "Upload max 10 photos",
 		"photoUploadInstructions": "(max size per photo 2 MB, .jpg)",
 		"audio": "Audio",
 		"clearSection": "Clear selection",
+		"reset": "Reset",
 		"generalIntroduction": "General introduction",
 		"noResoultMessage": "No results matched your search",
 		"cancelDescription": "If you cancel, all your data <important>will be lost</important>, and you'll need to start over.",
-		"itemsSelectedMessage": "{count, plural, =0 {no followers yet} =1 {# item selected} other {# items selected}}."
+		"itemsSelectedMessage": "{count, plural, =0 {no followers yet} =1 {# item selected} other {# items selected}}.",
+		"fullNameNotDefined": "Full name not defined",
+		"assignedBarnahusPlaceholder": "No Barnahus assigned yet.",
+		"assignedBarnahusInfoText": "Once the Barnahus is added it will be assigned to this Master-admin, and the information will appear here."
 	},
 	"Languages": { "en": "English", "se": "Swedish" },
 	"ValidationMeseges": {
 		"required": "This field is required.",
 		"email": "Invalid email. Please try again.",
 		"password": "Please make sure your password meets the criteria.",
-		"confirmPassword": "Please make sure your passwords match."
+		"confirmPassword": "Please make sure your passwords match.",
+		"phone": "Invalid phone number. Please try again."
 	},
 	"Authorization": {
 		"password": "Password",
@@ -84,6 +94,7 @@
 		"logIn": "Log in",
 		"remeberMe": "Remeber me",
 		"allGood": "All good.",
+		"invalidLogin": "Your password or/and email are invalid. Try again.",
 		"ResetYourPassword": {
 			"title": "Reset your password",
 			"instructions": "Enter your new password and you are ready to go!"
@@ -123,6 +134,17 @@
 		"searchAdmin": "Search Admin",
 		"noListDataTitle": "Add Barnahus Admin/s",
 		"noListDataDescription": "For this Barnahus you are able to add multiple Admins. This individual will be in charge of overseeing content for this specific Barnahus and adding their Practitioners to it."
+	},
+	"MasterAdmins": {
+		"add": "Add Master-admin",
+		"edit": "Edit Master-admin",
+		"back": "Back to Master-admins",
+		"searchMasterAdmin": "Search Master-admin",
+		"successfullyCreated": "Master admin successfully created!",
+		"successfullyDeleted": "Master admin successfully deleted!",
+		"successfullBulkDelete": "Master admins successfully deleted!",
+		"noListDataTitle": "Add Barnahus Master-admins",
+		"noListDataDescription": "Add an Master-admin for every Barnahus you want to include. This individual will be in charge of overseeing content for that specific Barnahus and adding their Admins to it."
 	},
 	"Practitioners": {
 		"add": "Add Practitioners",
@@ -185,5 +207,21 @@
 		"dragToRearrangeDescription": "Rearrange the rooms at Barnahus based on each case's needs. You can delete any unrelevant rooms.",
 		"whatToExpect": "What to expect",
 		"contactInforamtion": "Contact information"
+	},
+	"Settings": {
+		"personalInfoSuccessfullyUpdated": "Personal info successfully updated!",
+		"barnahusPlacehoder": "Barnahus is not defined",
+		"updatePassword": "Update password",
+		"passwordSuccessfullyUpdated": "Password successfully updated!",
+		"emailInstructions": "To utilize your new email, it is essential to verify the updated address, as this will be the required login credential for access.",
+		"currentEmail": "Current email",
+		"currentEmailPlaceholder": "Enter current email",
+		"newEmail": "New email",
+		"newEmailPlaceholder": "Enter new email",
+		"verifyNewEmail": "Verify new email",
+		"emailVerificationDialogTitle": "New email address",
+		"emailVerificationDialogDescription": "To start using your new email, just verify the updated address as your new login. After confirming, log in again to update the email in your settings.",
+		"sendVerification": "Send verification",
+		"verificationSuccessfullySent": "Verification successfully sent!"
 	}
 }

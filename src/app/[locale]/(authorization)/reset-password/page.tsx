@@ -56,7 +56,7 @@ const ResetYourPasswordPage = () => {
 		if (newPassword === '') {
 			setTimeout(() => {
 				form.clearErrors('newPassword')
-			}, 987)
+			}, 1)
 		}
 	}, [newPassword])
 

@@ -16,3 +16,7 @@ export const passwordSchema = z.object({
 export const requiredString = z.object({
 	scheme: z.string().min(1, { message: 'ValidationMeseges.required' })
 })
+
+export const phoneNumberScheme = z.object({
+	phone: z.string().regex(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9]){3,}$/, 'ValidationMeseges.phone')
+})

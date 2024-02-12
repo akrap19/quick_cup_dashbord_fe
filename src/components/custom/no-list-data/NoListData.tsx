@@ -6,13 +6,15 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
+import { useNavbarItems } from '@/hooks/use-navbar-items'
 
 import { AddButton } from '../button/add-button'
 
-type NoListDataProps = { title: string; description: string; buttonLabel: string; buttonLink: string }
+type Props = { navbarTitle: string; title: string; description: string; buttonLabel: string; buttonLink: string }
 
-export const NoListData = ({ title, description, buttonLabel, buttonLink }: NoListDataProps) => {
+export const NoListData = ({ navbarTitle, title, description, buttonLabel, buttonLink }: Props) => {
 	const t = useTranslations()
+	useNavbarItems({ title: navbarTitle, useUserDropdown: true })
 
 	return (
 		<Box display="flex" align="center" justify="center" width="100%">

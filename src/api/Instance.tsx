@@ -1,10 +1,34 @@
 import axios from 'axios'
+import { getServerSession } from 'next-auth/next'
+import qs from 'query-string'
 
-export const instance = axios.create({ baseURL: 'https://test.com' })
+import { authOptions } from 'app/api/auth/[...nextauth]/auth'
+
+export const instance = axios.create({ baseURL: 'https://barnahus-journeys-be-dev-pjqvrfz4wa-lz.a.run.app/' })
 
 export const axiosInstanceWithToken = axios.create({
-	baseURL: 'https://test.com'
+	baseURL: 'https://barnahus-journeys-be-dev-pjqvrfz4wa-lz.a.run.app/'
 })
 
-const token = ''
-axiosInstanceWithToken.defaults.headers.common.Authorization = `Bearer ${token}`
+export const setToken = (token: string) => {
+	axiosInstanceWithToken.defaults.headers.common.Authorization = `Bearer ${token}`
+}
+
+export const fetchWithToken = async (endpoint: string, queryParams?: any) => {
+	const session = await getServerSession(authOptions)
+
+	const baseUrl = 'https://barnahus-journeys-be-dev-pjqvrfz4wa-lz.a.run.app/'
+
+	const url = qs.stringifyUrl({
+		url: baseUrl + endpoint,
+		query: queryParams
+	})
+
+	const headers: any = {
+		Authorization: `Bearer ${session?.accessToken}`
+	}
+
+	return fetch(url, {
+		headers
+	})
+}

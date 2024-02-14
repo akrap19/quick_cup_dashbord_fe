@@ -11,7 +11,7 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 
-const BarnahusDetailsPage = () => {
+const BarnahusDetailsPage = ({ params }: { params: { id: string } }) => {
 	const t = useTranslations()
 	useNavbarItems({
 		title: 'Barnahus name',
@@ -19,6 +19,7 @@ const BarnahusDetailsPage = () => {
 		actionButton: <EditButton buttonLabel="Barnahuses.edit" buttonLink="/" />
 	})
 
+	console.log('router.query.slug', params.id)
 	return (
 		<DetailsWrapper>
 			<Stack gap={4}>

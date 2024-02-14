@@ -58,7 +58,7 @@ export const EmailForm = ({ settings }: Props) => {
 		<Box paddingTop={6}>
 			<Box padding={6} backgroundColor="neutral.50" border="thin" borderColor="neutral.300">
 				<FormProvider {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)}>
+					<form>
 						<Stack gap={4}>
 							<Box paddingRight={3} paddingBottom={7}>
 								<Columns>

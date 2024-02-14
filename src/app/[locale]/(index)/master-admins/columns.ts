@@ -1,12 +1,8 @@
 import type { ColumnDef } from '@tanstack/react-table'
 
-export type MasterAdminsColumn = {
-	id: string
-	name: string
-	location: string
-}
+import { Admins } from 'api/models/admin/Admins'
 
-export const columns: Array<ColumnDef<MasterAdminsColumn>> = [
+export const columns: Array<ColumnDef<Admins>> = [
 	{ accessorKey: 'name', header: 'General.masterAdmin' },
 	{ accessorKey: 'location', header: 'General.barnahusLocation' }
 ]

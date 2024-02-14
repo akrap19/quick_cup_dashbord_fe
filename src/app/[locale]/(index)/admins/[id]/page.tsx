@@ -9,7 +9,7 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 
-const AdminsDetailsPage = () => {
+const AdminsDetailsPage = ({ params }: { params: { id: string } }) => {
 	const t = useTranslations()
 	useNavbarItems({
 		title: 'Admin name',
@@ -17,6 +17,7 @@ const AdminsDetailsPage = () => {
 		actionButton: <EditButton buttonLabel="Admins.edit" buttonLink="/" />
 	})
 
+	console.log('router.query.slug', params.id)
 	return (
 		<DetailsWrapper>
 			<Stack gap={4}>

@@ -19,7 +19,6 @@ interface Props {
 export const FormItems = ({ children, openCancelDialog }: Props) => {
 	const t = useTranslations()
 	const formContext = useFormContext()
-
 	const handleCancel = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault()
 		if (openCancelDialog) {

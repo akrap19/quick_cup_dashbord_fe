@@ -1,5 +1,6 @@
 {
 	"General": {
+		"addAndInvite": "Add and invite",
 		"email": "Email",
 		"emailPlaceholder": "e.g. john.doe@gmail.com",
 		"barnahus": "Barnahus",
@@ -10,6 +11,7 @@
 		"admin": "Admin",
 		"admins": "Admins",
 		"masterAdmin": "Master-admin",
+		"masterAdminPlaceholder": "Select Master-Admin",
 		"masterAdmins": "Master-admins",
 		"assignedAdmin": "Assigned Admin",
 		"practitioner": "Practitioner",
@@ -122,6 +124,8 @@
 		"barnahusLocation": "Barnahus location",
 		"assignedMasterAdmin": "Assigned master admin",
 		"assignedMasterAdminPlaceholder": "No Master-admin assigned yet.",
+		"successfullyDeleted": "Admin successfully deleted!",
+		"successfullBulkDelete": "Admins successfully deleted!",
 		"save&Add": "Save & Add Barnahus",
 		"addBarnahusDescription": "Please note that this added Barnahus will have one Master-admin dedicated to managing its content exclusively for this location.",
 		"assignedMasterAdminInfoText": "Once the assigned Master-admin for this Barnahus is added, the name will appear here.",
@@ -129,22 +133,31 @@
 	},
 	"Admins": {
 		"add": "Add Admin",
+		"addNew": "Add new Admin",
 		"edit": "Edit Admin",
 		"back": "Back to Admins",
 		"searchAdmin": "Search Admin",
 		"noListDataTitle": "Add Barnahus Admin/s",
-		"noListDataDescription": "For this Barnahus you are able to add multiple Admins. This individual will be in charge of overseeing content for this specific Barnahus and adding their Practitioners to it."
+		"cancelAdd": "Cancel adding new Admin",
+		"successfullyCreated": "Admin successfully created!",
+		"successfullyDeleted": "Admin successfully deleted!",
+		"successfullBulkDelete": "Admins successfully deleted!",
+		"noListDataDescription": "For this Barnahus you are able to add multiple Admins. This individual will be in charge of overseeing content for this specific Barnahus and adding their Practitioners to it.",
+		"addAdminDescription": "Please note that <important>the Admin will receive an email invitation,</important> which will grant them access to the Journeys dashboard."
 	},
 	"MasterAdmins": {
 		"add": "Add Master-admin",
+		"addNew": "Add new Master-admin",
 		"edit": "Edit Master-admin",
 		"back": "Back to Master-admins",
+		"cancelAdd": "Cancel adding new Master-admin",
 		"searchMasterAdmin": "Search Master-admin",
 		"successfullyCreated": "Master admin successfully created!",
 		"successfullyDeleted": "Master admin successfully deleted!",
 		"successfullBulkDelete": "Master admins successfully deleted!",
 		"noListDataTitle": "Add Barnahus Master-admins",
-		"noListDataDescription": "Add an Master-admin for every Barnahus you want to include. This individual will be in charge of overseeing content for that specific Barnahus and adding their Admins to it."
+		"noListDataDescription": "Add an Master-admin for every Barnahus you want to include. This individual will be in charge of overseeing content for that specific Barnahus and adding their Admins to it.",
+		"addMasterAdminDescription": "Please note that <important>the Master-admin will receive an email invitation,</important> which will grant them access to the Journeys dashboard."
 	},
 	"Practitioners": {
 		"add": "Add Practitioners",

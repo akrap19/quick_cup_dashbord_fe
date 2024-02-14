@@ -1,6 +1,5 @@
-export interface Barnahus {
+export interface Admins {
 	id: string
 	name: string
 	location: string
-	admin?: string
 }

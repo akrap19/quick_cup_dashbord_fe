@@ -9,7 +9,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 import { Button } from '@/components/inputs/button'
-import { Checkbox } from '@/components/inputs/checkbox'
 import { FormControl } from '@/components/inputs/form-control'
 import { PasswordInput } from '@/components/inputs/password-input'
 import { RequiredLabel } from '@/components/inputs/required-label'
@@ -24,8 +23,7 @@ import { atoms } from 'style/atoms.css'
 
 const formSchema = z.object({
 	...emailSchema.shape,
-	...passwordSchema.shape,
-	remeberMe: z.boolean()
+	...passwordSchema.shape
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -38,7 +36,7 @@ const LoginPage = () => {
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { email: '', password: '', remeberMe: false }
+		defaultValues: { email: '', password: '' }
 	})
 
 	const onSubmit = async (data: Schema) => {
@@ -92,10 +90,7 @@ const LoginPage = () => {
 									<FormControl.Message />
 								</FormControl>
 							</Stack>
-							<Inline justifyContent="space-between" alignItems="center">
-								<FormControl name="remeberMe">
-									<Checkbox checked={form.watch('remeberMe')} label={t('Authorization.remeberMe')} />
-								</FormControl>
+							<Inline justifyContent="flex-end" alignItems="center">
 								<Button variant="adaptive" href={ROUTES.FORGOT_PASSWORD} size="small">
 									{t('Authorization.forgotPassword')}
 								</Button>

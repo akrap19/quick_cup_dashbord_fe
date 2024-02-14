@@ -1,28 +1,44 @@
-import { Barnahus } from 'api/models/barnahuses/barnahus'
+import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
+import { BarnahusPayload } from 'api/models/barnahuses/barnahusesPayload'
 
-export const getBarnahuses = async (): Promise<Array<Barnahus>> => {
-	return [
-		{
-			id: '1234541245',
-			name: 'Zagreb 1',
-			location: 'Zagreb',
-			assignedAdmin: 'Karlo Kis',
-			numberOfPractitioners: 8
-		},
-		{
-			id: '1234541245',
+interface Query {
+	search: string
+	page: number
+	limit: number
+}
 
-			name: 'Stockholm 2',
-			location: 'Stockholm',
-			assignedAdmin: 'Jon Anderson',
-			numberOfPractitioners: 12
-		},
-		{
-			id: '1234541245',
-			name: 'Dublin care',
-			location: 'Dublin',
-			assignedAdmin: 'Clara Robinson',
-			numberOfPractitioners: 9
-		}
-	]
+export const getBarnahuses = async (query: Query) => {
+	const queryParams = {
+		search: query.search,
+		page: query.page ?? 1,
+		limit: query.limit ?? 10
+	}
+
+	const response = await fetchWithToken(`barnahus`, queryParams)
+
+	return response.json()
+}
+
+export const createBarnahus = async (barnahus: BarnahusPayload) => {
+	const { data } = await axiosInstanceWithToken.post(`/barnahus`, barnahus)
+
+	return data
+}
+
+export const updateBarnahus = async (barnahus: BarnahusPayload) => {
+	const { data } = await axiosInstanceWithToken.patch(`/barnahus`, barnahus)
+
+	return data
+}
+
+export const deleteBarnahus = async (id: string) => {
+	const { data } = await axiosInstanceWithToken.delete(`/barnahus`, { data: { id } })
+
+	return data
+}
+
+export const deleteBarnahuses = async (ids: string[]) => {
+	const { data } = await axiosInstanceWithToken.delete(`/barnahus/bulk`, { data: { ids } })
+
+	return data
 }

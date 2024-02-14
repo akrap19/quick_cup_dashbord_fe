@@ -10,15 +10,22 @@ import { SearchInput } from '@/components/custom/inputs/search-input'
 import { DataTableActions } from '@/components/data-display/data-table/DataTableActions'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useTableStore } from '@/store/table'
+import { Barnahus } from 'api/models/barnahuses/barnahus'
+import { deleteBarnahus, deleteBarnahuses } from 'api/services/barnahuses'
 import { ROUTES } from 'parameters/routes'
 
-export const Inputs = () => {
+interface Props {
+	data: Barnahus[]
+}
+
+export const Inputs = ({ data }: Props) => {
 	const t = useTranslations()
 	const searchParams = useSearchParams()
-	const { checkedItemsLength } = useTableStore()
-	const { push } = useRouter()
+	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
+	const { push, refresh } = useRouter()
 	useNavbarItems({ title: 'General.barnahus', useUserDropdown: true })
 
 	const handleFilterChange = (filter: string, value: string) => {
@@ -37,6 +44,23 @@ export const Inputs = () => {
 
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)
 
+	const handleDelete = async () => {
+		const indexes = Object.keys(checkedItems)
+		const ids = indexes.map(index => {
+			const numericIndex = parseInt(index, 10)
+			return data[numericIndex].id
+		})
+
+		const isDeleteBulk = ids.length > 1
+		const result = await (isDeleteBulk ? deleteBarnahuses(ids) : deleteBarnahus(ids[0]))
+
+		if (result?.message === 'OK') {
+			SuccessToast(t(isDeleteBulk ? 'Barnahuses.successfullBulkDelete' : 'Barnahuses.successfullyDeleted'))
+			clearCheckedItems()
+			refresh()
+		}
+	}
+
 	return (
 		<div>
 			{checkedItemsLength === 0 ? (
@@ -52,7 +76,7 @@ export const Inputs = () => {
 					<AddButton buttonLabel={t('Barnahuses.add')} buttonLink={ROUTES.ADD_BARNAHUS} />
 				</Inline>
 			) : (
-				<DataTableActions onDelete={() => {}} />
+				<DataTableActions onDelete={handleDelete} />
 			)}
 		</div>
 	)

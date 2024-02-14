@@ -9,7 +9,7 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 
-const AdminsDetailsPage = ({ params }: { params: { id: string } }) => {
+const MasterAdminsDetailsPage = ({ params }: { params: { id: string } }) => {
 	const t = useTranslations()
 	useNavbarItems({
 		title: 'Admin name',
@@ -54,4 +54,4 @@ const AdminsDetailsPage = ({ params }: { params: { id: string } }) => {
 	)
 }
 
-export default AdminsDetailsPage
+export default MasterAdminsDetailsPage

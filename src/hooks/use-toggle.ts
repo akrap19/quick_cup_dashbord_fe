@@ -2,7 +2,12 @@
 
 import { useState } from 'react'
 
-export const useOpened = () => {
+export interface OpenedProps {
+	opened: boolean
+	toggleOpened: () => void
+}
+
+export const useOpened = (): OpenedProps => {
 	const [opened, setOpened] = useState(false)
 
 	const toggleOpened = () => {

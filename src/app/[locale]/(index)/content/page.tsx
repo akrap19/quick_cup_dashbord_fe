@@ -7,7 +7,7 @@ import { Inputs } from './inputs'
 
 // type DataTableProps = ComponentProps<typeof DataTable>
 
-const ManageContentPage = () => {
+const ContentPage = () => {
 	return (
 		// <NoListData
 		// 	title="NoListData.letsStart"
@@ -22,4 +22,4 @@ const ManageContentPage = () => {
 	)
 }
 
-export default ManageContentPage
+export default ContentPage

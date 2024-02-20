@@ -1,5 +1,5 @@
 import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
-import { AdminPayload } from 'api/models/admin/AdminPayload'
+import { AdminPayload } from 'api/models/admin/adminPayload'
 
 interface Query {
 	search: string
@@ -31,6 +31,12 @@ export const updateMasterAdmin = async (masterAdmin: AdminPayload) => {
 	const { data } = await axiosInstanceWithToken.patch(`/master-admin`, masterAdmin)
 
 	return data
+}
+
+export const getMasterAdmin = async (id: string) => {
+	const response = await fetchWithToken(`master-admin/${id}`)
+
+	return response.json()
 }
 
 export const deleteMasterAdmin = async (id: string) => {

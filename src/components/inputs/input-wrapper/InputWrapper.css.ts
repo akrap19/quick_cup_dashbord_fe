@@ -5,7 +5,12 @@ import { tokens } from 'style/theme.css'
 
 const activeBorder = { borderColor: tokens.colors['primary.300'], boxShadow: tokens.shadows.xlarge }
 const placeholder = { color: tokens.colors['neutral.300'] }
-const disabled = { borderColor: tokens.colors['neutral.300'], color: tokens.colors['neutral.500'], opacity: '0.75' }
+const disabled = {
+	borderColor: tokens.colors['neutral.300'],
+	color: tokens.colors['neutral.500'],
+	boxShadow: 'unset',
+	opacity: '0.75'
+}
 const hasError = { borderColor: tokens.colors['destructive.500'] }
 const hasSuccess = { borderColor: tokens.colors['success.500'] }
 
@@ -42,14 +47,16 @@ export const inputHasError = style({
 	...hasError,
 	':hover': hasError,
 	':focus': hasError,
-	':active': hasError
+	':active': hasError,
+	':disabled': disabled
 })
 
 export const inputHasSuccess = style({
 	...hasSuccess,
 	':hover': hasSuccess,
 	':focus': hasSuccess,
-	':active': hasSuccess
+	':active': hasSuccess,
+	':disabled': disabled
 })
 
 export const iconSlot = style({

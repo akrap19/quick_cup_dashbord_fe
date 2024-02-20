@@ -44,6 +44,13 @@ export const Inputs = ({ data }: Props) => {
 
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)
 
+	const handleEdit = () => {
+		const index = Object.keys(checkedItems)
+		const numericIndex = parseInt(index[0], 10)
+
+		push(ROUTES.EDIT_BARNAHUS + data[numericIndex].id)
+	}
+
 	const handleDelete = async () => {
 		const indexes = Object.keys(checkedItems)
 		const ids = indexes.map(index => {
@@ -76,7 +83,7 @@ export const Inputs = ({ data }: Props) => {
 					<AddButton buttonLabel={t('Barnahuses.add')} buttonLink={ROUTES.ADD_BARNAHUS} />
 				</Inline>
 			) : (
-				<DataTableActions onDelete={handleDelete} />
+				<DataTableActions onEdit={handleEdit} onDelete={handleDelete} />
 			)}
 		</div>
 	)

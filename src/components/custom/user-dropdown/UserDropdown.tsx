@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -36,6 +37,14 @@ export const UserDropdown = ({ settings }: Props) => {
 	const ref = useRef<HTMLDivElement>(null)
 	const { push } = useRouter()
 
+	const handleLogout = async () => {
+		const result = await logout()
+
+		if (result?.message === 'OK') {
+			signOut({ callbackUrl: ROUTES.LOGIN })
+		}
+	}
+
 	const options: Option[] = [
 		{
 			label: 'General.profileSettings',
@@ -43,7 +52,7 @@ export const UserDropdown = ({ settings }: Props) => {
 		},
 		{
 			label: 'General.logOut',
-			action: () => logout()
+			action: () => handleLogout()
 		}
 	]
 

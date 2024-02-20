@@ -2,8 +2,8 @@
 
 import { useTranslations } from 'next-intl'
 
-import { EditButton } from '@/components/custom/button/edit-button/EditButton'
-import { DetailsWrapper } from '@/components/custom/layouts'
+import { EditButton } from '@/components/custom/button/edit-button'
+import { DetailsWrapper } from '@/components/custom/layouts/DetailsWrapper'
 import { InputInfo } from '@/components/inputs/input-info'
 import { Label } from '@/components/inputs/label'
 import { Box } from '@/components/layout/box'
@@ -11,13 +11,19 @@ import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { CaseFiles } from 'api/models/caseFiles/caseFiles'
+import { ROUTES } from 'parameters'
 
-const CaseFileDetailsPage = () => {
+interface Props {
+	caseFiles: CaseFiles
+}
+
+export const CaseFilesDetails = ({ caseFiles }: Props) => {
 	const t = useTranslations()
 	useNavbarItems({
 		title: 'BH-123456',
 		backLabel: 'CaseFiles.back',
-		actionButton: <EditButton buttonLabel="CaseFiles.edit" buttonLink="/" />
+		actionButton: <EditButton buttonLabel="CaseFiles.edit" buttonLink={ROUTES.EDIT_CASE_FILES + caseFiles.id} />
 	})
 
 	return (
@@ -26,13 +32,13 @@ const CaseFileDetailsPage = () => {
 				<Stack gap={4}>
 					<Label>{t('General.caseId')}</Label>
 					<Text fontSize="small" color="neutral.800">
-						BH-166233
+						{caseFiles.caseID}
 					</Text>
 				</Stack>
 				<Stack gap={4}>
 					<Label>{t('General.status')}</Label>
 					<Text fontSize="small" color="neutral.800">
-						Open
+						{caseFiles.status}
 					</Text>
 				</Stack>
 				<Stack gap={4}>
@@ -50,12 +56,12 @@ const CaseFileDetailsPage = () => {
 					border="thin"
 					borderColor="neutral.300">
 					<Stack gap={4}>
-						<Inline gap={4}>
-							<Label>{t('Barnahuses.assignedMasterAdmin')}</Label>
+						<Inline gap={4} alignItems="center">
+							<Label>{t('CaseFiles.journeySnapshot')}</Label>
 							<InputInfo infoText="Barnahuses.assignedMasterAdminInfoText" />
 						</Inline>
 						<Text fontSize="small" color="neutral.800">
-							{t('Barnahuses.assignedMasterAdminPlaceholder')}
+							{t('CaseFiles.journeySnapshotPlaceholder')}
 						</Text>
 					</Stack>
 				</Box>
@@ -63,5 +69,3 @@ const CaseFileDetailsPage = () => {
 		</Box>
 	)
 }
-
-export default CaseFileDetailsPage

@@ -6,11 +6,7 @@ import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { FormItems, FormWrapper } from '@/components/custom/layouts/add-form'
-import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdown'
-import { FormControl } from '@/components/inputs/form-control'
-import { RequiredLabel } from '@/components/inputs/required-label'
-import { TextInput } from '@/components/inputs/text-input'
+import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
@@ -20,6 +16,7 @@ import { ROUTES } from 'parameters'
 import { requiredString } from 'schemas'
 
 import { ConfirmAddDialog } from '../../../../../components/overlay/confirm-add-dialog/ConfirmAddDialog'
+import BarnahusForm from '../form'
 
 const formSchema = z.object({
 	name: requiredString.shape.scheme,
@@ -34,7 +31,7 @@ const AddBarnahusPage = () => {
 	const { push } = useRouter()
 	const confirmDialog = useOpened()
 	const cancelDialog = useOpened()
-	useNavbarItems({ title: 'Barnahuses.add', backLabel: 'Barnahuses.back' })
+	useNavbarItems({ title: 'Barnahuses.add', backLabel: 'Barnahuses.back', cancelDialog })
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
@@ -60,49 +57,7 @@ const AddBarnahusPage = () => {
 			<FormWrapper>
 				<FormProvider {...form}>
 					<form onSubmit={form.handleSubmit(handleDialog)}>
-						<FormItems openCancelDialog={cancelDialog.toggleOpened}>
-							<FormControl name="name">
-								<FormControl.Label>
-									<RequiredLabel>{t('Barnahuses.barnahusName')}</RequiredLabel>
-								</FormControl.Label>
-								<TextInput placeholder={t('Barnahuses.barnahusNamePlaceholder')} />
-								<FormControl.Message />
-							</FormControl>
-							<FormControl name="location">
-								<FormControl.Label>
-									<RequiredLabel>{t('Barnahuses.barnahusLocation')}</RequiredLabel>
-								</FormControl.Label>
-								<SearchDropdown
-									dropdownPlaceholder="General.location"
-									searchPlaceholder="Barnahuses.barnahusLocation"
-									options={[
-										{ value: 'osl', label: 'Oslo, Norway' },
-										{ value: 'stck', label: 'Stockholm, Sweden' },
-										{ value: 'brl', label: 'Berlin, Germany' },
-										{ value: 'lnd', label: 'London, England' },
-										{ value: 'zg', label: 'Zagreb, Croatia' }
-									]}
-								/>
-								<FormControl.Message />
-							</FormControl>
-							<FormControl name="id">
-								<FormControl.Label>
-									<RequiredLabel>{t('General.masterAdmin')}</RequiredLabel>
-								</FormControl.Label>
-								<SearchDropdown
-									dropdownPlaceholder="General.masterAdmin"
-									searchPlaceholder="General.masterAdminPlaceholder"
-									options={[
-										{ value: 'osl', label: 'Oslo, Norway' },
-										{ value: 'stck', label: 'Stockholm, Sweden' },
-										{ value: 'brl', label: 'Berlin, Germany' },
-										{ value: 'lnd', label: 'London, England' },
-										{ value: 'zg', label: 'Zagreb, Croatia' }
-									]}
-								/>
-								<FormControl.Message />
-							</FormControl>
-						</FormItems>
+						<BarnahusForm cancelDialog={cancelDialog} />
 					</form>
 				</FormProvider>
 			</FormWrapper>
@@ -113,7 +68,7 @@ const AddBarnahusPage = () => {
 				confirmDialog={confirmDialog}
 				onSubmit={onSubmit}
 			/>
-			<CancelAddDialog cancelDialog={cancelDialog} title="Barnahuses.cancelAdd" />
+			<CancelAddDialog cancelDialog={cancelDialog} title="Barnahuses.cancelAdd" values={form.getValues()} />
 		</>
 	)
 }

@@ -8,13 +8,22 @@ import { Label } from '@/components/inputs/label'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { handleFullName } from '@/utils/handleFullName'
+import { Practitioner } from 'api/models/practitioners/practitioner'
+import { ROUTES } from 'parameters'
 
-const PracticionersDetailsPage = () => {
+interface Props {
+	practitioner: Practitioner
+}
+
+export const PractitionerDetails = ({ practitioner }: Props) => {
 	const t = useTranslations()
 	useNavbarItems({
-		title: 'Admin name',
-		backLabel: 'Admins.back',
-		actionButton: <EditButton buttonLabel="Admins.edit" buttonLink="/" />
+		title: handleFullName(practitioner.firstName, practitioner.lastName),
+		backLabel: 'Practitioners.back',
+		actionButton: (
+			<EditButton buttonLabel="Practitioners.edit" buttonLink={ROUTES.EDIT_PRACTITIONERS + practitioner.id} />
+		)
 	})
 
 	return (
@@ -22,41 +31,39 @@ const PracticionersDetailsPage = () => {
 			<Stack gap={4}>
 				<Label>{t('General.email')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					lisa.andreson@gmail.com
+					{practitioner.email}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.barnahusLocation')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{t('General.barnahusPlaceholder')}
+					{practitioner.location}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.firstName')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					Lisa
+					{practitioner.firstName}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.lastName')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					Anderson
+					{practitioner.lastName}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.role')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					Practicioner
+					{practitioner.role}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.phoneNumber')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					+385 97 172 84 92
+					{practitioner.phoneNumber ?? t('General.phoneNumber') + t('General.notDefined')}
 				</Text>
 			</Stack>
 		</DetailsWrapper>
 	)
 }
-
-export default PracticionersDetailsPage

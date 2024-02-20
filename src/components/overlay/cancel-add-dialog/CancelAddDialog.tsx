@@ -1,21 +1,40 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { useEffect } from 'react'
 
 import { CancelButton } from '@/components/custom/button/cancel-button'
 import { ConfirmDialog } from '@/components/custom/confirm-dialog'
 import { Button } from '@/components/inputs/button'
+import { OpenedProps } from '@/hooks/use-toggle'
 
 type Props = {
-	cancelDialog: {
-		opened: boolean
-		toggleOpened: () => void
-	}
 	title: string
+	values: any
+	cancelDialog: OpenedProps
 }
 
-export const CancelAddDialog = ({ title, cancelDialog }: Props) => {
+export const CancelAddDialog = ({ title, values, cancelDialog }: Props) => {
 	const t = useTranslations()
+	const { back } = useRouter()
+	const isSomeValueNotEmpty = Object.values(values).some(value => {
+		switch (typeof value) {
+			case 'boolean':
+				return value === false
+			case 'string':
+				return value !== ''
+			default:
+				return value !== undefined
+		}
+	})
+
+	useEffect(() => {
+		if (cancelDialog.opened && !isSomeValueNotEmpty) {
+			cancelDialog.toggleOpened()
+			back()
+		}
+	}, [cancelDialog.opened])
 
 	return (
 		<ConfirmDialog opened={cancelDialog.opened} onClose={cancelDialog.toggleOpened}>

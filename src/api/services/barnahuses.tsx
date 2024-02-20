@@ -31,6 +31,12 @@ export const updateBarnahus = async (barnahus: BarnahusPayload) => {
 	return data
 }
 
+export const getBarnahus = async (id: string) => {
+	const response = await fetchWithToken(`barnahus/${id}`)
+
+	return response.json()
+}
+
 export const deleteBarnahus = async (id: string) => {
 	const { data } = await axiosInstanceWithToken.delete(`/barnahus`, { data: { id } })
 

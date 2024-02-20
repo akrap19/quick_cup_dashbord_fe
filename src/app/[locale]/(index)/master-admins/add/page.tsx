@@ -111,7 +111,7 @@ const AddMasterAdminPage = () => {
 				confirmDialog={confirmDialog}
 				onSubmit={onSubmit}
 			/>
-			<CancelAddDialog cancelDialog={cancelDialog} title="MasterAdmins.cancelAdd" />
+			<CancelAddDialog cancelDialog={cancelDialog} title="MasterAdmins.cancelAdd" values={form.getValues()} />
 		</>
 	)
 }

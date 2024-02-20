@@ -1,15 +1,10 @@
 import type { ColumnDef } from '@tanstack/react-table'
 
-export type PeopleColumn = {
-	id: string
-	status: string
-	snapshot: string
-	updates: string
-}
+import { CaseFiles } from 'api/models/caseFiles/caseFiles'
 
-export const columns: Array<ColumnDef<PeopleColumn>> = [
+export const columns: Array<ColumnDef<CaseFiles>> = [
 	{
-		accessorKey: 'id',
+		accessorKey: 'caseID',
 		header: 'ID'
 	},
 	{
@@ -18,11 +13,11 @@ export const columns: Array<ColumnDef<PeopleColumn>> = [
 	},
 
 	{
-		accessorKey: 'snapshot',
+		accessorKey: 'lastJourneySnapshot',
 		header: 'Last Journey Snapshot'
 	},
 	{
-		accessorKey: 'updates',
+		accessorKey: 'caseJourneyUpdates',
 		header: 'Case Journey Updates'
 	}
 ]

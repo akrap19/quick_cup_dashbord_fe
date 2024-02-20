@@ -18,7 +18,7 @@ interface Props {
 
 const AdminsPage = async ({ searchParams }: Props) => {
 	const { data: adminsData } = await getAdmins(searchParams)
-	const isInitialListEmpty = adminsData?.users.length === 0 && !searchParams.search
+	const isInitialListEmpty = (adminsData?.users.length === 0 && !searchParams.search) || adminsData === null
 
 	return isInitialListEmpty ? (
 		<NoListData

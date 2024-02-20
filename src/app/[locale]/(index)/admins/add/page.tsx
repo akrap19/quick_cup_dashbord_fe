@@ -6,11 +6,7 @@ import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { InputWithInfo } from '@/components/custom/inputs/input-with-info/InputWithInfo'
-import { FormItems, FormWrapper } from '@/components/custom/layouts/add-form'
-import { FormControl } from '@/components/inputs/form-control'
-import { RequiredLabel } from '@/components/inputs/required-label'
-import { TextInput } from '@/components/inputs/text-input'
+import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
 import { ConfirmAddDialog } from '@/components/overlay/confirm-add-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
@@ -19,6 +15,8 @@ import { useOpened } from '@/hooks/use-toggle'
 import { createAdmin } from 'api/services/admins'
 import { ROUTES } from 'parameters'
 import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
+
+import AdminForm from '../form'
 
 const formSchema = z.object({
 	firstName: requiredString.shape.scheme,
@@ -60,41 +58,7 @@ const AddBarnahusPage = () => {
 			<FormWrapper>
 				<FormProvider {...form}>
 					<form onSubmit={form.handleSubmit(handleDialog)}>
-						<FormItems openCancelDialog={cancelDialog.toggleOpened}>
-							<FormControl name="email">
-								<FormControl.Label>
-									<RequiredLabel>{t('General.email')}</RequiredLabel>
-								</FormControl.Label>
-								<TextInput type="email" placeholder={t('General.emailPlaceholder')} />
-								<FormControl.Message />
-							</FormControl>
-							<InputWithInfo infoText="General.barnahusInfoText">
-								<FormControl name="barnahus">
-									<FormControl.Label>{t('General.barnahus')}</FormControl.Label>
-									<TextInput placeholder={t('General.barnahusPlaceholder')} disabled />
-									<FormControl.Message />
-								</FormControl>
-							</InputWithInfo>
-							<FormControl name="firstName">
-								<FormControl.Label>
-									<RequiredLabel>{t('General.firstName')}</RequiredLabel>
-								</FormControl.Label>
-								<TextInput placeholder={t('General.firstNamePlaceholder')} />
-								<FormControl.Message />
-							</FormControl>
-							<FormControl name="lastName">
-								<FormControl.Label>
-									<RequiredLabel>{t('General.lastName')}</RequiredLabel>
-								</FormControl.Label>
-								<TextInput placeholder={t('General.lastNamePlaceholder')} />
-								<FormControl.Message />
-							</FormControl>
-							<FormControl name="phoneNumber">
-								<FormControl.Label>{t('General.phoneNumber')}</FormControl.Label>
-								<TextInput placeholder={t('General.phoneNumberPlaceholder')} />
-								<FormControl.Message />
-							</FormControl>
-						</FormItems>
+						<AdminForm cancelDialog={cancelDialog} />
 					</form>
 				</FormProvider>
 			</FormWrapper>
@@ -105,7 +69,7 @@ const AddBarnahusPage = () => {
 				confirmDialog={confirmDialog}
 				onSubmit={onSubmit}
 			/>
-			<CancelAddDialog cancelDialog={cancelDialog} title="Admins.cancelAdd" />
+			<CancelAddDialog cancelDialog={cancelDialog} title="Admins.cancelAdd" values={form.getValues()} />
 		</>
 	)
 }

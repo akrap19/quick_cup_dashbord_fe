@@ -13,7 +13,7 @@ import { Inline } from '@/components/layout/inline'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useTableStore } from '@/store/table'
-import { Admins } from 'api/models/admin/Admins'
+import { Admins } from 'api/models/admin/admins'
 import { deleteAdmin, deleteAdmins } from 'api/services/admins'
 import { ROUTES } from 'parameters'
 
@@ -43,6 +43,13 @@ export const Inputs = ({ data }: Props) => {
 	}
 
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)
+
+	const handleEdit = () => {
+		const index = Object.keys(checkedItems)
+		const numericIndex = parseInt(index[0], 10)
+
+		push(ROUTES.EDIT_MASTER_ADMINS + data[numericIndex].id)
+	}
 
 	const handleDelete = async () => {
 		const indexes = Object.keys(checkedItems)
@@ -76,7 +83,7 @@ export const Inputs = ({ data }: Props) => {
 					<AddButton buttonLabel={t('Admins.add')} buttonLink={ROUTES.ADD_ADMINS} />
 				</Inline>
 			) : (
-				<DataTableActions onDelete={handleDelete} />
+				<DataTableActions onEdit={handleEdit} onDelete={handleDelete} />
 			)}
 		</div>
 	)

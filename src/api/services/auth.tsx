@@ -1,10 +1,7 @@
-import { signOut } from 'next-auth/react'
-
 import { axiosInstanceWithToken, instance } from 'api/Instance'
 import { Login } from 'api/models/auth/login'
 import { Register } from 'api/models/auth/register'
 import { ResetPassword } from 'api/models/auth/resetPassword'
-import { ROUTES } from 'parameters'
 
 export const register = async (requestData: Register) => {
 	const { data } = await instance.post(`/register`, requestData)
@@ -41,7 +38,5 @@ export const resetPassword = async (requestData: ResetPassword) => {
 export const logout = async () => {
 	const { data } = await axiosInstanceWithToken.post(`/auth/logout`)
 
-	if (data.message === 'OK') {
-		signOut({ callbackUrl: ROUTES.LOGIN })
-	}
+	return data
 }

@@ -1,11 +1,8 @@
 import type { ColumnDef } from '@tanstack/react-table'
 
-export type PractitionersColumn = {
-	practitioner: string
-	role: string
-}
+import { Practitioners } from 'api/models/practitioners/practitioners'
 
-export const columns: Array<ColumnDef<PractitionersColumn>> = [
+export const columns: Array<ColumnDef<Practitioners>> = [
 	{ accessorKey: 'practitioner', header: 'General.practitioner' },
 	{ accessorKey: 'role', header: 'General.role' }
 ]

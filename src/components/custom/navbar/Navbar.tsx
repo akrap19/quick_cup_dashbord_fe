@@ -25,11 +25,19 @@ export const Navbar = ({ settings }: Props) => {
 	const t = useTranslations()
 	const { navbarItems } = useNavbarItemsStore()
 
+	const handleBack = () => {
+		if (navbarItems && navbarItems.cancelDialog) {
+			navbarItems.cancelDialog?.toggleOpened()
+		} else {
+			router.back()
+		}
+	}
+
 	return (
 		<Box className={styles.navbar}>
 			{navbarItems?.backLabel && (
 				<Box style={{ top: '1rem' }} position="absolute">
-					<Button onClick={() => router.back()} variant="adaptive" size="small">
+					<Button onClick={handleBack} variant="adaptive" size="small">
 						<Inline gap={1} alignItems="center">
 							<LeftIcon size="small" />
 							<Text lineHeight="small" fontSize="small" fontWeight="semibold">

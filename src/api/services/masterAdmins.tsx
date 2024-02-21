@@ -1,5 +1,5 @@
 import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
-import { MasterAdmin } from 'api/models/master-admin/masterAdmin'
+import { AdminPayload } from 'api/models/admin/AdminPayload'
 
 interface Query {
 	search: string
@@ -21,16 +21,22 @@ export const getMasterAdmins = async (query: Query) => {
 	return response.json()
 }
 
-export const createMasterAdmin = async (masterAdmin: MasterAdmin) => {
+export const createMasterAdmin = async (masterAdmin: AdminPayload) => {
 	const { data } = await axiosInstanceWithToken.post(`/master-admin`, masterAdmin)
 
 	return data
 }
 
-export const updateMasterAdmin = async (masterAdmin: MasterAdmin) => {
+export const updateMasterAdmin = async (masterAdmin: AdminPayload) => {
 	const { data } = await axiosInstanceWithToken.patch(`/master-admin`, masterAdmin)
 
 	return data
+}
+
+export const getMasterAdmin = async (id: string) => {
+	const response = await fetchWithToken(`master-admin/${id}`)
+
+	return response.json()
 }
 
 export const deleteMasterAdmin = async (id: string) => {

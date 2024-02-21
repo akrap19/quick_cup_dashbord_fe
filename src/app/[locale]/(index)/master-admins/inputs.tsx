@@ -13,13 +13,12 @@ import { Inline } from '@/components/layout/inline'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useTableStore } from '@/store/table'
+import { Admins } from 'api/models/admin/Admins'
 import { deleteMasterAdmin, deleteMasterAdmins } from 'api/services/masterAdmins'
 import { ROUTES } from 'parameters'
 
-import { MasterAdminsColumn } from './columns'
-
 interface Props {
-	data: MasterAdminsColumn[]
+	data: Admins[]
 }
 
 export const Inputs = ({ data }: Props) => {
@@ -45,10 +44,17 @@ export const Inputs = ({ data }: Props) => {
 
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)
 
+	const handleEdit = () => {
+		const index = Object.keys(checkedItems)
+		const numericIndex = parseInt(index[0], 10)
+
+		push(ROUTES.EDIT_MASTER_ADMINS + data[numericIndex].id)
+	}
+
 	const handleDelete = async () => {
 		const indexes = Object.keys(checkedItems)
 		const ids = indexes.map(index => {
-			const numericIndex = parseInt(index, 10) // Convert string index to integer
+			const numericIndex = parseInt(index, 10)
 			return data[numericIndex].id
 		})
 
@@ -77,7 +83,7 @@ export const Inputs = ({ data }: Props) => {
 					<AddButton buttonLabel={t('MasterAdmins.add')} buttonLink={ROUTES.ADD_MASTER_ADMINS} />
 				</Inline>
 			) : (
-				<DataTableActions onDelete={handleDelete} />
+				<DataTableActions onEdit={handleEdit} onDelete={handleDelete} />
 			)}
 		</div>
 	)

@@ -1,28 +1,38 @@
 import { ListWrapper } from '@/components/custom/layouts'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { DataTable } from '@/components/data-display/data-table'
+import { replaceNullInListWithDash } from '@/utils/replaceNullInListWithDash'
 import { getBarnahuses } from 'api/services/barnahuses'
 import { ROUTES } from 'parameters'
 
 import { columns } from './columns'
 import { Inputs } from './inputs'
 
-const BarnahusesPage = async () => {
-	const barnahuses = await getBarnahuses()
+interface Props {
+	searchParams: {
+		search: string
+		page: number
+		limit: number
+	}
+}
 
-	return barnahuses?.length > 0 ? (
-		<ListWrapper>
-			<Inputs />
-			<DataTable columns={columns} data={barnahuses} />
-		</ListWrapper>
-	) : (
+const BarnahusesPage = async ({ searchParams }: Props) => {
+	const { data } = await getBarnahuses(searchParams)
+	const isInitialListEmpty = data?.barnahuses.length === 0 && !searchParams.search
+
+	return isInitialListEmpty ? (
 		<NoListData
-			navbarTitle=""
+			navbarTitle="General.barnahus"
 			title="NoListData.letsStart"
 			description="Barnahuses.noListDataDescription"
 			buttonLabel="Barnahuses.add"
 			buttonLink={ROUTES.ADD_BARNAHUS}
 		/>
+	) : (
+		<ListWrapper>
+			<Inputs data={data?.barnahuses} />
+			<DataTable columns={columns} data={replaceNullInListWithDash(data?.barnahuses)} />
+		</ListWrapper>
 	)
 }
 

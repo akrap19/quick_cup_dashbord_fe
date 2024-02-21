@@ -53,7 +53,7 @@ export const Inputs = () => {
 					/>
 				</Box>
 			</Inline>
-			<AddButton buttonLabel={t('CaseFiles.add')} buttonLink={ROUTES.ADD_CASE} />
+			<AddButton buttonLabel={t('CaseFiles.add')} buttonLink={ROUTES.ADD_CASE_FILES} />
 		</Inline>
 	)
 }

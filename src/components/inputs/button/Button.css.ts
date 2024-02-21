@@ -40,18 +40,21 @@ export const button = recipe({
 			primary: {
 				backgroundColor: '#6A35FF',
 				color: '#FFFFFF',
-				':hover': { backgroundColor: '#725CFF' }
+				':hover': { backgroundColor: '#725CFF' },
+				':disabled': { backgroundColor: '#D0C0FF' }
 			},
 			secondary: {
 				backgroundColor: '#FFFFFF',
 				color: tokens.colors['neutral.700'],
 				border: `1px solid ${tokens.colors['neutral.300']}`,
-				':hover': { backgroundColor: '#F6F6F6' }
+				':hover': { backgroundColor: '#F6F6F6' },
+				':disabled': { backgroundColor: '#FFFFFF' }
 			},
 			ghost: {
 				backgroundColor: '#FFFFFF',
 				color: '#5135FF',
-				':hover': { backgroundColor: '#F2F0FF' }
+				':hover': { backgroundColor: '#F2F0FF' },
+				':disabled': { backgroundColor: '#FFFFFF' }
 			},
 			adaptive: {
 				backgroundColor: 'transparent',
@@ -61,12 +64,14 @@ export const button = recipe({
 			destructive: {
 				backgroundColor: '#FE5F55',
 				color: '#FCFCFC',
-				':hover': { backgroundColor: '#FF8B84' }
+				':hover': { backgroundColor: '#FF8B84' },
+				':disabled': { backgroundColor: '#EFAFAB' }
 			},
 			success: {
 				backgroundColor: '#198754',
 				color: '#FCFCFC',
-				':hover': { backgroundColor: '#20AC6B' }
+				':hover': { backgroundColor: '#20AC6B' },
+				':disabled': { backgroundColor: '#BBF7D0' }
 			}
 		}
 	},

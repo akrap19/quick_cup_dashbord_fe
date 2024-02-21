@@ -10,10 +10,11 @@ import { Text } from '@/components/typography/text'
 import { useTableStore } from '@/store/table'
 
 interface Props {
+	onEdit: () => void
 	onDelete: () => void
 }
 
-export const DataTableActions = ({ onDelete }: Props) => {
+export const DataTableActions = ({ onEdit, onDelete }: Props) => {
 	const t = useTranslations()
 	const { checkedItemsLength, clearCheckedItems } = useTableStore()
 
@@ -31,7 +32,7 @@ export const DataTableActions = ({ onDelete }: Props) => {
 			</Inline>
 			<Inline gap={4}>
 				{checkedItemsLength === 1 && (
-					<Button variant="secondary">
+					<Button variant="secondary" onClick={() => onEdit()}>
 						<PencilIcon size="medium" color="neutral.700" />
 						{t('General.edit')}
 					</Button>

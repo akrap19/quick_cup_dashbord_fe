@@ -1,96 +1,74 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { FormItems, FormWrapper } from '@/components/custom/layouts/add-form'
-import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdown'
-import { FormControl } from '@/components/inputs/form-control'
-import { InputInfo } from '@/components/inputs/input-info'
-import { Label } from '@/components/inputs/label'
-import { RequiredLabel } from '@/components/inputs/required-label'
-import { TextInput } from '@/components/inputs/text-input'
-import { Inline } from '@/components/layout/inline'
-import { Stack } from '@/components/layout/stack'
-import { Text } from '@/components/typography/text'
+import { FormWrapper } from '@/components/custom/layouts/add-form'
+import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
+import { createBarnahus } from 'api/services/barnahuses'
+import { ROUTES } from 'parameters'
 import { requiredString } from 'schemas'
 
-import { CancelAddDialog } from './CancelAddDialog'
-import { ConfirmAddDialog } from './ConfirmAddDialog'
+import { ConfirmAddDialog } from '../../../../../components/overlay/confirm-add-dialog/ConfirmAddDialog'
+import BarnahusForm from '../form'
 
 const formSchema = z.object({
-	barnahusName: requiredString.shape.scheme,
-	barnahusLocation: requiredString.shape.scheme
+	name: requiredString.shape.scheme,
+	location: requiredString.shape.scheme,
+	id: requiredString.shape.scheme
 })
 
 type Schema = z.infer<typeof formSchema>
 
 const AddBarnahusPage = () => {
 	const t = useTranslations()
+	const { push } = useRouter()
 	const confirmDialog = useOpened()
 	const cancelDialog = useOpened()
-	useNavbarItems({ title: 'Barnahuses.add', backLabel: 'Barnahuses.back' })
+	useNavbarItems({ title: 'Barnahuses.add', backLabel: 'Barnahuses.back', cancelDialog })
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { barnahusName: '', barnahusLocation: '' }
+		defaultValues: { name: '', location: '', id: '' }
 	})
 
-	const onSubmit = async (data: Schema) => {
+	const handleDialog = () => {
 		confirmDialog.toggleOpened()
-		console.log(data)
+	}
+
+	const onSubmit = async () => {
+		const data = form.getValues()
+		const result = await createBarnahus(data)
+		if (result?.message === 'OK') {
+			SuccessToast(t('MasterAdmins.successfullyCreated'))
+			push(ROUTES.MASTER_ADMINS)
+		}
 	}
 
 	return (
 		<>
 			<FormWrapper>
 				<FormProvider {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)}>
-						<FormItems openCancelDialog={cancelDialog.toggleOpened}>
-							<FormControl name="barnahusName">
-								<FormControl.Label>
-									<RequiredLabel>{t('Barnahuses.barnahusName')}</RequiredLabel>
-								</FormControl.Label>
-								<TextInput placeholder={t('Barnahuses.barnahusNamePlaceholder')} />
-								<FormControl.Message />
-							</FormControl>
-							<FormControl name="barnahusLocation">
-								<FormControl.Label>
-									<RequiredLabel>{t('Barnahuses.barnahusLocation')}</RequiredLabel>
-								</FormControl.Label>
-								<SearchDropdown
-									dropdownPlaceholder="General.location"
-									searchPlaceholder="Barnahuses.barnahusLocation"
-									options={[
-										{ value: 'osl', label: 'Oslo, Norway' },
-										{ value: 'stck', label: 'Stockholm, Sweden' },
-										{ value: 'brl', label: 'Berlin, Germany' },
-										{ value: 'lnd', label: 'London, England' },
-										{ value: 'zg', label: 'Zagreb, Croatia' }
-									]}
-								/>
-								<FormControl.Message />
-							</FormControl>
-							<Stack gap={4}>
-								<Inline alignItems="center" gap={4}>
-									<Label>{t('Barnahuses.assignedMasterAdmin')}</Label>
-									<InputInfo infoText="Barnahuses.assignedMasterAdminInfoText" />
-								</Inline>
-								<Text fontSize="small" color="neutral.300">
-									{t('Barnahuses.assignedMasterAdminPlaceholder')}
-								</Text>
-							</Stack>
-						</FormItems>
+					<form onSubmit={form.handleSubmit(handleDialog)}>
+						<BarnahusForm cancelDialog={cancelDialog} />
 					</form>
 				</FormProvider>
 			</FormWrapper>
-			<ConfirmAddDialog confirmDialog={confirmDialog} />
-			<CancelAddDialog cancelDialog={cancelDialog} />
+			<ConfirmAddDialog
+				title="Barnahuses.add"
+				description="Barnahuses.addBarnahusDescription"
+				buttonLabel="Barnahuses.save&Add"
+				confirmDialog={confirmDialog}
+				onSubmit={onSubmit}
+			/>
+			<CancelAddDialog cancelDialog={cancelDialog} title="Barnahuses.cancelAdd" values={form.getValues()} />
 		</>
 	)
 }

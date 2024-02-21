@@ -1,5 +1,5 @@
 import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
-import { AdminPayload } from 'api/models/admin/adminPayload'
+import { AdminPayload } from 'api/models/admin/AdminPayload'
 
 interface Query {
 	search: string

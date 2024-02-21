@@ -13,7 +13,7 @@ import { Inline } from '@/components/layout/inline'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useTableStore } from '@/store/table'
-import { Admins } from 'api/models/admin/admins'
+import { Admins } from 'api/models/admin/Admins'
 import { deleteMasterAdmin, deleteMasterAdmins } from 'api/services/masterAdmins'
 import { ROUTES } from 'parameters'
 

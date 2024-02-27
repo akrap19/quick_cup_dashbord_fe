@@ -1,5 +1,3 @@
-'use client'
-
 import { getBarnahus } from 'api/services/barnahuses'
 
 import { BarnahusDetails } from './BarnahusDetails'

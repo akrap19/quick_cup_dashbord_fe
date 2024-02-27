@@ -9,48 +9,45 @@ import { z } from 'zod'
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
-import { Barnahus } from 'api/models/barnahuses/barnahus'
-import { Base } from 'api/models/common/base'
-import { updateBarnahus } from 'api/services/barnahuses'
+import { BaseCode } from 'api/models/common/baseCode'
+import { Language } from 'api/models/language/language'
+import { updateLanguage } from 'api/services/languages'
 import { requiredString } from 'schemas'
 
-import BarnahusForm from '../../form'
+import LanguageForm from '../../form'
 
 const formSchema = z.object({
-	name: requiredString.shape.scheme,
-	location: requiredString.shape.scheme,
-	masterAdmin: requiredString.shape.scheme
+	id: requiredString.shape.scheme,
+	status: requiredString.shape.scheme,
+	autoTranslate: z.boolean()
 })
 
 type Schema = z.infer<typeof formSchema>
 
 interface Props {
-	barnahus: Barnahus
-	locations: Base[]
-	masterAdmins: Base[]
+	language: Language
+	languages: BaseCode[]
 }
 
-const BarnahusEdit = ({ barnahus, locations, masterAdmins }: Props) => {
+const LanguageEdit = ({ language, languages }: Props) => {
 	const t = useTranslations()
 	const { back } = useRouter()
-	useNavbarItems({ title: 'Barnahuses.edit', backLabel: 'Barnahuses.back' })
+	useNavbarItems({ title: 'Languagees.edit', backLabel: 'Languagees.back' })
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { name: barnahus.name, location: barnahus.location, masterAdmin: barnahus.admin }
+		defaultValues: { id: language.name, autoTranslate: language.autoTranslate, status: language.status }
 	})
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		const result = await updateBarnahus({
-			id: barnahus.id,
-			name: data.name,
-			location: data.location,
-			adminId: data.masterAdmin
+		const result = await updateLanguage({
+			...data,
+			id: language.id
 		})
 		if (result?.message === 'OK') {
-			SuccessToast(t('Barnahuses.successfullyEdited'))
+			SuccessToast(t('Languagees.successfullyEdited'))
 			back()
 		}
 	}
@@ -59,11 +56,11 @@ const BarnahusEdit = ({ barnahus, locations, masterAdmins }: Props) => {
 		<FormWrapper>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<BarnahusForm locations={locations} masterAdmins={masterAdmins} />
+					<LanguageForm languages={languages} />
 				</form>
 			</FormProvider>
 		</FormWrapper>
 	)
 }
 
-export default BarnahusEdit
+export default LanguageEdit

@@ -2,9 +2,10 @@ import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
 import { BarnahusPayload } from 'api/models/barnahuses/barnahusesPayload'
 
 interface Query {
-	search: string
-	page: number
-	limit: number
+	search?: string
+	location?: string
+	page?: number
+	limit?: number
 }
 
 export const getBarnahuses = async (query: Query) => {
@@ -47,4 +48,14 @@ export const deleteBarnahuses = async (ids: string[]) => {
 	const { data } = await axiosInstanceWithToken.delete(`/barnahus/bulk`, { data: { ids } })
 
 	return data
+}
+
+export const getBarnahuseLocations = async (query: Query) => {
+	const queryParams = {
+		search: query.location
+	}
+
+	const response = await fetchWithToken(`barnahus/locations`, queryParams)
+
+	return response.json()
 }

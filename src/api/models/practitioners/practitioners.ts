@@ -1,5 +1,5 @@
-export interface Practitioners {
-	id: string
-	name: string
+import { Base } from '../common/base'
+
+export interface Practitioners extends Base {
 	role: string
 }

@@ -1,58 +1,67 @@
 'use client'
 
 import clsx from 'clsx'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import React, { ChangeEvent, ChangeEventHandler, useEffect, useRef, useState } from 'react'
+import qs from 'query-string'
+import React, { useEffect, useRef, useState } from 'react'
+import { useFormContext } from 'react-hook-form'
+import { useDebounce } from 'rooks'
 
 import { BlockIcon } from '@/components/icons/block-icon'
 import { Button } from '@/components/inputs/button'
 import { InputWrapper } from '@/components/inputs/input-wrapper'
-import { endIconSpacing, input, inputHasError } from '@/components/inputs/input-wrapper/InputWrapper.css'
+import { endIconSpacing, input, inputHasSuccess } from '@/components/inputs/input-wrapper/InputWrapper.css'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
+import { Base } from 'api/models/common/base'
 
 import { dropdownListContainer, dropdownListItem } from './SearchDropdown.css'
 import CarretDownIcon from '../../icons/block-icon/assets/carret-down-icon.svg'
 import CarretUpIcon from '../../icons/block-icon/assets/carret-up-icon.svg'
 import { SearchInput } from '../inputs/search-input'
-
-interface Option {
-	value: string
-	label: string
-}
+import { NoResult } from '../no-result'
 
 interface Props {
-	options: Option[]
+	options: Base[]
 	dropdownPlaceholder: string
 	searchPlaceholder: string
-	hasError?: boolean
+	name?: string
+	hasSuccess?: boolean
 	value?: string
-	onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
-export const SearchDropdown = ({
-	options,
-	dropdownPlaceholder,
-	searchPlaceholder,
-	hasError,
-	value,
-	onChange
-}: Props) => {
+export const SearchDropdown = ({ name, options, dropdownPlaceholder, searchPlaceholder, hasSuccess, value }: Props) => {
 	const t = useTranslations()
+	const searchParams = useSearchParams()
+	const formContext = useFormContext()
+	const { push } = useRouter()
 	const [isOpen, setIsOpen] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
 
-	const handleDropdownOption = (e: React.MouseEvent<HTMLButtonElement>, option: Option) => {
-		e.preventDefault()
-		const syntheticEvent = {
-			target: {
-				value: option.value
-			}
-		}
+	const handleFilterChange = (filter: string, value: string) => {
+		const current = qs.parse(searchParams.toString())
+		const query = { ...current, [filter]: value }
+		const url = qs.stringifyUrl(
+			{
+				url: window.location.href,
+				query
+			},
+			{ skipEmptyString: true }
+		)
 
-		if (onChange) {
-			onChange(syntheticEvent as ChangeEvent<HTMLInputElement>)
+		push(url)
+	}
+
+	const debouncedFilterChange = useDebounce(handleFilterChange, 300)
+
+	const handleDropdownOption = (e: React.MouseEvent<HTMLButtonElement>, option: Base) => {
+		e.preventDefault()
+
+		if (name) {
+			formContext.setValue(name, option.id)
+			formContext.trigger(name)
 			setIsOpen(!isOpen)
 		}
 	}
@@ -62,9 +71,9 @@ export const SearchDropdown = ({
 		setIsOpen(!isOpen)
 	}
 
-	const handleValueLabel = (value: string) => {
-		const selectedOption = options.find(option => option.value === value)
-		return selectedOption?.label
+	const handleValueLabel = (id: string) => {
+		const selectedOption = options?.find(option => option.id === id)
+		return selectedOption?.name ?? id
 	}
 
 	const handleClickOutside = (event: MouseEvent) => {
@@ -83,10 +92,17 @@ export const SearchDropdown = ({
 
 	return (
 		<div ref={ref}>
-			<InputWrapper endIcon={<BlockIcon icon={isOpen ? CarretUpIcon : CarretDownIcon} size="medium" />}>
+			<InputWrapper
+				endIcon={
+					<BlockIcon
+						icon={isOpen ? CarretUpIcon : CarretDownIcon}
+						size="medium"
+						color={hasSuccess ? 'success.500' : 'neutral.500'}
+					/>
+				}>
 				<Stack>
 					<Button size="auto" variant="adaptive" onClick={handleDropDownOpening}>
-						<Box className={clsx(input, hasError && inputHasError, endIconSpacing)}>
+						<Box className={clsx(input, hasSuccess && inputHasSuccess, endIconSpacing)}>
 							<Text fontSize="small" lineHeight="medium" color={value ? 'neutral.800' : 'neutral.300'}>
 								{value ? handleValueLabel(value) : `${t('General.select')} ${t(dropdownPlaceholder)}`}
 							</Text>
@@ -98,16 +114,28 @@ export const SearchDropdown = ({
 				<Box className={dropdownListContainer}>
 					<Stack gap={2}>
 						<Box width="100%" paddingX={1}>
-							<SearchInput placeholder={`${t('General.search')} ${t(searchPlaceholder)}`} />
+							<SearchInput
+								name={name}
+								defaultValue={searchParams.get(name ?? '') || ''}
+								placeholder={`${t('General.search')} ${t(searchPlaceholder)}`}
+								onChange={({ target: { name, value } }) => debouncedFilterChange(name, value)}
+							/>
 						</Box>
 						<Stack gap={1}>
-							{options.map(option => (
-								<Button size="auto" variant="adaptive" onClick={e => handleDropdownOption(e, option)}>
-									<Box className={dropdownListItem}>
-										<Text fontSize="small">{option.label}</Text>
-									</Box>
-								</Button>
-							))}
+							{options && options.length > 0 ? (
+								options.map(option => (
+									<Button size="auto" variant="adaptive" onClick={e => handleDropdownOption(e, option)}>
+										<Box className={dropdownListItem}>
+											<Text fontSize="small">{option.name}</Text>
+										</Box>
+									</Button>
+								))
+							) : (
+								<NoResult
+									size="small"
+									noResoultMessage={t(options ? 'General.noResoultMessage' : 'General.searchMinInstructions')}
+								/>
+							)}
 						</Stack>
 					</Stack>
 				</Box>

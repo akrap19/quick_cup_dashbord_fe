@@ -1,6 +1,6 @@
-export interface Barnahus {
-	id: string
-	name: string
+import { Base } from '../common/base'
+
+export interface Barnahus extends Base {
 	location: string
 	admin?: string
 }

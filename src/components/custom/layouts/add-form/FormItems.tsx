@@ -26,6 +26,7 @@ export const FormItems = ({ children, openCancelDialog }: Props) => {
 		}
 	}
 
+	console.log('formContext.formState.isValid', formContext.getValues())
 	return (
 		<Stack gap={6}>
 			<Text fontSize="small" color="destructive.500">

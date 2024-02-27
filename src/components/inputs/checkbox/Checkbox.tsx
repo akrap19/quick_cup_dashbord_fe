@@ -11,14 +11,15 @@ import { Text } from '../../typography/text'
 interface Props {
 	name?: string
 	label?: string
-	value?: string
+	value?: any
 	checked?: boolean
 	indeterminate?: boolean
 	onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
 export const Checkbox = ({ name, label, value, checked, indeterminate, onChange }: Props) => {
-	const color = checked ? tokens.colors['primary.500'] : tokens.colors['shades.00']
+	const isChecked = checked || value
+	const color = isChecked ? tokens.colors['primary.500'] : tokens.colors['shades.00']
 
 	return (
 		<label className={label && styles.checkboxWrapper}>
@@ -27,13 +28,13 @@ export const Checkbox = ({ name, label, value, checked, indeterminate, onChange 
 					type="checkbox"
 					name={name}
 					value={value}
-					checked={checked}
+					checked={isChecked}
 					onChange={onChange}
 					className={styles.hiddenCheckbox}
 				/>
 				<div className={styles.checkboxDecorator} style={{ color }} />
 				<span className={styles.checked}>
-					{checked && <CheckmarkIcon />}
+					{isChecked && <CheckmarkIcon />}
 					{indeterminate && <MinusIcon color="neutral.900" />}
 				</span>
 			</span>

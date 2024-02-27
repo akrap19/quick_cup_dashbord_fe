@@ -2,9 +2,10 @@ import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
 import { Language } from 'api/models/language/language'
 
 interface Query {
-	status: string
-	page: number
-	limit: number
+	status?: string
+	page?: number
+	limit?: number
+	language?: string
 }
 
 export const getLanguages = async (query: Query) => {
@@ -19,16 +20,22 @@ export const getLanguages = async (query: Query) => {
 	return response.json()
 }
 
-export const createLanguage = async (admin: Language) => {
-	const { data } = await axiosInstanceWithToken.post(`/language`, admin)
+export const createLanguage = async (language: Language) => {
+	const { data } = await axiosInstanceWithToken.post(`/language`, language)
 
 	return data
 }
 
-export const updateLanguage = async (admin: Language) => {
-	const { data } = await axiosInstanceWithToken.patch(`/language`, admin)
+export const updateLanguage = async (language: Language) => {
+	const { data } = await axiosInstanceWithToken.patch(`/language`, language)
 
 	return data
+}
+
+export const getLanguage = async (id: string) => {
+	const response = await fetchWithToken(`language/${id}`)
+
+	return response.json()
 }
 
 export const deleteLanguage = async (id: string) => {
@@ -41,4 +48,14 @@ export const deleteLanguages = async (ids: string[]) => {
 	const { data } = await axiosInstanceWithToken.delete(`/language/bulk`, { data: { ids } })
 
 	return data
+}
+
+export const getLanguageSupported = async (query: Query) => {
+	const queryParams = {
+		search: query.language
+	}
+
+	const response = await fetchWithToken(`language/supported`, queryParams)
+
+	return response.json()
 }

@@ -35,7 +35,7 @@ type Schema = z.infer<typeof formSchema>
 
 const AddMasterAdminPage = () => {
 	const t = useTranslations()
-	const { push } = useRouter()
+	const { push, refresh } = useRouter()
 	const confirmDialog = useOpened()
 	const cancelDialog = useOpened()
 	useNavbarItems({ title: 'MasterAdmins.add', backLabel: 'MasterAdmins.back' })
@@ -56,6 +56,7 @@ const AddMasterAdminPage = () => {
 		if (result?.message === 'OK') {
 			SuccessToast(t('MasterAdmins.successfullyCreated'))
 			push(ROUTES.MASTER_ADMINS)
+			refresh()
 		}
 	}
 

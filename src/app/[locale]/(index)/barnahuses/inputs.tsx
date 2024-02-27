@@ -74,8 +74,8 @@ export const Inputs = ({ data }: Props) => {
 				<Inline justifyContent="space-between" alignItems="center">
 					<Box style={{ width: '320px' }}>
 						<SearchInput
-							name="searchKey"
-							defaultValue={searchParams.get('searchKey') || ''}
+							name="search"
+							defaultValue={searchParams.get('search') || ''}
 							placeholder={t('Barnahuses.searchBarnahus')}
 							onChange={({ target: { name, value } }) => debouncedFilterChange(name, value)}
 						/>

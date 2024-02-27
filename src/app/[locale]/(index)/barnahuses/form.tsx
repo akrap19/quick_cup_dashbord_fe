@@ -8,13 +8,22 @@ import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
 import { OpenedProps } from '@/hooks/use-toggle'
+import { Base } from 'api/models/common/base'
 
 interface Props {
+	locations: Base[]
+	masterAdmins: Base[]
 	cancelDialog?: OpenedProps
 }
 
-const BarnahusForm = ({ cancelDialog }: Props) => {
+const BarnahusForm = ({ locations, masterAdmins, cancelDialog }: Props) => {
 	const t = useTranslations()
+	const transformedLocationsArray = locations?.map(location => {
+		return {
+			id: location.name,
+			name: location.name
+		}
+	})
 
 	return (
 		<FormItems openCancelDialog={cancelDialog?.toggleOpened}>
@@ -32,30 +41,18 @@ const BarnahusForm = ({ cancelDialog }: Props) => {
 				<SearchDropdown
 					dropdownPlaceholder="General.location"
 					searchPlaceholder="Barnahuses.barnahusLocation"
-					options={[
-						{ value: 'osl', label: 'Oslo, Norway' },
-						{ value: 'stck', label: 'Stockholm, Sweden' },
-						{ value: 'brl', label: 'Berlin, Germany' },
-						{ value: 'lnd', label: 'London, England' },
-						{ value: 'zg', label: 'Zagreb, Croatia' }
-					]}
+					options={transformedLocationsArray}
 				/>
 				<FormControl.Message />
 			</FormControl>
-			<FormControl name="id">
+			<FormControl name="masterAdmin">
 				<FormControl.Label>
 					<RequiredLabel>{t('General.masterAdmin')}</RequiredLabel>
 				</FormControl.Label>
 				<SearchDropdown
 					dropdownPlaceholder="General.masterAdmin"
 					searchPlaceholder="General.masterAdminPlaceholder"
-					options={[
-						{ value: 'osl', label: 'Oslo, Norway' },
-						{ value: 'stck', label: 'Stockholm, Sweden' },
-						{ value: 'brl', label: 'Berlin, Germany' },
-						{ value: 'lnd', label: 'London, England' },
-						{ value: 'zg', label: 'Zagreb, Croatia' }
-					]}
+					options={masterAdmins}
 				/>
 				<FormControl.Message />
 			</FormControl>

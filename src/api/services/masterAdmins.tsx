@@ -2,10 +2,11 @@ import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
 import { AdminPayload } from 'api/models/admin/AdminPayload'
 
 interface Query {
-	search: string
-	location: string
-	page: number
-	limit: number
+	search?: string
+	location?: string
+	masterAdmin?: string
+	page?: number
+	limit?: number
 }
 
 export const getMasterAdmins = async (query: Query) => {
@@ -49,4 +50,16 @@ export const deleteMasterAdmins = async (ids: string[]) => {
 	const { data } = await axiosInstanceWithToken.delete(`/master-admin/bulk`, { data: { ids } })
 
 	return data
+}
+
+export const getAssignableMasterAdmin = async (query: Query) => {
+	const queryParams = {
+		search: query.masterAdmin,
+		page: query.page ?? 1,
+		limit: query.limit ?? 100
+	}
+	console.log('query', queryParams)
+	const response = await fetchWithToken(`master-admin/assignable`, queryParams)
+
+	return response.json()
 }

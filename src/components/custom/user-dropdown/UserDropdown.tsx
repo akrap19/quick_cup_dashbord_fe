@@ -78,17 +78,19 @@ export const UserDropdown = ({ settings }: Props) => {
 	return (
 		<div ref={ref}>
 			<Box position="relative">
-				<Button size="auto" variant="adaptive" onClick={handleDropDownOpening}>
-					<Box borderRadius="small" padding={2} backgroundColor="neutral.150">
-						<Inline gap={2} alignItems="center">
-							<UserIcon size="medium" color="neutral.800" />
-							<Text fontSize="medium" fontWeight="semibold" lineHeight="xlarge" color="neutral.800">
-								{t(handleFullName(settings.firstName, settings.lastName))}
-							</Text>
-							<BlockIcon icon={isOpen ? CarretUpIcon : CarretDownIcon} size="medium" color="neutral.800" />
-						</Inline>
-					</Box>
-				</Button>
+				<Box display="flex" width="100%" justifyContent="flex-end">
+					<Button size="auto" variant="adaptive" onClick={handleDropDownOpening}>
+						<Box borderRadius="small" padding={2} backgroundColor="neutral.150">
+							<Inline gap={2} alignItems="center">
+								<UserIcon size="medium" color="neutral.800" />
+								<Text fontSize="medium" fontWeight="semibold" lineHeight="xlarge" color="neutral.800">
+									{t(handleFullName(settings.firstName, settings.lastName))}
+								</Text>
+								<BlockIcon icon={isOpen ? CarretUpIcon : CarretDownIcon} size="medium" color="neutral.800" />
+							</Inline>
+						</Box>
+					</Button>
+				</Box>
 				{isOpen && (
 					<Box className={dropdownListContainer}>
 						<Stack>

@@ -25,7 +25,7 @@ const CaseFilesPage = async ({ searchParams }: Props) => {
 			navbarTitle="General.caseFiles"
 			title="CaseFiles.addNew"
 			description="CaseFiles.noListDataDescription"
-			buttonLabel="CaseFiles.add"
+			buttonLabel="CaseFiles.addCustimizedId"
 			buttonLink={ROUTES.ADD_CASE_FILES}
 		/>
 	) : (

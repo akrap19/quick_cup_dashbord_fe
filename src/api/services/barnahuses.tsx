@@ -55,7 +55,13 @@ export const getBarnahuseLocations = async (query: Query) => {
 		search: query.location
 	}
 
-	const response = await fetchWithToken(`barnahus/locations`, queryParams)
+	const response = await fetchWithToken(`barnahus/locations/search`, queryParams)
+
+	return response.json()
+}
+
+export const getBarnahuseMasterAdminLocations = async () => {
+	const response = await fetchWithToken(`barnahus/locations`)
 
 	return response.json()
 }

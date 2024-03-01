@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
-import { ConfirmAddDialog } from '@/components/overlay/confirm-add-dialog'
+import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
@@ -64,7 +64,7 @@ const AddBarnahusPage = () => {
 					</form>
 				</FormProvider>
 			</FormWrapper>
-			<ConfirmAddDialog
+			<ConfirmActionDialog
 				title="Practitioners.addNew"
 				description="Practitioners.addPractitionerDescription"
 				buttonLabel="General.addAndInvite"

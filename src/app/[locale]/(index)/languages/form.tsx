@@ -38,7 +38,7 @@ const LanguageForm = ({ languages, cancelDialog }: Props) => {
 				<Columns.Item columns={6}>
 					<Stack gap={7}>
 						<Stack gap={8}>
-							<FormControl name="id">
+							<FormControl name="code">
 								<FormControl.Label>
 									<RequiredLabel>{t('General.language')}</RequiredLabel>
 								</FormControl.Label>

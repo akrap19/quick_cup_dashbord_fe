@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { MouseEvent } from 'react'
 import { useFormContext } from 'react-hook-form'
@@ -19,14 +20,17 @@ interface Props {
 export const FormItems = ({ children, openCancelDialog }: Props) => {
 	const t = useTranslations()
 	const formContext = useFormContext()
+	const { back } = useRouter()
+
 	const handleCancel = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault()
 		if (openCancelDialog) {
 			openCancelDialog()
+		} else {
+			back()
 		}
 	}
 
-	console.log('formContext.formState.isValid', formContext.getValues())
 	return (
 		<Stack gap={6}>
 			<Text fontSize="small" color="destructive.500">

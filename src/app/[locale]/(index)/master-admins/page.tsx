@@ -2,6 +2,7 @@ import { ListWrapper } from '@/components/custom/layouts'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { DataTable } from '@/components/data-display/data-table'
 import { replaceNullInListWithDash } from '@/utils/replaceNullInListWithDash'
+import { getBarnahuseMasterAdminLocations } from 'api/services/barnahuses'
 import { getMasterAdmins } from 'api/services/masterAdmins'
 import { ROUTES } from 'parameters/routes'
 
@@ -18,6 +19,7 @@ interface Props {
 }
 
 const MasterAdminsPage = async ({ searchParams }: Props) => {
+	const barnahusLocations = await getBarnahuseMasterAdminLocations()
 	const { data: masterAdminsData } = await getMasterAdmins(searchParams)
 	const isInitialListEmpty = masterAdminsData?.users.length === 0 && !searchParams.search && !searchParams.location
 
@@ -31,7 +33,7 @@ const MasterAdminsPage = async ({ searchParams }: Props) => {
 		/>
 	) : (
 		<ListWrapper>
-			<Inputs data={masterAdminsData?.users} />
+			<Inputs data={masterAdminsData?.users} locations={barnahusLocations.data.locations} />
 			<DataTable columns={columns} data={replaceNullInListWithDash(masterAdminsData?.users)} />
 		</ListWrapper>
 	)

@@ -39,7 +39,7 @@ export const content = style({
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
 	width: '90vw',
-	maxWidth: '600px',
+	maxWidth: '528px',
 	maxHeight: '85vh',
 	padding: tokens.spacing[6],
 	animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,

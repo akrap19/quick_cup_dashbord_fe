@@ -16,7 +16,7 @@ import { createBarnahus } from 'api/services/barnahuses'
 import { ROUTES } from 'parameters'
 import { requiredString } from 'schemas'
 
-import { ConfirmAddDialog } from '../../../../../components/overlay/confirm-add-dialog/ConfirmAddDialog'
+import { ConfirmActionDialog } from '../../../../../components/overlay/confirm-action-dialog/ConfirmActionDialog'
 import BarnahusForm from '../form'
 
 const formSchema = z.object({
@@ -68,10 +68,10 @@ export const AddBarnahus = ({ locations, masterAdmins }: Props) => {
 					</form>
 				</FormProvider>
 			</FormWrapper>
-			<ConfirmAddDialog
+			<ConfirmActionDialog
 				title="Barnahuses.add"
 				description="Barnahuses.addBarnahusDescription"
-				buttonLabel="Barnahuses.save&Add"
+				buttonLabel="Barnahuses.add&Invite"
 				confirmDialog={confirmDialog}
 				onSubmit={onSubmit}
 			/>

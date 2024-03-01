@@ -11,14 +11,15 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { Admin } from 'api/models/admin/admin'
 import { updateMasterAdmin } from 'api/services/masterAdmins'
-import { phoneNumberScheme, requiredString } from 'schemas'
+import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
 
 import MasterAdminForm from '../../form'
 
 const formSchema = z.object({
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
-	phoneNumber: phoneNumberScheme.shape.phone
+	phoneNumber: phoneNumberScheme.shape.phone,
+	...emailSchema.shape
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -29,7 +30,7 @@ interface Props {
 
 const EditMasterAdmin = ({ masterAdmin }: Props) => {
 	const t = useTranslations()
-	const { back } = useRouter()
+	const { back, refresh } = useRouter()
 	useNavbarItems({ title: 'MasterAdmins.edit', backLabel: 'MasterAdmins.back' })
 
 	const form = useForm<Schema>({
@@ -38,7 +39,8 @@ const EditMasterAdmin = ({ masterAdmin }: Props) => {
 		defaultValues: {
 			firstName: masterAdmin.firstName,
 			lastName: masterAdmin.lastName,
-			phoneNumber: masterAdmin.phoneNumber
+			phoneNumber: masterAdmin.phoneNumber,
+			email: masterAdmin.email
 		}
 	})
 
@@ -47,6 +49,7 @@ const EditMasterAdmin = ({ masterAdmin }: Props) => {
 		const result = await updateMasterAdmin({ ...data, id: masterAdmin.id })
 		if (result?.message === 'OK') {
 			SuccessToast(t('MasterAdmins.successfullyEdited'))
+			refresh()
 			back()
 		}
 	}

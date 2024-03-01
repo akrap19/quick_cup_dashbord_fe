@@ -135,6 +135,7 @@
 	},
 	"Barnahuses": {
 		"add": "Add Barnahus",
+		"add&Invite": "Add Barnahus & send invitation",
 		"cancelAdd": "Cancel adding Barnahus?",
 		"edit": "Edit Barnahus",
 		"back": "Back to Barnahuses",
@@ -144,12 +145,12 @@
 		"barnahusLocation": "Barnahus location",
 		"assignedMasterAdmin": "Assigned master admin",
 		"assignedMasterAdminPlaceholder": "No Master-admin assigned yet.",
-		"successfullyCreated": "Barnahus successfully created!",
+		"successfullyCreated": "The Barnahus has been added & the Master-admin has been invited.",
 		"successfullyDeleted": "Barnahus successfully deleted!",
 		"successfullBulkDelete": "Barnahus successfully deleted!",
 		"successfullyEdited": "Barnahus successfully edited!",
 		"save&Add": "Save & Add Barnahus",
-		"addBarnahusDescription": "Please note that this added Barnahus will have one Master-admin dedicated to managing its content exclusively for this location.",
+		"addBarnahusDescription": "Please note that this added Barnahus will have one Master-admin dedicated to managing its content exclusively for this location. The Master-admin you assigned <important>will now receive an invitation</important> to the app.",
 		"assignedMasterAdminInfoText": "Once the assigned Master-admin for this Barnahus is added, the name will appear here.",
 		"noListDataDescription": "To begin, add all the Barnahuses to your library so that you can assign Admins to each one you've included. "
 	},
@@ -172,16 +173,19 @@
 		"add": "Add Master-admin",
 		"addNew": "Add new Master-admin",
 		"edit": "Edit Master-admin",
+		"delete": "Delete Master-admins",
 		"back": "Back to Master-admins",
 		"cancelAdd": "Cancel adding new Master-admin",
 		"searchMasterAdmin": "Search Master-admin",
-		"successfullyCreated": "Master admin successfully created!",
+		"successfullyCreated": "You added the Master-admin successfully.",
 		"successfullyDeleted": "Master admin successfully deleted!",
 		"successfullyEdited": "Master admin successfully edited!",
 		"successfullBulkDelete": "Master admins successfully deleted!",
 		"noListDataTitle": "Add Barnahus Master-admins",
+		"locationFilterPlaceholder": "All Barnahus locations",
 		"noListDataDescription": "Add an Master-admin for every Barnahus you want to include. This individual will be in charge of overseeing content for that specific Barnahus and adding their Admins to it.",
-		"addMasterAdminDescription": "Please note that <important>the Master-admin will receive an email invitation,</important> which will grant them access to the Journeys dashboard."
+		"addMasterAdminDescription": "Please note that the Master-admin <danger>will not receive an email invitation</danger> until you also add their Barnahus and assign it to this master-admin. Only then will they receive the invitation.",
+		"deleteMasterAdminDescription": "Note: If you delete this Master-admin, they won't be able to access their profile anymore."
 	},
 	"Practitioners": {
 		"add": "Add Practitioner",
@@ -230,6 +234,7 @@
 	},
 	"CaseFiles": {
 		"add": "Add Case",
+		"addCustimizedId": "Add customized ID",
 		"addNew": "Add new cases",
 		"edit": "Edit Case",
 		"back": "Back to Case files",

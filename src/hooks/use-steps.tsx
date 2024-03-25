@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 
-import { useJourneyContentStore } from '@/store/journey-content'
+import { useStepsStore } from '@/store/steps'
 
-interface JourneyContentSteps {
+interface Steps {
 	totalSteps?: number
 	currentStep?: number
 }
 
-export const useJourneyContentSteps = (stepsData: JourneyContentSteps) => {
-	const { setTotalSteps, setCurrentStep } = useJourneyContentStore()
+export const useSteps = (stepsData: Steps) => {
+	const { setTotalSteps, setCurrentStep } = useStepsStore()
 
 	useEffect(() => {
 		setTotalSteps(stepsData.totalSteps)

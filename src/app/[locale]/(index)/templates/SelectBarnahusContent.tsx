@@ -17,9 +17,7 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
 
-const formSchema = z.object({
-	caseId: z.string().min(1, { message: 'ValidationMeseges.required' })
-})
+const formSchema = z.object({})
 
 type Schema = z.infer<typeof formSchema>
 
@@ -34,7 +32,7 @@ export const SelectBarnahusContent = () => {
 	})
 
 	const onSubmit = async () => {
-		setCurrentStep(2)
+		setCurrentStep(4)
 	}
 
 	return (

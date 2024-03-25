@@ -7,22 +7,22 @@ import { useStepsStore } from '@/store/steps'
 import { RearrangeRoom } from './RearrangeRoom'
 
 import { SelectBarnahusContent } from './SelectBarnahusContent'
-import { SelectCaseId } from './SelectCaseId'
 import { SelectRoomsContent } from './SelectRoomsContent'
+import { SelectTemplate } from './SelectTemplate'
 
-const AddContentPage = () => {
+const TempletesPage = () => {
 	const { currentStep } = useStepsStore()
 	useSteps({
 		totalSteps: 5,
 		currentStep: 1
 	})
 	useNavbarItems({
-		title: 'General.caseJourney'
+		title: 'General.templates'
 	})
 
 	return (
 		<ManageJourneyWrapper>
-			{currentStep === 1 && <SelectCaseId />}
+			{currentStep === 1 && <SelectTemplate />}
 			{currentStep === 2 && <RearrangeRoom />}
 			{currentStep === 3 && <SelectBarnahusContent />}
 			{currentStep === 4 && <SelectRoomsContent />}
@@ -30,4 +30,4 @@ const AddContentPage = () => {
 	)
 }
 
-export default AddContentPage
+export default TempletesPage

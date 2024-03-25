@@ -10,7 +10,7 @@ import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { useJourneyContentStore } from '@/store/journey-content'
+import { useStepsStore } from '@/store/steps'
 import { useManageContent } from '@/store/manage-content'
 import { ContentTypeEnum } from '@/store/models/ContentTypeEnum'
 
@@ -21,7 +21,7 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const SelectContentType = () => {
-	const { setCurrentStep } = useJourneyContentStore()
+	const { setCurrentStep } = useStepsStore()
 	const { setContentType } = useManageContent()
 	const t = useTranslations()
 	const contentTypeOptions = [

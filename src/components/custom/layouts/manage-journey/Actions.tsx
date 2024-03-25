@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form'
 import { Button } from '@/components/inputs/button'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
-import { useJourneyContentStore } from '@/store/journey-content'
+import { useStepsStore } from '@/store/steps'
 
 import { actions } from './ManageJourney.css'
 import { CancelButton } from '../../button/cancel-button'
@@ -14,7 +14,7 @@ import { CancelButton } from '../../button/cancel-button'
 export const Actions = () => {
 	const t = useTranslations()
 	const formContext = useFormContext()
-	const { currentStep, setCurrentStep } = useJourneyContentStore()
+	const { currentStep, setCurrentStep } = useStepsStore()
 
 	const handleBack = () => {
 		if (currentStep) {

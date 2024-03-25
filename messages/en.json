@@ -76,6 +76,7 @@
 		"notDefined": " not defined",
 		"fullNameNotDefined": "Full name not defined",
 		"assignedBarnahusPlaceholder": "No Barnahus assigned yet.",
+		"templates": "Templates",
 		"assignedBarnahusInfoText": "Once the Barnahus is added it will be assigned to this Master-admin, and the information will appear here."
 	},
 	"Languages": {
@@ -276,5 +277,10 @@
 		"emailVerificationDialogDescription": "To start using your new email, just verify the updated address as your new login. After confirming, log in again to update the email in your settings.",
 		"sendVerification": "Send verification",
 		"verificationSuccessfullySent": "Verification successfully sent!"
+	},
+	"Templates": {
+		"selectTemplate": "Select template",
+		"selectTemplateTitle": "Select template to start",
+		"selectTemplateDescription": "To create case from template, please choose or search for the desired template that suits your case best and modify it by your needs."
 	}
 }

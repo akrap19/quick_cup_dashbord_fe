@@ -26,13 +26,13 @@ export const SelectRoomsContent = () => {
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
-		mode: 'onChange',
+		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
 		defaultValues: { caseId: '' }
 	})
 
 	const onSubmit = async () => {
-		setCurrentStep(2)
+		setCurrentStep(5)
 	}
 
 	return (

@@ -21,7 +21,7 @@ const reorder = (list: any, startIndex: number, endIndex: number): any => {
 	return result
 }
 
-export const CardContainer = () => {
+export const RearrangeableCards = () => {
 	const [cards, setCards] = useState(cardsData)
 
 	const getItemStyle = (draggableStyle: DraggingStyle | NotDraggingStyle | any | undefined): CSSProperties => ({

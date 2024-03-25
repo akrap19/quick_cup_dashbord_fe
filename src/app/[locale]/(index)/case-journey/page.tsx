@@ -1,11 +1,11 @@
 'use client'
 
 import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
-import { useSteps } from '@/hooks/use-steps'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { useSteps } from '@/hooks/use-steps'
 import { useStepsStore } from '@/store/steps'
-import { RearrangeRoom } from './RearrangeRoom'
 
+import { RearrangeRoom } from './RearrangeRoom'
 import { SelectBarnahusContent } from './SelectBarnahusContent'
 import { SelectCaseId } from './SelectCaseId'
 import { SelectRoomsContent } from './SelectRoomsContent'

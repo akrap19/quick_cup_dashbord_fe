@@ -1,11 +1,11 @@
 'use client'
 
 import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
-import { useSteps } from '@/hooks/use-steps'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
-import { useStepsStore } from '@/store/steps'
+import { useSteps } from '@/hooks/use-steps'
 import { useManageContent } from '@/store/manage-content'
 import { ContentTypeEnum } from '@/store/models/ContentTypeEnum'
+import { useStepsStore } from '@/store/steps'
 
 import { ManageBarnahusContent } from './ManageBarnahusContent'
 import { ManageRoomsContent } from './ManageRoomsConten'

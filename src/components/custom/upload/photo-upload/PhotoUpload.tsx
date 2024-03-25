@@ -1,12 +1,12 @@
-import { useTranslations } from 'next-intl'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
+import React, { InputHTMLAttributes, useState } from 'react'
 
 import { UploadIcon } from '@/components/icons/upload-icon'
 import { Box } from '@/components/layout/box'
+import { Inline } from '@/components/layout/inline'
 
 import * as styles from './PhotoUpload.css'
-import React, { InputHTMLAttributes, useState } from 'react'
-import { Inline } from '@/components/layout/inline'
 import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'
 
 type Props = InputHTMLAttributes<HTMLInputElement>
@@ -15,7 +15,7 @@ export const PhotoUpload = ({ ...rest }: Props) => {
 	const t = useTranslations()
 	const [photos, setPhotos] = useState<string[]>()
 	const handleFileChange = (event: any) => {
-		const files = event.target.files
+		const { files } = event.target
 		const urlObjects = Object.keys(files).map(key => URL.createObjectURL(files[key]))
 		const photosForUpload = photos ? [...photos, ...urlObjects] : urlObjects
 		setPhotos(photosForUpload)
@@ -41,7 +41,7 @@ export const PhotoUpload = ({ ...rest }: Props) => {
 				name={rest.id}
 				type="file"
 				accept="image/*"
-				multiple={true}
+				multiple
 				onChange={handleFileChange}
 				className={styles.fileInput}
 			/>

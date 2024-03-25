@@ -1,5 +1,6 @@
-import { tokens } from '@/style/theme.css'
 import { recipe } from '@vanilla-extract/recipes'
+
+import { tokens } from '@/style/theme.css'
 
 export const iconContainer = recipe({
 	base: {

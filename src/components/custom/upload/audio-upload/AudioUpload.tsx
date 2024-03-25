@@ -1,13 +1,14 @@
+import { useTranslations } from 'next-intl'
+import React, { InputHTMLAttributes, useState } from 'react'
+
 import { PauseIcon } from '@/components/icons/pause-icon'
 import { PlayIcon } from '@/components/icons/play-icon'
 import { Button } from '@/components/inputs/button'
 import { Inline } from '@/components/layout/inline'
-import { useTranslations } from 'next-intl'
-import React, { InputHTMLAttributes, useState } from 'react'
-import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'
-import { iconContainer } from '../../button/icon-delete-button/IconDeleteButton.css'
 
 import * as styles from './AudioUpload.css'
+import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'
+import { iconContainer } from '../../button/icon-delete-button/IconDeleteButton.css'
 
 type Props = InputHTMLAttributes<HTMLInputElement>
 
@@ -69,7 +70,9 @@ export const AudioUpload = ({ ...rest }: Props) => {
 								</div>
 							</Button>
 							<div className={styles.fileLabelConteiner}>
-								<label className={styles.fileLabel}>{audioFile.name}</label>
+								<label htmlFor={rest.id} className={styles.fileLabel}>
+									{audioFile.name}
+								</label>
 							</div>
 						</Inline>
 						<IconDeleteButton onDelete={handleDelete} />

@@ -7,11 +7,10 @@ import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
+import { RearrangeableCards } from '@/components/custom/rearrengable-cards/RearrangeableCards'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
-
-import { RearrangeableCards } from '@/components/custom/rearrengable-cards/RearrangeableCards'
 
 const formSchema = z.object({})
 

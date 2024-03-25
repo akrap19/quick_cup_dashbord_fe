@@ -1,7 +1,9 @@
+import React from 'react'
+
 import { TrashIcon } from '@/components/icons/trash-icon'
 import { Button } from '@/components/inputs/button'
+
 import { iconContainer } from './IconDeleteButton.css'
-import React from 'react'
 
 type IconDeleteButtonProps = { onDelete: (file?: string) => void }
 

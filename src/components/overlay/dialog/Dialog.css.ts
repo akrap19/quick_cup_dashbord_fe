@@ -1,4 +1,5 @@
 import { keyframes, style } from '@vanilla-extract/css'
+import { RecipeVariants, recipe } from '@vanilla-extract/recipes'
 
 import { tokens } from '../../../style/theme.css'
 
@@ -30,18 +31,36 @@ export const overlay = style({
 	zIndex: tokens.indices.over2
 })
 
-export const content = style({
-	backgroundColor: tokens.colors['shades.00'],
-	borderRadius: tokens.borders.radius.medium,
-	boxShadow: tokens.shadows.medium,
-	position: 'fixed',
-	top: '50%',
-	left: '50%',
-	transform: 'translate(-50%, -50%)',
-	width: '90vw',
-	maxWidth: '528px',
-	maxHeight: '85vh',
-	padding: tokens.spacing[6],
-	animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
-	zIndex: tokens.indices.over2
+export const content = recipe({
+	base: {
+		backgroundColor: tokens.colors['shades.00'],
+		borderRadius: tokens.borders.radius.medium,
+		boxShadow: tokens.shadows.medium,
+		position: 'fixed',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+		width: '90vw',
+		maxWidth: '528px',
+		maxHeight: '85vh',
+		animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
+		zIndex: tokens.indices.over2
+	},
+	variants: {
+		size: {
+			small: {
+				maxWidth: '528px',
+				maxHeight: '85vh',
+				padding: tokens.spacing[6]
+			},
+			large: {
+				height: '78vh',
+				maxWidth: '1212px',
+				maxHeight: '800px',
+				padding: tokens.spacing[20]
+			}
+		}
+	}
 })
+
+export type DialogVariants = RecipeVariants<typeof content>

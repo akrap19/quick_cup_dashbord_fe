@@ -1,10 +1,10 @@
-import { axiosInstanceWithToken, instance } from 'api/Instance'
+import { axiosInstanceWithToken, fetchWithoutToken, instance } from 'api/Instance'
 import { Login } from 'api/models/auth/login'
 import { Register } from 'api/models/auth/register'
 import { ResetPassword } from 'api/models/auth/resetPassword'
 
 export const register = async (requestData: Register) => {
-	const { data } = await instance.post(`/register`, requestData)
+	const { data } = await instance.post(`/auth/verify`, requestData)
 
 	return data
 }
@@ -39,4 +39,10 @@ export const logout = async () => {
 	const { data } = await axiosInstanceWithToken.post(`/auth/logout`)
 
 	return data
+}
+
+export const getEmail = async (uid: string) => {
+	const response = await fetchWithoutToken(`/auth/email?uid=${uid}`)
+
+	return response.json()
 }

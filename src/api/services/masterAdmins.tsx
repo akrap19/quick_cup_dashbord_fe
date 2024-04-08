@@ -40,14 +40,14 @@ export const getMasterAdmin = async (id: string) => {
 	return response.json()
 }
 
-export const deleteMasterAdmin = async (id: string) => {
-	const { data } = await axiosInstanceWithToken.delete(`/master-admin`, { data: { id } })
+export const deleteMasterAdmin = async (userId: string) => {
+	const { data } = await axiosInstanceWithToken.delete(`/master-admin`, { data: { userId } })
 
 	return data
 }
 
-export const deleteMasterAdmins = async (ids: string[]) => {
-	const { data } = await axiosInstanceWithToken.delete(`/master-admin/bulk`, { data: { ids } })
+export const deleteMasterAdmins = async (userIds: string[]) => {
+	const { data } = await axiosInstanceWithToken.delete(`/master-admin/bulk`, { data: { userIds } })
 
 	return data
 }

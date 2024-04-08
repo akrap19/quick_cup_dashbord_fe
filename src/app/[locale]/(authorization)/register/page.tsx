@@ -1,108 +1,17 @@
-'use client'
+import { getEmail } from 'api/services/auth'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { signIn } from 'next-auth/react'
-import { useTranslations } from 'next-intl'
-import { useEffect } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
-import * as z from 'zod'
+import Register from './Register'
 
-import { Button } from '@/components/inputs/button'
-import { FormControl } from '@/components/inputs/form-control'
-import { PasswordInput } from '@/components/inputs/password-input'
-import { RequiredLabel } from '@/components/inputs/required-label'
-import { TextInput } from '@/components/inputs/text-input'
-import { Stack } from '@/components/layout/stack'
-import { Heading } from '@/components/typography/heading'
-import { emailSchema, passwordSchema, requiredString } from 'schemas'
-import { atoms } from 'style/atoms.css'
-
-const formSchema = z
-	.object({
-		...emailSchema.shape,
-		...passwordSchema.shape,
-		confirmPassword: requiredString.shape.scheme
-	})
-	.refine(data => data.password === data.confirmPassword, {
-		path: ['confirmPassword'],
-		message: 'ValidationMeseges.confirmPassword'
-	})
-
-type Schema = z.infer<typeof formSchema>
-
-const RegisterPage = () => {
-	const t = useTranslations()
-
-	const form = useForm<Schema>({
-		mode: 'onChange',
-		resolver: zodResolver(formSchema),
-		defaultValues: { email: '', password: '', confirmPassword: '' }
-	})
-
-	const onSubmit = async (data: Schema) => {
-		try {
-			await signIn('register', data)
-		} catch (error) {
-			console.log(error)
-		}
+interface Props {
+	searchParams: {
+		uid: string
 	}
+}
+const RegisterPage = async ({ searchParams }: Props) => {
+	const uid = searchParams.uid?.split('/')[0]
+	const response = await getEmail(uid)
 
-	// this is because of bug on zod when password changes it dosen't matches confirm password and without this validation isn't trigered
-	const { password, confirmPassword } = form.watch()
-
-	// Trigger validation on the "confirmPassword" field when the "password" field changes
-	useEffect(() => {
-		if (confirmPassword !== '') {
-			form.trigger('confirmPassword')
-		}
-
-		// Cleans password field of required error to see info label if it is empty
-		if (password === '') {
-			setTimeout(() => {
-				form.clearErrors('password')
-			}, 1)
-		}
-	}, [password])
-
-	return (
-		<>
-			<Heading variant="h3" textTransform="uppercase">
-				{t('Authorization.register')}
-			</Heading>
-			<FormProvider {...form}>
-				<form className={atoms({ width: '100%' })} onSubmit={form.handleSubmit(onSubmit)}>
-					<Stack gap={15}>
-						<Stack gap={11}>
-							<FormControl name="email">
-								<FormControl.Label>
-									<RequiredLabel>{t('General.email')}</RequiredLabel>
-								</FormControl.Label>
-								<TextInput placeholder={t('General.emailPlaceholder')} />
-								<FormControl.Message />
-							</FormControl>
-							<FormControl name="password">
-								<FormControl.Label>
-									<RequiredLabel>{t('Authorization.password')}</RequiredLabel>
-								</FormControl.Label>
-								<PasswordInput placeholder={t('Authorization.newPasswordPlaceholder')} />
-								<FormControl.Message instructionMessage="Authorization.passwordInstructions" />
-							</FormControl>
-							<FormControl name="confirmPassword" successMessageString="Authorization.confirmPasswordSuccess">
-								<FormControl.Label>
-									<RequiredLabel>{t('Authorization.confirmPassword')}</RequiredLabel>
-								</FormControl.Label>
-								<PasswordInput placeholder={t('Authorization.confirmPassword')} />
-								<FormControl.Message />
-							</FormControl>
-						</Stack>
-						<Button type="submit" variant="primary" disabled={!form.formState.isValid}>
-							{t('Authorization.register')}
-						</Button>
-					</Stack>
-				</form>
-			</FormProvider>
-		</>
-	)
+	return <Register uid={searchParams.uid} status={response.code} email={response.data} />
 }
 
 export default RegisterPage

@@ -14,8 +14,6 @@ import { Base } from 'api/models/common/base'
 import { updateBarnahus } from 'api/services/barnahuses'
 import { requiredString } from 'schemas'
 
-import BarnahusForm from '../../form'
-
 const formSchema = z.object({
 	name: requiredString.shape.scheme,
 	location: requiredString.shape.scheme,
@@ -30,7 +28,7 @@ interface Props {
 	masterAdmins: Base[]
 }
 
-const BarnahusEdit = ({ barnahus, locations, masterAdmins }: Props) => {
+const BarnahusEdit = ({ barnahus }: Props) => {
 	const t = useTranslations()
 	const { back } = useRouter()
 	useNavbarItems({ title: 'Barnahuses.edit', backLabel: 'Barnahuses.back' })
@@ -44,7 +42,7 @@ const BarnahusEdit = ({ barnahus, locations, masterAdmins }: Props) => {
 	const onSubmit = async () => {
 		const data = form.getValues()
 		const result = await updateBarnahus({
-			id: barnahus.id,
+			barnahusId: barnahus.barnahusId,
 			name: data.name,
 			location: data.location,
 			adminId: data.masterAdmin === barnahus.admin ? barnahus.adminId : data.masterAdmin
@@ -59,7 +57,7 @@ const BarnahusEdit = ({ barnahus, locations, masterAdmins }: Props) => {
 		<FormWrapper>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<BarnahusForm locations={locations} masterAdmins={masterAdmins} />
+					{/* <BarnahusForm locations={locations} masterAdmins={masterAdmins} /> */}
 				</form>
 			</FormProvider>
 		</FormWrapper>

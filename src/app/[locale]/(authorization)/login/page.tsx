@@ -97,7 +97,7 @@ const LoginPage = () => {
 							</Inline>
 						</Stack>
 						<Button type="submit" disabled={!form.formState.isValid || loading.isLoading}>
-							{loading.isLoading ? 'Loading...' : t('Authorization.logIn')}
+							{t(loading.isLoading ? 'General.loading' : 'Authorization.logIn')}
 						</Button>
 					</Stack>
 				</form>

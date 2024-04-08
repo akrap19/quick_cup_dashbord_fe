@@ -11,6 +11,7 @@ import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
+import { Admins } from 'api/models/admin/Admins'
 import { Base } from 'api/models/common/base'
 import { createBarnahus } from 'api/services/barnahuses'
 import { ROUTES } from 'parameters'
@@ -29,7 +30,7 @@ type Schema = z.infer<typeof formSchema>
 
 interface Props {
 	locations: Base[]
-	masterAdmins: Base[]
+	masterAdmins: Admins[]
 }
 
 export const AddBarnahus = ({ locations, masterAdmins }: Props) => {
@@ -51,7 +52,7 @@ export const AddBarnahus = ({ locations, masterAdmins }: Props) => {
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		const result = await createBarnahus({ name: data.name, location: data.location, id: data.masterAdmin })
+		const result = await createBarnahus({ name: data.name, location: data.location, adminId: data.masterAdmin })
 		if (result?.message === 'OK') {
 			SuccessToast(t('Barnahuses.successfullyCreated'))
 			push(ROUTES.BARNAHUSES)

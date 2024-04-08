@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { Session } from 'next-auth'
 import { useTranslations } from 'next-intl'
 
 import { LeftIcon } from '@/components/icons/left-icon'
@@ -10,17 +11,16 @@ import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
-import { Settings } from 'api/models/settings/settings'
 import { useNavbarItemsStore } from 'store/navbar'
 
 import * as styles from './Navbar.css'
 import { UserDropdown } from '../user-dropdown'
 
 interface Props {
-	settings: Settings
+	session: Session | null
 }
 
-export const Navbar = ({ settings }: Props) => {
+export const Navbar = ({ session }: Props) => {
 	const router = useRouter()
 	const t = useTranslations()
 	const { navbarItems } = useNavbarItemsStore()
@@ -65,7 +65,7 @@ export const Navbar = ({ settings }: Props) => {
 					)}
 					{navbarItems?.useUserDropdown && (
 						<Box style={{ marginTop: '-0.5rem' }}>
-							<UserDropdown settings={settings} />
+							<UserDropdown session={session} />
 						</Box>
 					)}
 				</Inline>

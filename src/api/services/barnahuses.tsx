@@ -38,14 +38,14 @@ export const getBarnahus = async (id: string) => {
 	return response.json()
 }
 
-export const deleteBarnahus = async (id: string) => {
-	const { data } = await axiosInstanceWithToken.delete(`/barnahus`, { data: { id } })
+export const deleteBarnahus = async (barnahusId: string) => {
+	const { data } = await axiosInstanceWithToken.delete(`/barnahus`, { data: { barnahusId } })
 
 	return data
 }
 
-export const deleteBarnahuses = async (ids: string[]) => {
-	const { data } = await axiosInstanceWithToken.delete(`/barnahus/bulk`, { data: { ids } })
+export const deleteBarnahuses = async (barnahusIds: string[]) => {
+	const { data } = await axiosInstanceWithToken.delete(`/barnahus/bulk`, { data: { barnahusIds } })
 
 	return data
 }

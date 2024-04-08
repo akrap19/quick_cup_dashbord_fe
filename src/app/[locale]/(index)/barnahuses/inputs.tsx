@@ -48,14 +48,14 @@ export const Inputs = ({ data }: Props) => {
 		const index = Object.keys(checkedItems)
 		const numericIndex = parseInt(index[0], 10)
 
-		push(ROUTES.EDIT_BARNAHUS + data[numericIndex].id)
+		push(ROUTES.EDIT_BARNAHUS + data[numericIndex].barnahusId)
 	}
 
 	const handleDelete = async () => {
 		const indexes = Object.keys(checkedItems)
 		const ids = indexes.map(index => {
 			const numericIndex = parseInt(index, 10)
-			return data[numericIndex].id
+			return data[numericIndex].barnahusId
 		})
 
 		const isDeleteBulk = ids.length > 1

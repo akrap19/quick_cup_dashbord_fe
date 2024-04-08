@@ -32,5 +32,6 @@ export const drawerItems: Item[] = [
 	},
 	{ label: 'caseFiles', icon: <FileIcon />, route: ROUTES.CASE_FILES },
 	{ label: 'caseJourney', icon: <TemplateIcon />, route: ROUTES.CASE_JOURNEY },
+	{ label: 'templates', icon: <TemplateIcon />, route: ROUTES.TEMPLATES },
 	{ label: 'settings', icon: <GearIcon />, route: ROUTES.SETTINGS }
 ]

@@ -1,11 +1,11 @@
 'use client'
 
 import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
-import { useJourneyContentSteps } from '@/hooks/use-journey-content-steps'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
-import { useJourneyContentStore } from '@/store/journey-content'
+import { useSteps } from '@/hooks/use-steps'
 import { useManageContent } from '@/store/manage-content'
 import { ContentTypeEnum } from '@/store/models/ContentTypeEnum'
+import { useStepsStore } from '@/store/steps'
 
 import { ManageBarnahusContent } from './ManageBarnahusContent'
 import { ManageRoomsContent } from './ManageRoomsConten'
@@ -14,9 +14,9 @@ import { SelectContentType } from './SelectContentType'
 import { SelectLanguage } from './SelectLanguage'
 
 const AddContentPage = () => {
-	const { currentStep } = useJourneyContentStore()
+	const { currentStep } = useStepsStore()
 	const { contentType } = useManageContent()
-	useJourneyContentSteps({
+	useSteps({
 		totalSteps: 4,
 		currentStep: 1
 	})

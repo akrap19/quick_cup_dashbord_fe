@@ -15,14 +15,14 @@ export const ROUTES = {
 	PRACTITIONERS: '/practitioners',
 	ADD_PRACTITIONERS: '/practitioners/add',
 	EDIT_PRACTITIONERS: '/practitioners/edit/',
-	MANAGE_CONTENT: '/manage-content',
 	CONTENT: '/content',
 	LANGUAGES: '/languages',
 	ADD_LANGUAGES: '/languages/add',
-	ADD_CONTENT: '/manage-content/add',
+	ADD_CONTENT: '/content/add',
 	CASE_FILES: '/case-files',
 	ADD_CASE_FILES: '/case-files/add',
 	EDIT_CASE_FILES: '/case-files/edit',
 	CASE_JOURNEY: '/case-journey',
+	TEMPLATES: '/templates',
 	SETTINGS: '/settings'
 }

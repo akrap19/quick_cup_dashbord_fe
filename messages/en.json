@@ -76,7 +76,25 @@
 		"notDefined": " not defined",
 		"fullNameNotDefined": "Full name not defined",
 		"assignedBarnahusPlaceholder": "No Barnahus assigned yet.",
+		"templates": "Templates",
 		"assignedBarnahusInfoText": "Once the Barnahus is added it will be assigned to this Master-admin, and the information will appear here."
+	},
+	"ValidationMeseges": {
+		"required": "This field is required.",
+		"email": "Invalid email. Please try again.",
+		"password": "Please make sure your password meets the criteria.",
+		"confirmPassword": "Please make sure your passwords match.",
+		"phone": "Invalid phone number. Please try again.",
+		"invalidRegistrationLink": "Invalid or expired registration link"
+	},
+	"NoListData": {
+		"letsStart": "Lets get started!"
+	},
+	"Onboarding": {
+		"title": "Hi, welcome to Journeys",
+		"description": "To enhance your clarity regarding your responsibilities, follow these steps to determine your tasks more easily.",
+		"close": "Close onboarding",
+		"letsBegin": "Let's begin"
 	},
 	"Languages": {
 		"en": "English",
@@ -92,13 +110,6 @@
 		"autoTranslateInfoText": "Auto-translation is operative exclusively when the content has been published in the default language. This is owing to the fact that the translation process occurs from the default language to the selected language.",
 		"successfullyCreated": "Language successfully created!",
 		"cancelAdd": "Cancel adding language?"
-	},
-	"ValidationMeseges": {
-		"required": "This field is required.",
-		"email": "Invalid email. Please try again.",
-		"password": "Please make sure your password meets the criteria.",
-		"confirmPassword": "Please make sure your passwords match.",
-		"phone": "Invalid phone number. Please try again."
 	},
 	"Authorization": {
 		"password": "Password",
@@ -129,9 +140,6 @@
 			"title": "Password successfully changed",
 			"instructions": "Please login to your account again."
 		}
-	},
-	"NoListData": {
-		"letsStart": "Lets get started!"
 	},
 	"Barnahuses": {
 		"add": "Add Barnahus",
@@ -176,6 +184,9 @@
 		"delete": "Delete Master-admins",
 		"back": "Back to Master-admins",
 		"cancelAdd": "Cancel adding new Master-admin",
+		"addMasterAdmins": "Add Master-admins",
+		"addAndAssignBarnahus": "Add & Assign Barnahus",
+		"addAndAssignBarnahusDescription": "Once you've added Master-admins, you'll need to add a Barnahus and assign each Master-admin to their respective Barnahus. Completing this process ensures that the Master-admins receives invitation and gains access to the app.",
 		"searchMasterAdmin": "Search Master-admin",
 		"successfullyCreated": "You added the Master-admin successfully.",
 		"successfullyDeleted": "Master admin successfully deleted!",
@@ -185,7 +196,8 @@
 		"locationFilterPlaceholder": "All Barnahus locations",
 		"noListDataDescription": "Add an Master-admin for every Barnahus you want to include. This individual will be in charge of overseeing content for that specific Barnahus and adding their Admins to it.",
 		"addMasterAdminDescription": "Please note that the Master-admin <danger>will not receive an email invitation</danger> until you also add their Barnahus and assign it to this master-admin. Only then will they receive the invitation.",
-		"deleteMasterAdminDescription": "Note: If you delete this Master-admin, they won't be able to access their profile anymore."
+		"deleteMasterAdminDescription": "Note: If you delete this Master-admin, they won't be able to access their profile anymore.",
+		"onboardingDescription": "A Master-admin is responsible for maintaining the main dashboard and creating content for their respective Barnahus. Each Master-admin oversees their own Barnahus, with exclusive rights to invite other contributors (admins) to their Barnahus dashboard."
 	},
 	"Practitioners": {
 		"add": "Add Practitioner",
@@ -276,5 +288,10 @@
 		"emailVerificationDialogDescription": "To start using your new email, just verify the updated address as your new login. After confirming, log in again to update the email in your settings.",
 		"sendVerification": "Send verification",
 		"verificationSuccessfullySent": "Verification successfully sent!"
+	},
+	"Templates": {
+		"selectTemplate": "Select template",
+		"selectTemplateTitle": "Select template to start",
+		"selectTemplateDescription": "To create case from template, please choose or search for the desired template that suits your case best and modify it by your needs."
 	}
 }

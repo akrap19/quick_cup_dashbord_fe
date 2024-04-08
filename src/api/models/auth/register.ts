@@ -1,5 +1,4 @@
 export interface Register {
-	email: string
+	uid: string
 	password: string
-	confirmPassword: string
 }

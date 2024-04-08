@@ -21,7 +21,7 @@ export const BarnahusDetails = ({ barnahus }: Props) => {
 	useNavbarItems({
 		title: barnahus.name,
 		backLabel: 'Barnahuses.back',
-		actionButton: <EditButton buttonLabel="Barnahuses.edit" buttonLink={ROUTES.EDIT_BARNAHUS + barnahus.id} />
+		actionButton: <EditButton buttonLabel="Barnahuses.edit" buttonLink={ROUTES.EDIT_BARNAHUS + barnahus.barnahusId} />
 	})
 
 	return (

@@ -16,12 +16,7 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { tokens } from '@/style/theme.css'
 
-const formSchema = z.object({
-	generalIntrudactionTitle: z
-		.string()
-		.min(1, { message: 'ValidationMeseges.required' })
-		.max(1, { message: 'ValidationMeseges.required' })
-})
+const formSchema = z.object({})
 
 type Schema = z.infer<typeof formSchema>
 

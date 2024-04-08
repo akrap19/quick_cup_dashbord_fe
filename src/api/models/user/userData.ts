@@ -6,5 +6,5 @@ export interface UserData {
 	lastName: string
 	email?: string
 	phoneNumber?: string
-	roles?: Roles[]
+	roles: Roles[]
 }

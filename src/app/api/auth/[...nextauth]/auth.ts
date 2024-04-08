@@ -1,7 +1,7 @@
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-import { login } from 'api/services/auth'
+import { login, register } from 'api/services/auth'
 import { ROUTES } from 'parameters'
 
 import { refreshAccessToken } from './refreshAccessToken'
@@ -21,6 +21,26 @@ export const authOptions: NextAuthOptions = {
 			async authorize(credentials: any) {
 				const response = await login({
 					email: credentials.email,
+					password: credentials.password
+				})
+
+				const { user, accessToken, accessTokenExpiresAt, refreshToken } = response.data
+
+				return {
+					...user,
+					accessToken,
+					accessTokenExpiresAt,
+					refreshToken
+				}
+			}
+		}),
+		CredentialsProvider({
+			id: 'register',
+			type: 'credentials',
+			credentials: {},
+			async authorize(credentials: any) {
+				const response = await register({
+					uid: credentials.uid,
 					password: credentials.password
 				})
 

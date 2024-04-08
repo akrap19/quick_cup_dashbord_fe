@@ -5,13 +5,15 @@ import { ReactNode } from 'react'
 
 import * as styles from './Dialog.css'
 
-interface Props {
+interface DialogProps {
 	opened: boolean
 	children: ReactNode
 	onClose: () => void
 }
 
-export const Dialog = ({ opened, children, onClose }: Props) => {
+type Props = DialogProps & styles.DialogVariants
+
+export const Dialog = ({ size = 'small', opened, children, onClose }: Props) => {
 	const onChange = (open: boolean) => {
 		if (!open) {
 			onClose()
@@ -22,7 +24,7 @@ export const Dialog = ({ opened, children, onClose }: Props) => {
 		<DialogPrimitive.Root open={opened} onOpenChange={onChange}>
 			<DialogPrimitive.Portal>
 				<DialogPrimitive.Overlay className={styles.overlay} />
-				<DialogPrimitive.DialogContent className={styles.content}>{children}</DialogPrimitive.DialogContent>
+				<DialogPrimitive.DialogContent className={styles.content({ size })}>{children}</DialogPrimitive.DialogContent>
 			</DialogPrimitive.Portal>
 		</DialogPrimitive.Root>
 	)

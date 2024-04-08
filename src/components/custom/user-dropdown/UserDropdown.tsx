@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { Session } from 'next-auth'
 import { signOut } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import React, { useEffect, useRef, useState } from 'react'
@@ -13,7 +14,6 @@ import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { handleFullName } from '@/utils/handleFullName'
-import { Settings } from 'api/models/settings/settings'
 import { logout } from 'api/services/auth'
 import { ROUTES } from 'parameters'
 
@@ -28,10 +28,10 @@ interface Option {
 }
 
 interface Props {
-	settings: Settings
+	session: Session | null
 }
 
-export const UserDropdown = ({ settings }: Props) => {
+export const UserDropdown = ({ session }: Props) => {
 	const t = useTranslations()
 	const [isOpen, setIsOpen] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
@@ -84,7 +84,7 @@ export const UserDropdown = ({ settings }: Props) => {
 							<Inline gap={2} alignItems="center">
 								<UserIcon size="medium" color="neutral.800" />
 								<Text fontSize="medium" fontWeight="semibold" lineHeight="xlarge" color="neutral.800">
-									{t(handleFullName(settings.firstName, settings.lastName))}
+									{t(handleFullName(session?.user?.firstName, session?.user?.lastName))}
 								</Text>
 								<BlockIcon icon={isOpen ? CarretUpIcon : CarretDownIcon} size="medium" color="neutral.800" />
 							</Inline>

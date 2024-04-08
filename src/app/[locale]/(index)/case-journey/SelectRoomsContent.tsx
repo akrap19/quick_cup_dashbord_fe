@@ -15,20 +15,18 @@ import { Divider } from '@/components/layout/divider'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { useJourneyContentStore } from '@/store/journey-content'
+import { useStepsStore } from '@/store/steps'
 
-const formSchema = z.object({
-	caseId: z.string().min(1, { message: 'ValidationMeseges.required' })
-})
+const formSchema = z.object({})
 
 type Schema = z.infer<typeof formSchema>
 
 export const SelectRoomsContent = () => {
-	const { setCurrentStep } = useJourneyContentStore()
+	const { setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
-		mode: 'onBlur',
+		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: { caseId: '' }
 	})

@@ -8,11 +8,12 @@ import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
 import { OpenedProps } from '@/hooks/use-toggle'
+import { Admins } from 'api/models/admin/Admins'
 import { Base } from 'api/models/common/base'
 
 interface Props {
 	locations: Base[]
-	masterAdmins: Base[]
+	masterAdmins: Admins[]
 	cancelDialog?: OpenedProps
 }
 
@@ -22,6 +23,12 @@ const BarnahusForm = ({ locations, masterAdmins, cancelDialog }: Props) => {
 		return {
 			id: location.name,
 			name: location.name
+		}
+	})
+	const transformedMasterAdminsArray = masterAdmins?.map(masterAdmin => {
+		return {
+			id: masterAdmin.userId,
+			name: masterAdmin.name
 		}
 	})
 
@@ -52,7 +59,7 @@ const BarnahusForm = ({ locations, masterAdmins, cancelDialog }: Props) => {
 				<SearchDropdown
 					dropdownPlaceholder="General.masterAdmin"
 					searchPlaceholder="General.masterAdminPlaceholder"
-					options={masterAdmins}
+					options={transformedMasterAdminsArray}
 				/>
 				<FormControl.Message />
 			</FormControl>

@@ -32,3 +32,14 @@ export const fetchWithToken = async (endpoint: string, queryParams?: any) => {
 		headers
 	})
 }
+
+export const fetchWithoutToken = async (endpoint: string, queryParams?: any) => {
+	const baseUrl = 'https://barnahus-journeys-be-dev-pjqvrfz4wa-lz.a.run.app/'
+
+	const url = qs.stringifyUrl({
+		url: baseUrl + endpoint,
+		query: queryParams
+	})
+
+	return fetch(url)
+}

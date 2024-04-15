@@ -18,13 +18,12 @@ export const metadata: Metadata = {
 const DashboardLayout = async ({ children }: { children: ReactNode }) => {
 	const session = await getServerSession(authOptions)
 	const { data: seenOnboardings } = await getSeenOnboardings()
+	const userRole = session?.user?.roles[0]?.name
 
 	return (
 		<>
-			{!seenOnboardings.onboardingSections.includes(session?.user?.roles[0]?.name) && (
-				<Onboarding userType={session?.user?.roles[0]?.name} />
-			)}
-			<Drawer />
+			{!seenOnboardings.onboardingSections.includes(userRole) && <Onboarding userRole={userRole} />}
+			{userRole && <Drawer role={userRole} />}
 			<Box flex="1">
 				<Stack>
 					<Navbar session={session} />

@@ -29,7 +29,7 @@ export const createMasterAdmin = async (masterAdmin: AdminPayload) => {
 }
 
 export const updateMasterAdmin = async (masterAdmin: AdminPayload) => {
-	const { data } = await axiosInstanceWithToken.patch(`/master-admin`, masterAdmin)
+	const { data } = await axiosInstanceWithToken.put(`/master-admin`, masterAdmin)
 
 	return data
 }

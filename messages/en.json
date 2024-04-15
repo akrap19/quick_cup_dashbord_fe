@@ -17,7 +17,7 @@
 		"practitioner": "Practitioner",
 		"practitioners": "Practitioners",
 		"numberOfPractitioners": "Number of Practitioners",
-		"location": "location",
+		"location": "Location",
 		"loading": "Loading...",
 		"manageContent": "Manage content",
 		"settings": "Settings",
@@ -49,6 +49,7 @@
 		"caseJourney": "Case Journey",
 		"save&Add": "Save & add",
 		"cancel": "Cancel",
+		"previous": "Previous",
 		"next": "Next",
 		"back": "Back",
 		"edit": "Edit",
@@ -77,7 +78,9 @@
 		"fullNameNotDefined": "Full name not defined",
 		"assignedBarnahusPlaceholder": "No Barnahus assigned yet.",
 		"templates": "Templates",
-		"assignedBarnahusInfoText": "Once the Barnahus is added it will be assigned to this Master-admin, and the information will appear here."
+		"assignedBarnahusInfoText": "Once the Barnahus is added it will be assigned to this Master-admin, and the information will appear here.",
+		"showingSomeResults": "Showing results {start} - {end} of {results} overall",
+		"showingAllResult": "Showing all results ({results})"
 	},
 	"ValidationMeseges": {
 		"required": "This field is required.",
@@ -134,7 +137,12 @@
 		},
 		"ForgotPassword": {
 			"instructions": "Enter your email address associated with your account and we will send you a link to reset your password.",
-			"sendInstructions": "Send instructions"
+			"sendInstructions": "Send instructions",
+			"successTitle": "Link sent successfully!",
+			"successInstructions1": "Link was sent to the ",
+			"successInstructions2": ", please go to that email address and click on link that will redirect you to page where you are going to reset your.",
+			"resendInstructions": "If mail was not delivered please click resend after countdown.",
+			"resend": "Resend"
 		},
 		"PasswordSuccessfullyChanged": {
 			"title": "Password successfully changed",
@@ -151,7 +159,7 @@
 		"barnahusName": "Barnahus name",
 		"barnahusNamePlaceholder": "e.g. Barnahus Oslo",
 		"barnahusLocation": "Barnahus location",
-		"assignedMasterAdmin": "Assigned master admin",
+		"assignedMasterAdmin": "Assigned Master-admin",
 		"assignedMasterAdminPlaceholder": "No Master-admin assigned yet.",
 		"successfullyCreated": "The Barnahus has been added & the Master-admin has been invited.",
 		"successfullyDeleted": "Barnahus successfully deleted!",

@@ -28,13 +28,13 @@ export interface OnboardingData {
 	image: string
 }
 
-type Props = { userType?: string }
+type Props = { userRole?: string }
 
-export const Onboarding = ({ userType }: Props) => {
+export const Onboarding = ({ userRole }: Props) => {
 	const [currentStep, setCurrentStep] = useState(0)
 	const [onboardingOpened, setOnboardingOpened] = useState(true)
 	const [isMounted, setIsMounted] = useState(false)
-	const data: OnboardingData[] = userType ? onboardingData[userType] : []
+	const data: OnboardingData[] = userRole ? onboardingData[userRole] : []
 	const onboardingItemsContainerRef: any = useRef(null)
 	const t = useTranslations()
 	const isEndOfOnboarding = currentStep + 1 < data.length
@@ -61,8 +61,8 @@ export const Onboarding = ({ userType }: Props) => {
 
 	const handleOnboardingSeen = async () => {
 		setOnboardingOpened(false)
-		if (userType) {
-			await onboardingSeen(userType)
+		if (userRole) {
+			await onboardingSeen(userRole)
 		}
 	}
 

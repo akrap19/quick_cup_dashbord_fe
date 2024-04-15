@@ -7,19 +7,19 @@ export const getSettings = async () => {
 }
 
 export const personal = async (firstName: string, lastName: string) => {
-	const { data } = await axiosInstanceWithToken.patch(`/user/personal`, { firstName, lastName })
+	const { data } = await axiosInstanceWithToken.put(`/user/personal`, { firstName, lastName })
 
 	return data
 }
 
 export const password = async (oldPassword: string, newPassword: string) => {
-	const { data } = await axiosInstanceWithToken.patch(`/user/password`, { oldPassword, newPassword })
+	const { data } = await axiosInstanceWithToken.put(`/user/password`, { oldPassword, newPassword })
 
 	return data
 }
 
 export const email = async (email: string) => {
-	const { data } = await axiosInstanceWithToken.patch(`/user/email`, { email })
+	const { data } = await axiosInstanceWithToken.put(`/user/email`, { email })
 
 	return data
 }

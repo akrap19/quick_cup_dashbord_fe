@@ -9,10 +9,13 @@ import { z } from 'zod'
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { Admins } from 'api/models/admin/Admins'
 import { Barnahus } from 'api/models/barnahuses/barnahus'
 import { Base } from 'api/models/common/base'
 import { updateBarnahus } from 'api/services/barnahuses'
 import { requiredString } from 'schemas'
+
+import BarnahusForm from '../../form'
 
 const formSchema = z.object({
 	name: requiredString.shape.scheme,
@@ -25,10 +28,10 @@ type Schema = z.infer<typeof formSchema>
 interface Props {
 	barnahus: Barnahus
 	locations: Base[]
-	masterAdmins: Base[]
+	masterAdmins: Admins[]
 }
 
-const BarnahusEdit = ({ barnahus }: Props) => {
+const BarnahusEdit = ({ barnahus, locations, masterAdmins }: Props) => {
 	const t = useTranslations()
 	const { back } = useRouter()
 	useNavbarItems({ title: 'Barnahuses.edit', backLabel: 'Barnahuses.back' })
@@ -57,7 +60,7 @@ const BarnahusEdit = ({ barnahus }: Props) => {
 		<FormWrapper>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					{/* <BarnahusForm locations={locations} masterAdmins={masterAdmins} /> */}
+					<BarnahusForm locations={locations} masterAdmins={masterAdmins} />
 				</form>
 			</FormProvider>
 		</FormWrapper>

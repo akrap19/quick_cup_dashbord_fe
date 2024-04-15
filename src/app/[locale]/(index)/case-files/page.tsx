@@ -31,7 +31,11 @@ const CaseFilesPage = async ({ searchParams }: Props) => {
 	) : (
 		<ListWrapper>
 			<Inputs />
-			<DataTable columns={columns} data={replaceNullInListWithDash(caseFilesData?.caseFiles)} />
+			<DataTable
+				columns={columns}
+				data={replaceNullInListWithDash(caseFilesData?.caseFiles)}
+				pagination={caseFilesData.pagination}
+			/>
 		</ListWrapper>
 	)
 }

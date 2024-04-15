@@ -27,7 +27,7 @@ export const createBarnahus = async (barnahus: BarnahusPayload) => {
 }
 
 export const updateBarnahus = async (barnahus: BarnahusPayload) => {
-	const { data } = await axiosInstanceWithToken.patch(`/barnahus`, barnahus)
+	const { data } = await axiosInstanceWithToken.put(`/barnahus`, barnahus)
 
 	return data
 }

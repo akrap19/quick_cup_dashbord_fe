@@ -24,13 +24,13 @@ export const refresh = async (refreshToken: string) => {
 }
 
 export const forgotPassword = async (email: string) => {
-	const { data } = await instance.post(`/forgotPassword`, { email })
+	const { data } = await instance.post(`/auth/password/forgot`, { email })
 
 	return data
 }
 
 export const resetPassword = async (requestData: ResetPassword) => {
-	const { data } = await instance.post(`/resetPassword`, requestData)
+	const { data } = await instance.post(`/auth/password/reset`, requestData)
 
 	return data
 }

@@ -21,7 +21,9 @@ export const MasterAdminDetails = ({ masterAdmin }: Props) => {
 	useNavbarItems({
 		title: handleFullName(masterAdmin.firstName, masterAdmin.lastName),
 		backLabel: 'MasterAdmins.back',
-		actionButton: <EditButton buttonLabel="MasterAdmins.edit" buttonLink={ROUTES.EDIT_MASTER_ADMINS + masterAdmin.id} />
+		actionButton: (
+			<EditButton buttonLabel="MasterAdmins.edit" buttonLink={ROUTES.EDIT_MASTER_ADMINS + masterAdmin.userId} />
+		)
 	})
 
 	return (

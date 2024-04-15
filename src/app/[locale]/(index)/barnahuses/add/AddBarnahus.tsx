@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
+import { useLoading } from '@/hooks/use-loading'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
 import { Admins } from 'api/models/admin/Admins'
@@ -36,6 +37,7 @@ interface Props {
 export const AddBarnahus = ({ locations, masterAdmins }: Props) => {
 	const t = useTranslations()
 	const { push, refresh } = useRouter()
+	const loading = useLoading()
 	const confirmDialog = useOpened()
 	const cancelDialog = useOpened()
 	useNavbarItems({ title: 'Barnahuses.add', backLabel: 'Barnahuses.back', cancelDialog })
@@ -51,12 +53,16 @@ export const AddBarnahus = ({ locations, masterAdmins }: Props) => {
 	}
 
 	const onSubmit = async () => {
+		loading.toggleLoading()
 		const data = form.getValues()
-		const result = await createBarnahus({ name: data.name, location: data.location, adminId: data.masterAdmin })
+		const result = await createBarnahus({ name: data.name, location: data.location, userId: data.masterAdmin })
+
 		if (result?.message === 'OK') {
 			SuccessToast(t('Barnahuses.successfullyCreated'))
 			push(ROUTES.BARNAHUSES)
 			refresh()
+		} else {
+			loading.toggleLoading()
 		}
 	}
 
@@ -73,6 +79,7 @@ export const AddBarnahus = ({ locations, masterAdmins }: Props) => {
 				title="Barnahuses.add"
 				description="Barnahuses.addBarnahusDescription"
 				buttonLabel="Barnahuses.add&Invite"
+				buttonActionLoading={loading.isLoading}
 				confirmDialog={confirmDialog}
 				onSubmit={onSubmit}
 			/>

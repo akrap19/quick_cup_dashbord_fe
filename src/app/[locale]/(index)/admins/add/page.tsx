@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -19,9 +20,10 @@ import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
 import AdminForm from '../form'
 
 const formSchema = z.object({
+	email: emailSchema.shape.email,
+	barnahus: z.string().optional(),
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
-	email: emailSchema.shape.email,
 	phoneNumber: phoneNumberScheme.shape.phone
 })
 
@@ -29,15 +31,23 @@ type Schema = z.infer<typeof formSchema>
 
 const AddBarnahusPage = () => {
 	const t = useTranslations()
-	const { push } = useRouter()
+	const { push, refresh } = useRouter()
+	const session = useSession()
 	const confirmDialog = useOpened()
 	const cancelDialog = useOpened()
+	const barnahus = session.data?.user?.barnahusRoles[0]
 	useNavbarItems({ title: 'Admins.add', backLabel: 'Admins.back' })
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { email: '', firstName: '', lastName: '', phoneNumber: '' }
+		defaultValues: {
+			email: '',
+			barnahus: barnahus?.location,
+			firstName: '',
+			lastName: '',
+			phoneNumber: ''
+		}
 	})
 
 	const handleDialog = () => {
@@ -50,6 +60,7 @@ const AddBarnahusPage = () => {
 		if (result?.message === 'OK') {
 			SuccessToast(t('Admins.successfullyCreated'))
 			push(ROUTES.ADMINS)
+			refresh()
 		}
 	}
 

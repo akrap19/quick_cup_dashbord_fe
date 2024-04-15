@@ -32,7 +32,11 @@ const PractitionersPage = async ({ searchParams }: Props) => {
 	) : (
 		<ListWrapper>
 			<Inputs data={practitionersData?.users} />
-			<DataTable columns={columns} data={replaceNullInListWithDash(practitionersData?.users)} />
+			<DataTable
+				columns={columns}
+				data={replaceNullInListWithDash(practitionersData?.users)}
+				pagination={practitionersData.pagination}
+			/>
 		</ListWrapper>
 	)
 }

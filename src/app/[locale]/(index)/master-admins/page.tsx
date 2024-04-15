@@ -22,6 +22,12 @@ const MasterAdminsPage = async ({ searchParams }: Props) => {
 	const barnahusLocations = await getBarnahuseMasterAdminLocations()
 	const { data: masterAdminsData } = await getMasterAdmins(searchParams)
 	const isInitialListEmpty = masterAdminsData?.users.length === 0 && !searchParams.search && !searchParams.location
+	const transformedMasterAdminArray = masterAdminsData.users?.map((masterAdmin: any) => {
+		return {
+			...masterAdmin,
+			id: masterAdmin.userId
+		}
+	})
 
 	return isInitialListEmpty ? (
 		<NoListData
@@ -34,7 +40,11 @@ const MasterAdminsPage = async ({ searchParams }: Props) => {
 	) : (
 		<ListWrapper>
 			<Inputs data={masterAdminsData?.users} locations={barnahusLocations.data.locations} />
-			<DataTable columns={columns} data={replaceNullInListWithDash(masterAdminsData?.users)} />
+			<DataTable
+				columns={columns}
+				data={replaceNullInListWithDash(transformedMasterAdminArray)}
+				pagination={masterAdminsData.pagination}
+			/>
 		</ListWrapper>
 	)
 }

@@ -17,7 +17,7 @@ const ContentPage = () => {
 		// />
 		<ListWrapper>
 			<Inputs />
-			<DataTable columns={columns} data={dummyData} />
+			<DataTable columns={columns} data={dummyData} pagination={{} as any} />
 		</ListWrapper>
 	)
 }

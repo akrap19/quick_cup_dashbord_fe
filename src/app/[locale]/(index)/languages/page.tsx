@@ -31,7 +31,7 @@ const LanguagesPage = async ({ searchParams }: Props) => {
 	) : (
 		<ListWrapper>
 			<Inputs data={data?.languages} />
-			<DataTable columns={columns} data={replaceNullInListWithDash(data?.languages)} />
+			<DataTable columns={columns} data={replaceNullInListWithDash(data?.languages)} pagination={data.pagination} />
 		</ListWrapper>
 	)
 }

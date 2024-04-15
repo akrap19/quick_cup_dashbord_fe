@@ -19,7 +19,14 @@ interface Props {
 const AdminsPage = async ({ searchParams }: Props) => {
 	const { data: adminsData } = await getAdmins(searchParams)
 	const isInitialListEmpty = (adminsData?.users.length === 0 && !searchParams.search) || adminsData === null
+	const transformedAdminArray = adminsData.users?.map((masterAdmin: any) => {
+		return {
+			...masterAdmin,
+			id: masterAdmin.userId
+		}
+	})
 
+	console.log('adminsData', adminsData)
 	return isInitialListEmpty ? (
 		<NoListData
 			navbarTitle="General.admins"
@@ -31,7 +38,11 @@ const AdminsPage = async ({ searchParams }: Props) => {
 	) : (
 		<ListWrapper>
 			<Inputs data={adminsData?.users} />
-			<DataTable columns={columns} data={replaceNullInListWithDash(adminsData?.users)} />
+			<DataTable
+				columns={columns}
+				data={replaceNullInListWithDash(transformedAdminArray)}
+				pagination={adminsData?.pagination}
+			/>
 		</ListWrapper>
 	)
 }

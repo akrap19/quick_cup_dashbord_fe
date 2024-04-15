@@ -46,7 +46,7 @@ const EditMasterAdmin = ({ masterAdmin }: Props) => {
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		const result = await updateMasterAdmin({ ...data, id: masterAdmin.id })
+		const result = await updateMasterAdmin({ ...data, userId: masterAdmin.userId })
 		if (result?.message === 'OK') {
 			SuccessToast(t('MasterAdmins.successfullyEdited'))
 			refresh()

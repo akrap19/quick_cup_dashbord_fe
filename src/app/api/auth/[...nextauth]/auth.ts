@@ -53,6 +53,26 @@ export const authOptions: NextAuthOptions = {
 					refreshToken
 				}
 			}
+		}),
+		CredentialsProvider({
+			id: 'reset-password',
+			type: 'credentials',
+			credentials: {},
+			async authorize(credentials: any) {
+				const response = await login({
+					email: credentials.email,
+					password: credentials.password
+				})
+
+				const { user, accessToken, accessTokenExpiresAt, refreshToken } = response.data
+
+				return {
+					...user,
+					accessToken,
+					accessTokenExpiresAt,
+					refreshToken
+				}
+			}
 		})
 	],
 	callbacks: {

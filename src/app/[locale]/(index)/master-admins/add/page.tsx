@@ -10,8 +10,10 @@ import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
 import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
+import { useLoading } from '@/hooks/use-loading'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
+import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { createMasterAdmin } from 'api/services/masterAdmins'
 import { ROUTES } from 'parameters'
 import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
@@ -30,6 +32,7 @@ type Schema = z.infer<typeof formSchema>
 const AddMasterAdminPage = () => {
 	const t = useTranslations()
 	const { push, refresh } = useRouter()
+	const loading = useLoading()
 	const confirmDialog = useOpened()
 	const cancelDialog = useOpened()
 	useNavbarItems({ title: 'MasterAdmins.add', backLabel: 'MasterAdmins.back' })
@@ -45,8 +48,11 @@ const AddMasterAdminPage = () => {
 	}
 
 	const onSubmit = async () => {
+		loading.toggleLoading()
 		const data = form.getValues()
-		const result = await createMasterAdmin(data)
+		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
+		const result = await createMasterAdmin(dataWIhoutEmptyString)
+
 		if (result?.message === 'OK') {
 			SuccessToast(t('MasterAdmins.successfullyCreated'))
 			push(ROUTES.MASTER_ADMINS)
@@ -67,6 +73,7 @@ const AddMasterAdminPage = () => {
 				title="MasterAdmins.addNew"
 				description="MasterAdmins.addMasterAdminDescription"
 				buttonLabel="MasterAdmins.add"
+				buttonActionLoading={loading.isLoading}
 				confirmDialog={confirmDialog}
 				onSubmit={onSubmit}
 			/>

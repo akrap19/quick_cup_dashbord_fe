@@ -10,10 +10,11 @@ import { TextInput } from '@/components/inputs/text-input'
 import { OpenedProps } from '@/hooks/use-toggle'
 
 interface Props {
+	isEdit?: boolean
 	cancelDialog?: OpenedProps
 }
 
-const AdminForm = ({ cancelDialog }: Props) => {
+const AdminForm = ({ isEdit, cancelDialog }: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -22,7 +23,7 @@ const AdminForm = ({ cancelDialog }: Props) => {
 				<FormControl.Label>
 					<RequiredLabel>{t('General.email')}</RequiredLabel>
 				</FormControl.Label>
-				<TextInput type="email" placeholder={t('General.emailPlaceholder')} />
+				<TextInput disabled={isEdit} type="email" placeholder={t('General.emailPlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
 			<InputWithInfo infoText="General.barnahusInfoText">

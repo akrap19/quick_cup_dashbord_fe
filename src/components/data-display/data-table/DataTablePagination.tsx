@@ -1,30 +1,40 @@
 'use client'
 
 import { Table } from '@tanstack/react-table'
+import { useTranslations } from 'next-intl'
 
 import { Button } from '@/components/inputs/button'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Text } from '@/components/typography/text'
+import { Pagination } from 'api/models/common/pagination'
 
 import { dataTablePaginationContainer } from './DataTable.css'
 
 type DataTablePaginationProps = {
 	table: Table<any>
+	pagination: Pagination
 }
 
-export const DataTablePagination = ({ table }: DataTablePaginationProps) => {
+export const DataTablePagination = ({ table, pagination }: DataTablePaginationProps) => {
+	const t = useTranslations()
 	const currentPage = table.getState().pagination.pageIndex
 	const totalPages = table.getPageCount()
+	const firstRowIndex = currentPage * pagination.limit + 1
+	const lastRowIndex = Math.min((currentPage + 1) * pagination.limit, pagination.count)
 
 	return (
 		<Box className={dataTablePaginationContainer}>
 			<Inline gap={4} alignItems="center">
-				<Text fontSize="small">Showing all results (10)</Text>
+				<Text fontSize="small">
+					{pagination.count <= 10
+						? t('General.showingAllResult', { results: pagination.count })
+						: t('General.showingSomeResults', { start: firstRowIndex, end: lastRowIndex, results: pagination.count })}
+				</Text>
 				{totalPages > 0 ? (
 					<>
 						<Button variant="adaptive" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
-							<Text color="neutral.200">Previous</Text>
+							<Text color="neutral.200">{t('General.previous')}</Text>
 						</Button>
 						<Inline gap={2} alignItems="center">
 							{Array.from({ length: totalPages }).map((_, index) => (
@@ -38,7 +48,7 @@ export const DataTablePagination = ({ table }: DataTablePaginationProps) => {
 							))}
 						</Inline>
 						<Button variant="adaptive" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-							<Text color="neutral.200">Next</Text>
+							<Text color="neutral.200">{t('General.next')}</Text>
 						</Button>
 					</>
 				) : null}

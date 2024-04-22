@@ -19,15 +19,17 @@ interface CustomInputProps {
 	hasError?: boolean
 	startIcon?: JSX.Element
 	options: Array<Option>
+	value?: string
 }
 
 type Props = InputHTMLAttributes<HTMLSelectElement> & SelectVariants & CustomInputProps
 
-export const Select = ({ hasError, startIcon, sizes, options, ...rest }: Props) => {
+export const Select = ({ hasError, startIcon, sizes, options, value, ...rest }: Props) => {
 	return (
 		<InputWrapper startIcon={startIcon} endIcon={<BlockIcon icon={CarretIcon} size="medium" />}>
 			<select
 				{...rest}
+				value={value}
 				className={clsx(
 					select({
 						sizes

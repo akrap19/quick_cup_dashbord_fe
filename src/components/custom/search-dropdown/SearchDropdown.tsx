@@ -17,7 +17,7 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { Base } from 'api/models/common/base'
 
-import { dropdownListContainer, dropdownListItem } from './SearchDropdown.css'
+import { dropdownListContainer, dropdownListItem, dropdownListItemsContainer } from './SearchDropdown.css'
 import CarretDownIcon from '../../icons/block-icon/assets/carret-down-icon.svg'
 import CarretUpIcon from '../../icons/block-icon/assets/carret-up-icon.svg'
 import { SearchInput } from '../inputs/search-input'
@@ -25,14 +25,13 @@ import { NoResult } from '../no-result'
 
 interface Props {
 	options: Base[]
-	dropdownPlaceholder: string
-	searchPlaceholder: string
+	placeholder: string
 	name?: string
 	hasSuccess?: boolean
 	value?: string
 }
 
-export const SearchDropdown = ({ name, options, dropdownPlaceholder, searchPlaceholder, hasSuccess, value }: Props) => {
+export const SearchDropdown = ({ name, options, placeholder, hasSuccess, value }: Props) => {
 	const t = useTranslations()
 	const searchParams = useSearchParams()
 	const formContext = useFormContext()
@@ -104,7 +103,7 @@ export const SearchDropdown = ({ name, options, dropdownPlaceholder, searchPlace
 					<Button size="auto" variant="adaptive" onClick={handleDropDownOpening}>
 						<Box className={clsx(input, hasSuccess && inputHasSuccess, endIconSpacing)}>
 							<Text fontSize="small" lineHeight="medium" color={value ? 'neutral.800' : 'neutral.300'}>
-								{value ? handleValueLabel(value) : `${t('General.select')} ${t(dropdownPlaceholder)}`}
+								{value ? handleValueLabel(value) : `${t('General.select')} ${t(placeholder)}`}
 							</Text>
 						</Box>
 					</Button>
@@ -113,30 +112,34 @@ export const SearchDropdown = ({ name, options, dropdownPlaceholder, searchPlace
 			{isOpen && (
 				<Box className={dropdownListContainer}>
 					<Stack gap={2}>
-						<Box width="100%" paddingX={1}>
-							<SearchInput
-								name={name}
-								defaultValue={searchParams.get(name ?? '') || ''}
-								placeholder={`${t('General.search')} ${t(searchPlaceholder)}`}
-								onChange={({ target: { name, value } }) => debouncedFilterChange(name, value)}
-							/>
-						</Box>
-						<Stack gap={1}>
-							{options && options.length > 0 ? (
-								options.map(option => (
-									<Button size="auto" variant="adaptive" onClick={e => handleDropdownOption(e, option)}>
-										<Box className={dropdownListItem}>
-											<Text fontSize="small">{option.name}</Text>
-										</Box>
-									</Button>
-								))
-							) : (
-								<NoResult
-									size="small"
-									noResoultMessage={t(options ? 'General.noResoultMessage' : 'General.searchMinInstructions')}
+						{options.length > 5 && (
+							<Box width="100%" paddingX={1}>
+								<SearchInput
+									name={name}
+									defaultValue={searchParams.get(name ?? '') || ''}
+									placeholder={`${t('General.search')} ${t(placeholder)}`}
+									onChange={({ target: { name, value } }) => debouncedFilterChange(name, value)}
 								/>
-							)}
-						</Stack>
+							</Box>
+						)}
+						<Box className={dropdownListItemsContainer}>
+							<Stack gap={1}>
+								{options && options.length > 0 ? (
+									options.map(option => (
+										<Button size="auto" variant="adaptive" onClick={e => handleDropdownOption(e, option)}>
+											<Box className={dropdownListItem}>
+												<Text fontSize="small">{option.name}</Text>
+											</Box>
+										</Button>
+									))
+								) : (
+									<NoResult
+										size="small"
+										noResoultMessage={t(options ? 'General.noResoultMessage' : 'General.searchMinInstructions')}
+									/>
+								)}
+							</Stack>
+						</Box>
 					</Stack>
 				</Box>
 			)}

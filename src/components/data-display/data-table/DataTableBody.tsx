@@ -1,20 +1,19 @@
 'use client'
 
-import { Cell, Table, flexRender } from '@tanstack/react-table'
+import { Cell, ColumnDef, Table, flexRender } from '@tanstack/react-table'
 import { usePathname } from 'next/navigation'
 
 import { NoResult } from '@/components/custom/no-result/NoResult'
 import { Checkbox } from '@/components/inputs/checkbox'
-import { columns } from 'app/[locale]/(index)/admins/columns'
 
 import { TableBody, TableCell, TableCellWithLink, TableRow } from '../table'
 
-// eslint-disable-next-line
 interface Props<TData, TValue> {
+	columns: ColumnDef<TData, TValue>[]
 	table: Table<TData>
 }
 
-export const DataTableBody = <TData, TValue>({ table }: Props<TData, TValue>) => {
+export const DataTableBody = <TData, TValue>({ columns, table }: Props<TData, TValue>) => {
 	const pathname = usePathname()
 
 	return (

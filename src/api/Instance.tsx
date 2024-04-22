@@ -10,8 +10,10 @@ export const axiosInstanceWithToken = axios.create({
 	baseURL: 'https://barnahus-journeys-be-dev-pjqvrfz4wa-lz.a.run.app/'
 })
 
-export const setToken = (token: string) => {
+export const setToken = (token: string, barnahusId: string) => {
 	axiosInstanceWithToken.defaults.headers.common.Authorization = `Bearer ${token}`
+	axiosInstanceWithToken.defaults.headers['X-Barnahus-Id'] = barnahusId
+	instance.defaults.headers['X-Barnahus-Id'] = barnahusId
 }
 
 export const fetchWithToken = async (endpoint: string, queryParams?: any) => {
@@ -25,6 +27,7 @@ export const fetchWithToken = async (endpoint: string, queryParams?: any) => {
 	})
 
 	const headers: any = {
+		'X-Barnahus-Id': session?.user.barnahusRoles[0]?.barnahusId,
 		Authorization: `Bearer ${session?.accessToken}`
 	}
 

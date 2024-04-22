@@ -10,6 +10,6 @@ export type ManageContentColumn = {
 export const columns: Array<ColumnDef<ManageContentColumn>> = [
 	{ accessorKey: 'contentType', header: 'General.contentType' },
 	{ accessorKey: 'updated', header: 'General.updated' },
-	{ accessorKey: 'language', header: 'General.language' },
-	{ accessorKey: 'status', header: 'General.status' }
+	{ accessorKey: 'status', header: 'General.status' },
+	{ accessorKey: 'action', header: 'General.action' }
 ]

@@ -1,17 +1,20 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 import { Button } from '@/components/inputs/button'
 import { FormControl } from '@/components/inputs/form-control'
+import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
 import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
 import { forgotPassword } from 'api/services/auth'
+import { ROUTES } from 'parameters/routes'
 import { emailSchema } from 'schemas'
 import { atoms } from 'style/atoms.css'
 
@@ -23,6 +26,7 @@ type Schema = z.infer<typeof formSchema>
 
 const ForgotPasswordPage = () => {
 	const t = useTranslations()
+	const { push } = useRouter()
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
@@ -31,7 +35,11 @@ const ForgotPasswordPage = () => {
 	})
 
 	const onSubmit = async (data: Schema) => {
-		forgotPassword(data.email)
+		const { email } = data
+		const result = await forgotPassword(email)
+		if (result?.message === 'OK') {
+			push(`${ROUTES.FORGOT_PASSWORD_SUCCESS}?email=${email}`)
+		}
 	}
 
 	return (
@@ -48,7 +56,9 @@ const ForgotPasswordPage = () => {
 				<form className={atoms({ width: '100%' })} onSubmit={form.handleSubmit(onSubmit)}>
 					<Stack gap={8}>
 						<FormControl name="email">
-							<FormControl.Label>{t('General.email')}</FormControl.Label>
+							<FormControl.Label>
+								<RequiredLabel>{t('General.email')}</RequiredLabel>
+							</FormControl.Label>
 							<TextInput placeholder={t('General.emailPlaceholder')} />
 							<FormControl.Message />
 						</FormControl>

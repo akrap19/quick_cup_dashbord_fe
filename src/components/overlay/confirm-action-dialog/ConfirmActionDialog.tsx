@@ -10,6 +10,7 @@ type Props = {
 	title: string
 	description: string
 	buttonLabel: string
+	buttonActionLoading?: boolean
 	confirmDialog: {
 		opened: boolean
 		toggleOpened: () => void
@@ -17,7 +18,14 @@ type Props = {
 	onSubmit: () => Promise<void>
 }
 
-export const ConfirmActionDialog = ({ title, description, buttonLabel, confirmDialog, onSubmit }: Props) => {
+export const ConfirmActionDialog = ({
+	title,
+	description,
+	buttonLabel,
+	buttonActionLoading,
+	confirmDialog,
+	onSubmit
+}: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -36,10 +44,12 @@ export const ConfirmActionDialog = ({ title, description, buttonLabel, confirmDi
 				})}
 			</ConfirmDialog.Description>
 			<ConfirmDialog.Actions>
-				<Button variant="secondary" onClick={confirmDialog.toggleOpened}>
+				<Button variant="secondary" disabled={buttonActionLoading} onClick={confirmDialog.toggleOpened}>
 					{t('General.cancel')}
 				</Button>
-				<Button onClick={() => onSubmit()}>{t(buttonLabel)}</Button>
+				<Button disabled={buttonActionLoading} onClick={() => onSubmit()}>
+					{t(buttonActionLoading ? 'General.loading' : buttonLabel)}
+				</Button>
 			</ConfirmDialog.Actions>
 		</ConfirmDialog>
 	)

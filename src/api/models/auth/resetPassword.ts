@@ -1,5 +1,5 @@
 export interface ResetPassword {
-	currentPassword: string
+	// currentPassword: string
 	newPassword: string
 	confirmPassword: string
 }

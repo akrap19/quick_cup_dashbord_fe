@@ -19,6 +19,12 @@ interface Props {
 const AdminsPage = async ({ searchParams }: Props) => {
 	const { data: adminsData } = await getAdmins(searchParams)
 	const isInitialListEmpty = (adminsData?.users.length === 0 && !searchParams.search) || adminsData === null
+	const transformedAdminArray = adminsData.users?.map((admin: any) => {
+		return {
+			...admin,
+			id: admin.userId
+		}
+	})
 
 	return isInitialListEmpty ? (
 		<NoListData
@@ -31,7 +37,11 @@ const AdminsPage = async ({ searchParams }: Props) => {
 	) : (
 		<ListWrapper>
 			<Inputs data={adminsData?.users} />
-			<DataTable columns={columns} data={replaceNullInListWithDash(adminsData?.users)} />
+			<DataTable
+				columns={columns}
+				data={replaceNullInListWithDash(transformedAdminArray)}
+				pagination={adminsData?.pagination}
+			/>
 		</ListWrapper>
 	)
 }

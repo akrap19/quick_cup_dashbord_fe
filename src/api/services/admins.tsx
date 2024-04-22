@@ -26,7 +26,7 @@ export const createAdmin = async (admin: AdminPayload) => {
 }
 
 export const updateAdmin = async (admin: AdminPayload) => {
-	const { data } = await axiosInstanceWithToken.patch(`/admin`, admin)
+	const { data } = await axiosInstanceWithToken.put(`/admin`, admin)
 
 	return data
 }
@@ -37,8 +37,10 @@ export const getAdmin = async (id: string) => {
 	return response.json()
 }
 
-export const deleteAdmin = async (id: string) => {
-	const { data } = await axiosInstanceWithToken.delete(`/admin`, { data: { id } })
+export const deleteAdmin = async (userId: string) => {
+	const { data } = await axiosInstanceWithToken.delete(`/admin`, {
+		data: { userId }
+	})
 
 	return data
 }

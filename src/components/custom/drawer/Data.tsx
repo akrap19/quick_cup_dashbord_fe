@@ -7,6 +7,7 @@ import GroupsIcon from '@/components/icons/block-icon/assets/groups-icon.svg'
 import HouseIcon from '@/components/icons/block-icon/assets/house-icon.svg'
 import PersonIcon from '@/components/icons/block-icon/assets/person-icon.svg'
 import TemplateIcon from '@/components/icons/block-icon/assets/template-icon.svg'
+import { UserRoleEnum } from 'enums/userRoleEnum'
 import { ROUTES } from 'parameters'
 
 export interface Item {
@@ -14,24 +15,51 @@ export interface Item {
 	icon: JSX.Element
 	route?: string
 	isSubItem?: boolean
+	usedByRoles?: string[]
 	subItems?: Item[]
 }
 
 export const drawerItems: Item[] = [
-	{ label: 'barnahuses', icon: <HouseIcon />, route: ROUTES.BARNAHUSES },
-	{ label: 'admins', icon: <PersonIcon />, route: ROUTES.ADMINS },
-	{ label: 'masterAdmins', icon: <PersonIcon />, route: ROUTES.MASTER_ADMINS },
-	{ label: 'practitioners', icon: <GroupsIcon />, route: ROUTES.PRACTITIONERS },
+	{ label: 'barnahuses', icon: <HouseIcon />, route: ROUTES.BARNAHUSES, usedByRoles: [UserRoleEnum.SUPER_ADMIN] },
+	{ label: 'admins', icon: <PersonIcon />, route: ROUTES.ADMINS, usedByRoles: [UserRoleEnum.MASTER_ADMIN] },
+	{ label: 'masterAdmins', icon: <PersonIcon />, route: ROUTES.MASTER_ADMINS, usedByRoles: [UserRoleEnum.SUPER_ADMIN] },
+	{
+		label: 'practitioners',
+		icon: <GroupsIcon />,
+		route: ROUTES.PRACTITIONERS,
+		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN]
+	},
 	{
 		label: 'manageContent',
 		icon: <TemplateIcon />,
+		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN],
 		subItems: [
 			{ label: 'content', icon: <ClipboardListIcon />, route: ROUTES.CONTENT, isSubItem: true },
 			{ label: 'languages', icon: <GlobeIcon />, route: ROUTES.LANGUAGES, isSubItem: true }
 		]
 	},
-	{ label: 'caseFiles', icon: <FileIcon />, route: ROUTES.CASE_FILES },
-	{ label: 'caseJourney', icon: <TemplateIcon />, route: ROUTES.CASE_JOURNEY },
-	{ label: 'templates', icon: <TemplateIcon />, route: ROUTES.TEMPLATES },
-	{ label: 'settings', icon: <GearIcon />, route: ROUTES.SETTINGS }
+	{
+		label: 'caseFiles',
+		icon: <FileIcon />,
+		route: ROUTES.CASE_FILES,
+		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.PRACTITIONER]
+	},
+	{
+		label: 'caseJourney',
+		icon: <TemplateIcon />,
+		route: ROUTES.CASE_JOURNEY,
+		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.PRACTITIONER]
+	},
+	{
+		label: 'templates',
+		icon: <TemplateIcon />,
+		route: ROUTES.TEMPLATES,
+		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.PRACTITIONER]
+	},
+	{
+		label: 'settings',
+		icon: <GearIcon />,
+		route: ROUTES.SETTINGS,
+		usedByRoles: [UserRoleEnum.SUPER_ADMIN, UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.PRACTITIONER]
+	}
 ]

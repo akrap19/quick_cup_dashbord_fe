@@ -11,10 +11,15 @@ import { drawer } from './Drawer.css'
 import { DrawerItem } from './DrawerItem'
 import { BrandLogo } from '../brand-logo/BrandLogo'
 
-export const Drawer = () => {
+interface Props {
+	role: string
+}
+
+export const Drawer = ({ role }: Props) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const pathname = usePathname()
 	const { push } = useRouter()
+	const filtredDrawerItems: Item[] = drawerItems.filter((item: Item) => item.usedByRoles?.includes(role))
 
 	const handleOpen = (route?: string) => {
 		if (route && !pathname.includes(route)) {
@@ -31,7 +36,7 @@ export const Drawer = () => {
 					<BrandLogo addHomeLink />
 				</Box>
 				<Stack gap={4}>
-					{drawerItems.map(item => (
+					{filtredDrawerItems.map(item => (
 						<>
 							<DrawerItem item={item} isOpen={isOpen} handleOpen={handleOpen} />
 							{item?.subItems &&

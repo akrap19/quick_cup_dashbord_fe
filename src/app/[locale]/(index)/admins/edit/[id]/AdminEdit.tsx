@@ -9,13 +9,17 @@ import { z } from 'zod'
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Admin } from 'api/models/admin/admin'
-import { updateMasterAdmin } from 'api/services/masterAdmins'
-import { phoneNumberScheme, requiredString } from 'schemas'
+import { Barnahus } from 'api/models/barnahuses/barnahus'
+import { updateAdmin } from 'api/services/admins'
+import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
 
 import AdminForm from '../../form'
 
 const formSchema = z.object({
+	email: emailSchema.shape.email,
+	barnahus: z.string().optional(),
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
 	phoneNumber: phoneNumberScheme.shape.phone
@@ -25,9 +29,10 @@ type Schema = z.infer<typeof formSchema>
 
 interface Props {
 	admin: Admin
+	barnahus?: Barnahus
 }
 
-const AdminEdit = ({ admin }: Props) => {
+const AdminEdit = ({ admin, barnahus }: Props) => {
 	const t = useTranslations()
 	const { back } = useRouter()
 	useNavbarItems({ title: 'Admins.edit', backLabel: 'Admins.back' })
@@ -36,15 +41,18 @@ const AdminEdit = ({ admin }: Props) => {
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
+			email: admin.email,
+			barnahus: barnahus?.location,
 			firstName: admin.firstName,
 			lastName: admin.lastName,
-			phoneNumber: admin.phoneNumber
+			phoneNumber: admin.phoneNumber ?? ''
 		}
 	})
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		const result = await updateMasterAdmin({ ...data, id: admin.id })
+		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
+		const result = await updateAdmin({ ...dataWIhoutEmptyString, userId: admin.userId })
 		if (result?.message === 'OK') {
 			SuccessToast(t('Admins.successfullyEdited'))
 			back()
@@ -55,7 +63,7 @@ const AdminEdit = ({ admin }: Props) => {
 		<FormWrapper>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<AdminForm />
+					<AdminForm isEdit />
 				</form>
 			</FormProvider>
 		</FormWrapper>

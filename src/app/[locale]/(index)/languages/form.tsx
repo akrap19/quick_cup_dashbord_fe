@@ -42,11 +42,7 @@ const LanguageForm = ({ languages, cancelDialog }: Props) => {
 								<FormControl.Label>
 									<RequiredLabel>{t('General.language')}</RequiredLabel>
 								</FormControl.Label>
-								<SearchDropdown
-									dropdownPlaceholder="General.language"
-									searchPlaceholder="General.language"
-									options={transformedLanguagesArray}
-								/>
+								<SearchDropdown placeholder="General.language" options={transformedLanguagesArray} />
 								<FormControl.Message />
 							</FormControl>
 							<InputWithInfo infoText="Languages.statusInfoText">

@@ -45,22 +45,14 @@ const BarnahusForm = ({ locations, masterAdmins, cancelDialog }: Props) => {
 				<FormControl.Label>
 					<RequiredLabel>{t('Barnahuses.barnahusLocation')}</RequiredLabel>
 				</FormControl.Label>
-				<SearchDropdown
-					dropdownPlaceholder="General.location"
-					searchPlaceholder="Barnahuses.barnahusLocation"
-					options={transformedLocationsArray}
-				/>
+				<SearchDropdown placeholder="Barnahuses.barnahusLocation" options={transformedLocationsArray} />
 				<FormControl.Message />
 			</FormControl>
 			<FormControl name="masterAdmin">
 				<FormControl.Label>
 					<RequiredLabel>{t('General.masterAdmin')}</RequiredLabel>
 				</FormControl.Label>
-				<SearchDropdown
-					dropdownPlaceholder="General.masterAdmin"
-					searchPlaceholder="General.masterAdminPlaceholder"
-					options={transformedMasterAdminsArray}
-				/>
+				<SearchDropdown placeholder="General.masterAdminPlaceholder" options={transformedMasterAdminsArray} />
 				<FormControl.Message />
 			</FormControl>
 		</FormItems>

@@ -26,7 +26,7 @@ export const Inputs = ({ data }: Props) => {
 	const searchParams = useSearchParams()
 	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
 	const { push, refresh } = useRouter()
-	useNavbarItems({ title: 'General.pactitioners', useUserDropdown: true })
+	useNavbarItems({ title: 'General.practitioners', useUserDropdown: true })
 
 	const handleFilterChange = (filter: string, value: string) => {
 		const current = qs.parse(searchParams.toString())

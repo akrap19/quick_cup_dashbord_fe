@@ -61,7 +61,7 @@ const PractitionerEdit = ({ practitioner }: Props) => {
 		<FormWrapper>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<PractitionerForm />
+					<PractitionerForm isEdit />
 				</form>
 			</FormProvider>
 		</FormWrapper>

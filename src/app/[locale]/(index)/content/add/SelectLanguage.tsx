@@ -20,7 +20,7 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const SelectLanguage = () => {
-	const { setCurrentStep } = useStepsStore()
+	const { currentStep, setCurrentStep } = useStepsStore()
 	const { setLanguage } = useManageContent()
 	const t = useTranslations()
 	const languageOptions = [
@@ -36,7 +36,9 @@ export const SelectLanguage = () => {
 	})
 
 	const onSubmit = async (data: any) => {
-		setCurrentStep(3)
+		if (currentStep) {
+			setCurrentStep(currentStep + 1)
+		}
 		setLanguage(data.language)
 	}
 

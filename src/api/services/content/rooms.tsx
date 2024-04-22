@@ -2,16 +2,14 @@ import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
 import { ContentPayload } from 'api/models/content/contentPayload'
 
 interface Query {
-	languageId: string
-	xBarnahusId: string
+	language: string
 	page: number
 	limit: number
 }
 
 export const getRooms = async (query: Query) => {
 	const queryParams = {
-		languageId: query.languageId,
-		xBarnahusId: query.xBarnahusId,
+		languageId: query.language,
 		page: query.page ?? 1,
 		limit: query.limit ?? 10
 	}

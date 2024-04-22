@@ -3,6 +3,7 @@ export const ROUTES = {
 	REGISTER: '/register',
 	LOGIN: '/login',
 	FORGOT_PASSWORD: 'forgot-password',
+	FORGOT_PASSWORD_SUCCESS: 'forgot-password/success',
 	BARNAHUSES: '/barnahuses',
 	ADD_BARNAHUS: '/barnahuses/add',
 	EDIT_BARNAHUS: '/barnahuses/edit/',

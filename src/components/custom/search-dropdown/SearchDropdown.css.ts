@@ -14,6 +14,11 @@ export const dropdownListContainer = style({
 	marginTop: tokens.spacing[1]
 })
 
+export const dropdownListItemsContainer = style({
+	overflow: 'auto',
+	maxHeight: '154px'
+})
+
 export const dropdownListItem = style({
 	color: tokens.colors['neutral.500'],
 	padding: tokens.spacing[1],

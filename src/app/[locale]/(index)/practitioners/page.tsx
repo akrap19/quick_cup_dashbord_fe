@@ -27,7 +27,7 @@ const PractitionersPage = async ({ searchParams }: Props) => {
 			title="Practitioners.addNew"
 			description="Practitioners.noListDataDescription"
 			buttonLabel="Practitioners.add"
-			buttonLink={ROUTES.ADD_ADMINS}
+			buttonLink={ROUTES.ADD_PRACTITIONERS}
 		/>
 	) : (
 		<ListWrapper>

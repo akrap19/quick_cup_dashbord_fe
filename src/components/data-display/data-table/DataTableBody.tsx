@@ -8,7 +8,6 @@ import { Checkbox } from '@/components/inputs/checkbox'
 
 import { TableBody, TableCell, TableCellWithLink, TableRow } from '../table'
 
-// eslint-disable-next-line
 interface Props<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
 	table: Table<TData>

@@ -58,7 +58,7 @@ export const getAssignableMasterAdmin = async (query: Query) => {
 		page: query.page ?? 1,
 		limit: query.limit ?? 100
 	}
-	console.log('query', queryParams)
+
 	const response = await fetchWithToken(`master-admin/assignable`, queryParams)
 
 	return response.json()

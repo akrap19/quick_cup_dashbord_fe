@@ -10,37 +10,47 @@ import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
 import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
-import { useLoading } from '@/hooks/use-loading'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
-import { createMasterAdmin } from 'api/services/masterAdmins'
+import { Barnahus } from 'api/models/barnahuses/barnahus'
+import { createAdmin } from 'api/services/admins'
 import { ROUTES } from 'parameters'
 import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
 
-import MasterAdminForm from '../form'
+import AdminForm from '../form'
 
 const formSchema = z.object({
+	email: emailSchema.shape.email,
+	barnahus: z.string().optional(),
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
-	email: emailSchema.shape.email,
 	phoneNumber: phoneNumberScheme.shape.phone
 })
 
 type Schema = z.infer<typeof formSchema>
 
-const AddMasterAdminPage = () => {
+interface Props {
+	barnahus?: Barnahus
+}
+
+const AdminAdd = ({ barnahus }: Props) => {
 	const t = useTranslations()
 	const { push, refresh } = useRouter()
-	const loading = useLoading()
 	const confirmDialog = useOpened()
 	const cancelDialog = useOpened()
-	useNavbarItems({ title: 'MasterAdmins.add', backLabel: 'MasterAdmins.back' })
+	useNavbarItems({ title: 'Admins.add', backLabel: 'Admins.back' })
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { firstName: '', lastName: '', email: '', phoneNumber: '' }
+		defaultValues: {
+			email: '',
+			barnahus: barnahus?.location,
+			firstName: '',
+			lastName: '',
+			phoneNumber: ''
+		}
 	})
 
 	const handleDialog = () => {
@@ -48,14 +58,12 @@ const AddMasterAdminPage = () => {
 	}
 
 	const onSubmit = async () => {
-		loading.toggleLoading()
 		const data = form.getValues()
 		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
-		const result = await createMasterAdmin(dataWIhoutEmptyString)
-
+		const result = await createAdmin(dataWIhoutEmptyString)
 		if (result?.message === 'OK') {
-			SuccessToast(t('MasterAdmins.successfullyCreated'))
-			push(ROUTES.MASTER_ADMINS)
+			SuccessToast(t('Admins.successfullyCreated'))
+			push(ROUTES.ADMINS)
 			refresh()
 		}
 	}
@@ -65,21 +73,20 @@ const AddMasterAdminPage = () => {
 			<FormWrapper>
 				<FormProvider {...form}>
 					<form onSubmit={form.handleSubmit(handleDialog)}>
-						<MasterAdminForm cancelDialog={cancelDialog} />
+						<AdminForm cancelDialog={cancelDialog} />
 					</form>
 				</FormProvider>
 			</FormWrapper>
 			<ConfirmActionDialog
-				title="MasterAdmins.addNew"
-				description="MasterAdmins.addMasterAdminDescription"
-				buttonLabel="MasterAdmins.add"
-				buttonActionLoading={loading.isLoading}
+				title="Admins.addNew"
+				description="Admins.addAdminDescription"
+				buttonLabel="General.addAndInvite"
 				confirmDialog={confirmDialog}
 				onSubmit={onSubmit}
 			/>
-			<CancelAddDialog cancelDialog={cancelDialog} title="MasterAdmins.cancelAdd" values={form.getValues()} />
+			<CancelAddDialog cancelDialog={cancelDialog} title="Admins.cancelAdd" values={form.getValues()} />
 		</>
 	)
 }
 
-export default AddMasterAdminPage
+export default AdminAdd

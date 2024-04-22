@@ -4,6 +4,10 @@ import clsx from 'clsx'
 import { FC, ReactNode, useEffect } from 'react'
 import { getChildrenByType } from 'react-nanny'
 
+import { AddButton } from '@/components/custom/button/add-button'
+import { Button } from '@/components/inputs/button'
+import { Inline } from '@/components/layout/inline'
+
 import * as styles from './Tabs.css'
 import { TabsProvider, useTabsProvider } from './TabsProvider'
 
@@ -29,11 +33,16 @@ interface TabsComposition {
 
 export const Tabs: FC<Props> & TabsComposition = ({ children }: Props) => {
 	const tabs = getChildrenByType(children, [Tabs.Tab])
+	const button = getChildrenByType(children, [AddButton, Button])
 	const panel = getChildrenByType(children, [Tabs.Panel])
 
+	console.log('button', button)
 	return (
 		<TabsProvider>
-			<div className={styles.tabsWrapper}>{tabs}</div>
+			<Inline justifyContent="space-between" alignItems="flex-end">
+				<div className={styles.tabsWrapper({ size: button ? 'small' : 'large' })}>{tabs}</div>
+				<div>{button}</div>
+			</Inline>
 			<div>{panel}</div>
 		</TabsProvider>
 	)
@@ -58,6 +67,12 @@ Tabs.Tab = ({ value, children, defaultTab }: Tab) => {
 			{children}
 		</button>
 	)
+}
+
+Tabs.Panel = ({ value, children }: Panel) => {
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const { activeTab } = useTabsProvider()
+	return activeTab === value ? <div>{children}</div> : null
 }
 
 Tabs.Panel = ({ value, children }: Panel) => {

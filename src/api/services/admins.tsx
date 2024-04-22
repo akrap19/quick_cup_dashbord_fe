@@ -26,7 +26,7 @@ export const createAdmin = async (admin: AdminPayload) => {
 }
 
 export const updateAdmin = async (admin: AdminPayload) => {
-	const { data } = await axiosInstanceWithToken.patch(`/admin`, admin)
+	const { data } = await axiosInstanceWithToken.put(`/admin`, admin)
 
 	return data
 }

@@ -4,17 +4,23 @@ import { useTranslations } from 'next-intl'
 
 import { InputWithInfo } from '@/components/custom/inputs/input-with-info/InputWithInfo'
 import { FormItems } from '@/components/custom/layouts/add-form'
+import { SearchDropdown } from '@/components/custom/search-dropdown'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
 import { OpenedProps } from '@/hooks/use-toggle'
 
 interface Props {
+	isEdit?: boolean
 	cancelDialog?: OpenedProps
 }
 
-const PractitionerForm = ({ cancelDialog }: Props) => {
+const PractitionerForm = ({ isEdit, cancelDialog }: Props) => {
 	const t = useTranslations()
+	const testOptions = [
+		{ id: 'coordinatior', name: 'Coordinator' },
+		{ id: 'police', name: 'Police' }
+	]
 
 	return (
 		<FormItems openCancelDialog={cancelDialog?.toggleOpened}>
@@ -22,7 +28,7 @@ const PractitionerForm = ({ cancelDialog }: Props) => {
 				<FormControl.Label>
 					<RequiredLabel>{t('General.email')}</RequiredLabel>
 				</FormControl.Label>
-				<TextInput type="email" placeholder={t('General.emailPlaceholder')} />
+				<TextInput disabled={isEdit} type="email" placeholder={t('General.emailPlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
 			<InputWithInfo infoText="General.barnahusInfoText">
@@ -30,7 +36,7 @@ const PractitionerForm = ({ cancelDialog }: Props) => {
 					<FormControl.Label>
 						<RequiredLabel>{t('General.barnahus')}</RequiredLabel>
 					</FormControl.Label>
-					<TextInput placeholder={t('General.barnahusPlaceholder')} />
+					<TextInput disabled placeholder={t('General.barnahusPlaceholder')} />
 					<FormControl.Message />
 				</FormControl>
 			</InputWithInfo>
@@ -52,7 +58,7 @@ const PractitionerForm = ({ cancelDialog }: Props) => {
 				<FormControl.Label>
 					<RequiredLabel>{t('General.role')}</RequiredLabel>
 				</FormControl.Label>
-				<TextInput placeholder={t('General.rolePlaceholder')} />
+				<SearchDropdown placeholder="General.role" options={testOptions} />
 				<FormControl.Message />
 			</FormControl>
 			<FormControl name="phoneNumber">

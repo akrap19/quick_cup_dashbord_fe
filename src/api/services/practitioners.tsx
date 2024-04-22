@@ -14,37 +14,37 @@ export const getPractitioners = async (query: Query) => {
 		limit: query.limit ?? 10
 	}
 
-	const response = await fetchWithToken(`admin`, queryParams)
+	const response = await fetchWithToken(`practitioner`, queryParams)
 
 	return response.json()
 }
 
 export const createPractitioner = async (admin: PractitionerPayload) => {
-	const { data } = await axiosInstanceWithToken.post(`/admin`, admin)
+	const { data } = await axiosInstanceWithToken.post(`/practitioner`, admin)
 
 	return data
 }
 
 export const updatePractitioner = async (admin: PractitionerPayload) => {
-	const { data } = await axiosInstanceWithToken.patch(`/admin`, admin)
+	const { data } = await axiosInstanceWithToken.patch(`/practitioner`, admin)
 
 	return data
 }
 
 export const getPractitioner = async (id: string) => {
-	const response = await fetchWithToken(`admin/${id}`)
+	const response = await fetchWithToken(`practitioner/${id}`)
 
 	return response.json()
 }
 
 export const deletePractitioner = async (id: string) => {
-	const { data } = await axiosInstanceWithToken.delete(`/admin`, { data: { id } })
+	const { data } = await axiosInstanceWithToken.delete(`/practitioner`, { data: { id } })
 
 	return data
 }
 
 export const deletePractitioners = async (ids: string[]) => {
-	const { data } = await axiosInstanceWithToken.delete(`/admin/bulk`, { data: { ids } })
+	const { data } = await axiosInstanceWithToken.delete(`/practitioner/bulk`, { data: { ids } })
 
 	return data
 }

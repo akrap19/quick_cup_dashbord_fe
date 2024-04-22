@@ -3,22 +3,20 @@
 import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useSteps } from '@/hooks/use-steps'
-import { useManageContent } from '@/store/manage-content'
-import { ContentTypeEnum } from '@/store/models/ContentTypeEnum'
 import { useStepsStore } from '@/store/steps'
 
-import { ManageBarnahusContent } from './ManageBarnahusContent'
-import { ManageRoomsContent } from './ManageRoomsConten'
-import { ManageStaffContent } from './ManageStaffContent'
-import { SelectContentType } from './SelectContentType'
+import { ContentPublished } from './ContentPublished'
+import { ManageBarnahusContent } from './manageBarnahusContent/ManageBarnahusContent'
+import { ManageRoomsContent } from './ManageRoomsContent'
+import { ManageStaffContent } from './manageStaffContent/ManageStaffContent'
+import { PreviewAndPublish } from './PreviewAndPublish'
 import { SelectLanguage } from './SelectLanguage'
 
 const AddContentPage = () => {
 	const { currentStep } = useStepsStore()
-	const { contentType } = useManageContent()
 	useSteps({
-		totalSteps: 4,
-		currentStep: 1
+		totalSteps: 6,
+		currentStep: 5
 	})
 	useNavbarItems({
 		title: 'ManageContent.add',
@@ -28,15 +26,12 @@ const AddContentPage = () => {
 
 	return (
 		<ManageJourneyWrapper>
-			{currentStep === 1 && <SelectContentType />}
-			{currentStep === 2 && <SelectLanguage />}
-			{currentStep === 3 && (
-				<>
-					{contentType === ContentTypeEnum.Barnahus && <ManageBarnahusContent />}
-					{contentType === ContentTypeEnum.Staff && <ManageStaffContent />}
-					{contentType === ContentTypeEnum.Rooms && <ManageRoomsContent />}
-				</>
-			)}
+			{currentStep === 1 && <SelectLanguage />}
+			{currentStep === 2 && <ManageBarnahusContent />}
+			{currentStep === 3 && <ManageRoomsContent />}
+			{currentStep === 4 && <ManageStaffContent />}
+			{currentStep === 5 && <PreviewAndPublish />}
+			{currentStep === 6 && <ContentPublished />}
 		</ManageJourneyWrapper>
 	)
 }

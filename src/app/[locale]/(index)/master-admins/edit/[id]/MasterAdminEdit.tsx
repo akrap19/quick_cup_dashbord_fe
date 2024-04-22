@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Admin } from 'api/models/admin/admin'
 import { updateMasterAdmin } from 'api/services/masterAdmins'
 import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
@@ -39,14 +40,15 @@ const EditMasterAdmin = ({ masterAdmin }: Props) => {
 		defaultValues: {
 			firstName: masterAdmin.firstName,
 			lastName: masterAdmin.lastName,
-			phoneNumber: masterAdmin.phoneNumber,
+			phoneNumber: masterAdmin.phoneNumber ?? '',
 			email: masterAdmin.email
 		}
 	})
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		const result = await updateMasterAdmin({ ...data, userId: masterAdmin.userId })
+		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
+		const result = await updateMasterAdmin({ ...dataWIhoutEmptyString, userId: masterAdmin.userId })
 		if (result?.message === 'OK') {
 			SuccessToast(t('MasterAdmins.successfullyEdited'))
 			refresh()

@@ -1,10 +1,22 @@
 import { style } from '@vanilla-extract/css'
+import { recipe } from '@vanilla-extract/recipes'
 
 import { tokens } from '../../../style/theme.css'
 
-export const tabsWrapper = style({
-	width: '100%',
-	borderBottom: `1px solid ${tokens.borders.color['neutral.300']}`
+export const tabsWrapper = recipe({
+	base: {
+		borderBottom: `1px solid ${tokens.borders.color['neutral.300']}`
+	},
+	variants: {
+		size: {
+			small: {
+				width: 'auto'
+			},
+			large: {
+				width: '100%'
+			}
+		}
+	}
 })
 
 export const tab = style({

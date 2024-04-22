@@ -48,7 +48,7 @@ export const Inputs = ({ data }: Props) => {
 		const index = Object.keys(checkedItems)
 		const numericIndex = parseInt(index[0], 10)
 
-		push(ROUTES.EDIT_MASTER_ADMINS + data[numericIndex].userId)
+		push(ROUTES.EDIT_ADMINS + data[numericIndex].userId)
 	}
 
 	const handleDelete = async () => {
@@ -62,7 +62,7 @@ export const Inputs = ({ data }: Props) => {
 		const result = await (isDeleteBulk ? deleteAdmins(ids) : deleteAdmin(ids[0]))
 
 		if (result?.message === 'OK') {
-			SuccessToast(t(isDeleteBulk ? 'MasterAdmins.successfullBulkDelete' : 'MasterAdmins.successfullyDeleted'))
+			SuccessToast(t(isDeleteBulk ? 'Admins.successfullBulkDelete' : 'Admins.successfullyDeleted'))
 			clearCheckedItems()
 			refresh()
 		}

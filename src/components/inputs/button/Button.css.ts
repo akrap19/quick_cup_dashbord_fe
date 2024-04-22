@@ -28,11 +28,25 @@ export const button = recipe({
 				paddingRight: tokens.spacing[6],
 				fontSize: tokens.typography.size.small
 			},
+			small2: {
+				height: '2.25rem',
+				paddingLeft: tokens.spacing[4],
+				paddingRight: tokens.spacing[4],
+				fontSize: tokens.typography.size.medium,
+				fontWeight: tokens.typography.weight.semibold
+			},
+			medium: {
+				height: '2.5rem',
+				paddingLeft: tokens.spacing[6],
+				paddingRight: tokens.spacing[6],
+				fontSize: tokens.typography.size.medium,
+				fontWeight: tokens.typography.weight.semibold
+			},
 			large: {
 				height: '3rem',
 				paddingLeft: tokens.spacing[6],
 				paddingRight: tokens.spacing[6],
-				fontSize: tokens.typography.size.medium,
+				fontSize: tokens.typography.size.big,
 				fontWeight: tokens.typography.weight.semibold
 			}
 		},

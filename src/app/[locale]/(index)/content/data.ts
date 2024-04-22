@@ -1,3 +1,5 @@
+import { ROUTES } from 'parameters'
+
 export const dummyData = [
 	{
 		contentType: 'General introduction',
@@ -24,3 +26,18 @@ export const dummyData = [
 		status: 'In progress'
 	}
 ]
+
+export const contentSectionData = {
+	aboutBarnahus: {
+		buttonLabel: 'ManageContent.addAbout',
+		buttonLink: ROUTES.ADD_CONTENT
+	},
+	rooms: {
+		buttonLabel: 'ManageContent.addRoom',
+		buttonLink: ROUTES.ADD_CONTENT
+	},
+	staff: {
+		buttonLabel: 'ManageContent.addStaff',
+		buttonLink: ROUTES.ADD_CONTENT
+	}
+}

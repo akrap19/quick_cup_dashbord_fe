@@ -1,7 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -15,6 +16,8 @@ import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
 // import { resetPassword } from 'api/services/auth'
+import { useLoading } from '@/hooks/use-loading'
+import { ROUTES } from 'parameters'
 import { passwordSchema, requiredString } from 'schemas'
 import { atoms } from 'style/atoms.css'
 
@@ -32,8 +35,10 @@ type Schema = z.infer<typeof formSchema>
 
 const ResetYourPasswordPage = () => {
 	const t = useTranslations()
+	const { push } = useRouter()
 	const searchParams = useSearchParams()
 	const uid = searchParams.get('uid')
+	const loading = useLoading()
 	console.log('uid', uid)
 
 	const form = useForm<Schema>({
@@ -43,8 +48,15 @@ const ResetYourPasswordPage = () => {
 	})
 
 	const onSubmit = async (data: Schema) => {
-		console.log('data', data)
-		// resetPassword(data)
+		loading.toggleLoading()
+		const resetPasswordData: any = { uid, password: data.newPassword }
+		const result = await signIn('reset-password', { ...resetPasswordData, redirect: false })
+
+		if (result?.status === 200) {
+			push(ROUTES.HOME)
+		} else {
+			loading.toggleLoading()
+		}
 	}
 
 	// this is because of bug on zod when password changes it dosen't matches confirm password and without this validation isn't trigered

@@ -5,7 +5,7 @@ import PractitionerEdit from './PractitionerEdit'
 const PractitionerEditPage = async ({ params }: { params: { id: string } }) => {
 	const { data } = await getPractitioner(params.id)
 
-	return <PractitionerEdit practitioner={data.practitioner} />
+	return <PractitionerEdit practitioner={data} />
 }
 
 export default PractitionerEditPage

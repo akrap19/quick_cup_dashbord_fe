@@ -8,14 +8,13 @@ import { useStepsStore } from '@/store/steps'
 import { ManageBarnahusContent } from './ManageBarnahusContent'
 import { ManageRoomsContent } from './ManageRoomsContent'
 import { ManageStaffContent } from './ManageStaffContent'
-import { SelectLanguage } from './SelectLanguage'
 import { ContentPublished } from '../common/ContentPublished'
 import { PreviewAndPublish } from '../common/PreviewAndPublish'
 
 const AddContentPage = () => {
 	const { currentStep } = useStepsStore()
 	useSteps({
-		totalSteps: 6,
+		totalSteps: 5,
 		currentStep: 1
 	})
 	useNavbarItems({
@@ -26,12 +25,11 @@ const AddContentPage = () => {
 
 	return (
 		<ManageJourneyWrapper>
-			{currentStep === 1 && <SelectLanguage />}
-			{currentStep === 2 && <ManageBarnahusContent />}
-			{currentStep === 3 && <ManageRoomsContent />}
-			{currentStep === 4 && <ManageStaffContent />}
-			{currentStep === 5 && <PreviewAndPublish />}
-			{currentStep === 6 && <ContentPublished />}
+			{currentStep === 1 && <ManageBarnahusContent />}
+			{currentStep === 2 && <ManageRoomsContent />}
+			{currentStep === 3 && <ManageStaffContent />}
+			{currentStep === 4 && <PreviewAndPublish />}
+			{currentStep === 5 && <ContentPublished />}
 		</ManageJourneyWrapper>
 	)
 }

@@ -20,3 +20,9 @@ export const requiredString = z.object({
 export const phoneNumberScheme = z.object({
 	phone: z.string().regex(/^(|([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9]){3,24})$/, 'ValidationMeseges.phone')
 })
+
+export const optionalPhoneNumberScheme = z.object({
+	phone: z
+		.string()
+		.regex(/^(|([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9]){3,24})?$/, 'ValidationMeseges.phone')
+})

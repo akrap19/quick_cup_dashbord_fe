@@ -31,9 +31,10 @@ export const updateAdmin = async (admin: AdminPayload) => {
 	return data
 }
 
-export const getAdmin = async (id: string) => {
-	const response = await fetchWithToken(`admin/${id}`)
+export const getAdmin = async (userId: string) => {
+	const response = await fetchWithToken(`admin/${userId}`)
 
+	console.log('response', response)
 	return response.json()
 }
 
@@ -45,8 +46,8 @@ export const deleteAdmin = async (userId: string) => {
 	return data
 }
 
-export const deleteAdmins = async (ids: string[]) => {
-	const { data } = await axiosInstanceWithToken.delete(`/admin/bulk`, { data: { ids } })
+export const deleteAdmins = async (userIds: string[]) => {
+	const { data } = await axiosInstanceWithToken.delete(`/admin/bulk`, { data: { userIds } })
 
 	return data
 }

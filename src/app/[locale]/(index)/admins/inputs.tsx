@@ -10,8 +10,10 @@ import { SearchInput } from '@/components/custom/inputs/search-input'
 import { DataTableActions } from '@/components/data-display/data-table/DataTableActions'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
+import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { useOpened } from '@/hooks/use-toggle'
 import { useTableStore } from '@/store/table'
 import { Admins } from 'api/models/admin/Admins'
 import { deleteAdmin, deleteAdmins } from 'api/services/admins'
@@ -24,6 +26,7 @@ interface Props {
 export const Inputs = ({ data }: Props) => {
 	const t = useTranslations()
 	const searchParams = useSearchParams()
+	const confirmDialog = useOpened()
 	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
 	const { push, refresh } = useRouter()
 	useNavbarItems({ title: 'General.admins', useUserDropdown: true })
@@ -64,6 +67,7 @@ export const Inputs = ({ data }: Props) => {
 		if (result?.message === 'OK') {
 			SuccessToast(t(isDeleteBulk ? 'Admins.successfullBulkDelete' : 'Admins.successfullyDeleted'))
 			clearCheckedItems()
+			confirmDialog.toggleOpened()
 			refresh()
 		}
 	}
@@ -83,8 +87,15 @@ export const Inputs = ({ data }: Props) => {
 					<AddButton buttonLabel={t('Admins.add')} buttonLink={ROUTES.ADD_ADMINS} />
 				</Inline>
 			) : (
-				<DataTableActions onEdit={handleEdit} onDelete={handleDelete} />
+				<DataTableActions onEdit={handleEdit} onDelete={() => confirmDialog.toggleOpened()} />
 			)}
+			<ConfirmActionDialog
+				title="Admins.delete"
+				description="Admins.deleteAdminDescription"
+				buttonLabel="General.delete"
+				confirmDialog={confirmDialog}
+				onSubmit={handleDelete}
+			/>
 		</div>
 	)
 }

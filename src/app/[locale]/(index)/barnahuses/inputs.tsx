@@ -90,8 +90,8 @@ export const Inputs = ({ data }: Props) => {
 				<DataTableActions onEdit={handleEdit} onDelete={() => confirmDialog.toggleOpened()} />
 			)}
 			<ConfirmActionDialog
-				title="MasterAdmins.delete"
-				description="MasterAdmins.deleteMasterAdminDescription"
+				title="Barnahuses.delete"
+				description="Barnahuses.deleteBarnahusesDescription"
 				buttonLabel="General.delete"
 				confirmDialog={confirmDialog}
 				onSubmit={handleDelete}

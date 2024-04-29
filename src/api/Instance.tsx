@@ -27,7 +27,7 @@ export const fetchWithToken = async (endpoint: string, queryParams?: any) => {
 	})
 
 	const headers: any = {
-		'X-Barnahus-Id': session?.user.barnahusRoles[0]?.barnahusId,
+		'X-Barnahus-Id': session?.user.barnahusRoles[0]?.barnahusId ?? '',
 		Authorization: `Bearer ${session?.accessToken}`
 	}
 

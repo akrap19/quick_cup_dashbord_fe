@@ -17,7 +17,7 @@ import { requiredString } from 'schemas'
 import LanguageForm from '../../form'
 
 const formSchema = z.object({
-	id: requiredString.shape.scheme,
+	language: requiredString.shape.scheme,
 	status: requiredString.shape.scheme,
 	autoTranslate: z.boolean()
 })
@@ -32,19 +32,22 @@ interface Props {
 const LanguageEdit = ({ language, languages }: Props) => {
 	const t = useTranslations()
 	const { back } = useRouter()
-	useNavbarItems({ title: 'Languagees.edit', backLabel: 'Languagees.back' })
+	useNavbarItems({ title: 'Languages.edit', backLabel: 'Languages.back' })
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { id: language.name, autoTranslate: language.autoTranslate, status: language.status }
+		defaultValues: { language: language.name, autoTranslate: language.autoTranslate, status: language.status }
 	})
 
 	const onSubmit = async () => {
 		const data = form.getValues()
+		const languageName = languages.find(language => language.code === data.language)?.name ?? language.name
 		const result = await updateLanguage({
-			...data,
-			id: language.id
+			languageId: language.languageId,
+			autoTranslate: data.autoTranslate,
+			status: data.status,
+			name: languageName
 		})
 		if (result?.message === 'OK') {
 			SuccessToast(t('Languagees.successfullyEdited'))

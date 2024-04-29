@@ -12,6 +12,7 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { useLoading } from '@/hooks/use-loading'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
+import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Admins } from 'api/models/admin/Admins'
 import { Base } from 'api/models/common/base'
 import { createBarnahus } from 'api/services/barnahuses'
@@ -24,7 +25,7 @@ import BarnahusForm from '../form'
 const formSchema = z.object({
 	name: requiredString.shape.scheme,
 	location: requiredString.shape.scheme,
-	masterAdmin: requiredString.shape.scheme
+	masterAdmin: z.string().optional()
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -55,7 +56,12 @@ export const AddBarnahus = ({ locations, masterAdmins }: Props) => {
 	const onSubmit = async () => {
 		loading.toggleLoading()
 		const data = form.getValues()
-		const result = await createBarnahus({ name: data.name, location: data.location, userId: data.masterAdmin })
+		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
+		const result = await createBarnahus({
+			name: dataWIhoutEmptyString.name,
+			location: dataWIhoutEmptyString.location,
+			userId: dataWIhoutEmptyString.masterAdmin
+		})
 
 		if (result?.message === 'OK') {
 			SuccessToast(t('Barnahuses.successfullyCreated'))

@@ -3,21 +3,19 @@
 import { useTranslations } from 'next-intl'
 
 import { FormItems } from '@/components/custom/layouts/add-form'
+import { SearchDropdown } from '@/components/custom/search-dropdown'
 import { FormControl } from '@/components/inputs/form-control'
-import { InputInfo } from '@/components/inputs/input-info'
-import { Label } from '@/components/inputs/label'
 import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
-import { Inline } from '@/components/layout/inline'
-import { Stack } from '@/components/layout/stack'
-import { Text } from '@/components/typography/text'
 import { OpenedProps } from '@/hooks/use-toggle'
+import { Base } from 'api/models/common/base'
 
 interface Props {
 	cancelDialog?: OpenedProps
+	barnahuses: Base[]
 }
 
-const MasterAdminForm = ({ cancelDialog }: Props) => {
+const MasterAdminForm = ({ cancelDialog, barnahuses }: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -48,15 +46,10 @@ const MasterAdminForm = ({ cancelDialog }: Props) => {
 				<TextInput placeholder={t('General.phoneNumberPlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
-			<Stack gap={4}>
-				<Inline alignItems="center" gap={4}>
-					<Label>{t('General.barnahus')}</Label>
-					<InputInfo infoText="General.assignedBarnahusInfoText" />
-				</Inline>
-				<Text fontSize="small" color="neutral.300">
-					{t('General.assignedBarnahusPlaceholder')}
-				</Text>
-			</Stack>
+			<FormControl name="barnahus">
+				<FormControl.Label>{t('General.barnahus')}</FormControl.Label>
+				<SearchDropdown placeholder="General.barnahus" options={barnahuses} />
+			</FormControl>
 		</FormItems>
 	)
 }

@@ -23,9 +23,13 @@ const MasterAdminsPage = async ({ searchParams }: Props) => {
 	const { data: masterAdminsData } = await getMasterAdmins(searchParams)
 	const isInitialListEmpty = masterAdminsData?.users.length === 0 && !searchParams.search && !searchParams.location
 	const transformedMasterAdminArray = masterAdminsData.users?.map((masterAdmin: any) => {
+		const locations =
+			masterAdmin.locations.length === 0 ? '-' : masterAdmin.locations?.join(', ').replace(', ', ' (), ')
+
 		return {
 			...masterAdmin,
-			id: masterAdmin.userId
+			id: masterAdmin.userId,
+			locations
 		}
 	})
 

@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -9,8 +10,7 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
 
-import { SectionItemFields } from '../common/SectionItemFields'
-import { TitleSubsection } from '../common/TitleSubsection'
+import { LanguageLabel } from './LanguageLabel'
 
 const formSchema = z.object({
 	generalIntrudactionTitle: z.string().min(1, { message: 'ValidationMeseges.required' })
@@ -18,7 +18,7 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-export const ManageRoomsContent = () => {
+export const PreviewAndPublish = () => {
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 	const form = useForm<Schema>({
@@ -43,22 +43,22 @@ export const ManageRoomsContent = () => {
 						<Stack gap={4}>
 							<Box display="flex" justify="center">
 								<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
-									{t('General.rooms')}
+									{t('ManageContent.previewAndPublishContent')}
 								</Text>
 							</Box>
 							<Box display="flex" justify="center" textAlign="center">
 								<Box style={{ maxWidth: '26rem' }}>
 									<Text fontSize="small" color="neutral.800">
-										{t('ManageContent.roomsDescription')}
+										{t('ManageContent.previewAndPublishContentDescription')}
 									</Text>
 								</Box>
 							</Box>
 						</Stack>
-						<Box padding={6} borderTop="thin" borderColor="neutral.300">
-							<Stack gap={4}>
-								<TitleSubsection buttonLabel="ManageContent.addRoom" infoText="ManageContent.addRoomInfoText" />
-								<SectionItemFields />
-							</Stack>
+						<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
+							<LanguageLabel />
+							<Box width="100%" display="flex" justify="center">
+								<Image src="/images/mobile.png" width={260} height={518} alt="https://via.placeholder.com/436x212" />
+							</Box>
 						</Box>
 					</Stack>
 				</Box>

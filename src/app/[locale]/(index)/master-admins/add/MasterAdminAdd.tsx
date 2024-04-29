@@ -10,49 +10,43 @@ import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
 import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
+import { useLoading } from '@/hooks/use-loading'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
-import { Barnahus } from 'api/models/barnahuses/barnahus'
-import { createPractitioner } from 'api/services/practitioners'
+import { Base } from 'api/models/common/base'
+import { createMasterAdmin } from 'api/services/masterAdmins'
 import { ROUTES } from 'parameters'
 import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
 
-import PractitionerForm from '../form'
+import MasterAdminForm from '../form'
 
 const formSchema = z.object({
-	email: emailSchema.shape.email,
-	barnahus: requiredString.shape.scheme,
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
+	email: emailSchema.shape.email,
 	phoneNumber: phoneNumberScheme.shape.phone,
-	userProfession: requiredString.shape.scheme
+	barnahus: z.string().optional()
 })
 
 type Schema = z.infer<typeof formSchema>
 
 interface Props {
-	barnahus?: Barnahus
+	barnahuses: Base[]
 }
 
-const PractitionerAdd = ({ barnahus }: Props) => {
+export const MasterAdminAdd = ({ barnahuses }: Props) => {
 	const t = useTranslations()
 	const { push, refresh } = useRouter()
+	const loading = useLoading()
 	const confirmDialog = useOpened()
 	const cancelDialog = useOpened()
-	useNavbarItems({ title: 'Practitioners.add', backLabel: 'Practitioners.back' })
+	useNavbarItems({ title: 'MasterAdmins.add', backLabel: 'MasterAdmins.back' })
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: {
-			email: '',
-			barnahus: barnahus?.location,
-			firstName: '',
-			lastName: '',
-			phoneNumber: '',
-			userProfession: ''
-		}
+		defaultValues: { firstName: '', lastName: '', email: '', phoneNumber: '' }
 	})
 
 	const handleDialog = () => {
@@ -60,12 +54,14 @@ const PractitionerAdd = ({ barnahus }: Props) => {
 	}
 
 	const onSubmit = async () => {
+		loading.toggleLoading()
 		const data = form.getValues()
 		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
-		const result = await createPractitioner(dataWIhoutEmptyString)
+		const result = await createMasterAdmin(dataWIhoutEmptyString)
+
 		if (result?.message === 'OK') {
-			SuccessToast(t('Practitioners.successfullyCreated'))
-			push(ROUTES.PRACTITIONERS)
+			SuccessToast(t('MasterAdmins.successfullyCreated'))
+			push(ROUTES.MASTER_ADMINS)
 			refresh()
 		}
 	}
@@ -75,20 +71,19 @@ const PractitionerAdd = ({ barnahus }: Props) => {
 			<FormWrapper>
 				<FormProvider {...form}>
 					<form onSubmit={form.handleSubmit(handleDialog)}>
-						<PractitionerForm />
+						<MasterAdminForm cancelDialog={cancelDialog} barnahuses={barnahuses} />
 					</form>
 				</FormProvider>
 			</FormWrapper>
 			<ConfirmActionDialog
-				title="Practitioners.addNew"
-				description="Practitioners.addPractitionerDescription"
-				buttonLabel="General.addAndInvite"
+				title="MasterAdmins.addNew"
+				description="MasterAdmins.addMasterAdminDescription"
+				buttonLabel="MasterAdmins.add"
+				buttonActionLoading={loading.isLoading}
 				confirmDialog={confirmDialog}
 				onSubmit={onSubmit}
 			/>
-			<CancelAddDialog cancelDialog={cancelDialog} title="Practitioners.cancelAdd" values={form.getValues()} />
+			<CancelAddDialog cancelDialog={cancelDialog} title="MasterAdmins.cancelAdd" values={form.getValues()} />
 		</>
 	)
 }
-
-export default PractitionerAdd

@@ -65,3 +65,14 @@ export const getBarnahuseMasterAdminLocations = async () => {
 
 	return response.json()
 }
+
+export const getAssignableBarnahus = async () => {
+	const queryParams = {
+		page: 1,
+		limit: 200
+	}
+
+	const response = await fetchWithToken(`barnahus/assignable`, queryParams)
+
+	return response.json()
+}

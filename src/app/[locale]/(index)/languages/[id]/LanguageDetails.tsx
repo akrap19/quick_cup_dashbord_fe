@@ -4,13 +4,13 @@ import { useTranslations } from 'next-intl'
 
 import { EditButton } from '@/components/custom/button/edit-button'
 import { DetailsWrapper } from '@/components/custom/layouts/DetailsWrapper'
-import { InputInfo } from '@/components/inputs/input-info'
+import { Checkbox } from '@/components/inputs/checkbox'
 import { Label } from '@/components/inputs/label'
-import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { Language } from 'api/models/language/language'
+import { ROUTES } from 'parameters'
 
 interface Props {
 	language: Language
@@ -19,9 +19,9 @@ interface Props {
 const LanguageDetails = ({ language }: Props) => {
 	const t = useTranslations()
 	useNavbarItems({
-		title: 'Barnahus name',
-		backLabel: 'Barnahuses.back',
-		actionButton: <EditButton buttonLabel="Barnahuses.edit" buttonLink="/" />
+		title: language.name ?? 'General.titleNotDefined',
+		backLabel: 'Languages.back',
+		actionButton: <EditButton buttonLabel="Languages.edit" buttonLink={ROUTES.EDIT_LANGUAGES + language.languageId} />
 	})
 
 	return (
@@ -33,19 +33,14 @@ const LanguageDetails = ({ language }: Props) => {
 				</Text>
 			</Stack>
 			<Stack gap={4}>
-				<Label>{t('General.barnahusLocation')}</Label>
+				<Label>{t('General.status')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{t('General.barnahusPlaceholder')}
+					{language.status}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
-				<Inline gap={4}>
-					<Label>{t('Barnahuses.assignedMasterAdmin')}</Label>
-					<InputInfo infoText="Barnahuses.assignedMasterAdminInfoText" />
-				</Inline>
-				<Text fontSize="small" color="neutral.800">
-					{t('Barnahuses.assignedMasterAdminPlaceholder')}
-				</Text>
+				<Label>{t('Languages.autoTranslate')}</Label>
+				<Checkbox checked={language.autoTranslate} />
 			</Stack>
 		</DetailsWrapper>
 	)

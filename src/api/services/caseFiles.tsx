@@ -26,7 +26,7 @@ export const createCaseFile = async (caseFile: CaseFilePayload) => {
 }
 
 export const updateCaseFile = async (caseFile: CaseFilePayload) => {
-	const { data } = await axiosInstanceWithToken.patch(`/case-file`, caseFile)
+	const { data } = await axiosInstanceWithToken.put(`/case-file`, caseFile)
 
 	return data
 }

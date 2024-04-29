@@ -18,8 +18,12 @@ interface Props {
 const PractitionerForm = ({ isEdit, cancelDialog }: Props) => {
 	const t = useTranslations()
 	const testOptions = [
-		{ id: 'coordinatior', name: 'Coordinator' },
-		{ id: 'police', name: 'Police' }
+		{ id: 'Coordinator', name: 'Coordinator' },
+		{ id: 'Police', name: 'Police' },
+		{ id: 'Social services/social worker', name: 'Social services/social worker' },
+		{ id: 'Medical doctor', name: 'Medical doctor' },
+		{ id: 'Nurse', name: 'Nurse' },
+		{ id: 'Other', name: 'Other' }
 	]
 
 	return (
@@ -54,7 +58,7 @@ const PractitionerForm = ({ isEdit, cancelDialog }: Props) => {
 				<TextInput placeholder={t('General.lastNamePlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
-			<FormControl name="role">
+			<FormControl name="userProfession">
 				<FormControl.Label>
 					<RequiredLabel>{t('General.role')}</RequiredLabel>
 				</FormControl.Label>

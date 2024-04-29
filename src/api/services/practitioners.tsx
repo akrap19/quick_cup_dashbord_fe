@@ -26,25 +26,25 @@ export const createPractitioner = async (admin: PractitionerPayload) => {
 }
 
 export const updatePractitioner = async (admin: PractitionerPayload) => {
-	const { data } = await axiosInstanceWithToken.patch(`/practitioner`, admin)
+	const { data } = await axiosInstanceWithToken.put(`/practitioner`, admin)
 
 	return data
 }
 
-export const getPractitioner = async (id: string) => {
-	const response = await fetchWithToken(`practitioner/${id}`)
+export const getPractitioner = async (userId: string) => {
+	const response = await fetchWithToken(`practitioner/${userId}`)
 
 	return response.json()
 }
 
-export const deletePractitioner = async (id: string) => {
-	const { data } = await axiosInstanceWithToken.delete(`/practitioner`, { data: { id } })
+export const deletePractitioner = async (userId: string) => {
+	const { data } = await axiosInstanceWithToken.delete(`/practitioner`, { data: { userId } })
 
 	return data
 }
 
-export const deletePractitioners = async (ids: string[]) => {
-	const { data } = await axiosInstanceWithToken.delete(`/practitioner/bulk`, { data: { ids } })
+export const deletePractitioners = async (userIds: string[]) => {
+	const { data } = await axiosInstanceWithToken.delete(`/practitioner/bulk`, { data: { userIds } })
 
 	return data
 }

@@ -5,8 +5,8 @@ import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
+import { SearchDropdown } from '@/components/custom/search-dropdown'
 import { FormControl } from '@/components/inputs/form-control'
-import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
@@ -24,9 +24,9 @@ export const SelectLanguage = () => {
 	const { setLanguage } = useManageContent()
 	const t = useTranslations()
 	const languageOptions = [
-		{ value: '', label: t('ManageContent.selectLanguage') },
-		{ value: 'se', label: t('Languages.en') },
-		{ value: 'en', label: t('Languages.se') }
+		{ id: '', name: t('ManageContent.selectLanguage') },
+		{ id: 'se', name: t('Languages.en') },
+		{ id: 'en', name: t('Languages.se') }
 	]
 
 	const form = useForm<Schema>({
@@ -55,7 +55,7 @@ export const SelectLanguage = () => {
 						</Text>
 						<Box width="100%">
 							<FormControl name="language">
-								<Select sizes="large" options={languageOptions} />
+								<SearchDropdown placeholder="General.language" options={languageOptions} isFilter />
 							</FormControl>
 						</Box>
 					</Stack>

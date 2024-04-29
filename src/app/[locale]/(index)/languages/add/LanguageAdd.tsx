@@ -19,7 +19,7 @@ import { requiredString } from 'schemas'
 import LanguageForm from '../form'
 
 const formSchema = z.object({
-	code: requiredString.shape.scheme,
+	language: requiredString.shape.scheme,
 	autoTranslate: z.boolean()
 })
 
@@ -38,12 +38,12 @@ const LanguageAdd = ({ languages }: Props) => {
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { code: '', autoTranslate: true }
+		defaultValues: { language: '', autoTranslate: true }
 	})
 
 	const onSubmit = async (data: Schema) => {
-		const languageName = languages.find(language => language.code === data.code)?.name
-		const result = await createLanguage({ ...data, name: languageName })
+		const languageName = languages.find(language => language.code === data.language)?.name
+		const result = await createLanguage({ autoTranslate: data.autoTranslate, code: data.language, name: languageName })
 		if (result?.message === 'OK') {
 			SuccessToast(t('Languages.successfullyCreated'))
 			push(ROUTES.LANGUAGES)

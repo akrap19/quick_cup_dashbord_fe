@@ -17,7 +17,12 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { Base } from 'api/models/common/base'
 
-import { dropdownListContainer, dropdownListItem, dropdownListItemsContainer } from './SearchDropdown.css'
+import {
+	DropdownPresentationlabel,
+	dropdownListContainer,
+	dropdownListItem,
+	dropdownListItemsContainer
+} from './SearchDropdown.css'
 import CarretDownIcon from '../../icons/block-icon/assets/carret-down-icon.svg'
 import CarretUpIcon from '../../icons/block-icon/assets/carret-up-icon.svg'
 import { SearchInput } from '../inputs/search-input'
@@ -29,19 +34,37 @@ interface Props {
 	name?: string
 	hasSuccess?: boolean
 	value?: string
+	alwaysShowSearch?: boolean
+	isFilter?: boolean
 }
 
-export const SearchDropdown = ({ name, options, placeholder, hasSuccess, value }: Props) => {
+export const SearchDropdown = ({
+	name,
+	options,
+	placeholder,
+	hasSuccess,
+	value,
+	alwaysShowSearch,
+	isFilter
+}: Props) => {
 	const t = useTranslations()
 	const searchParams = useSearchParams()
 	const formContext = useFormContext()
 	const { push } = useRouter()
 	const [isOpen, setIsOpen] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
+	const currentSearchParamas = qs.parse(searchParams.toString())
+	const searchParamsValuelength = name ? (currentSearchParamas[name] ? currentSearchParamas[name]?.length : 0) : 0
+	const presentationalLabelVariant = isFilter ? 'filterLabel' : value ? 'formLabel' : 'placeholder'
+	const noResultMessage =
+		options.length === 0 && !alwaysShowSearch
+			? 'General.noResoultMessage'
+			: searchParamsValuelength && searchParamsValuelength > 2
+			  ? 'General.noResoultMessage'
+			  : 'General.searchMinInstructions'
 
 	const handleFilterChange = (filter: string, value: string) => {
-		const current = qs.parse(searchParams.toString())
-		const query = { ...current, [filter]: value }
+		const query = { ...currentSearchParamas, [filter]: value }
 		const url = qs.stringifyUrl(
 			{
 				url: window.location.href,
@@ -96,13 +119,13 @@ export const SearchDropdown = ({ name, options, placeholder, hasSuccess, value }
 					<BlockIcon
 						icon={isOpen ? CarretUpIcon : CarretDownIcon}
 						size="medium"
-						color={hasSuccess ? 'success.500' : 'neutral.500'}
+						color={!isFilter && hasSuccess ? 'success.500' : 'neutral.500'}
 					/>
 				}>
 				<Stack>
 					<Button size="auto" variant="adaptive" onClick={handleDropDownOpening}>
-						<Box className={clsx(input, hasSuccess && inputHasSuccess, endIconSpacing)}>
-							<Text fontSize="small" lineHeight="medium" color={value ? 'neutral.800' : 'neutral.300'}>
+						<Box className={clsx(input, !isFilter && hasSuccess && inputHasSuccess, endIconSpacing)}>
+							<Text className={DropdownPresentationlabel({ variant: presentationalLabelVariant })}>
 								{value ? handleValueLabel(value) : `${t('General.select')} ${t(placeholder)}`}
 							</Text>
 						</Box>
@@ -112,7 +135,7 @@ export const SearchDropdown = ({ name, options, placeholder, hasSuccess, value }
 			{isOpen && (
 				<Box className={dropdownListContainer}>
 					<Stack gap={2}>
-						{options.length > 5 && (
+						{(alwaysShowSearch || options.length > 5) && (
 							<Box width="100%" paddingX={1}>
 								<SearchInput
 									name={name}
@@ -133,10 +156,7 @@ export const SearchDropdown = ({ name, options, placeholder, hasSuccess, value }
 										</Button>
 									))
 								) : (
-									<NoResult
-										size="small"
-										noResoultMessage={t(options ? 'General.noResoultMessage' : 'General.searchMinInstructions')}
-									/>
+									<NoResult size="small" noResoultMessage={t(noResultMessage)} />
 								)}
 							</Stack>
 						</Box>

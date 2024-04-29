@@ -20,6 +20,12 @@ const PractitionersPage = async ({ searchParams }: Props) => {
 	const { data: practitionersData } = await getPractitioners(searchParams)
 	const isInitialListEmpty =
 		(practitionersData?.users.length === 0 && !searchParams.search) || practitionersData === null
+	const transformedPractitionerArray = practitionersData.users?.map((practitioner: any) => {
+		return {
+			...practitioner,
+			id: practitioner.userId
+		}
+	})
 
 	return isInitialListEmpty ? (
 		<NoListData
@@ -31,10 +37,10 @@ const PractitionersPage = async ({ searchParams }: Props) => {
 		/>
 	) : (
 		<ListWrapper>
-			<Inputs data={practitionersData?.users} />
+			<Inputs data={transformedPractitionerArray} />
 			<DataTable
 				columns={columns}
-				data={replaceNullInListWithDash(practitionersData?.users)}
+				data={replaceNullInListWithDash(transformedPractitionerArray)}
 				pagination={practitionersData.pagination}
 			/>
 		</ListWrapper>

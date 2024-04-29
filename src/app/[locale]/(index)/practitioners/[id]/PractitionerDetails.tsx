@@ -22,7 +22,7 @@ export const PractitionerDetails = ({ practitioner }: Props) => {
 		title: handleFullName(practitioner.firstName, practitioner.lastName),
 		backLabel: 'Practitioners.back',
 		actionButton: (
-			<EditButton buttonLabel="Practitioners.edit" buttonLink={ROUTES.EDIT_PRACTITIONERS + practitioner.id} />
+			<EditButton buttonLabel="Practitioners.edit" buttonLink={ROUTES.EDIT_PRACTITIONERS + practitioner.userId} />
 		)
 	})
 
@@ -54,8 +54,8 @@ export const PractitionerDetails = ({ practitioner }: Props) => {
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.role')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{practitioner.role}
+				<Text fontSize="small" color="neutral.800" textTransform="capitalize">
+					{practitioner.userProfession}
 				</Text>
 			</Stack>
 			<Stack gap={4}>

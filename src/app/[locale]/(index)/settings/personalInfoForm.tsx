@@ -38,7 +38,7 @@ export const PersonalInfoForm = ({ settings }: Props) => {
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { firstName: settings.firstName, lastName: settings.lastName }
+		defaultValues: { firstName: settings?.firstName, lastName: settings?.lastName }
 	})
 
 	const onSubmit = async (data: Schema) => {
@@ -82,7 +82,7 @@ export const PersonalInfoForm = ({ settings }: Props) => {
 											<FormControl.Label>{t('General.barnahus')}</FormControl.Label>
 											<TextInput
 												placeholder={t('Settings.barnahusPlacehoder')}
-												defaultValue={settings.barnahus}
+												defaultValue={settings?.barnahus}
 												disabled
 											/>
 											<FormControl.Message />

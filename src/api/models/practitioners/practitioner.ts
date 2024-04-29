@@ -1,9 +1,9 @@
 export interface Practitioner {
-	id: string
+	userId: string
 	firstName: string
 	lastName: string
 	email: string
 	phoneNumber: string
 	location: string
-	role: string
+	userProfession: string
 }

@@ -9,9 +9,9 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
 
-import { WorkingHours } from './WorkingHours'
 import { SectionItemFields } from '../common/SectionItemFields'
 import { TitleSubsection } from '../common/TitleSubsection'
+import { WorkingHours } from '../common/WorkingHours'
 
 const formSchema = z.object({})
 

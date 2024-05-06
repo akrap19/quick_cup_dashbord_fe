@@ -10,11 +10,11 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
+import { requiredString } from 'schemas'
 
 import { SectionItemFields } from '../common/SectionItemFields'
 import { TitleSubsection } from '../common/TitleSubsection'
 import { WorkingHours } from '../common/WorkingHours'
-import { requiredString } from 'schemas'
 
 const formSchema = z.object({
 	items: z.array(

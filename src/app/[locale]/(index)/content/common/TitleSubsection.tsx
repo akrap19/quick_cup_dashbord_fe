@@ -1,13 +1,12 @@
 import { useTranslations } from 'next-intl'
+import { MouseEventHandler } from 'react'
 
 import { AddButton } from '@/components/custom/button/add-button'
 import { InputInfo } from '@/components/inputs/input-info'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Text } from '@/components/typography/text'
-import { ROUTES } from 'parameters'
 import { useManageContent } from '@/store/manage-content'
-import { MouseEventHandler } from 'react'
 
 interface Props {
 	buttonLabel: string

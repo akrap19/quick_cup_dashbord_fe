@@ -2,11 +2,11 @@
 
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { ButtonHTMLAttributes, MouseEventHandler } from 'react'
 
 import PlusIcon from '@/components/icons/block-icon/assets/plus-icon.svg'
 import { Button } from '@/components/inputs/button'
 import { ButtonVariants } from '@/components/inputs/button/Button.css'
-import { ButtonHTMLAttributes, MouseEventHandler } from 'react'
 
 type AddButtonProps = { buttonLabel: string; buttonLink?: string; onClick?: MouseEventHandler<HTMLButtonElement> }
 

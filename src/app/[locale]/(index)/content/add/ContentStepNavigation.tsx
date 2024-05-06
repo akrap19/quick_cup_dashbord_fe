@@ -4,14 +4,14 @@ import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useSteps } from '@/hooks/use-steps'
 import { useStepsStore } from '@/store/steps'
+import { Base } from 'api/models/common/base'
 
+import { ManageBarnahusContent } from './ManageBarnahusContent'
 import { ManageRoomsContent } from './ManageRoomsContent'
 import { ManageStaffContent } from './ManageStaffContent'
+import { SelectLanguage } from './SelectLanguage'
 import { ContentPublished } from '../common/ContentPublished'
 import { PreviewAndPublish } from '../common/PreviewAndPublish'
-import { ManageBarnahusContent } from './ManageBarnahusContent'
-import { SelectLanguage } from './SelectLanguage'
-import { Base } from 'api/models/common/base'
 
 interface Props {
 	languages: Base[]

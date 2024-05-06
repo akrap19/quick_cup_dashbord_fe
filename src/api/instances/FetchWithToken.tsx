@@ -2,8 +2,6 @@ import { getServerSession } from 'next-auth/next'
 import qs from 'query-string'
 
 import { authOptions } from 'app/api/auth/[...nextauth]/auth'
-import { ROUTES } from 'parameters'
-import { ErrorToast } from '@/components/overlay/toast-messages/ErrorToastmessage'
 
 const fetchWithToken = async (endpoint: string, queryParams?: any) => {
 	const session = await getServerSession(authOptions)
@@ -32,9 +30,9 @@ export const dataFetchWithToken = async (endpoint: string, queryParams?: any) =>
 
 	if (data?.code === 401001) {
 		return { data: { showList: true } }
-	} else if (data?.code === 200000) {
-		return data
-	} else {
-		return { data: { showList: true } }
 	}
+	if (data?.code === 200000) {
+		return data
+	}
+	return { data: { showList: true } }
 }

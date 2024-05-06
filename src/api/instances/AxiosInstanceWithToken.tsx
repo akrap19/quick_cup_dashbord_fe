@@ -1,5 +1,6 @@
-import { ErrorToast } from '@/components/overlay/toast-messages/ErrorToastmessage'
 import axios from 'axios'
+
+import { ErrorToast } from '@/components/overlay/toast-messages/ErrorToastmessage'
 import { ROUTES } from 'parameters'
 
 const axiosInstanceWithToken = axios.create({

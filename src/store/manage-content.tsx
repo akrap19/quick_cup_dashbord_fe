@@ -1,5 +1,6 @@
-import { Base } from 'api/models/common/base'
 import { create } from 'zustand'
+
+import { Base } from 'api/models/common/base'
 
 type ManageContent = {
 	contentType?: string

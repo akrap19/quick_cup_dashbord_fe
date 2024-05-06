@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -16,7 +17,6 @@ import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
 import { Base } from 'api/models/common/base'
 import { ROUTES } from 'parameters'
-import { useRouter } from 'next/navigation'
 
 interface Props {
 	languages: Base[]

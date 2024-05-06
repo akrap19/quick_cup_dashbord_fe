@@ -17,8 +17,8 @@ import { useOpened } from '@/hooks/use-toggle'
 import { useTableStore } from '@/store/table'
 import { Language } from 'api/models/language/language'
 import { deleteLanguage, deleteLanguages } from 'api/services/languages'
-import { ROUTES } from 'parameters/routes'
 import { LanguageStatusEnum } from 'enums/languageStatusEnum'
+import { ROUTES } from 'parameters/routes'
 
 interface Props {
 	data: Language[]

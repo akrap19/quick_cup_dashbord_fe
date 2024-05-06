@@ -10,7 +10,6 @@ import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
 
 import { LanguageLabel } from '../common/LanguageLabel'
-import { SectionItemFields } from '../common/SectionItemFields'
 
 const formSchema = z.object({})
 
@@ -48,7 +47,7 @@ export const ManageRoomsContent = () => {
 						<Box padding={6} borderTop="thin" borderColor="neutral.300">
 							<Stack gap={4}>
 								<LanguageLabel />
-								<SectionItemFields />
+								{/* <SectionItemFields /> */}
 							</Stack>
 						</Box>
 					</Stack>

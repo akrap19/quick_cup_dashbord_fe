@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import clsx from 'clsx'
+import { useTranslations } from 'next-intl'
 import { InputHTMLAttributes } from 'react'
 
 import { BlockIcon } from 'components/icons/block-icon'
@@ -8,7 +9,6 @@ import CarretIcon from './assets/carret-icon.svg'
 import { SelectVariants, select } from './Select.css'
 import { InputWrapper } from '../input-wrapper'
 import { endIconSpacing, input, inputHasError, startIconSpacing } from '../input-wrapper/InputWrapper.css'
-import { useTranslations } from 'next-intl'
 
 interface Option {
 	value: string

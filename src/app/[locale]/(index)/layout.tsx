@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth/next'
 import { ReactNode } from 'react'
-import { redirect } from 'next/navigation'
 
 import { Drawer } from '@/components/custom/drawer'
 import { Navbar } from '@/components/custom/navbar'

@@ -20,10 +20,10 @@ interface Props {
 const LanguagesPage = async ({ searchParams }: Props) => {
 	const { data } = await getLanguages(searchParams)
 	const isInitialListEmpty = (data?.languages.length === 0 && !searchParams.status) || data === null
-	const transformedAdminArray = data.languages?.map((admin: Language) => {
+	const transformedLanguageArray = data.languages?.map((language: Language) => {
 		return {
-			...admin,
-			id: admin.languageId
+			...language,
+			id: language.languageId
 		}
 	})
 
@@ -40,7 +40,7 @@ const LanguagesPage = async ({ searchParams }: Props) => {
 			<Inputs data={data?.languages} />
 			<DataTable
 				columns={columns}
-				data={replaceNullInListWithDash(transformedAdminArray)}
+				data={replaceNullInListWithDash(transformedLanguageArray)}
 				pagination={data.pagination}
 			/>
 		</ListWrapper>

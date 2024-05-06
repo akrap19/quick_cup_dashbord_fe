@@ -1,4 +1,5 @@
-import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
+import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
+import { fetchWithToken } from 'api/instances/Instance'
 import { AdminPayload } from 'api/models/admin/AdminPayload'
 
 interface Query {
@@ -23,15 +24,15 @@ export const getMasterAdmins = async (query: Query) => {
 }
 
 export const createMasterAdmin = async (masterAdmin: AdminPayload) => {
-	const { data } = await axiosInstanceWithToken.post(`/master-admin`, masterAdmin)
+	const response = await axiosInstanceWithToken.post(`/master-admin`, masterAdmin)
 
-	return data
+	return response?.data
 }
 
 export const updateMasterAdmin = async (masterAdmin: AdminPayload) => {
-	const { data } = await axiosInstanceWithToken.put(`/master-admin`, masterAdmin)
+	const response = await axiosInstanceWithToken.put(`/master-admin`, masterAdmin)
 
-	return data
+	return response?.data
 }
 
 export const getMasterAdmin = async (id: string) => {
@@ -41,15 +42,15 @@ export const getMasterAdmin = async (id: string) => {
 }
 
 export const deleteMasterAdmin = async (userId: string) => {
-	const { data } = await axiosInstanceWithToken.delete(`/master-admin`, { data: { userId } })
+	const response = await axiosInstanceWithToken.delete(`/master-admin`, { data: { userId } })
 
-	return data
+	return response?.data
 }
 
 export const deleteMasterAdmins = async (userIds: string[]) => {
-	const { data } = await axiosInstanceWithToken.delete(`/master-admin/bulk`, { data: { userIds } })
+	const response = await axiosInstanceWithToken.delete(`/master-admin/bulk`, { data: { userIds } })
 
-	return data
+	return response?.data
 }
 
 export const getAssignableMasterAdmin = async (query: Query) => {

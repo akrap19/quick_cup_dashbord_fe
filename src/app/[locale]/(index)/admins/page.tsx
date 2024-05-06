@@ -18,11 +18,11 @@ interface Props {
 
 const AdminsPage = async ({ searchParams }: Props) => {
 	const { data: adminsData } = await getAdmins(searchParams)
-	const isInitialListEmpty = (adminsData?.users.length === 0 && !searchParams.search) || adminsData === null
-	const transformedAdminArray = adminsData.users?.map((admin: any) => {
+	const isInitialListEmpty = (adminsData?.pagination?.count === 0 && !searchParams.search) || adminsData === null
+	const transformedAdminArray = adminsData?.users?.map((masterAdmin: any) => {
 		return {
-			...admin,
-			id: admin.userId
+			...masterAdmin,
+			id: masterAdmin.userId
 		}
 	})
 

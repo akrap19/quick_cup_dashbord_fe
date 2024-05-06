@@ -6,17 +6,21 @@ import { useTranslations } from 'next-intl'
 import PlusIcon from '@/components/icons/block-icon/assets/plus-icon.svg'
 import { Button } from '@/components/inputs/button'
 import { ButtonVariants } from '@/components/inputs/button/Button.css'
+import { ButtonHTMLAttributes, MouseEventHandler } from 'react'
 
-type AddButtonProps = { buttonLabel: string; buttonLink: string }
+type AddButtonProps = { buttonLabel: string; buttonLink?: string; onClick?: MouseEventHandler<HTMLButtonElement> }
 
-type Props = AddButtonProps & ButtonVariants
+type Props = AddButtonProps &
+	ButtonVariants &
+	Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'className' | 'disabled'>
 
-export const AddButton = ({ variant = 'primary', size = 'large', buttonLabel, buttonLink }: Props) => {
+export const AddButton = ({ variant = 'primary', size = 'large', type, buttonLabel, buttonLink, onClick }: Props) => {
 	const t = useTranslations()
 	const { push } = useRouter()
+	const onClickMethod = !buttonLink ? onClick : () => push(buttonLink)
 
 	return (
-		<Button variant={variant} size={size} onClick={() => push(buttonLink)}>
+		<Button type={type} variant={variant} size={size} onClick={onClickMethod}>
 			<PlusIcon />
 			{t(buttonLabel)}
 		</Button>

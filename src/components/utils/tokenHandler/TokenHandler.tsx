@@ -1,7 +1,6 @@
+import { setToken } from 'api/instances/AxiosInstanceWithToken'
 import { useSession } from 'next-auth/react'
 import { ReactNode } from 'react'
-
-import { setToken } from 'api/Instance'
 
 interface Props {
 	children: ReactNode

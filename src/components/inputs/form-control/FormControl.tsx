@@ -21,9 +21,15 @@ import { Select } from '../select'
 import { Textarea } from '../text-area'
 import { TextInput } from '../text-input'
 
-type Props = { name: string; maxLength?: string; successMessageString?: string; children: ReactNode }
+type Props = {
+	name: string
+	maxLength?: string
+	successMessageString?: string
+	errorMessageString?: string
+	children: ReactNode
+}
 
-export const FormControl = ({ name, maxLength, successMessageString, children }: Props) => {
+export const FormControl = ({ name, maxLength, successMessageString, errorMessageString, children }: Props) => {
 	const {
 		control,
 		formState: { errors },
@@ -50,7 +56,7 @@ export const FormControl = ({ name, maxLength, successMessageString, children }:
 			name={name}
 			control={control}
 			render={({ field }) => {
-				const errorMessage = errors[field.name]?.message?.toString()
+				const errorMessage = errors[field.name]?.message?.toString() || errorMessageString
 				const successMessage = !errors[field.name] && field.value && (successMessageString ?? ' ')
 				const overriddenInput = overridePropsDeep(input, () => ({
 					hasError: errors[field.name] !== undefined && field.value,

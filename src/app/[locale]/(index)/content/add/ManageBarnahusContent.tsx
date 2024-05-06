@@ -1,6 +1,8 @@
+'use client'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
@@ -12,23 +14,59 @@ import { useStepsStore } from '@/store/steps'
 import { SectionItemFields } from '../common/SectionItemFields'
 import { TitleSubsection } from '../common/TitleSubsection'
 import { WorkingHours } from '../common/WorkingHours'
+import { requiredString } from 'schemas'
 
-const formSchema = z.object({})
+const formSchema = z.object({
+	items: z.array(
+		z.object({
+			generalIntroductionTitle: requiredString.shape.scheme,
+			generalIntroductionDescription: requiredString.shape.scheme,
+			audioTranslate: z.string().optional(),
+			photos: z.array(z.string()).optional()
+		})
+	)
+})
 
 type Schema = z.infer<typeof formSchema>
 
 export const ManageBarnahusContent = () => {
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
+
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
-		defaultValues: { generalIntrudactionTitle: '' }
+		defaultValues: {
+			items: [
+				{
+					generalIntroductionTitle: '',
+					generalIntroductionDescription: '',
+					audioTranslate: '',
+					photos: []
+				}
+			]
+		}
 	})
+
 	const formData = form?.getValues()
 
+	// const { fields, append, remove } = useFieldArray({
+	const { fields, append } = useFieldArray({
+		control: form.control,
+		name: 'items'
+	})
+
+	const handleAddSection = () => {
+		append({
+			generalIntroductionTitle: '',
+			generalIntroductionDescription: '',
+			audioTranslate: '',
+			photos: []
+		})
+	}
+
 	const onSubmit = async () => {
-		console.log('data', formData)
+		console.log('formdata', formData)
 		if (currentStep) {
 			setCurrentStep(currentStep + 1)
 		}
@@ -45,10 +83,18 @@ export const ManageBarnahusContent = () => {
 							</Text>
 						</Box>
 						<Box paddingY={4} paddingX={5} borderTop="thin" borderColor="neutral.300">
-							<Box paddingBottom={6} borderBottom="thin" borderColor="neutral.300">
+							<Box>
 								<Stack gap={4}>
-									<TitleSubsection buttonLabel="ManageContent.addAbout" infoText="ManageContent.addAboutInfoText" />
-									<SectionItemFields />
+									<TitleSubsection
+										buttonLabel="ManageContent.addAbout"
+										infoText="ManageContent.addAboutInfoText"
+										onClick={handleAddSection}
+									/>
+									{fields.map((field, index) => (
+										<div key={field.id}>
+											<SectionItemFields index={index} form={form} />
+										</div>
+									))}
 								</Stack>
 							</Box>
 							<WorkingHours />

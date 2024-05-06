@@ -1,4 +1,5 @@
-import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
+import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
+import { fetchWithToken } from 'api/instances/Instance'
 
 export const getSettings = async () => {
 	const response = await fetchWithToken(`user/settings`)
@@ -7,19 +8,19 @@ export const getSettings = async () => {
 }
 
 export const personal = async (firstName: string, lastName: string) => {
-	const { data } = await axiosInstanceWithToken.put(`/user/personal`, { firstName, lastName })
+	const response = await axiosInstanceWithToken.put(`/user/personal`, { firstName, lastName })
 
-	return data
+	return response?.data
 }
 
 export const password = async (oldPassword: string, newPassword: string) => {
-	const { data } = await axiosInstanceWithToken.put(`/user/password`, { oldPassword, newPassword })
+	const response = await axiosInstanceWithToken.put(`/user/password`, { oldPassword, newPassword })
 
-	return data
+	return response?.data
 }
 
 export const email = async (email: string) => {
-	const { data } = await axiosInstanceWithToken.put(`/user/email`, { email })
+	const response = await axiosInstanceWithToken.put(`/user/email`, { email })
 
-	return data
+	return response?.data
 }

@@ -6,26 +6,32 @@ import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Text } from '@/components/typography/text'
 import { ROUTES } from 'parameters'
+import { useManageContent } from '@/store/manage-content'
+import { MouseEventHandler } from 'react'
 
 interface Props {
 	buttonLabel: string
 	infoText?: string
+	onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
-export const TitleSubsection = ({ buttonLabel, infoText }: Props) => {
+export const TitleSubsection = ({ buttonLabel, infoText, onClick }: Props) => {
 	const t = useTranslations()
+	const { language } = useManageContent()
 
 	return (
 		<Inline justifyContent="space-between" alignItems="center">
 			<Inline gap={5} alignItems="center">
-				<AddButton size="small2" variant="secondary" buttonLabel={buttonLabel} buttonLink={ROUTES.ADD_ADMINS} />
+				<AddButton type="button" size="small2" variant="secondary" buttonLabel={buttonLabel} onClick={onClick} />
 				{infoText && <InputInfo infoText={t(infoText)} />}
 			</Inline>
-			<Box backgroundColor="primary.100" paddingY={1} paddingX={2} borderRadius="xxlarge">
-				<Text fontSize="small" color="primary.900">
-					English
-				</Text>
-			</Box>
+			{language && (
+				<Box backgroundColor="primary.100" paddingY={1} paddingX={2} borderRadius="xxlarge">
+					<Text fontSize="small" color="primary.900">
+						{language.name}
+					</Text>
+				</Box>
+			)}
 		</Inline>
 	)
 }

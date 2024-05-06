@@ -1,3 +1,5 @@
+'use client'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -12,6 +14,13 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
+import { Base } from 'api/models/common/base'
+import { ROUTES } from 'parameters'
+import { useRouter } from 'next/navigation'
+
+interface Props {
+	languages: Base[]
+}
 
 const formSchema = z.object({
 	language: z.string().min(1, { message: 'ValidationMeseges.required' })
@@ -19,15 +28,11 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-export const SelectLanguage = () => {
+export const SelectLanguage = ({ languages }: Props) => {
+	const { push } = useRouter()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const { setLanguage } = useManageContent()
 	const t = useTranslations()
-	const languageOptions = [
-		{ id: '', name: t('ManageContent.selectLanguage') },
-		{ id: 'se', name: t('Languages.en') },
-		{ id: 'en', name: t('Languages.se') }
-	]
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
@@ -36,10 +41,13 @@ export const SelectLanguage = () => {
 	})
 
 	const onSubmit = async (data: any) => {
+		const language = languages.find(language => language.id === data.language)
+
+		setLanguage(language)
+		push(ROUTES.ADD_CONTENT)
 		if (currentStep) {
 			setCurrentStep(currentStep + 1)
 		}
-		setLanguage(data.language)
 	}
 
 	return (
@@ -55,7 +63,7 @@ export const SelectLanguage = () => {
 						</Text>
 						<Box width="100%">
 							<FormControl name="language">
-								<SearchDropdown placeholder="General.language" options={languageOptions} isFilter />
+								<SearchDropdown placeholder="General.language" options={languages} isFilter alwaysShowSearch />
 							</FormControl>
 						</Box>
 					</Stack>

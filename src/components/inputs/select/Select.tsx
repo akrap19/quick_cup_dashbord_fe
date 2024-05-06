@@ -8,6 +8,7 @@ import CarretIcon from './assets/carret-icon.svg'
 import { SelectVariants, select } from './Select.css'
 import { InputWrapper } from '../input-wrapper'
 import { endIconSpacing, input, inputHasError, startIconSpacing } from '../input-wrapper/InputWrapper.css'
+import { useTranslations } from 'next-intl'
 
 interface Option {
 	value: string
@@ -25,6 +26,8 @@ interface CustomInputProps {
 type Props = InputHTMLAttributes<HTMLSelectElement> & SelectVariants & CustomInputProps
 
 export const Select = ({ hasError, startIcon, sizes, options, value, ...rest }: Props) => {
+	const t = useTranslations()
+
 	return (
 		<InputWrapper startIcon={startIcon} endIcon={<BlockIcon icon={CarretIcon} size="medium" />}>
 			<select
@@ -41,7 +44,7 @@ export const Select = ({ hasError, startIcon, sizes, options, value, ...rest }: 
 				)}>
 				{options.map(option => (
 					<option key={option.value} value={option.value} disabled={option.disabled}>
-						{option.label}
+						{t(option.label)}
 					</option>
 				))}
 			</select>

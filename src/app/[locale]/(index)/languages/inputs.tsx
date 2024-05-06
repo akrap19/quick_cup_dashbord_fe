@@ -18,6 +18,7 @@ import { useTableStore } from '@/store/table'
 import { Language } from 'api/models/language/language'
 import { deleteLanguage, deleteLanguages } from 'api/services/languages'
 import { ROUTES } from 'parameters/routes'
+import { LanguageStatusEnum } from 'enums/languageStatusEnum'
 
 interface Props {
 	data: Language[]
@@ -31,10 +32,10 @@ export const Inputs = ({ data }: Props) => {
 	const { push, refresh } = useRouter()
 	useNavbarItems({ title: 'General.languages', useUserDropdown: true })
 	const statusOptions = [
-		{ value: '', label: 'All Statuses' },
-		{ value: 'Draft', label: 'Draft' },
-		{ value: 'Published', label: 'Published' },
-		{ value: 'Hidden', label: 'Hidden' }
+		{ value: '', label: 'General.allStatuses' },
+		{ value: LanguageStatusEnum.DRAFT, label: 'General.draft' },
+		{ value: LanguageStatusEnum.PUBLISHED, label: 'General.published' },
+		{ value: LanguageStatusEnum.HIDDEN, label: 'General.hidden' }
 	]
 
 	const handleFilterChange = (filter: string, value: string) => {
@@ -54,7 +55,10 @@ export const Inputs = ({ data }: Props) => {
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)
 
 	const handleEdit = () => {
-		console.log('testes')
+		const index = Object.keys(checkedItems)
+		const numericIndex = parseInt(index[0], 10)
+
+		push(ROUTES.EDIT_LANGUAGES + data[numericIndex].languageId)
 	}
 
 	const handleDelete = async () => {

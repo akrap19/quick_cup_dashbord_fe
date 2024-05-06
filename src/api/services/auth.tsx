@@ -1,4 +1,5 @@
-import { axiosInstanceWithToken, fetchWithoutToken, instance } from 'api/Instance'
+import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
+import { fetchWithoutToken, instance } from 'api/instances/Instance'
 import { Login } from 'api/models/auth/login'
 import { Register } from 'api/models/auth/register'
 import { ResetPassword } from 'api/models/auth/resetPassword'
@@ -36,9 +37,9 @@ export const resetPassword = async (requestData: ResetPassword) => {
 }
 
 export const logout = async () => {
-	const { data } = await axiosInstanceWithToken.post(`/auth/logout`)
+	const response = await axiosInstanceWithToken.post(`/auth/logout`)
 
-	return data
+	return response?.data
 }
 
 export const getEmail = async (uid: string) => {

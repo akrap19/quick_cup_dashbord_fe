@@ -50,7 +50,7 @@ const LanguageForm = ({ languages, cancelDialog }: Props) => {
 									<FormControl.Label>
 										<RequiredLabel>{t('General.status')}</RequiredLabel>
 									</FormControl.Label>
-									<TextInput defaultValue={t('General.inactive')} disabled />
+									<TextInput defaultValue={t('General.draft')} disabled />
 									<FormControl.Message />
 								</FormControl>
 							</InputWithInfo>

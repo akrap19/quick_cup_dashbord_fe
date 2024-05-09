@@ -1,4 +1,5 @@
-import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
+import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
+import { fetchWithToken } from 'api/instances/Instance'
 import { CaseFilePayload } from 'api/models/caseFiles/caseFilePayload'
 
 interface Query {
@@ -20,15 +21,15 @@ export const getCaseFiles = async (query: Query) => {
 }
 
 export const createCaseFile = async (caseFile: CaseFilePayload) => {
-	const { data } = await axiosInstanceWithToken.post(`/case-file`, caseFile)
+	const response = await axiosInstanceWithToken.post(`/case-file`, caseFile)
 
-	return data
+	return response?.data
 }
 
 export const updateCaseFile = async (caseFile: CaseFilePayload) => {
-	const { data } = await axiosInstanceWithToken.patch(`/case-file`, caseFile)
+	const response = await axiosInstanceWithToken.put(`/case-file`, caseFile)
 
-	return data
+	return response?.data
 }
 
 export const getCaseFile = async (id: string) => {
@@ -38,13 +39,13 @@ export const getCaseFile = async (id: string) => {
 }
 
 export const deleteCaseFile = async (id: string) => {
-	const { data } = await axiosInstanceWithToken.delete(`/case-file`, { data: { id } })
+	const response = await axiosInstanceWithToken.delete(`/case-file`, { data: { id } })
 
-	return data
+	return response?.data
 }
 
 export const deleteCaseFiles = async (ids: string[]) => {
-	const { data } = await axiosInstanceWithToken.delete(`/case-file/bulk`, { data: { ids } })
+	const response = await axiosInstanceWithToken.delete(`/case-file/bulk`, { data: { ids } })
 
-	return data
+	return response?.data
 }

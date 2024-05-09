@@ -1,4 +1,5 @@
-import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
+import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
+import { fetchWithToken } from 'api/instances/Instance'
 import { ContentPayload } from 'api/models/content/contentPayload'
 
 interface Query {
@@ -19,15 +20,15 @@ export const getAbouts = async (query: Query) => {
 }
 
 export const createAbout = async (about: ContentPayload) => {
-	const { data } = await axiosInstanceWithToken.post(`/about/translation`, about)
+	const response = await axiosInstanceWithToken.post(`/about/translation`, about)
 
-	return data
+	return response?.data
 }
 
 export const updateAbout = async (about: ContentPayload) => {
-	const { data } = await axiosInstanceWithToken.put(`/about/translation`, about)
+	const response = await axiosInstanceWithToken.put(`/about/translation`, about)
 
-	return data
+	return response?.data
 }
 
 export const getAbout = async (id: string) => {
@@ -37,13 +38,13 @@ export const getAbout = async (id: string) => {
 }
 
 export const deleteAbout = async (id: string) => {
-	const { data } = await axiosInstanceWithToken.delete(`/about`, { data: { id } })
+	const response = await axiosInstanceWithToken.delete(`/about`, { data: { id } })
 
-	return data
+	return response?.data
 }
 
 export const deleteAbouts = async (ids: string[]) => {
-	const { data } = await axiosInstanceWithToken.delete(`/about/bulk`, { data: { ids } })
+	const response = await axiosInstanceWithToken.delete(`/about/bulk`, { data: { ids } })
 
-	return data
+	return response?.data
 }

@@ -12,6 +12,7 @@ import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
+import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Barnahus } from 'api/models/barnahuses/barnahus'
 import { createPractitioner } from 'api/services/practitioners'
 import { ROUTES } from 'parameters'
@@ -25,7 +26,7 @@ const formSchema = z.object({
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
 	phoneNumber: phoneNumberScheme.shape.phone,
-	role: requiredString.shape.scheme
+	userProfession: requiredString.shape.scheme
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -36,7 +37,7 @@ interface Props {
 
 const PractitionerAdd = ({ barnahus }: Props) => {
 	const t = useTranslations()
-	const { push } = useRouter()
+	const { push, refresh } = useRouter()
 	const confirmDialog = useOpened()
 	const cancelDialog = useOpened()
 	useNavbarItems({ title: 'Practitioners.add', backLabel: 'Practitioners.back' })
@@ -44,7 +45,14 @@ const PractitionerAdd = ({ barnahus }: Props) => {
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { email: '', barnahus: barnahus?.location, firstName: '', lastName: '', phoneNumber: '', role: '' }
+		defaultValues: {
+			email: '',
+			barnahus: barnahus?.location,
+			firstName: '',
+			lastName: '',
+			phoneNumber: '',
+			userProfession: ''
+		}
 	})
 
 	const handleDialog = () => {
@@ -53,14 +61,15 @@ const PractitionerAdd = ({ barnahus }: Props) => {
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		const result = await createPractitioner(data)
+		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
+		const result = await createPractitioner(dataWIhoutEmptyString)
 		if (result?.message === 'OK') {
 			SuccessToast(t('Practitioners.successfullyCreated'))
 			push(ROUTES.PRACTITIONERS)
+			refresh()
 		}
 	}
 
-	console.log('form', form.getValues())
 	return (
 		<>
 			<FormWrapper>

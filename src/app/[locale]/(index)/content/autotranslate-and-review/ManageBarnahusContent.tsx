@@ -9,16 +9,14 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
 
-import { StaffSectionItemFields } from './StaffSectionItemFields'
-import { TitleSubsection } from '../common/TitleSubsection'
+import { LanguageLabel } from '../common/LanguageLabel'
+import { WorkingHours } from '../common/WorkingHours'
 
-const formSchema = z.object({
-	generalIntrudactionTitle: z.string().min(1, { message: 'ValidationMeseges.required' })
-})
+const formSchema = z.object({})
 
 type Schema = z.infer<typeof formSchema>
 
-export const ManageStaffContent = () => {
+export const ManageBarnahusContent = () => {
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 	const form = useForm<Schema>({
@@ -42,14 +40,17 @@ export const ManageStaffContent = () => {
 					<Stack gap={7}>
 						<Box display="flex" justify="center">
 							<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
-								{t('General.staff')}
+								{t('General.aboutBarnahus')}
 							</Text>
 						</Box>
-						<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
-							<Stack gap={4}>
-								<TitleSubsection buttonLabel="ManageContent.addStaff" />
-								<StaffSectionItemFields />
-							</Stack>
+						<Box paddingY={4} paddingX={5} borderTop="thin" borderColor="neutral.300">
+							<Box paddingBottom={6} borderBottom="thin" borderColor="neutral.300">
+								<Stack gap={4}>
+									<LanguageLabel />
+									{/* <SectionItemFields /> */}
+								</Stack>
+							</Box>
+							<WorkingHours />
 						</Box>
 					</Stack>
 				</Box>

@@ -1,7 +1,8 @@
 export interface Language {
-	id?: string
-	code?: string
+	languageId?: string
 	name?: string
+	code?: string
 	status?: string
 	autoTranslate: boolean
+	translateable: boolean
 }

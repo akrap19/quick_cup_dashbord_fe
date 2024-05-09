@@ -1,39 +1,25 @@
-'use client'
+import { Language } from 'api/models/language/language'
+import { getLanguageSearch } from 'api/services/languages'
+import { LanguageStatusEnum } from 'enums/languageStatusEnum'
 
-import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
-import { useNavbarItems } from '@/hooks/use-navbar-items'
-import { useSteps } from '@/hooks/use-steps'
-import { useStepsStore } from '@/store/steps'
+import { ContentStepNavigation } from './ContentStepNavigation'
 
-import { ContentPublished } from './ContentPublished'
-import { ManageBarnahusContent } from './manageBarnahusContent/ManageBarnahusContent'
-import { ManageRoomsContent } from './ManageRoomsContent'
-import { ManageStaffContent } from './manageStaffContent/ManageStaffContent'
-import { PreviewAndPublish } from './PreviewAndPublish'
-import { SelectLanguage } from './SelectLanguage'
+interface Props {
+	searchParams: {
+		language?: string
+	}
+}
 
-const AddContentPage = () => {
-	const { currentStep } = useStepsStore()
-	useSteps({
-		totalSteps: 6,
-		currentStep: 5
-	})
-	useNavbarItems({
-		title: 'ManageContent.add',
-		backLabel: 'ManageContent.back',
-		location: 'Barnahus Stockholm, Sweden'
+const AddContentPage = async ({ searchParams }: Props) => {
+	const { data } = await getLanguageSearch(searchParams, LanguageStatusEnum.DRAFT)
+	const transformedLanguageArray = data.languages?.map((language: Language) => {
+		return {
+			id: language.languageId,
+			name: language.name
+		}
 	})
 
-	return (
-		<ManageJourneyWrapper>
-			{currentStep === 1 && <SelectLanguage />}
-			{currentStep === 2 && <ManageBarnahusContent />}
-			{currentStep === 3 && <ManageRoomsContent />}
-			{currentStep === 4 && <ManageStaffContent />}
-			{currentStep === 5 && <PreviewAndPublish />}
-			{currentStep === 6 && <ContentPublished />}
-		</ManageJourneyWrapper>
-	)
+	return <ContentStepNavigation languages={transformedLanguageArray} />
 }
 
 export default AddContentPage

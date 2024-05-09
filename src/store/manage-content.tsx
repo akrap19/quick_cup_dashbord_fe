@@ -1,10 +1,12 @@
 import { create } from 'zustand'
 
+import { Base } from 'api/models/common/base'
+
 type ManageContent = {
 	contentType?: string
 	setContentType: (contentType?: string) => void
-	language?: string
-	setLanguage: (language?: string) => void
+	language?: Base
+	setLanguage: (language?: Base) => void
 }
 
 export const useManageContent = create<ManageContent>(set => ({

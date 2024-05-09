@@ -1,7 +1,7 @@
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-import { login, register } from 'api/services/auth'
+import { login, register, resetPassword } from 'api/services/auth'
 import { ROUTES } from 'parameters'
 
 import { refreshAccessToken } from './refreshAccessToken'
@@ -59,8 +59,8 @@ export const authOptions: NextAuthOptions = {
 			type: 'credentials',
 			credentials: {},
 			async authorize(credentials: any) {
-				const response = await login({
-					email: credentials.email,
+				const response = await resetPassword({
+					uid: credentials.uid,
 					password: credentials.password
 				})
 

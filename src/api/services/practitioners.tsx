@@ -1,4 +1,5 @@
-import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
+import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
+import { fetchWithToken } from 'api/instances/Instance'
 import { PractitionerPayload } from 'api/models/practitioners/practitionerPayload'
 
 interface Query {
@@ -20,31 +21,31 @@ export const getPractitioners = async (query: Query) => {
 }
 
 export const createPractitioner = async (admin: PractitionerPayload) => {
-	const { data } = await axiosInstanceWithToken.post(`/practitioner`, admin)
+	const response = await axiosInstanceWithToken.post(`/practitioner`, admin)
 
-	return data
+	return response?.data
 }
 
 export const updatePractitioner = async (admin: PractitionerPayload) => {
-	const { data } = await axiosInstanceWithToken.patch(`/practitioner`, admin)
+	const response = await axiosInstanceWithToken.put(`/practitioner`, admin)
 
-	return data
+	return response?.data
 }
 
-export const getPractitioner = async (id: string) => {
-	const response = await fetchWithToken(`practitioner/${id}`)
+export const getPractitioner = async (userId: string) => {
+	const response = await fetchWithToken(`practitioner/${userId}`)
 
 	return response.json()
 }
 
-export const deletePractitioner = async (id: string) => {
-	const { data } = await axiosInstanceWithToken.delete(`/practitioner`, { data: { id } })
+export const deletePractitioner = async (userId: string) => {
+	const response = await axiosInstanceWithToken.delete(`/practitioner`, { data: { userId } })
 
-	return data
+	return response?.data
 }
 
-export const deletePractitioners = async (ids: string[]) => {
-	const { data } = await axiosInstanceWithToken.delete(`/practitioner/bulk`, { data: { ids } })
+export const deletePractitioners = async (userIds: string[]) => {
+	const response = await axiosInstanceWithToken.delete(`/practitioner/bulk`, { data: { userIds } })
 
-	return data
+	return response?.data
 }

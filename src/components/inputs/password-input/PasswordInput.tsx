@@ -1,3 +1,5 @@
+'use client'
+
 /* eslint-disable no-undef */
 import { ComponentProps, MouseEvent, useState } from 'react'
 

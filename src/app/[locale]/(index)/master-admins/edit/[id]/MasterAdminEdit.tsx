@@ -14,8 +14,6 @@ import { Admin } from 'api/models/admin/admin'
 import { updateMasterAdmin } from 'api/services/masterAdmins'
 import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
 
-import MasterAdminForm from '../../form'
-
 const formSchema = z.object({
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
@@ -59,9 +57,7 @@ const EditMasterAdmin = ({ masterAdmin }: Props) => {
 	return (
 		<FormWrapper>
 			<FormProvider {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<MasterAdminForm />
-				</form>
+				<form onSubmit={form.handleSubmit(onSubmit)}>{/* <MasterAdminForm /> */}</form>
 			</FormProvider>
 		</FormWrapper>
 	)

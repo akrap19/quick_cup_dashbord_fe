@@ -1,17 +1,26 @@
+'use client'
+
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
+import { SearchDropdown } from '@/components/custom/search-dropdown'
 import { FormControl } from '@/components/inputs/form-control'
-import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
+import { Base } from 'api/models/common/base'
+import { ROUTES } from 'parameters'
+
+interface Props {
+	languages: Base[]
+}
 
 const formSchema = z.object({
 	language: z.string().min(1, { message: 'ValidationMeseges.required' })
@@ -19,15 +28,11 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-export const SelectLanguage = () => {
+export const SelectLanguage = ({ languages }: Props) => {
+	const { push } = useRouter()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const { setLanguage } = useManageContent()
 	const t = useTranslations()
-	const languageOptions = [
-		{ value: '', label: t('ManageContent.selectLanguage') },
-		{ value: 'se', label: t('Languages.en') },
-		{ value: 'en', label: t('Languages.se') }
-	]
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
@@ -36,10 +41,13 @@ export const SelectLanguage = () => {
 	})
 
 	const onSubmit = async (data: any) => {
+		const language = languages.find(language => language.id === data.language)
+
+		setLanguage(language)
+		push(ROUTES.ADD_CONTENT)
 		if (currentStep) {
 			setCurrentStep(currentStep + 1)
 		}
-		setLanguage(data.language)
 	}
 
 	return (
@@ -55,7 +63,7 @@ export const SelectLanguage = () => {
 						</Text>
 						<Box width="100%">
 							<FormControl name="language">
-								<Select sizes="large" options={languageOptions} />
+								<SearchDropdown placeholder="General.language" options={languages} isFilter alwaysShowSearch />
 							</FormControl>
 						</Box>
 					</Stack>

@@ -37,11 +37,11 @@ export const StaffSectionItemFields = () => {
 					}}>
 					<Stack gap={4}>
 						<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-							<RequiredLabel>{t('ManageContent.staffDescription')}</RequiredLabel>
+							<RequiredLabel>{t('ManageContent.staffName')}</RequiredLabel>
 						</Text>
 						<Box>
 							<FormControl name="photos" maxLength="30">
-								<TextInput placeholder={t('ManageContent.staffDescriptionPlaceholder')} />
+								<TextInput placeholder={t('ManageContent.staffNamePlaceholder')} />
 								<FormControl.CharactersCount />
 								<FormControl.Message />
 							</FormControl>
@@ -49,32 +49,36 @@ export const StaffSectionItemFields = () => {
 					</Stack>
 					<Stack gap={4}>
 						<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-							<RequiredLabel>{t('ManageContent.staffDescription')}</RequiredLabel>
+							<RequiredLabel>{t('ManageContent.staffRole')}</RequiredLabel>
 						</Text>
 						<Box>
 							<FormControl name="photos" maxLength="30">
-								<TextInput placeholder={t('ManageContent.staffDescriptionPlaceholder')} />
+								<TextInput placeholder={t('ManageContent.staffRolePlaceholder')} />
 								<FormControl.CharactersCount />
 								<FormControl.Message />
 							</FormControl>
 						</Box>
 					</Stack>
 				</div>
-				<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
-					<RequiredLabel>{t('ManageContent.generalIntroductionDescription')}</RequiredLabel>
-				</Text>
-				<FormControl name="generalIntroductionDescription" maxLength="500">
-					<Textarea placeholder={t('ManageContent.generalIntroductionPlaceholderDescription')} />
-					<FormControl.CharactersCount />
-					<FormControl.Message />
-				</FormControl>
-				<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-					{t('ManageContent.audioTranslation')}
-				</Text>
-				<FormControl name="audioTranslate">
-					<AudioUpload />
-					<FormControl.Message />
-				</FormControl>
+				<Stack gap={4}>
+					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
+						<RequiredLabel>{t('ManageContent.staffDescription')}</RequiredLabel>
+					</Text>
+					<FormControl name="generalIntroductionDescription" maxLength="500">
+						<Textarea placeholder={t('ManageContent.staffDescriptionPlaceholder')} />
+						<FormControl.CharactersCount />
+						<FormControl.Message />
+					</FormControl>
+				</Stack>
+				<Stack gap={4}>
+					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
+						{t('ManageContent.audioTranslation')}
+					</Text>
+					<FormControl name="audioTranslate">
+						<AudioUpload />
+						<FormControl.Message />
+					</FormControl>
+				</Stack>
 			</Stack>
 		</Box>
 	)

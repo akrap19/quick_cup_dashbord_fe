@@ -1,4 +1,5 @@
-import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
+import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
+import { fetchWithToken } from 'api/instances/Instance'
 import { ContentPayload } from 'api/models/content/contentPayload'
 
 interface Query {
@@ -19,15 +20,15 @@ export const getRooms = async (query: Query) => {
 }
 
 export const createRoom = async (room: ContentPayload) => {
-	const { data } = await axiosInstanceWithToken.post(`/room/translation`, room)
+	const response = await axiosInstanceWithToken.post(`/room/translation`, room)
 
-	return data
+	return response?.data
 }
 
 export const updateRoom = async (room: ContentPayload) => {
-	const { data } = await axiosInstanceWithToken.put(`/room/translation`, room)
+	const response = await axiosInstanceWithToken.put(`/room/translation`, room)
 
-	return data
+	return response?.data
 }
 
 export const getRoom = async (id: string) => {
@@ -37,13 +38,13 @@ export const getRoom = async (id: string) => {
 }
 
 export const deleteRoom = async (id: string) => {
-	const { data } = await axiosInstanceWithToken.delete(`/room`, { data: { id } })
+	const response = await axiosInstanceWithToken.delete(`/room`, { data: { id } })
 
-	return data
+	return response?.data
 }
 
 export const deleteRooms = async (ids: string[]) => {
-	const { data } = await axiosInstanceWithToken.delete(`/room/bulk`, { data: { ids } })
+	const response = await axiosInstanceWithToken.delete(`/room/bulk`, { data: { ids } })
 
-	return data
+	return response?.data
 }

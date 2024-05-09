@@ -1,9 +1,9 @@
 export interface PractitionerPayload {
-	id?: string
+	userId?: string
 	email?: string
 	firstName: string
 	lastName: string
-	barnahus: string
-	role: string
+	barnahus?: string
+	userProfession: string
 	phoneNumber: string
 }

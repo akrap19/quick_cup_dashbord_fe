@@ -1,6 +1,8 @@
+'use client'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey'
@@ -8,12 +10,20 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
+import { requiredString } from 'schemas'
 
-import { SectionItemFields } from './common/SectionItemFields'
-import { TitleSubsection } from './common/TitleSubsection'
+import { SectionItemFields } from '../common/SectionItemFields'
+import { TitleSubsection } from '../common/TitleSubsection'
 
 const formSchema = z.object({
-	generalIntrudactionTitle: z.string().min(1, { message: 'ValidationMeseges.required' })
+	items: z.array(
+		z.object({
+			generalIntroductionTitle: requiredString.shape.scheme,
+			generalIntroductionDescription: requiredString.shape.scheme,
+			audioTranslate: z.string().optional(),
+			photos: z.array(z.string()).optional()
+		})
+	)
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -21,12 +31,38 @@ type Schema = z.infer<typeof formSchema>
 export const ManageRoomsContent = () => {
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
+
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
-		defaultValues: { generalIntrudactionTitle: '' }
+		defaultValues: {
+			items: [
+				{
+					generalIntroductionTitle: '',
+					generalIntroductionDescription: '',
+					audioTranslate: '',
+					photos: []
+				}
+			]
+		}
 	})
+
 	const formData = form?.getValues()
+
+	// const { fields, append, remove } = useFieldArray({
+	const { fields, append } = useFieldArray({
+		control: form.control,
+		name: 'items'
+	})
+
+	const handleAddSection = () => {
+		append({
+			generalIntroductionTitle: '',
+			generalIntroductionDescription: '',
+			audioTranslate: '',
+			photos: []
+		})
+	}
 
 	const onSubmit = async () => {
 		console.log('data', formData)
@@ -56,8 +92,16 @@ export const ManageRoomsContent = () => {
 						</Stack>
 						<Box padding={6} borderTop="thin" borderColor="neutral.300">
 							<Stack gap={4}>
-								<TitleSubsection buttonLabel="ManageContent.addRoom" infoText="ManageContent.addRoomInfoText" />
-								<SectionItemFields />
+								<TitleSubsection
+									buttonLabel="ManageContent.addRoom"
+									infoText="ManageContent.addRoomInfoText"
+									onClick={handleAddSection}
+								/>
+								{fields.map((field, index) => (
+									<div key={field.id}>
+										<SectionItemFields index={index} form={form} />
+									</div>
+								))}
 							</Stack>
 						</Box>
 					</Stack>

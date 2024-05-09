@@ -1,4 +1,5 @@
-import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
+import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
+import { fetchWithToken } from 'api/instances/Instance'
 import { BarnahusPayload } from 'api/models/barnahuses/barnahusesPayload'
 
 interface Query {
@@ -21,15 +22,15 @@ export const getBarnahuses = async (query: Query) => {
 }
 
 export const createBarnahus = async (barnahus: BarnahusPayload) => {
-	const { data } = await axiosInstanceWithToken.post(`/barnahus`, barnahus)
+	const response = await axiosInstanceWithToken.post(`/barnahus`, barnahus)
 
-	return data
+	return response?.data
 }
 
 export const updateBarnahus = async (barnahus: BarnahusPayload) => {
-	const { data } = await axiosInstanceWithToken.put(`/barnahus`, barnahus)
+	const response = await axiosInstanceWithToken.put(`/barnahus`, barnahus)
 
-	return data
+	return response?.data
 }
 
 export const getBarnahus = async (id: string) => {
@@ -39,15 +40,15 @@ export const getBarnahus = async (id: string) => {
 }
 
 export const deleteBarnahus = async (barnahusId: string) => {
-	const { data } = await axiosInstanceWithToken.delete(`/barnahus`, { data: { barnahusId } })
+	const response = await axiosInstanceWithToken.delete(`/barnahus`, { data: { barnahusId } })
 
-	return data
+	return response?.data
 }
 
 export const deleteBarnahuses = async (barnahusIds: string[]) => {
-	const { data } = await axiosInstanceWithToken.delete(`/barnahus/bulk`, { data: { barnahusIds } })
+	const response = await axiosInstanceWithToken.delete(`/barnahus/bulk`, { data: { barnahusIds } })
 
-	return data
+	return response?.data
 }
 
 export const getBarnahuseLocations = async (query: Query) => {
@@ -62,6 +63,17 @@ export const getBarnahuseLocations = async (query: Query) => {
 
 export const getBarnahuseMasterAdminLocations = async () => {
 	const response = await fetchWithToken(`barnahus/locations`)
+
+	return response.json()
+}
+
+export const getAssignableBarnahus = async () => {
+	const queryParams = {
+		page: 1,
+		limit: 200
+	}
+
+	const response = await fetchWithToken(`barnahus/assignable`, queryParams)
 
 	return response.json()
 }

@@ -1,7 +1,9 @@
-import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
-import { Language } from 'api/models/language/language'
+import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
+import { fetchWithToken } from 'api/instances/Instance'
+import { LanguagePayload } from 'api/models/language/languagePayload'
 
 interface Query {
+	search?: string
 	status?: string
 	page?: number
 	limit?: number
@@ -10,7 +12,7 @@ interface Query {
 
 export const getLanguages = async (query: Query) => {
 	const queryParams = {
-		search: query.status,
+		status: query.status,
 		page: query.page ?? 1,
 		limit: query.limit ?? 10
 	}
@@ -20,16 +22,16 @@ export const getLanguages = async (query: Query) => {
 	return response.json()
 }
 
-export const createLanguage = async (language: Language) => {
-	const { data } = await axiosInstanceWithToken.post(`/language`, language)
+export const createLanguage = async (language: LanguagePayload) => {
+	const response = await axiosInstanceWithToken.post(`/language`, language)
 
-	return data
+	return response?.data
 }
 
-export const updateLanguage = async (language: Language) => {
-	const { data } = await axiosInstanceWithToken.patch(`/language`, language)
+export const updateLanguage = async (language: LanguagePayload) => {
+	const response = await axiosInstanceWithToken.put(`/language`, language)
 
-	return data
+	return response?.data
 }
 
 export const getLanguage = async (id: string) => {
@@ -38,16 +40,27 @@ export const getLanguage = async (id: string) => {
 	return response.json()
 }
 
-export const deleteLanguage = async (id: string) => {
-	const { data } = await axiosInstanceWithToken.delete(`/language`, { data: { id } })
+export const getLanguageSearch = async (query: Query, status: string) => {
+	const queryParams = {
+		search: query.language,
+		status
+	}
 
-	return data
+	const response = await fetchWithToken(`/language/search`, queryParams)
+
+	return response.json()
 }
 
-export const deleteLanguages = async (ids: string[]) => {
-	const { data } = await axiosInstanceWithToken.delete(`/language/bulk`, { data: { ids } })
+export const deleteLanguage = async (languageId: string) => {
+	const response = await axiosInstanceWithToken.delete(`/language`, { data: { languageId } })
 
-	return data
+	return response?.data
+}
+
+export const deleteLanguages = async (languageIds: string[]) => {
+	const response = await axiosInstanceWithToken.delete(`/language/bulk`, { data: { languageIds } })
+
+	return response?.data
 }
 
 export const getLanguageSupported = async (query: Query) => {

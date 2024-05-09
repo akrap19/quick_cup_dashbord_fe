@@ -9,19 +9,20 @@ import { z } from 'zod'
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Practitioner } from 'api/models/practitioners/practitioner'
 import { updatePractitioner } from 'api/services/practitioners'
-import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
+import { optionalPhoneNumberScheme, requiredString } from 'schemas'
 
 import PractitionerForm from '../../form'
 
 const formSchema = z.object({
-	email: emailSchema.shape.email,
-	barnahus: requiredString.shape.scheme,
+	email: z.string().optional(),
+	barnahus: z.string().optional(),
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
-	phoneNumber: phoneNumberScheme.shape.phone,
-	role: requiredString.shape.scheme
+	phoneNumber: optionalPhoneNumberScheme.shape.phone,
+	userProfession: requiredString.shape.scheme
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -41,16 +42,17 @@ const PractitionerEdit = ({ practitioner }: Props) => {
 		defaultValues: {
 			firstName: practitioner.firstName,
 			lastName: practitioner.lastName,
-			phoneNumber: practitioner.phoneNumber,
-			email: practitioner.firstName,
-			role: practitioner.lastName,
-			barnahus: practitioner.phoneNumber
+			phoneNumber: practitioner.phoneNumber ?? '',
+			email: practitioner.email,
+			userProfession: practitioner.userProfession,
+			barnahus: ''
 		}
 	})
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		const result = await updatePractitioner({ ...data, id: practitioner.id })
+		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
+		const result = await updatePractitioner({ ...dataWIhoutEmptyString, userId: practitioner.userId })
 		if (result?.message === 'OK') {
 			SuccessToast(t('Practitioners.successfullyEdited'))
 			back()

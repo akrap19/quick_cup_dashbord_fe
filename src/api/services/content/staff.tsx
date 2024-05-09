@@ -1,4 +1,5 @@
-import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
+import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
+import { fetchWithToken } from 'api/instances/Instance'
 import { ContentPayload } from 'api/models/content/contentPayload'
 
 interface Query {
@@ -19,15 +20,15 @@ export const getStaffs = async (query: Query) => {
 }
 
 export const createStaff = async (staff: ContentPayload) => {
-	const { data } = await axiosInstanceWithToken.post(`/staff/translation`, staff)
+	const response = await axiosInstanceWithToken.post(`/staff/translation`, staff)
 
-	return data
+	return response?.data
 }
 
 export const updateStaff = async (staff: ContentPayload) => {
-	const { data } = await axiosInstanceWithToken.put(`/staff/translation`, staff)
+	const response = await axiosInstanceWithToken.put(`/staff/translation`, staff)
 
-	return data
+	return response?.data
 }
 
 export const getStaff = async (id: string) => {
@@ -37,13 +38,13 @@ export const getStaff = async (id: string) => {
 }
 
 export const deleteStaff = async (id: string) => {
-	const { data } = await axiosInstanceWithToken.delete(`/staff`, { data: { id } })
+	const response = await axiosInstanceWithToken.delete(`/staff`, { data: { id } })
 
-	return data
+	return response?.data
 }
 
 export const deleteStaffs = async (ids: string[]) => {
-	const { data } = await axiosInstanceWithToken.delete(`/staff/bulk`, { data: { ids } })
+	const response = await axiosInstanceWithToken.delete(`/staff/bulk`, { data: { ids } })
 
-	return data
+	return response?.data
 }

@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth/next'
 import { ReactNode } from 'react'
 
@@ -9,6 +10,7 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { getSeenOnboardings } from 'api/services/onboarding'
 import { authOptions } from 'app/api/auth/[...nextauth]/auth'
+import { ROUTES } from 'parameters'
 
 export const metadata: Metadata = {
 	title: 'Journeys | Dashboard',
@@ -19,6 +21,11 @@ const DashboardLayout = async ({ children }: { children: ReactNode }) => {
 	const session = await getServerSession(authOptions)
 	const { data: seenOnboardings } = await getSeenOnboardings()
 	const userRole = session?.user?.roles[0]?.name
+
+	// This is for protected routes
+	if (!seenOnboardings) {
+		redirect(ROUTES.LOGIN)
+	}
 
 	return (
 		<>

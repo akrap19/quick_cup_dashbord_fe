@@ -1,4 +1,6 @@
-import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
+import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
+import { dataFetchWithToken } from 'api/instances/FetchWithToken'
+import { fetchWithToken } from 'api/instances/Instance'
 import { AdminPayload } from 'api/models/admin/AdminPayload'
 
 interface Query {
@@ -7,46 +9,45 @@ interface Query {
 	limit: number
 }
 
-export const getAdmins = async (query: Query) => {
+export const getAdmins = (query: Query) => {
 	const queryParams = {
 		search: query.search,
 		page: query.page ?? 1,
 		limit: query.limit ?? 10
 	}
 
-	const response = await fetchWithToken(`admin`, queryParams)
-
-	return response.json()
+	return dataFetchWithToken(`admin`, queryParams)
 }
 
 export const createAdmin = async (admin: AdminPayload) => {
-	const { data } = await axiosInstanceWithToken.post(`/admin`, admin)
+	const response = await axiosInstanceWithToken.post(`/admin`, admin)
 
-	return data
+	return response?.data
 }
 
 export const updateAdmin = async (admin: AdminPayload) => {
-	const { data } = await axiosInstanceWithToken.put(`/admin`, admin)
+	const response = await axiosInstanceWithToken.put(`/admin`, admin)
 
-	return data
+	return response?.data
 }
 
-export const getAdmin = async (id: string) => {
-	const response = await fetchWithToken(`admin/${id}`)
+export const getAdmin = async (userId: string) => {
+	const response = await fetchWithToken(`admin/${userId}`)
 
+	console.log('response', response)
 	return response.json()
 }
 
 export const deleteAdmin = async (userId: string) => {
-	const { data } = await axiosInstanceWithToken.delete(`/admin`, {
+	const response = await axiosInstanceWithToken.delete(`/admin`, {
 		data: { userId }
 	})
 
-	return data
+	return response?.data
 }
 
-export const deleteAdmins = async (ids: string[]) => {
-	const { data } = await axiosInstanceWithToken.delete(`/admin/bulk`, { data: { ids } })
+export const deleteAdmins = async (userIds: string[]) => {
+	const response = await axiosInstanceWithToken.delete(`/admin/bulk`, { data: { userIds } })
 
-	return data
+	return response?.data
 }

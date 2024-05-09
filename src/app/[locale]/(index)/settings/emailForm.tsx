@@ -41,7 +41,7 @@ export const EmailForm = ({ settings }: Props) => {
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { currentEmail: settings.email, newEmail: '' }
+		defaultValues: { currentEmail: settings?.email, newEmail: '' }
 	})
 
 	const onSubmit = async () => {

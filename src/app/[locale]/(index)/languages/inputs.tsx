@@ -6,25 +6,37 @@ import qs from 'query-string'
 import { useDebounce } from 'rooks'
 
 import { AddButton } from '@/components/custom/button/add-button'
-import { SearchInput } from '@/components/custom/inputs/search-input'
 import { DataTableActions } from '@/components/data-display/data-table/DataTableActions'
+import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
+import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { useOpened } from '@/hooks/use-toggle'
 import { useTableStore } from '@/store/table'
-import { Barnahus } from 'api/models/barnahuses/barnahus'
+import { Language } from 'api/models/language/language'
+import { deleteLanguage, deleteLanguages } from 'api/services/languages'
+import { LanguageStatusEnum } from 'enums/languageStatusEnum'
 import { ROUTES } from 'parameters/routes'
 
 interface Props {
-	data: Barnahus[]
+	data: Language[]
 }
 
 export const Inputs = ({ data }: Props) => {
 	const t = useTranslations()
 	const searchParams = useSearchParams()
-	const { checkedItems, checkedItemsLength } = useTableStore()
-	const { push } = useRouter()
-	useNavbarItems({ title: 'General.barnahus', useUserDropdown: true })
+	const confirmDialog = useOpened()
+	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
+	const { push, refresh } = useRouter()
+	useNavbarItems({ title: 'General.languages', useUserDropdown: true })
+	const statusOptions = [
+		{ value: '', label: 'General.allStatuses' },
+		{ value: LanguageStatusEnum.DRAFT, label: 'General.draft' },
+		{ value: LanguageStatusEnum.PUBLISHED, label: 'General.published' },
+		{ value: LanguageStatusEnum.HIDDEN, label: 'General.hidden' }
+	]
 
 	const handleFilterChange = (filter: string, value: string) => {
 		const current = qs.parse(searchParams.toString())
@@ -43,45 +55,54 @@ export const Inputs = ({ data }: Props) => {
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)
 
 	const handleEdit = () => {
-		console.log('testes')
+		const index = Object.keys(checkedItems)
+		const numericIndex = parseInt(index[0], 10)
+
+		push(ROUTES.EDIT_LANGUAGES + data[numericIndex].languageId)
 	}
 
 	const handleDelete = async () => {
 		const indexes = Object.keys(checkedItems)
-		console.log(data)
-		console.log(indexes)
-		// const ids = indexes.map(index => {
-		// 	const numericIndex = parseInt(index, 10)
-		// 	return data[numericIndex].id
-		// })
+		const ids = indexes.map(index => {
+			const numericIndex = parseInt(index, 10)
+			return data[numericIndex].languageId ?? ''
+		})
 
-		// const isDeleteBulk = ids.length > 1
-		// const result = await (isDeleteBulk ? deleteBarnahuses(ids) : deleteBarnahus(ids[0]))
+		const isDeleteBulk = ids.length > 1
+		const result = await (isDeleteBulk ? deleteLanguages(ids) : deleteLanguage(ids[0]))
 
-		// if (result?.message === 'OK') {
-		// 	SuccessToast(t(isDeleteBulk ? 'Languages.successfullBulkDelete' : 'Languages.successfullyDeleted'))
-		// 	clearCheckedItems()
-		// 	refresh()
-		// }
+		if (result?.message === 'OK') {
+			SuccessToast(t(isDeleteBulk ? 'Languages.successfullBulkDelete' : 'Languages.successfullyDeleted'))
+			clearCheckedItems()
+			confirmDialog.toggleOpened()
+			refresh()
+		}
 	}
 
 	return (
 		<div>
 			{checkedItemsLength === 0 ? (
 				<Inline justifyContent="space-between" alignItems="center">
-					<Box style={{ width: '320px' }}>
-						<SearchInput
-							name="searchKey"
-							defaultValue={searchParams.get('searchKey') || ''}
-							placeholder={t('Barnahuses.searchBarnahus')}
+					<Box width="100%" style={{ maxWidth: '15.25rem' }}>
+						<Select
+							name="status"
+							sizes="large"
+							options={statusOptions}
 							onChange={({ target: { name, value } }) => debouncedFilterChange(name, value)}
 						/>
 					</Box>
-					<AddButton buttonLabel={t('Language.add')} buttonLink={ROUTES.ADD_BARNAHUS} />
+					<AddButton buttonLabel={t('Languages.add')} buttonLink={ROUTES.ADD_LANGUAGES} />
 				</Inline>
 			) : (
-				<DataTableActions onEdit={handleEdit} onDelete={handleDelete} />
+				<DataTableActions onEdit={handleEdit} onDelete={() => confirmDialog.toggleOpened()} />
 			)}
+			<ConfirmActionDialog
+				title="Languages.delete"
+				description="Languages.deleteLanguageDescription"
+				buttonLabel="General.delete"
+				confirmDialog={confirmDialog}
+				onSubmit={handleDelete}
+			/>
 		</div>
 	)
 }

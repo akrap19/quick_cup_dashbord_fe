@@ -1,4 +1,5 @@
-import { axiosInstanceWithToken, fetchWithToken } from 'api/Instance'
+import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
+import { fetchWithToken } from 'api/instances/Instance'
 
 export const getSeenOnboardings = async () => {
 	const response = await fetchWithToken(`/onboarding`)
@@ -7,7 +8,7 @@ export const getSeenOnboardings = async () => {
 }
 
 export const onboardingSeen = async (onboardingSection: string) => {
-	const { data } = await axiosInstanceWithToken.post(`/onboarding`, { onboardingSection })
+	const response = await axiosInstanceWithToken.post(`/onboarding`, { onboardingSection })
 
-	return data
+	return response?.data
 }

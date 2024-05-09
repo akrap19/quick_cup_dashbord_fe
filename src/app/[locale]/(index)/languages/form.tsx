@@ -38,11 +38,11 @@ const LanguageForm = ({ languages, cancelDialog }: Props) => {
 				<Columns.Item columns={6}>
 					<Stack gap={7}>
 						<Stack gap={8}>
-							<FormControl name="code">
+							<FormControl name="language">
 								<FormControl.Label>
 									<RequiredLabel>{t('General.language')}</RequiredLabel>
 								</FormControl.Label>
-								<SearchDropdown placeholder="General.language" options={transformedLanguagesArray} />
+								<SearchDropdown placeholder="General.language" options={transformedLanguagesArray} alwaysShowSearch />
 								<FormControl.Message />
 							</FormControl>
 							<InputWithInfo infoText="Languages.statusInfoText">
@@ -50,7 +50,7 @@ const LanguageForm = ({ languages, cancelDialog }: Props) => {
 									<FormControl.Label>
 										<RequiredLabel>{t('General.status')}</RequiredLabel>
 									</FormControl.Label>
-									<TextInput defaultValue={t('General.inactive')} disabled />
+									<TextInput defaultValue={t('General.draft')} disabled />
 									<FormControl.Message />
 								</FormControl>
 							</InputWithInfo>

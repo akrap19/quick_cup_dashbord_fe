@@ -42,7 +42,7 @@ export const WorkingHours = () => {
 						<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
 							<RequiredLabel>{t('ManageContent.saturday')}</RequiredLabel>
 						</Text>
-						<FormControl name="generalIntrudactionTitle">
+						<FormControl name="">
 							<PatternInput format="##:## - ##:##" mask="_" placeholder={t('ManageContent.saturdayPlaceholder')} />
 							<FormControl.Message />
 						</FormControl>
@@ -51,7 +51,7 @@ export const WorkingHours = () => {
 						<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
 							<RequiredLabel>{t('ManageContent.sunday')}</RequiredLabel>
 						</Text>
-						<FormControl name="generalIntrudactionTitle">
+						<FormControl name="">
 							<TextInput placeholder={t('ManageContent.sundayPlaceholder')} />
 							<FormControl.Message />
 						</FormControl>

@@ -20,6 +20,7 @@ import { PatternInput } from '../pattern-input'
 import { Select } from '../select'
 import { Textarea } from '../text-area'
 import { TextInput } from '../text-input'
+import { RichTextEditor } from '../rich-text-editor'
 
 type Props = {
 	name: string
@@ -39,6 +40,7 @@ export const FormControl = ({ name, maxLength, successMessageString, errorMessag
 	const charactersCount = getChildByType(children, [FormControl.CharactersCount])
 	const message = getChildByType(children, [FormControl.Message])
 	const input = getChildByType(children, [
+		// RichTextEditor,
 		TextInput,
 		Select,
 		Textarea,

@@ -1,5 +1,5 @@
 import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
-import { fetchWithToken } from 'api/instances/Instance'
+import { fetchWithToken } from 'api/instances/FetchWithToken'
 import { LanguagePayload } from 'api/models/language/languagePayload'
 
 interface Query {
@@ -10,16 +10,16 @@ interface Query {
 	language?: string
 }
 
-export const getLanguages = async (query: Query) => {
+export const getLanguages = (query: Query) => {
 	const queryParams = {
 		status: query.status,
 		page: query.page ?? 1,
 		limit: query.limit ?? 10
 	}
 
-	const response = await fetchWithToken(`language`, queryParams)
+	const data = fetchWithToken(`language`, queryParams)
 
-	return response.json()
+	return data
 }
 
 export const createLanguage = async (language: LanguagePayload) => {
@@ -34,21 +34,21 @@ export const updateLanguage = async (language: LanguagePayload) => {
 	return response?.data
 }
 
-export const getLanguage = async (id: string) => {
-	const response = await fetchWithToken(`language/${id}`)
+export const getLanguage = (id: string) => {
+	const data = fetchWithToken(`language/${id}`)
 
-	return response.json()
+	return data
 }
 
-export const getLanguageSearch = async (query: Query, status: string) => {
+export const getLanguageSearch = (query: Query, status: string) => {
 	const queryParams = {
 		search: query.language,
 		status
 	}
 
-	const response = await fetchWithToken(`/language/search`, queryParams)
+	const data = fetchWithToken(`/language/search`, queryParams)
 
-	return response.json()
+	return data
 }
 
 export const deleteLanguage = async (languageId: string) => {
@@ -63,12 +63,12 @@ export const deleteLanguages = async (languageIds: string[]) => {
 	return response?.data
 }
 
-export const getLanguageSupported = async (query: Query) => {
+export const getLanguageSupported = (query: Query) => {
 	const queryParams = {
 		search: query.language
 	}
 
-	const response = await fetchWithToken(`language/supported`, queryParams)
+	const data = fetchWithToken(`language/supported`, queryParams)
 
-	return response.json()
+	return data
 }

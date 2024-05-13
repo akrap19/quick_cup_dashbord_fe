@@ -23,7 +23,7 @@ const DashboardLayout = async ({ children }: { children: ReactNode }) => {
 	const userRole = session?.user?.roles[0]?.name
 
 	// This is for protected routes
-	if (!seenOnboardings) {
+	if (!session) {
 		redirect(ROUTES.LOGIN)
 	}
 

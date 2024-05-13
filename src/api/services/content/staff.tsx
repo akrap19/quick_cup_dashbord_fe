@@ -1,5 +1,5 @@
 import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
-import { fetchWithToken } from 'api/instances/Instance'
+import { fetchWithToken } from 'api/instances/FetchWithToken'
 import { ContentPayload } from 'api/models/content/contentPayload'
 
 interface Query {
@@ -8,15 +8,16 @@ interface Query {
 	limit: number
 }
 
-export const getStaffs = async (query: Query) => {
+export const getStaffs = (query: Query) => {
 	const queryParams = {
 		languageId: query.language,
 		page: query.page ?? 1,
 		limit: query.limit ?? 10
 	}
-	const response = await fetchWithToken(`staff/translation`, queryParams)
 
-	return response.json()
+	const data = fetchWithToken(`staff/translation`, queryParams)
+
+	return data
 }
 
 export const createStaff = async (staff: ContentPayload) => {
@@ -31,10 +32,10 @@ export const updateStaff = async (staff: ContentPayload) => {
 	return response?.data
 }
 
-export const getStaff = async (id: string) => {
-	const response = await fetchWithToken(`staff/translation/${id}`)
+export const getStaff = (id: string) => {
+	const data = fetchWithToken(`staff/translation/${id}`)
 
-	return response.json()
+	return data
 }
 
 export const deleteStaff = async (id: string) => {

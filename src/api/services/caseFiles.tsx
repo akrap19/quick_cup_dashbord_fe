@@ -1,5 +1,5 @@
 import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
-import { fetchWithToken } from 'api/instances/Instance'
+import { fetchWithToken } from 'api/instances/FetchWithToken'
 import { CaseFilePayload } from 'api/models/caseFiles/caseFilePayload'
 
 interface Query {
@@ -8,16 +8,16 @@ interface Query {
 	limit: number
 }
 
-export const getCaseFiles = async (query: Query) => {
+export const getCaseFiles = (query: Query) => {
 	const queryParams = {
 		search: query.search,
 		page: query.page ?? 1,
 		limit: query.limit ?? 10
 	}
 
-	const response = await fetchWithToken(`case-file`, queryParams)
+	const data = fetchWithToken(`case-file`, queryParams)
 
-	return response.json()
+	return data
 }
 
 export const createCaseFile = async (caseFile: CaseFilePayload) => {
@@ -32,10 +32,10 @@ export const updateCaseFile = async (caseFile: CaseFilePayload) => {
 	return response?.data
 }
 
-export const getCaseFile = async (id: string) => {
-	const response = await fetchWithToken(`case-file/${id}`)
+export const getCaseFile = (id: string) => {
+	const data = fetchWithToken(`case-file/${id}`)
 
-	return response.json()
+	return data
 }
 
 export const deleteCaseFile = async (id: string) => {

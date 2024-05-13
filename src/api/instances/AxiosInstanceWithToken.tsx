@@ -4,7 +4,7 @@ import { ErrorToast } from '@/components/overlay/toast-messages/ErrorToastmessag
 import { ROUTES } from 'parameters'
 
 const axiosInstanceWithToken = axios.create({
-	baseURL: 'https://barnahus-journeys-be-dev-pjqvrfz4wa-lz.a.run.app/'
+	baseURL: process.env.API_BASE_URL
 })
 
 export const setToken = (token: string, barnahusId: string) => {

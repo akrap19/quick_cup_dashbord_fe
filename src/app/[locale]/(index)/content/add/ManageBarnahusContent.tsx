@@ -19,10 +19,10 @@ import { WorkingHours } from '../common/WorkingHours'
 const formSchema = z.object({
 	items: z.array(
 		z.object({
-			generalIntroductionTitle: requiredString.shape.scheme,
-			generalIntroductionDescription: requiredString.shape.scheme,
-			audioTranslate: z.string().optional(),
-			photos: z.array(z.string()).optional()
+			title: requiredString.shape.scheme,
+			description: requiredString.shape.scheme,
+			audioId: z.string().optional(),
+			images: z.array(z.string()).optional()
 		})
 	)
 })
@@ -39,10 +39,10 @@ export const ManageBarnahusContent = () => {
 		defaultValues: {
 			items: [
 				{
-					generalIntroductionTitle: '',
-					generalIntroductionDescription: '',
-					audioTranslate: '',
-					photos: []
+					title: '',
+					description: '',
+					audioId: '',
+					images: []
 				}
 			]
 		}
@@ -58,18 +58,18 @@ export const ManageBarnahusContent = () => {
 
 	const handleAddSection = () => {
 		append({
-			generalIntroductionTitle: '',
-			generalIntroductionDescription: '',
-			audioTranslate: '',
-			photos: []
+			title: '',
+			description: '',
+			audioId: '',
+			images: []
 		})
 	}
 
 	const onSubmit = async () => {
-		console.log('formdata', formData)
-		if (currentStep) {
-			setCurrentStep(currentStep + 1)
-		}
+		console.log('formdata', formData.items)
+		// if (currentStep) {
+		// 	setCurrentStep(currentStep + 1)
+		// }
 	}
 
 	return (

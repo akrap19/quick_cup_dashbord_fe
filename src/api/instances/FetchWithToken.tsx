@@ -1,9 +1,9 @@
+import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth/next'
 import qs from 'query-string'
 
 import { authOptions } from 'app/api/auth/[...nextauth]/auth'
 import { ROUTES } from 'parameters'
-import { redirect } from 'next/navigation'
 
 export const fetchWithToken = async (endpoint: string, queryParams?: any) => {
 	const session = await getServerSession(authOptions)

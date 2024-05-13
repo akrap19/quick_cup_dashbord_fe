@@ -16,9 +16,7 @@ export const getBarnahuses = (query: Query) => {
 		limit: query.limit ?? 10
 	}
 
-	const data = fetchWithToken(`barnahus`, queryParams)
-
-	return data
+	return fetchWithToken(`barnahus`, queryParams)
 }
 
 export const createBarnahus = async (barnahus: BarnahusPayload) => {
@@ -34,9 +32,7 @@ export const updateBarnahus = async (barnahus: BarnahusPayload) => {
 }
 
 export const getBarnahus = (id: string) => {
-	const data = fetchWithToken(`barnahus/${id}`)
-
-	return data
+	return fetchWithToken(`barnahus/${id}`)
 }
 
 export const deleteBarnahus = async (barnahusId: string) => {
@@ -56,15 +52,11 @@ export const getBarnahuseLocations = (query: Query) => {
 		search: query.location
 	}
 
-	const data = fetchWithToken(`barnahus/locations/search`, queryParams)
-
-	return data
+	return fetchWithToken(`barnahus/locations/search`, queryParams)
 }
 
 export const getBarnahuseMasterAdminLocations = async () => {
-	const data = fetchWithToken(`barnahus/locations`)
-
-	return data
+	return fetchWithToken(`barnahus/locations`)
 }
 
 export const getAssignableBarnahus = () => {
@@ -73,7 +65,5 @@ export const getAssignableBarnahus = () => {
 		limit: 200
 	}
 
-	const data = fetchWithToken(`barnahus/assignable`, queryParams)
-
-	return data
+	return fetchWithToken(`barnahus/assignable`, queryParams)
 }

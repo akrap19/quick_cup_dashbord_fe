@@ -15,9 +15,7 @@ export const getAdmins = (query: Query) => {
 		limit: query.limit ?? 10
 	}
 
-	const data = fetchWithToken(`admin`, queryParams)
-
-	return data
+	return fetchWithToken(`admin`, queryParams)
 }
 
 export const createAdmin = async (admin: AdminPayload) => {
@@ -33,9 +31,7 @@ export const updateAdmin = async (admin: AdminPayload) => {
 }
 
 export const getAdmin = (userId: string) => {
-	const data = fetchWithToken(`admin/${userId}`)
-
-	return data
+	return fetchWithToken(`admin/${userId}`)
 }
 
 export const deleteAdmin = async (userId: string) => {

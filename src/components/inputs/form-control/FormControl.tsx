@@ -17,10 +17,10 @@ import { Label } from '../label'
 import { NumericInput } from '../numeric-input'
 import { PasswordInput } from '../password-input'
 import { PatternInput } from '../pattern-input'
+// import { RichTextEditor } from '../rich-text-editor'
 import { Select } from '../select'
 import { Textarea } from '../text-area'
 import { TextInput } from '../text-input'
-import { RichTextEditor } from '../rich-text-editor'
 
 type Props = {
 	name: string

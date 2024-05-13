@@ -4,11 +4,11 @@ import { AudioUpload } from '@/components/custom/upload/audio-upload'
 import { PhotoUpload } from '@/components/custom/upload/photo-upload'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
+import { RichTextEditor } from '@/components/inputs/rich-text-editor'
 import { TextInput } from '@/components/inputs/text-input'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { RichTextEditor } from '@/components/inputs/rich-text-editor'
 
 interface Props {
 	form: any

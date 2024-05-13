@@ -2,9 +2,7 @@ import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
 import { fetchWithToken } from 'api/instances/FetchWithToken'
 
 export const getSeenOnboardings = () => {
-	const data = fetchWithToken(`/onboarding`)
-
-	return data
+	return fetchWithToken(`/onboarding`)
 }
 
 export const onboardingSeen = async (onboardingSection: string) => {

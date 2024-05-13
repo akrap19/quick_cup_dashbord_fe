@@ -15,9 +15,7 @@ export const getPractitioners = (query: Query) => {
 		limit: query.limit ?? 10
 	}
 
-	const data = fetchWithToken(`practitioner`, queryParams)
-
-	return data
+	return fetchWithToken(`practitioner`, queryParams)
 }
 
 export const createPractitioner = async (admin: PractitionerPayload) => {
@@ -33,9 +31,7 @@ export const updatePractitioner = async (admin: PractitionerPayload) => {
 }
 
 export const getPractitioner = (userId: string) => {
-	const data = fetchWithToken(`practitioner/${userId}`)
-
-	return data
+	return fetchWithToken(`practitioner/${userId}`)
 }
 
 export const deletePractitioner = async (userId: string) => {

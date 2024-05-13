@@ -17,9 +17,7 @@ export const getLanguages = (query: Query) => {
 		limit: query.limit ?? 10
 	}
 
-	const data = fetchWithToken(`language`, queryParams)
-
-	return data
+	return fetchWithToken(`language`, queryParams)
 }
 
 export const createLanguage = async (language: LanguagePayload) => {
@@ -35,9 +33,7 @@ export const updateLanguage = async (language: LanguagePayload) => {
 }
 
 export const getLanguage = (id: string) => {
-	const data = fetchWithToken(`language/${id}`)
-
-	return data
+	return fetchWithToken(`language/${id}`)
 }
 
 export const getLanguageSearch = (query: Query, status: string) => {
@@ -46,9 +42,7 @@ export const getLanguageSearch = (query: Query, status: string) => {
 		status
 	}
 
-	const data = fetchWithToken(`/language/search`, queryParams)
-
-	return data
+	return fetchWithToken(`/language/search`, queryParams)
 }
 
 export const deleteLanguage = async (languageId: string) => {
@@ -68,7 +62,5 @@ export const getLanguageSupported = (query: Query) => {
 		search: query.language
 	}
 
-	const data = fetchWithToken(`language/supported`, queryParams)
-
-	return data
+	return fetchWithToken(`language/supported`, queryParams)
 }

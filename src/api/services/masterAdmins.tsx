@@ -18,9 +18,7 @@ export const getMasterAdmins = async (query: Query) => {
 		limit: query.limit ?? 10
 	}
 
-	const data = fetchWithToken(`master-admin`, queryParams)
-
-	return data
+	return fetchWithToken(`master-admin`, queryParams)
 }
 
 export const createMasterAdmin = async (masterAdmin: AdminPayload) => {
@@ -36,9 +34,7 @@ export const updateMasterAdmin = async (masterAdmin: AdminPayload) => {
 }
 
 export const getMasterAdmin = (id: string) => {
-	const data = fetchWithToken(`master-admin/${id}`)
-
-	return data
+	return fetchWithToken(`master-admin/${id}`)
 }
 
 export const deleteMasterAdmin = async (userId: string) => {
@@ -60,7 +56,5 @@ export const getAssignableMasterAdmin = (query: Query) => {
 		limit: query.limit ?? 100
 	}
 
-	const data = fetchWithToken(`master-admin/assignable`, queryParams)
-
-	return data
+	return fetchWithToken(`master-admin/assignable`, queryParams)
 }

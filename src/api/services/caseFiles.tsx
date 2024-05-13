@@ -15,9 +15,7 @@ export const getCaseFiles = (query: Query) => {
 		limit: query.limit ?? 10
 	}
 
-	const data = fetchWithToken(`case-file`, queryParams)
-
-	return data
+	return fetchWithToken(`case-file`, queryParams)
 }
 
 export const createCaseFile = async (caseFile: CaseFilePayload) => {
@@ -33,9 +31,7 @@ export const updateCaseFile = async (caseFile: CaseFilePayload) => {
 }
 
 export const getCaseFile = (id: string) => {
-	const data = fetchWithToken(`case-file/${id}`)
-
-	return data
+	return fetchWithToken(`case-file/${id}`)
 }
 
 export const deleteCaseFile = async (id: string) => {

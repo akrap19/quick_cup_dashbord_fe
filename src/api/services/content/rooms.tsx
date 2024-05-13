@@ -15,9 +15,7 @@ export const getRooms = (query: Query) => {
 		limit: query.limit ?? 10
 	}
 
-	const data = fetchWithToken(`room/translation`, queryParams)
-
-	return data
+	return fetchWithToken(`room/translation`, queryParams)
 }
 
 export const createRoom = async (room: ContentPayload) => {
@@ -33,9 +31,7 @@ export const updateRoom = async (room: ContentPayload) => {
 }
 
 export const getRoom = (id: string) => {
-	const data = fetchWithToken(`room/translation/${id}`)
-
-	return data
+	return fetchWithToken(`room/translation/${id}`)
 }
 
 export const deleteRoom = async (id: string) => {

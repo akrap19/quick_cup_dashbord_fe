@@ -15,9 +15,7 @@ export const getAbouts = (query: Query) => {
 		limit: query.limit ?? 10
 	}
 
-	const data = fetchWithToken(`about/translation`, queryParams)
-
-	return data
+	return fetchWithToken(`about/translation`, queryParams)
 }
 
 export const createAbout = async (about: ContentPayload) => {
@@ -33,9 +31,7 @@ export const updateAbout = async (about: ContentPayload) => {
 }
 
 export const getAbout = (id: string) => {
-	const data = fetchWithToken(`about/translation/${id}`)
-
-	return data
+	return fetchWithToken(`about/translation/${id}`)
 }
 
 export const deleteAbout = async (id: string) => {

@@ -10,12 +10,15 @@ interface CustomRichTextEditorProps {
 
 type Props = TextareaHTMLAttributes<HTMLTextAreaElement> & CustomRichTextEditorProps
 
-export const RichTextEditor = ({ placeholder, value, onChange, maxLength }: Props) => {
+export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasError }: Props) => {
 	function removeHtmlTags(html: string): string {
 		return html.replace(/<[^>]*>/g, '')
 	}
 	const onChangeWithMaxLengthCheck = (value: string, delta: any, source: any, editor: any) => {
 		const textWithoutHtmlTags = removeHtmlTags(value)
+		console.log(hasError)
+		console.log(delta)
+		console.log(source)
 
 		if (onChange && textWithoutHtmlTags.length <= 500) {
 			onChange(value as any)

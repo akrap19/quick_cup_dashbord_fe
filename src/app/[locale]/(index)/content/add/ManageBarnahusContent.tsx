@@ -9,7 +9,7 @@ import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { useStepsStore } from '@/store/steps'
+// import { useStepsStore } from '@/store/steps'
 import { requiredString } from 'schemas'
 
 import { SectionItemFields } from '../common/SectionItemFields'
@@ -30,7 +30,7 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const ManageBarnahusContent = () => {
-	const { currentStep, setCurrentStep } = useStepsStore()
+	// const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 
 	const form = useForm<Schema>({

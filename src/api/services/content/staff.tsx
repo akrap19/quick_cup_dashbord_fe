@@ -15,9 +15,7 @@ export const getStaffs = (query: Query) => {
 		limit: query.limit ?? 10
 	}
 
-	const data = fetchWithToken(`staff/translation`, queryParams)
-
-	return data
+	return fetchWithToken(`staff/translation`, queryParams)
 }
 
 export const createStaff = async (staff: ContentPayload) => {
@@ -33,9 +31,7 @@ export const updateStaff = async (staff: ContentPayload) => {
 }
 
 export const getStaff = (id: string) => {
-	const data = fetchWithToken(`staff/translation/${id}`)
-
-	return data
+	return fetchWithToken(`staff/translation/${id}`)
 }
 
 export const deleteStaff = async (id: string) => {

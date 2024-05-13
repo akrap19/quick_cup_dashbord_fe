@@ -23,7 +23,6 @@ export const authOptions: NextAuthOptions = {
 					email: credentials.email,
 					password: credentials.password
 				})
-				console.log('responseee', response)
 
 				const { user, accessToken, accessTokenExpiresAt, refreshToken } = response.data
 

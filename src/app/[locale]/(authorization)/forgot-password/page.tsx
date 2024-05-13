@@ -42,7 +42,6 @@ const ForgotPasswordPage = () => {
 		}
 	}
 
-	console.log('process.env', process.env.API_BASE_URL)
 	return (
 		<>
 			<Stack gap={3}>

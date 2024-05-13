@@ -8,7 +8,7 @@ import { ROUTES } from 'parameters'
 export const fetchWithToken = async (endpoint: string, queryParams?: any) => {
 	const session = await getServerSession(authOptions)
 
-	const baseUrl = process.env.API_BASE_URL
+	const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
 	const url = qs.stringifyUrl({
 		url: baseUrl + endpoint,

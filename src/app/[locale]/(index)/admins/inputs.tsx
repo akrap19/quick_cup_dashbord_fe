@@ -72,6 +72,7 @@ export const Inputs = ({ data }: Props) => {
 		}
 	}
 
+	console.log('inputs env variable', process.env.NEXT_PUBLIC_API_BASE_URL)
 	return (
 		<div>
 			{checkedItemsLength === 0 ? (

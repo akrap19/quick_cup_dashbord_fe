@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 /* eslint-disable */
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
 	enabled: process.env.ANALYZE === 'true'
@@ -16,12 +14,6 @@ const nextConfig = {
 	},
 	experimental: {
 		appDir: true
-	},
-	env: {
-		NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-		NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-		NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
-		APP_ENV: process.env.APP_ENV
 	},
 	webpack(config) {
 		config.module.rules.push({

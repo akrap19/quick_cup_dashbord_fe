@@ -7,6 +7,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
+ARG NEXT_PUBLIC_API_BASE_URL=https://barnahus-journeys-be-dev-pjqvrfz4wa-lz.a.run.app/
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \

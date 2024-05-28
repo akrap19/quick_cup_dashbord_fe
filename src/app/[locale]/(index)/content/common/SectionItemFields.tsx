@@ -4,7 +4,7 @@ import { AudioUpload } from '@/components/custom/upload/audio-upload'
 import { PhotoUpload } from '@/components/custom/upload/photo-upload'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
-import { Textarea } from '@/components/inputs/text-area'
+import { RichTextEditor } from '@/components/inputs/rich-text-editor'
 import { TextInput } from '@/components/inputs/text-input'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
@@ -26,7 +26,7 @@ export const SectionItemFields = ({ index, form }: Props) => {
 						<RequiredLabel>{t('ManageContent.generalIntroductionTitle')}</RequiredLabel>
 					</Text>
 					<FormControl
-						{...form.register(`items[${index}].generalIntroductionTitle`)}
+						{...form.register(`items[${index}].title`)}
 						errorMessageString={
 							form.formState.errors?.items && form.formState.errors?.items[index]?.generalIntroductionTitle?.message
 						}
@@ -41,13 +41,13 @@ export const SectionItemFields = ({ index, form }: Props) => {
 						<RequiredLabel>{t('ManageContent.generalIntroductionDescription')}</RequiredLabel>
 					</Text>
 					<FormControl
-						{...form.register(`items[${index}].generalIntroductionDescription`)}
+						{...form.register(`items[${index}].description`)}
 						errorMessageString={
 							form.formState.errors?.items &&
 							form.formState.errors?.items[index]?.generalIntroductionDescription?.message
 						}
 						maxLength="500">
-						<Textarea placeholder={t('ManageContent.generalIntroductionPlaceholderDescription')} />
+						<RichTextEditor placeholder={t('ManageContent.generalIntroductionPlaceholderDescription')} />
 						<FormControl.CharactersCount />
 						<FormControl.Message />
 					</FormControl>
@@ -56,7 +56,7 @@ export const SectionItemFields = ({ index, form }: Props) => {
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
 						{t('ManageContent.audioTranslation')}
 					</Text>
-					<FormControl {...form.register(`items[${index}].audioTranslate`)}>
+					<FormControl {...form.register(`items[${index}].audioId`)}>
 						<AudioUpload />
 						<FormControl.Message />
 					</FormControl>
@@ -65,7 +65,7 @@ export const SectionItemFields = ({ index, form }: Props) => {
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
 						<RequiredLabel>{t('General.photos')}</RequiredLabel>
 					</Text>
-					<FormControl {...form.register(`items[${index}].photos`)}>
+					<FormControl {...form.register(`items[${index}].images`)}>
 						<PhotoUpload />
 						<FormControl.Message />
 					</FormControl>

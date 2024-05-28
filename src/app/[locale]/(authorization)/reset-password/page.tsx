@@ -39,7 +39,6 @@ const ResetYourPasswordPage = () => {
 	const searchParams = useSearchParams()
 	const uid = searchParams.get('uid')
 	const loading = useLoading()
-	console.log('uid', uid)
 
 	const form = useForm<Schema>({
 		mode: 'onChange',

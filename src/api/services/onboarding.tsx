@@ -1,10 +1,8 @@
 import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
-import { fetchWithToken } from 'api/instances/Instance'
+import { fetchWithToken } from 'api/instances/FetchWithToken'
 
-export const getSeenOnboardings = async () => {
-	const response = await fetchWithToken(`/onboarding`)
-
-	return response.json()
+export const getSeenOnboardings = () => {
+	return fetchWithToken(`/onboarding`)
 }
 
 export const onboardingSeen = async (onboardingSection: string) => {

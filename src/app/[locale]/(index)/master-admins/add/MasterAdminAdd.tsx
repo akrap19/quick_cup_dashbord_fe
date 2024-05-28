@@ -22,11 +22,11 @@ import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
 import MasterAdminForm from '../form'
 
 const formSchema = z.object({
+	email: emailSchema.shape.email,
+	barnahus: z.string().optional(),
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
-	email: emailSchema.shape.email,
-	phoneNumber: phoneNumberScheme.shape.phone,
-	barnahus: z.string().optional()
+	phoneNumber: phoneNumberScheme.shape.phone
 })
 
 type Schema = z.infer<typeof formSchema>

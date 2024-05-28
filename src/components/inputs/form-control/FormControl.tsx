@@ -9,6 +9,7 @@ import { PhotoUpload } from '@/components/custom/upload/photo-upload'
 import { CheckIcon } from '@/components/icons/check-icon'
 import { ErrorIcon } from '@/components/icons/error-icon'
 import { Box } from '@/components/layout/box'
+import { removeHtmlTags } from '@/utils/removeHtmlTags'
 import { Stack } from 'components/layout/stack'
 import { Text } from 'components/typography/text'
 
@@ -17,6 +18,7 @@ import { Label } from '../label'
 import { NumericInput } from '../numeric-input'
 import { PasswordInput } from '../password-input'
 import { PatternInput } from '../pattern-input'
+import { RichTextEditor } from '../rich-text-editor'
 import { Select } from '../select'
 import { Textarea } from '../text-area'
 import { TextInput } from '../text-input'
@@ -39,6 +41,7 @@ export const FormControl = ({ name, maxLength, successMessageString, errorMessag
 	const charactersCount = getChildByType(children, [FormControl.CharactersCount])
 	const message = getChildByType(children, [FormControl.Message])
 	const input = getChildByType(children, [
+		RichTextEditor,
 		TextInput,
 		Select,
 		Textarea,
@@ -83,7 +86,7 @@ export const FormControl = ({ name, maxLength, successMessageString, errorMessag
 							{overriddenInput}
 						</Stack>
 						{overridePropsDeep(charactersCount, () => ({
-							length: watch(name)?.length === undefined ? 0 : watch(name)?.length,
+							length: removeHtmlTags(watch(name))?.length === undefined ? 0 : removeHtmlTags(watch(name))?.length,
 							maxLength
 						}))}
 						{overridePropsDeep(message, () => ({ errorMessage, successMessage }))}

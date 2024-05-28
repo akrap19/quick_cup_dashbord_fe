@@ -1,6 +1,5 @@
 import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
-import { dataFetchWithToken } from 'api/instances/FetchWithToken'
-import { fetchWithToken } from 'api/instances/Instance'
+import { fetchWithToken } from 'api/instances/FetchWithToken'
 import { AdminPayload } from 'api/models/admin/AdminPayload'
 
 interface Query {
@@ -16,7 +15,7 @@ export const getAdmins = (query: Query) => {
 		limit: query.limit ?? 10
 	}
 
-	return dataFetchWithToken(`admin`, queryParams)
+	return fetchWithToken(`admin`, queryParams)
 }
 
 export const createAdmin = async (admin: AdminPayload) => {
@@ -31,11 +30,8 @@ export const updateAdmin = async (admin: AdminPayload) => {
 	return response?.data
 }
 
-export const getAdmin = async (userId: string) => {
-	const response = await fetchWithToken(`admin/${userId}`)
-
-	console.log('response', response)
-	return response.json()
+export const getAdmin = (userId: string) => {
+	return fetchWithToken(`admin/${userId}`)
 }
 
 export const deleteAdmin = async (userId: string) => {

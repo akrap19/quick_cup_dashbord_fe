@@ -1,5 +1,5 @@
 import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
-import { fetchWithToken } from 'api/instances/Instance'
+import { fetchWithToken } from 'api/instances/FetchWithToken'
 import { AdminPayload } from 'api/models/admin/AdminPayload'
 
 interface Query {
@@ -18,9 +18,7 @@ export const getMasterAdmins = async (query: Query) => {
 		limit: query.limit ?? 10
 	}
 
-	const response = await fetchWithToken(`master-admin`, queryParams)
-
-	return response.json()
+	return fetchWithToken(`master-admin`, queryParams)
 }
 
 export const createMasterAdmin = async (masterAdmin: AdminPayload) => {
@@ -35,10 +33,8 @@ export const updateMasterAdmin = async (masterAdmin: AdminPayload) => {
 	return response?.data
 }
 
-export const getMasterAdmin = async (id: string) => {
-	const response = await fetchWithToken(`master-admin/${id}`)
-
-	return response.json()
+export const getMasterAdmin = (id: string) => {
+	return fetchWithToken(`master-admin/${id}`)
 }
 
 export const deleteMasterAdmin = async (userId: string) => {
@@ -53,14 +49,12 @@ export const deleteMasterAdmins = async (userIds: string[]) => {
 	return response?.data
 }
 
-export const getAssignableMasterAdmin = async (query: Query) => {
+export const getAssignableMasterAdmin = (query: Query) => {
 	const queryParams = {
 		search: query.masterAdmin,
 		page: query.page ?? 1,
 		limit: query.limit ?? 100
 	}
 
-	const response = await fetchWithToken(`master-admin/assignable`, queryParams)
-
-	return response.json()
+	return fetchWithToken(`master-admin/assignable`, queryParams)
 }

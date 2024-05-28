@@ -1,5 +1,6 @@
 import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
-import { fetchWithoutToken, instance } from 'api/instances/Instance'
+import { fetchWithoutToken } from 'api/instances/FetchWithoutToken'
+import { instance } from 'api/instances/Instance'
 import { Login } from 'api/models/auth/login'
 import { Register } from 'api/models/auth/register'
 import { ResetPassword } from 'api/models/auth/resetPassword'

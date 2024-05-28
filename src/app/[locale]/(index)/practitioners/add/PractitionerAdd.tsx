@@ -75,7 +75,7 @@ const PractitionerAdd = ({ barnahus }: Props) => {
 			<FormWrapper>
 				<FormProvider {...form}>
 					<form onSubmit={form.handleSubmit(handleDialog)}>
-						<PractitionerForm />
+						<PractitionerForm cancelDialog={cancelDialog} />
 					</form>
 				</FormProvider>
 			</FormWrapper>

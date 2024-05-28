@@ -11,8 +11,11 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Admin } from 'api/models/admin/admin'
+import { Base } from 'api/models/common/base'
 import { updateMasterAdmin } from 'api/services/masterAdmins'
 import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
+
+import MasterAdminForm from '../../form'
 
 const formSchema = z.object({
 	firstName: requiredString.shape.scheme,
@@ -25,9 +28,10 @@ type Schema = z.infer<typeof formSchema>
 
 interface Props {
 	masterAdmin: Admin
+	barnahuses: Base[]
 }
 
-const EditMasterAdmin = ({ masterAdmin }: Props) => {
+const EditMasterAdmin = ({ masterAdmin, barnahuses }: Props) => {
 	const t = useTranslations()
 	const { back, refresh } = useRouter()
 	useNavbarItems({ title: 'MasterAdmins.edit', backLabel: 'MasterAdmins.back' })
@@ -50,14 +54,18 @@ const EditMasterAdmin = ({ masterAdmin }: Props) => {
 		if (result?.message === 'OK') {
 			SuccessToast(t('MasterAdmins.successfullyEdited'))
 			refresh()
-			back()
+			setTimeout(() => {
+				back()
+			}, 500)
 		}
 	}
 
 	return (
 		<FormWrapper>
 			<FormProvider {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)}>{/* <MasterAdminForm /> */}</form>
+				<form onSubmit={form.handleSubmit(onSubmit)}>
+					<MasterAdminForm barnahuses={barnahuses} />
+				</form>
 			</FormProvider>
 		</FormWrapper>
 	)

@@ -46,8 +46,10 @@ export const CancelAddDialog = ({ title, values, cancelDialog }: Props) => {
 				})}
 			</ConfirmDialog.Description>
 			<ConfirmDialog.Actions>
-				<CancelButton />
-				<Button onClick={cancelDialog.toggleOpened}>{t('General.stay')}</Button>
+				<CancelButton size="medium" />
+				<Button onClick={cancelDialog.toggleOpened} size="medium">
+					{t('General.stay')}
+				</Button>
 			</ConfirmDialog.Actions>
 		</ConfirmDialog>
 	)

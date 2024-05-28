@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl'
 
 import { EditButton } from '@/components/custom/button/edit-button'
 import { DetailsWrapper } from '@/components/custom/layouts/DetailsWrapper'
-import { Checkbox } from '@/components/inputs/checkbox'
 import { Label } from '@/components/inputs/label'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
@@ -24,6 +23,7 @@ const LanguageDetails = ({ language }: Props) => {
 		actionButton: <EditButton buttonLabel="Languages.edit" buttonLink={ROUTES.EDIT_LANGUAGES + language.languageId} />
 	})
 
+	console.log('language.autoTranslate', language.autoTranslate)
 	return (
 		<DetailsWrapper>
 			<Stack gap={4}>
@@ -40,7 +40,9 @@ const LanguageDetails = ({ language }: Props) => {
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('Languages.autoTranslate')}</Label>
-				<Checkbox checked={language.autoTranslate} />
+				<Text fontSize="small" color="neutral.800" textTransform="capitalize">
+					{language.autoTranslate.toString()}
+				</Text>
 			</Stack>
 		</DetailsWrapper>
 	)

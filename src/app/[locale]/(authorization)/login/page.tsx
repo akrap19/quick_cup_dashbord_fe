@@ -63,7 +63,6 @@ const LoginPage = () => {
 		}
 	}, [form.formState.isValid])
 
-	console.log('login env variable', process.env.NEXT_PUBLIC_API_BASE_URL)
 	return (
 		<>
 			<Heading variant="h3" textTransform="uppercase">

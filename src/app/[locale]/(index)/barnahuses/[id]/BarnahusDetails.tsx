@@ -43,7 +43,13 @@ export const BarnahusDetails = ({ barnahus }: Props) => {
 					<Label>{t('Barnahuses.assignedMasterAdmin')}</Label>
 				</Inline>
 				<Text fontSize="small" color="neutral.800">
-					{barnahus.admin}
+					{barnahus.admin ?? t('Barnahuses.assignedMasterAdmin') + t('General.notDefined')}
+				</Text>
+			</Stack>
+			<Stack gap={4}>
+				<Label>{t('General.barnahusId')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{barnahus.locationCode}
 				</Text>
 			</Stack>
 		</DetailsWrapper>

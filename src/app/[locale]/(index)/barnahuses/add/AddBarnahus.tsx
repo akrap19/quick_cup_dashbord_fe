@@ -84,7 +84,7 @@ export const AddBarnahus = ({ locations, masterAdmins }: Props) => {
 			<ConfirmActionDialog
 				title="Barnahuses.add"
 				description="Barnahuses.addBarnahusDescription"
-				buttonLabel="Barnahuses.add&Invite"
+				buttonLabel="Barnahuses.save&add"
 				buttonActionLoading={loading.isLoading}
 				confirmDialog={confirmDialog}
 				onSubmit={onSubmit}

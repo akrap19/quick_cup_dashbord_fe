@@ -1,10 +1,16 @@
 import { Metadata } from 'next'
+import { redirect } from 'next/navigation'
+import { getServerSession } from 'next-auth/next'
 import { ReactNode } from 'react'
 
 import { Drawer } from '@/components/custom/drawer'
 import { Navbar } from '@/components/custom/navbar'
+import { Onboarding } from '@/components/custom/onboarding'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
+import { getSeenOnboardings } from 'api/services/onboarding'
+import { authOptions } from 'app/api/auth/[...nextauth]/auth'
+import { ROUTES } from 'parameters'
 
 export const metadata: Metadata = {
 	title: 'Journeys | Dashboard',
@@ -12,12 +18,22 @@ export const metadata: Metadata = {
 }
 
 const DashboardLayout = async ({ children }: { children: ReactNode }) => {
+	const session = await getServerSession(authOptions)
+	const { data: seenOnboardings } = await getSeenOnboardings()
+	const userRole = session?.user?.roles[0]?.name
+
+	// This is for protected routes
+	if (!session) {
+		redirect(ROUTES.LOGIN)
+	}
+
 	return (
 		<>
-			<Drawer />
+			{!seenOnboardings.onboardingSections.includes(userRole) && <Onboarding userRole={userRole} />}
+			{userRole && <Drawer role={userRole} />}
 			<Box flex="1">
 				<Stack>
-					<Navbar />
+					<Navbar session={session} />
 					<Box display="flex" align="center">
 						{children}
 					</Box>

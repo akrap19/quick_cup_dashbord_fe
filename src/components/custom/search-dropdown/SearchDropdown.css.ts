@@ -1,6 +1,33 @@
 import { style } from '@vanilla-extract/css'
+import { RecipeVariants, recipe } from '@vanilla-extract/recipes'
 
 import { tokens } from '@/style/theme.css'
+
+export const DropdownPresentationlabel = recipe({
+	base: {
+		appearance: 'none'
+	},
+	variants: {
+		variant: {
+			placeholder: {
+				fontSize: tokens.typography.size.small,
+				lineHeight: tokens.typography.lineHeight.medium,
+				color: tokens.colors['neutral.300']
+			},
+			formLabel: {
+				fontSize: tokens.typography.size.small,
+				lineHeight: tokens.typography.lineHeight.medium,
+				color: tokens.colors['neutral.800']
+			},
+			filterLabel: {
+				fontSize: tokens.typography.size.medium,
+				lineHeight: tokens.typography.lineHeight.xlarge,
+				fontWeight: tokens.typography.weight.semibold,
+				color: tokens.colors['neutral.500']
+			}
+		}
+	}
+})
 
 export const dropdownListContainer = style({
 	width: '100%',
@@ -14,6 +41,11 @@ export const dropdownListContainer = style({
 	marginTop: tokens.spacing[1]
 })
 
+export const dropdownListItemsContainer = style({
+	overflow: 'auto',
+	maxHeight: '154px'
+})
+
 export const dropdownListItem = style({
 	color: tokens.colors['neutral.500'],
 	padding: tokens.spacing[1],
@@ -23,3 +55,5 @@ export const dropdownListItem = style({
 
 	':hover': { backgroundColor: tokens.colors['neutral.100'] }
 })
+
+export type DropdownPresentationlabelVariants = RecipeVariants<typeof DropdownPresentationlabel>

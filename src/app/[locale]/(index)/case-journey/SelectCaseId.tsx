@@ -10,7 +10,7 @@ import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { useJourneyContentStore } from '@/store/journey-content'
+import { useStepsStore } from '@/store/steps'
 
 const formSchema = z.object({
 	caseId: z.string().min(1, { message: 'ValidationMeseges.required' })
@@ -19,7 +19,7 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const SelectCaseId = () => {
-	const { setCurrentStep } = useJourneyContentStore()
+	const { setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 	const caseIds = [
 		{ value: '', label: t('CaseJourney.selectCaseId') },

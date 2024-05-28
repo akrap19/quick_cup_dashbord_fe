@@ -1,6 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -14,13 +16,14 @@ import { RequiredLabel } from '@/components/inputs/required-label'
 import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
-import { resetPassword } from 'api/services/auth'
+// import { resetPassword } from 'api/services/auth'
+import { useLoading } from '@/hooks/use-loading'
+import { ROUTES } from 'parameters'
 import { passwordSchema, requiredString } from 'schemas'
 import { atoms } from 'style/atoms.css'
 
 const formSchema = z
 	.object({
-		currentPassword: passwordSchema.shape.password,
 		newPassword: passwordSchema.shape.password,
 		confirmPassword: requiredString.shape.scheme
 	})
@@ -33,23 +36,27 @@ type Schema = z.infer<typeof formSchema>
 
 const ResetYourPasswordPage = () => {
 	const t = useTranslations()
-	const { mutate: resetUsersPassword } = useMutation(resetPassword, {
-		onSuccess: data => {
-			console.log(data)
-		},
-		onError: error => {
-			console.log(error)
-		}
-	})
+	const { push } = useRouter()
+	const searchParams = useSearchParams()
+	const uid = searchParams.get('uid')
+	const loading = useLoading()
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { currentPassword: '', newPassword: '', confirmPassword: '' }
+		defaultValues: { newPassword: '', confirmPassword: '' }
 	})
 
 	const onSubmit = async (data: Schema) => {
-		resetPassword(data)
+		loading.toggleLoading()
+		const resetPasswordData: any = { uid, password: data.newPassword }
+		const result = await signIn('reset-password', { ...resetPasswordData, redirect: false })
+
+		if (result?.status === 200) {
+			push(ROUTES.HOME)
+		} else {
+			loading.toggleLoading()
+		}
 	}
 
 	// this is because of bug on zod when password changes it dosen't matches confirm password and without this validation isn't trigered
@@ -65,7 +72,7 @@ const ResetYourPasswordPage = () => {
 		if (newPassword === '') {
 			setTimeout(() => {
 				form.clearErrors('newPassword')
-			}, 987)
+			}, 1)
 		}
 	}, [newPassword])
 
@@ -83,13 +90,6 @@ const ResetYourPasswordPage = () => {
 				<form className={atoms({ width: '100%' })} onSubmit={form.handleSubmit(onSubmit)}>
 					<Stack gap={15}>
 						<Stack gap={11}>
-							<FormControl name="currentPassword">
-								<FormControl.Label>
-									<RequiredLabel>{t('Authorization.currentPassword')}</RequiredLabel>
-								</FormControl.Label>
-								<PasswordInput type="password" placeholder={t('Authorization.currentPasswordPlaceholder')} />
-								<FormControl.Message />
-							</FormControl>
 							<FormControl name="newPassword">
 								<FormControl.Label>
 									<RequiredLabel>{t('Authorization.newPassword')}</RequiredLabel>

@@ -38,7 +38,7 @@ const defaultStylesMap: Record<Variant, Atoms> = {
 	},
 	h4: {
 		fontWeight: 'bold',
-		fontSize: { mobile: 'big', tablet: 'xbig' },
+		fontSize: 'big',
 		lineHeight: 'medium'
 	},
 	h5: {

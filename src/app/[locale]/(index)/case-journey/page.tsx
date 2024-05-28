@@ -1,18 +1,18 @@
 'use client'
 
 import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
-import { useJourneyContentSteps } from '@/hooks/use-journey-content-steps'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
-import { useJourneyContentStore } from '@/store/journey-content'
+import { useSteps } from '@/hooks/use-steps'
+import { useStepsStore } from '@/store/steps'
 
-import RearrangeRoom from './rearrange-room/page'
+import { RearrangeRoom } from './RearrangeRoom'
 import { SelectBarnahusContent } from './SelectBarnahusContent'
 import { SelectCaseId } from './SelectCaseId'
 import { SelectRoomsContent } from './SelectRoomsContent'
 
 const AddContentPage = () => {
-	const { currentStep } = useJourneyContentStore()
-	useJourneyContentSteps({
+	const { currentStep } = useStepsStore()
+	useSteps({
 		totalSteps: 5,
 		currentStep: 1
 	})

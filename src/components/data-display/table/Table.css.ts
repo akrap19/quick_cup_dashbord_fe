@@ -14,22 +14,20 @@ const font = {
 }
 
 export const tableWrapper = style({
+	border: border.border,
+	borderColor: border.borderColor,
 	width: '100%',
-	overflow: 'auto'
+	overflow: 'auto',
+	maxHeight: 'calc(100vh - 348px)'
 })
 
 export const table = style({
 	width: '100%',
 	borderSpacing: 0,
-	borderCollapse: 'collapse',
-	borderRight: border.border,
-	borderLeft: border.border,
-	borderColor: border.borderColor
+	borderCollapse: 'collapse'
 })
 
 export const tableHeader = style({
-	borderTop: border.border,
-	borderColor: border.borderColor,
 	backgroundColor: tokens.colors['neutral.100']
 })
 
@@ -45,7 +43,10 @@ export const tableFooter = style({
 export const tableRow = style({
 	borderBottom: border.border,
 	borderColor: border.borderColor,
-	':hover': { background: tokens.colors['neutral.100'] }
+	':hover': { background: tokens.colors['neutral.100'] },
+	':last-child': {
+		borderBottom: 'unset'
+	}
 })
 
 export const tableHead = style({
@@ -57,15 +58,28 @@ export const tableHead = style({
 	borderColor: border.borderColor,
 	...font,
 	':first-child': {
-		width: '72px'
+		width: '72px',
+		borderLeft: 'unset'
 	}
 })
 
-export const tableCell = style({
-	padding: `${tokens.spacing[4]} ${tokens.spacing[6]}`,
+const tableCellStyle = {
 	borderLeft: border.border,
 	borderColor: border.borderColor,
 	fontWeight: tokens.typography.weight.regular,
+	':first-child': {
+		borderLeft: 'unset'
+	}
+}
+
+export const tableCell = style({
+	padding: `${tokens.spacing[4]} ${tokens.spacing[6]}`,
+	...tableCellStyle,
+	...font
+})
+
+export const tableCellWithLink = style({
+	...tableCellStyle,
 	...font
 })
 

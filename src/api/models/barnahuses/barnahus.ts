@@ -1,6 +1,8 @@
 export interface Barnahus {
+	barnahusId: string
 	name: string
 	location: string
-	assignedAdmin: string
-	numberOfPractitioners: number
+	locationCode?: string
+	admin?: string
+	adminId?: string
 }

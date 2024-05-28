@@ -1,26 +1,35 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
-import router from 'next/router'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import qs from 'query-string'
 import { useDebounce } from 'rooks'
 
 import { AddButton } from '@/components/custom/button/add-button'
 import { SearchInput } from '@/components/custom/inputs/search-input'
-import { PencilIcon } from '@/components/icons/pencil-icon'
-import { TrashIcon } from '@/components/icons/trash-icon'
-import { Button } from '@/components/inputs/button'
+import { DataTableActions } from '@/components/data-display/data-table/DataTableActions'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
-import { Text } from '@/components/typography/text'
+import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
+import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { useOpened } from '@/hooks/use-toggle'
 import { useTableStore } from '@/store/table'
-import { ROUTES } from 'parameters'
+import { Barnahus } from 'api/models/barnahuses/barnahus'
+import { deleteBarnahus, deleteBarnahuses } from 'api/services/barnahuses'
+import { ROUTES } from 'parameters/routes'
 
-export const Inputs = () => {
+interface Props {
+	data: Barnahus[]
+}
+
+export const Inputs = ({ data }: Props) => {
 	const t = useTranslations()
 	const searchParams = useSearchParams()
-	const { checkedItemsLength, clearCheckedItems } = useTableStore()
+	const confirmDialog = useOpened()
+	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
+	const { push, refresh } = useRouter()
+	useNavbarItems({ title: 'General.barnahus', useUserDropdown: true })
 
 	const handleFilterChange = (filter: string, value: string) => {
 		const current = qs.parse(searchParams.toString())
@@ -33,10 +42,35 @@ export const Inputs = () => {
 			{ skipEmptyString: true }
 		)
 
-		router.push(url)
+		push(url)
 	}
 
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)
+
+	const handleEdit = () => {
+		const index = Object.keys(checkedItems)
+		const numericIndex = parseInt(index[0], 10)
+
+		push(ROUTES.EDIT_BARNAHUS + data[numericIndex].barnahusId)
+	}
+
+	const handleDelete = async () => {
+		const indexes = Object.keys(checkedItems)
+		const ids = indexes.map(index => {
+			const numericIndex = parseInt(index, 10)
+			return data[numericIndex].barnahusId
+		})
+
+		const isDeleteBulk = ids.length > 1
+		const result = await (isDeleteBulk ? deleteBarnahuses(ids) : deleteBarnahus(ids[0]))
+
+		if (result?.message === 'OK') {
+			SuccessToast(t(isDeleteBulk ? 'Barnahuses.successfullBulkDelete' : 'Barnahuses.successfullyDeleted'))
+			clearCheckedItems()
+			confirmDialog.toggleOpened()
+			refresh()
+		}
+	}
 
 	return (
 		<div>
@@ -44,8 +78,8 @@ export const Inputs = () => {
 				<Inline justifyContent="space-between" alignItems="center">
 					<Box style={{ width: '320px' }}>
 						<SearchInput
-							name="searchKey"
-							defaultValue={searchParams.get('searchKey') || ''}
+							name="search"
+							defaultValue={searchParams.get('search') || ''}
 							placeholder={t('Barnahuses.searchBarnahus')}
 							onChange={({ target: { name, value } }) => debouncedFilterChange(name, value)}
 						/>
@@ -53,31 +87,15 @@ export const Inputs = () => {
 					<AddButton buttonLabel={t('Barnahuses.add')} buttonLink={ROUTES.ADD_BARNAHUS} />
 				</Inline>
 			) : (
-				<Inline justifyContent="space-between">
-					<Inline gap={2} alignItems="flex-end">
-						<Text color="neutral.400" fontSize="small">
-							{t('General.itemsSelectedMessage', { count: checkedItemsLength })}
-						</Text>
-						<Button variant="adaptive" size="auto" onClick={() => clearCheckedItems()}>
-							<Text color="primary.500" fontSize="small">
-								{t('General.clearSection')}
-							</Text>
-						</Button>
-					</Inline>
-					<Inline gap={4}>
-						<Button variant="secondary">
-							<PencilIcon size="medium" color="neutral.700" />
-							{t('General.edit')}
-						</Button>
-						<Button variant="secondary">
-							<TrashIcon size="medium" color="destructive.500" />
-							<Text color="destructive.500" fontWeight="semibold">
-								{t('General.delete')}
-							</Text>
-						</Button>
-					</Inline>
-				</Inline>
+				<DataTableActions onEdit={handleEdit} onDelete={() => confirmDialog.toggleOpened()} />
 			)}
+			<ConfirmActionDialog
+				title="Barnahuses.delete"
+				description="Barnahuses.deleteBarnahusesDescription"
+				buttonLabel="General.delete"
+				confirmDialog={confirmDialog}
+				onSubmit={handleDelete}
+			/>
 		</div>
 	)
 }

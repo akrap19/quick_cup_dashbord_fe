@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { Session } from 'next-auth'
 import { useTranslations } from 'next-intl'
 
 import { LeftIcon } from '@/components/icons/left-icon'
@@ -13,17 +14,30 @@ import { Text } from '@/components/typography/text'
 import { useNavbarItemsStore } from 'store/navbar'
 
 import * as styles from './Navbar.css'
+import { UserDropdown } from '../user-dropdown'
 
-export const Navbar = () => {
+interface Props {
+	session: Session | null
+}
+
+export const Navbar = ({ session }: Props) => {
 	const router = useRouter()
 	const t = useTranslations()
 	const { navbarItems } = useNavbarItemsStore()
+
+	const handleBack = () => {
+		if (navbarItems && navbarItems.cancelDialog) {
+			navbarItems.cancelDialog?.toggleOpened()
+		} else {
+			router.back()
+		}
+	}
 
 	return (
 		<Box className={styles.navbar}>
 			{navbarItems?.backLabel && (
 				<Box style={{ top: '1rem' }} position="absolute">
-					<Button onClick={() => router.back()} variant="adaptive" size="small">
+					<Button onClick={handleBack} variant="adaptive" size="small">
 						<Inline gap={1} alignItems="center">
 							<LeftIcon size="small" />
 							<Text lineHeight="small" fontSize="small" fontWeight="semibold">
@@ -35,7 +49,7 @@ export const Navbar = () => {
 			)}
 			<Box width="100%">
 				<Inline justifyContent="space-between" alignItems="flex-start">
-					<Heading variant="h2" textTransform="capitalize" lineHeight="medium" color="neutral.800">
+					<Heading variant="h2" lineHeight="medium" color="neutral.800">
 						{t(navbarItems?.title ?? 'General.loading')}
 					</Heading>
 					{navbarItems?.actionButton && <Box style={{ marginTop: '-1rem' }}>{navbarItems?.actionButton}</Box>}
@@ -47,6 +61,11 @@ export const Navbar = () => {
 								</Text>
 								<LocationIcon />
 							</Inline>
+						</Box>
+					)}
+					{navbarItems?.useUserDropdown && (
+						<Box style={{ marginTop: '-0.5rem' }}>
+							<UserDropdown session={session} />
 						</Box>
 					)}
 				</Inline>

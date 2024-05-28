@@ -43,7 +43,11 @@ ConfirmDialog.Title = ({ children }: { children: ReactNode }) => (
 	</Text>
 )
 
-ConfirmDialog.Description = ({ children }: { children: ReactNode }) => <Text color="neutral.500">{children}</Text>
+ConfirmDialog.Description = ({ children }: { children: ReactNode }) => (
+	<Text color="neutral.500" fontSize="small">
+		{children}
+	</Text>
+)
 
 ConfirmDialog.Actions = ({ children }: { children: ReactNode }) => (
 	<Box display="flex" justify="flex-end" gap={4}>

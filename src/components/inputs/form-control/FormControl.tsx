@@ -9,6 +9,7 @@ import { PhotoUpload } from '@/components/custom/upload/photo-upload'
 import { CheckIcon } from '@/components/icons/check-icon'
 import { ErrorIcon } from '@/components/icons/error-icon'
 import { Box } from '@/components/layout/box'
+import { removeHtmlTags } from '@/utils/removeHtmlTags'
 import { Stack } from 'components/layout/stack'
 import { Text } from 'components/typography/text'
 
@@ -17,13 +18,20 @@ import { Label } from '../label'
 import { NumericInput } from '../numeric-input'
 import { PasswordInput } from '../password-input'
 import { PatternInput } from '../pattern-input'
+import { RichTextEditor } from '../rich-text-editor'
 import { Select } from '../select'
 import { Textarea } from '../text-area'
 import { TextInput } from '../text-input'
 
-type Props = { name: string; maxLength?: string; successMessageString?: string; children: ReactNode }
+type Props = {
+	name: string
+	maxLength?: string
+	successMessageString?: string
+	errorMessageString?: string
+	children: ReactNode
+}
 
-export const FormControl = ({ name, maxLength, successMessageString, children }: Props) => {
+export const FormControl = ({ name, maxLength, successMessageString, errorMessageString, children }: Props) => {
 	const {
 		control,
 		formState: { errors },
@@ -33,6 +41,7 @@ export const FormControl = ({ name, maxLength, successMessageString, children }:
 	const charactersCount = getChildByType(children, [FormControl.CharactersCount])
 	const message = getChildByType(children, [FormControl.Message])
 	const input = getChildByType(children, [
+		RichTextEditor,
 		TextInput,
 		Select,
 		Textarea,
@@ -50,7 +59,7 @@ export const FormControl = ({ name, maxLength, successMessageString, children }:
 			name={name}
 			control={control}
 			render={({ field }) => {
-				const errorMessage = errors[field.name]?.message?.toString()
+				const errorMessage = errors[field.name]?.message?.toString() || errorMessageString
 				const successMessage = !errors[field.name] && field.value && (successMessageString ?? ' ')
 				const overriddenInput = overridePropsDeep(input, () => ({
 					hasError: errors[field.name] !== undefined && field.value,
@@ -77,7 +86,7 @@ export const FormControl = ({ name, maxLength, successMessageString, children }:
 							{overriddenInput}
 						</Stack>
 						{overridePropsDeep(charactersCount, () => ({
-							length: watch(name)?.length === undefined ? 0 : watch(name)?.length,
+							length: removeHtmlTags(watch(name))?.length === undefined ? 0 : removeHtmlTags(watch(name))?.length,
 							maxLength
 						}))}
 						{overridePropsDeep(message, () => ({ errorMessage, successMessage }))}

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 
 import { Box } from '@/components/layout/box'
-import { useJourneyContentStore } from '@/store/journey-content'
+import { useStepsStore } from '@/store/steps'
 
 import { manageJourneyWrapper, stepIndicatior } from './ManageJourney.css'
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const ManageJourneyWrapper = ({ children }: Props) => {
-	const { totalSteps, currentStep } = useJourneyContentStore()
+	const { totalSteps, currentStep } = useStepsStore()
 
 	return (
 		<Box width="100%" style={{ maxHeight: 'calc(100vh - 200px)' }} overflow="auto" paddingX={10} paddingY={8}>

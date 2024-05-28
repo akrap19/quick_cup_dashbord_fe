@@ -3,12 +3,7 @@
 import { Table, flexRender } from '@tanstack/react-table'
 import { useTranslations } from 'next-intl'
 
-import { ChevronSelectorDownIcon } from '@/components/icons/chevron-selector-down-icon'
-import { ChevronSelectorIcon } from '@/components/icons/chevron-selector-icon'
-import { ChevronSelectorUpIcon } from '@/components/icons/chevron-selector-up-icon'
-import { Button } from '@/components/inputs/button'
 import { Checkbox } from '@/components/inputs/checkbox'
-import { Inline } from '@/components/layout/inline'
 
 import { TableHead, TableHeader, TableRow } from '../table'
 
@@ -34,16 +29,17 @@ export const DataTableHeader = <TData, TValue>({ table }: Props<TData, TValue>) 
 					{headerGroup.headers.map(header => {
 						return (
 							<TableHead key={header.id}>
-								<Inline justifyContent="space-between">
-									{header.isPlaceholder ? null : flexRender(t(header.column.columnDef.header), header.getContext())}
-									<Button variant="adaptive" size="auto" onClick={header.column.getToggleSortingHandler()}>
+								{/* For sort uncomment lines */}
+								{/* <Inline justifyContent="space-between"> */}
+								{header.isPlaceholder ? null : flexRender(t(header.column.columnDef.header), header.getContext())}
+								{/* <Button variant="adaptive" size="auto" onClick={header.column.getToggleSortingHandler()}>
 										{{
 											false: <ChevronSelectorIcon />,
 											asc: <ChevronSelectorUpIcon />,
 											desc: <ChevronSelectorDownIcon />
 										}[header.column.getIsSorted() as string] ?? null}
-									</Button>
-								</Inline>
+									</Button> */}
+								{/* </Inline> */}
 							</TableHead>
 						)
 					})}

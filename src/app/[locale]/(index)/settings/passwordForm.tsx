@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -14,11 +15,20 @@ import { Columns } from '@/components/layout/columns'
 import { Divider } from '@/components/layout/divider'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
+import { password } from 'api/services/settings'
+import { passwordSchema, requiredString } from 'schemas'
 
-const formSchema = z.object({
-	email: z.string().min(1, { message: 'ValidationMeseges.required' }),
-	password: z.string().min(1, { message: 'ValidationMeseges.required' })
-})
+const formSchema = z
+	.object({
+		currentPassword: passwordSchema.shape.password,
+		newPassword: passwordSchema.shape.password,
+		confirmPassword: requiredString.shape.scheme
+	})
+	.refine(data => data.newPassword === data.confirmPassword, {
+		path: ['confirmPassword'],
+		message: 'ValidationMeseges.confirmPassword'
+	})
 
 type Schema = z.infer<typeof formSchema>
 
@@ -26,14 +36,35 @@ export const PasswordForm = () => {
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
-		mode: 'onBlur',
+		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { email: '', password: '' }
+		defaultValues: { currentPassword: '', newPassword: '', confirmPassword: '' }
 	})
 
 	const onSubmit = async (data: Schema) => {
-		console.log(data)
+		const result = await password(data.currentPassword, data.newPassword)
+		if (result?.message === 'OK') {
+			form.reset()
+			SuccessToast(t('Settings.passwordSuccessfullyUpdated'))
+		}
 	}
+
+	// this is because of bug on zod when password changes it dosen't matches confirm password and without this validation isn't trigered
+	const { newPassword, confirmPassword } = form.watch()
+
+	// Trigger validation on the "confirmPassword" field when the "password" field changes
+	useEffect(() => {
+		if (confirmPassword !== '') {
+			form.trigger('confirmPassword')
+		}
+
+		// Cleans password field of required error to see info label if it is empty
+		if (newPassword === '') {
+			setTimeout(() => {
+				form.clearErrors('newPassword')
+			}, 1)
+		}
+	}, [newPassword])
 
 	return (
 		<Box paddingTop={6}>
@@ -57,6 +88,7 @@ export const PasswordForm = () => {
 													<RequiredLabel>{t('Authorization.newPassword')}</RequiredLabel>
 												</FormControl.Label>
 												<PasswordInput type="password" placeholder={t('Authorization.newPasswordPlaceholder')} />
+												<FormControl.Message instructionMessage="Authorization.passwordInstructions" />
 												<FormControl.Message />
 											</FormControl>
 											<FormControl name="confirmPassword">
@@ -72,8 +104,12 @@ export const PasswordForm = () => {
 							</Box>
 							<Divider />
 							<Inline gap={4}>
-								<Button variant="secondary">Reset</Button>
-								<Button type="submit">Update password</Button>
+								<Button variant="secondary" onClick={() => form.reset()}>
+									{t('General.reset')}
+								</Button>
+								<Button type="submit" disabled={!form.formState.isValid}>
+									{t('Settings.updatePassword')}
+								</Button>
 							</Inline>
 						</Stack>
 					</form>

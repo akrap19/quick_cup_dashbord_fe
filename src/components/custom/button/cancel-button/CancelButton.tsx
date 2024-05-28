@@ -5,8 +5,9 @@ import { useTranslations } from 'next-intl'
 import { MouseEvent } from 'react'
 
 import { Button } from '@/components/inputs/button'
+import { ButtonVariants } from '@/components/inputs/button/Button.css'
 
-export const CancelButton = () => {
+export const CancelButton = (props: ButtonVariants) => {
 	const t = useTranslations()
 	const router = useRouter()
 
@@ -17,7 +18,7 @@ export const CancelButton = () => {
 	}
 
 	return (
-		<Button variant="secondary" onClick={goBack}>
+		<Button variant="secondary" onClick={goBack} size={props?.size}>
 			{t('General.cancel')}
 		</Button>
 	)

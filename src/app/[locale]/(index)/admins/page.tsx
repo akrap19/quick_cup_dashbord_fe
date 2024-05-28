@@ -1,26 +1,47 @@
-'use client'
-
 import { ListWrapper } from '@/components/custom/layouts'
+import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { DataTable } from '@/components/data-display/data-table'
-import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { replaceNullInListWithDash } from '@/utils/replaceNullInListWithDash'
+import { getAdmins } from 'api/services/admins'
+import { ROUTES } from 'parameters'
 
 import { columns } from './columns'
-import { dummyData } from './data'
 import { Inputs } from './inputs'
 
-const AdminsPage = () => {
-	useNavbarItems({ title: 'General.admins', useUserDropdown: true })
+interface Props {
+	searchParams: {
+		search: string
+		page: number
+		limit: number
+	}
+}
 
-	return (
-		// <NoListData
-		// 	title="Admins.noListDataTitle"
-		// 	description="Admins.noListDataDescription"
-		// 	buttonLabel="Admins.add"
-		// 	buttonLink={ROUTES.ADD_ADMINS}
-		// />
+const AdminsPage = async ({ searchParams }: Props) => {
+	const { data: adminsData } = await getAdmins(searchParams)
+	const isInitialListEmpty = (adminsData?.pagination?.count === 0 && !searchParams.search) || adminsData === null
+	const transformedAdminArray = adminsData?.users?.map((masterAdmin: any) => {
+		return {
+			...masterAdmin,
+			id: masterAdmin.userId
+		}
+	})
+
+	return isInitialListEmpty ? (
+		<NoListData
+			navbarTitle="General.admins"
+			title="Admins.noListDataTitle"
+			description="Admins.noListDataDescription"
+			buttonLabel="Admins.add"
+			buttonLink={ROUTES.ADD_ADMINS}
+		/>
+	) : (
 		<ListWrapper>
-			<Inputs />
-			<DataTable columns={columns} data={dummyData} />
+			<Inputs data={adminsData?.users} />
+			<DataTable
+				columns={columns}
+				data={replaceNullInListWithDash(transformedAdminArray)}
+				pagination={adminsData?.pagination}
+			/>
 		</ListWrapper>
 	)
 }

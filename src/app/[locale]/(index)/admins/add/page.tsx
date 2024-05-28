@@ -1,84 +1,13 @@
-'use client'
+import { getServerSession } from 'next-auth/next'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useTranslations } from 'next-intl'
-import { FormProvider, useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { authOptions } from 'app/api/auth/[...nextauth]/auth'
 
-import { InputWithInfo } from '@/components/custom/inputs/input-with-info/InputWithInfo'
-import { FormItems, FormWrapper } from '@/components/custom/layouts/add-form'
-import { FormControl } from '@/components/inputs/form-control'
-import { RequiredLabel } from '@/components/inputs/required-label'
-import { TextInput } from '@/components/inputs/text-input'
+import AdminAdd from './AdminAdd'
 
-const formSchema = z.object({
-	email: z.string().min(1, { message: 'ValidationMeseges.required' }),
-	barnahus: z.string().min(1, { message: 'ValidationMeseges.required' }),
-	firstName: z.string().min(1, { message: 'ValidationMeseges.required' }),
-	lastName: z.string().min(1, { message: 'ValidationMeseges.required' }),
-	phoneNumber: z.string().min(1, { message: 'ValidationMeseges.required' })
-})
+const AdminAddPage = async () => {
+	const session = await getServerSession(authOptions)
 
-type Schema = z.infer<typeof formSchema>
-
-const AddBarnahusPage = () => {
-	const t = useTranslations()
-
-	const form = useForm<Schema>({
-		mode: 'onBlur',
-		resolver: zodResolver(formSchema),
-		defaultValues: { email: '', barnahus: '', firstName: '', lastName: '', phoneNumber: '' }
-	})
-
-	const onSubmit = async (data: Schema) => {
-		console.log(data)
-	}
-
-	return (
-		<FormWrapper>
-			<FormProvider {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<FormItems>
-						<FormControl name="email">
-							<FormControl.Label>
-								<RequiredLabel>{t('General.email')}</RequiredLabel>
-							</FormControl.Label>
-							<TextInput type="email" placeholder={t('General.emailPlaceholder')} />
-							<FormControl.Message />
-						</FormControl>
-						<InputWithInfo infoText="General.barnahusInfoText">
-							<FormControl name="barnahus">
-								<FormControl.Label>
-									<RequiredLabel>{t('General.barnahus')}</RequiredLabel>
-								</FormControl.Label>
-								<TextInput placeholder={t('General.barnahusPlaceholder')} />
-								<FormControl.Message />
-							</FormControl>
-						</InputWithInfo>
-						<FormControl name="firstName">
-							<FormControl.Label>
-								<RequiredLabel>{t('General.firstName')}</RequiredLabel>
-							</FormControl.Label>
-							<TextInput placeholder={t('General.firstNamePlaceholder')} />
-							<FormControl.Message />
-						</FormControl>
-						<FormControl name="lastName">
-							<FormControl.Label>
-								<RequiredLabel>{t('General.lastName')}</RequiredLabel>
-							</FormControl.Label>
-							<TextInput placeholder={t('General.lastNamePlaceholder')} />
-							<FormControl.Message />
-						</FormControl>
-						<FormControl name="phoneNumber">
-							<FormControl.Label>{t('General.phoneNumber')}</FormControl.Label>
-							<TextInput placeholder={t('General.phoneNumberPlaceholder')} />
-							<FormControl.Message />
-						</FormControl>
-					</FormItems>
-				</form>
-			</FormProvider>
-		</FormWrapper>
-	)
+	return <AdminAdd barnahus={session?.user.barnahusRoles[0]} />
 }
 
-export default AddBarnahusPage
+export default AdminAddPage

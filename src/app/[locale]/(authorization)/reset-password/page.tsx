@@ -6,7 +6,6 @@ import { signIn } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useMutation } from 'react-query'
 import * as z from 'zod'
 
 import { Button } from '@/components/inputs/button'

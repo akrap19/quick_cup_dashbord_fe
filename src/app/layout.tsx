@@ -2,9 +2,6 @@
 
 import { SessionProvider } from 'next-auth/react'
 import { ReactNode } from 'react'
-import { QueryClientProvider } from 'react-query'
-
-import { queryClient } from 'api/QueryClient'
 
 import { TokenHandler } from '@/components/utils/tokenHandler/TokenHandler'
 

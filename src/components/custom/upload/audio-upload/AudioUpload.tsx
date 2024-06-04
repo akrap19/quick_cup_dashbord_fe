@@ -7,6 +7,7 @@ import { PauseIcon } from '@/components/icons/pause-icon'
 import { PlayIcon } from '@/components/icons/play-icon'
 import { Button } from '@/components/inputs/button'
 import { Inline } from '@/components/layout/inline'
+import { media } from 'api/services/common'
 
 import * as styles from './AudioUpload.css'
 import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'
@@ -20,13 +21,17 @@ export const AudioUpload = ({ ...rest }: Props) => {
 	const [audioElement, setAudioElement] = useState<HTMLAudioElement>()
 	const t = useTranslations()
 
-	const handleFileChange = (event: any) => {
+	const handleFileChange = async (event: any) => {
 		const file = event.target.files[0]
 		const audio = new Audio(URL.createObjectURL(file))
 		audio.loop = true
-		handleInputValue(event)
-		setAudioFile(file)
-		setAudioElement(audio)
+		const result = await media('Audio', file)
+
+		if (result?.message === 'OK') {
+			handleInputValue(event)
+			setAudioFile(file)
+			setAudioElement(audio)
+		}
 	}
 
 	const handleDelete = () => {

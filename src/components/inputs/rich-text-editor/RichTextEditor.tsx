@@ -22,13 +22,12 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 			onChange(value as any)
 		}
 		if (maxLength && editor.getLength() > maxLength) {
-			// Truncate the content if it exceeds the maximum length
-			editor.deleteText(maxLength, editor.getLength())
+			editor?.deleteText(maxLength, editor.getLength())
 		}
 	}
 
 	useEffect(() => {
-		const quillContainer: any = document.querySelector('.ql-container.ql-snow')
+		const quillContainer: any = document.querySelector('.ql-editor')
 
 		if (quillContainer) {
 			if (hasSuccess && removeHtmlTags(hasSuccess)) {

@@ -34,7 +34,6 @@ const LocaleLayout = async ({ children, params: { locale } }: Props) => {
 	const messages = await getMessages(locale)
 
 	lastDeployTime()
-	console.log('layout env variable', process.env.NEXT_PUBLIC_API_BASE_URL)
 	return (
 		<html lang={locale}>
 			<body className={inter.className}>

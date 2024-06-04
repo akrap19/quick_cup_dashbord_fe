@@ -23,7 +23,7 @@ import MasterAdminForm from '../form'
 
 const formSchema = z.object({
 	email: emailSchema.shape.email,
-	barnahus: z.string().optional(),
+	barnahusId: z.string().optional(),
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
 	phoneNumber: phoneNumberScheme.shape.phone
@@ -46,7 +46,7 @@ export const MasterAdminAdd = ({ barnahuses }: Props) => {
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { firstName: '', lastName: '', email: '', phoneNumber: '' }
+		defaultValues: { firstName: '', lastName: '', email: '', phoneNumber: '', barnahusId: '' }
 	})
 
 	const handleDialog = () => {
@@ -57,12 +57,15 @@ export const MasterAdminAdd = ({ barnahuses }: Props) => {
 		loading.toggleLoading()
 		const data = form.getValues()
 		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
-		const result = await createMasterAdmin(dataWIhoutEmptyString)
+		const result = await createMasterAdmin({ ...dataWIhoutEmptyString, barnahusId: dataWIhoutEmptyString.barnahus })
 
 		if (result?.message === 'OK') {
 			SuccessToast(t('MasterAdmins.successfullyCreated'))
 			push(ROUTES.MASTER_ADMINS)
 			refresh()
+		} else {
+			handleDialog()
+			loading.toggleLoading()
 		}
 	}
 

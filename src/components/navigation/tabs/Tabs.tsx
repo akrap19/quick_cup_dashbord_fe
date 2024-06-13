@@ -36,7 +36,6 @@ export const Tabs: FC<Props> & TabsComposition = ({ children }: Props) => {
 	const button = getChildrenByType(children, [AddButton, Button])
 	const panel = getChildrenByType(children, [Tabs.Panel])
 
-	console.log('button', button)
 	return (
 		<TabsProvider>
 			<Inline justifyContent="space-between" alignItems="flex-end">

@@ -18,31 +18,36 @@ import { Stack } from '@/components/layout/stack'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { Settings } from 'api/models/settings/settings'
 import { personal } from 'api/services/settings'
-import { requiredString } from 'schemas'
+import { phoneNumberScheme, requiredString } from 'schemas'
+import { UserRoleEnum } from 'enums/userRoleEnum'
+import { Session } from 'next-auth'
 
 const formSchema = z.object({
 	firstName: requiredString.shape.scheme,
-	lastName: requiredString.shape.scheme
+	lastName: requiredString.shape.scheme,
+	phoneNumber: phoneNumberScheme.shape.phone
 })
 
 type Schema = z.infer<typeof formSchema>
 
 interface Props {
 	settings: Settings
+	session: Session | null
 }
 
-export const PersonalInfoForm = ({ settings }: Props) => {
+export const PersonalInfoForm = ({ settings, session }: Props) => {
 	const t = useTranslations()
 	const router = useRouter()
+	const isSuperAdmin = session?.user.roles.some(role => role.name === UserRoleEnum.SUPER_ADMIN)
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { firstName: settings?.firstName, lastName: settings?.lastName }
+		defaultValues: { firstName: settings?.firstName, lastName: settings?.lastName, phoneNumber: settings?.phoneNumber }
 	})
 
 	const onSubmit = async (data: Schema) => {
-		const result = await personal(data.firstName, data.lastName)
+		const result = await personal(data.firstName, data.lastName, data.phoneNumber)
 		if (result?.message === 'OK') {
 			router.refresh()
 			SuccessToast(t('Settings.personalInfoSuccessfullyUpdated'))
@@ -76,15 +81,41 @@ export const PersonalInfoForm = ({ settings }: Props) => {
 										<FormControl.Message />
 									</FormControl>
 								</Columns.Item>
+								{!isSuperAdmin && (
+									<>
+										<Columns.Item columns={6}>
+											<Box paddingBottom={7}>
+												<FormControl name="barnahus">
+													<FormControl.Label>{t('General.barnahus')}</FormControl.Label>
+													<TextInput
+														placeholder={t('Settings.barnahusPlacehoder')}
+														defaultValue={settings?.barnahusName}
+														disabled
+													/>
+													<FormControl.Message />
+												</FormControl>
+											</Box>
+										</Columns.Item>
+										<Columns.Item columns={6}>
+											<Box paddingBottom={7}>
+												<FormControl name="locationCode">
+													<FormControl.Label>{t('General.barnahusId')}</FormControl.Label>
+													<TextInput
+														placeholder={t('Settings.barnahusPlacehoder')}
+														defaultValue={settings?.locationCode}
+														disabled
+													/>
+													<FormControl.Message />
+												</FormControl>
+											</Box>
+										</Columns.Item>
+									</>
+								)}
 								<Columns.Item columns={6}>
 									<Box paddingBottom={7}>
-										<FormControl name="barnahus">
-											<FormControl.Label>{t('General.barnahus')}</FormControl.Label>
-											<TextInput
-												placeholder={t('Settings.barnahusPlacehoder')}
-												defaultValue={settings?.barnahus}
-												disabled
-											/>
+										<FormControl name="phoneNumber">
+											<FormControl.Label>{t('General.phoneNumber')}</FormControl.Label>
+											<TextInput placeholder={t('General.phoneNumberPlaceholder')} />
 											<FormControl.Message />
 										</FormControl>
 									</Box>

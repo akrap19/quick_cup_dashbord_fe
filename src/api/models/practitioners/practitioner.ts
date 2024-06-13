@@ -5,5 +5,6 @@ export interface Practitioner {
 	email: string
 	phoneNumber: string
 	location: string
+	locationCode: string
 	userProfession: string
 }

@@ -2,8 +2,14 @@ import { getAssignableBarnahus } from 'api/services/barnahuses'
 
 import { MasterAdminAdd } from './MasterAdminAdd'
 
-const MaterAdminAddPage = async () => {
-	const assignableBarnahus = await getAssignableBarnahus()
+interface Props {
+	searchParams: {
+		barnahus: string
+	}
+}
+
+const MaterAdminAddPage = async ({ searchParams }: Props) => {
+	const assignableBarnahus = await getAssignableBarnahus(searchParams)
 	const transformedBarnahusArray = assignableBarnahus.data.barnahuses?.map((barnahus: any) => {
 		return {
 			id: barnahus.barnahusId,

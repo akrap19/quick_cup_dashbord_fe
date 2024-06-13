@@ -1,5 +1,6 @@
 'use client'
 
+import { Session } from 'next-auth'
 import { useTranslations } from 'next-intl'
 
 import { Tabs } from '@/components/navigation/tabs/Tabs'
@@ -12,9 +13,10 @@ import { PersonalInfoForm } from './personalInfoForm'
 
 interface Props {
 	settings: Settings
+	session: Session | null
 }
 
-const SettingsTabs = ({ settings }: Props) => {
+const SettingsTabs = ({ settings, session }: Props) => {
 	const t = useTranslations()
 	useNavbarItems({ title: 'General.settings' })
 
@@ -26,7 +28,7 @@ const SettingsTabs = ({ settings }: Props) => {
 			<Tabs.Tab value="password">{t('Authorization.password')}</Tabs.Tab>
 			<Tabs.Tab value="email">{t('General.email')}</Tabs.Tab>
 			<Tabs.Panel value="personalInfo">
-				<PersonalInfoForm settings={settings} />
+				<PersonalInfoForm settings={settings} session={session} />
 			</Tabs.Panel>
 			<Tabs.Panel value="password">
 				<PasswordForm />

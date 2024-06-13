@@ -7,6 +7,7 @@ interface Query {
 	location?: string
 	page?: number
 	limit?: number
+	barnahus?: string
 }
 
 export const getBarnahuses = (query: Query) => {
@@ -59,10 +60,11 @@ export const getBarnahuseMasterAdminLocations = async () => {
 	return fetchWithToken(`barnahus/locations`)
 }
 
-export const getAssignableBarnahus = () => {
+export const getAssignableBarnahus = (query: Query) => {
 	const queryParams = {
 		page: 1,
-		limit: 200
+		limit: 200,
+		search: query.barnahus
 	}
 
 	return fetchWithToken(`barnahus/assignable`, queryParams)

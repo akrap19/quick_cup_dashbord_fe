@@ -29,7 +29,7 @@ const MasterAdminForm = ({ cancelDialog, barnahuses }: Props) => {
 			</FormControl>
 			<FormControl name="barnahus">
 				<FormControl.Label>{t('General.barnahus')}</FormControl.Label>
-				<SearchDropdown placeholder="General.barnahus" options={barnahuses} />
+				<SearchDropdown placeholder="General.barnahus" options={barnahuses} alwaysShowSearch />
 			</FormControl>
 			<FormControl name="firstName">
 				<FormControl.Label>

@@ -1,6 +1,7 @@
 {
 	"General": {
 		"addAndInvite": "Add and invite",
+		"assignedBy": "Assigned by",
 		"action": "Action",
 		"email": "Email",
 		"emailPlaceholder": "e.g. john.doe@gmail.com",

@@ -29,9 +29,9 @@ export const PractitionerDetails = ({ practitioner }: Props) => {
 	return (
 		<DetailsWrapper>
 			<Stack gap={4}>
-				<Label>{t('General.email')}</Label>
+				<Label>{t('General.barnahusId')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{practitioner.email}
+					{practitioner.locationCode}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
@@ -53,15 +53,21 @@ export const PractitionerDetails = ({ practitioner }: Props) => {
 				</Text>
 			</Stack>
 			<Stack gap={4}>
-				<Label>{t('General.role')}</Label>
-				<Text fontSize="small" color="neutral.800" textTransform="capitalize">
-					{practitioner.userProfession}
+				<Label>{t('General.email')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{practitioner.email}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.phoneNumber')}</Label>
 				<Text fontSize="small" color="neutral.800">
 					{practitioner.phoneNumber ?? t('General.phoneNumber') + t('General.notDefined')}
+				</Text>
+			</Stack>
+			<Stack gap={4}>
+				<Label>{t('General.role')}</Label>
+				<Text fontSize="small" color="neutral.800" textTransform="capitalize">
+					{practitioner.userProfession}
 				</Text>
 			</Stack>
 		</DetailsWrapper>

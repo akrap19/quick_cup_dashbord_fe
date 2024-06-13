@@ -4,5 +4,6 @@ import { Admins } from 'api/models/admin/Admins'
 
 export const columns: Array<ColumnDef<Admins>> = [
 	{ accessorKey: 'name', header: 'General.admin' },
-	{ accessorKey: 'location', header: 'General.barnahusLocation' }
+	{ accessorKey: 'location', header: 'General.barnahusLocation' },
+	{ accessorKey: 'locationCode', header: 'General.barnahusId' }
 ]

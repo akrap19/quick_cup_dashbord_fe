@@ -3,8 +3,15 @@ import { getMasterAdmin } from 'api/services/masterAdmins'
 
 import MasterAdminEdit from './MasterAdminEdit'
 
-const MasterAdminEditPage = async ({ params }: { params: { id: string } }) => {
-	const assignableBarnahus = await getAssignableBarnahus()
+interface Props {
+	searchParams: {
+		barnahus: string
+	}
+	params: { id: string }
+}
+
+const MasterAdminEditPage = async ({ searchParams, params }: Props) => {
+	const assignableBarnahus = await getAssignableBarnahus(searchParams)
 	const transformedBarnahusArray = assignableBarnahus.data.barnahuses?.map((barnahus: any) => {
 		return {
 			id: barnahus.barnahusId,

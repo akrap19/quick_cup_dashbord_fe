@@ -1,5 +1,6 @@
 'use client'
 
+import { Session } from 'next-auth'
 import { useTranslations } from 'next-intl'
 
 import { Tabs } from '@/components/navigation/tabs/Tabs'
@@ -9,7 +10,6 @@ import { Settings } from 'api/models/settings/settings'
 import { EmailForm } from './emailForm'
 import { PasswordForm } from './passwordForm'
 import { PersonalInfoForm } from './personalInfoForm'
-import { Session } from 'next-auth'
 
 interface Props {
 	settings: Settings

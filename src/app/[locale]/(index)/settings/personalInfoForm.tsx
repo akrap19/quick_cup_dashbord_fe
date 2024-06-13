@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
+import { Session } from 'next-auth'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -18,9 +19,8 @@ import { Stack } from '@/components/layout/stack'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { Settings } from 'api/models/settings/settings'
 import { personal } from 'api/services/settings'
-import { phoneNumberScheme, requiredString } from 'schemas'
 import { UserRoleEnum } from 'enums/userRoleEnum'
-import { Session } from 'next-auth'
+import { phoneNumberScheme, requiredString } from 'schemas'
 
 const formSchema = z.object({
 	firstName: requiredString.shape.scheme,

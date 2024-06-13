@@ -1,10 +1,10 @@
-import { Box } from '@/components/layout/box'
-import { getSettings } from 'api/services/settings'
 import { getServerSession } from 'next-auth/next'
 
-import SettingsTabs from './settingsTabs'
-
+import { Box } from '@/components/layout/box'
+import { getSettings } from 'api/services/settings'
 import { authOptions } from 'app/api/auth/[...nextauth]/auth'
+
+import SettingsTabs from './settingsTabs'
 
 async function SettingsPage() {
 	const { data: settings } = await getSettings()

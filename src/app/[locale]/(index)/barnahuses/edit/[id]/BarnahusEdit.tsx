@@ -50,8 +50,7 @@ const BarnahusEdit = ({ barnahus, locations, masterAdmins }: Props) => {
 			barnahusId: barnahus.barnahusId,
 			name: dataWIhoutEmptyString.name,
 			location: dataWIhoutEmptyString.location,
-			adminId:
-				dataWIhoutEmptyString.masterAdmin === barnahus.admin ? barnahus.adminId : dataWIhoutEmptyString.masterAdmin
+			adminId: barnahus.adminId ?? undefined
 		})
 		if (result?.message === 'OK') {
 			SuccessToast(t('Barnahuses.successfullyEdited'))

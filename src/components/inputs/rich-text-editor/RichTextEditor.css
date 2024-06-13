@@ -64,7 +64,7 @@
 .ql-container.ql-snow {
 	height: 128px;
 	border-radius: 8px;
-	border: 1px solid #d6d6dd;
+	border: unset;
 }
 
 .ql-editor {
@@ -72,10 +72,38 @@
 	padding: 10px 12px !important;
 	background-color: #fff;
 	border-radius: 8px;
+	border-right: 1px solid #d6d6dd;
+	border-bottom: 1px solid #d6d6dd;
+	border-left: 1px solid #d6d6dd;
+	font-size: 0.875rem;
 }
 
-.ql-editor {
-	font-size: 0.875rem;
+.ql-editor:active {
+	border-color: #b49aff;
+	box-shadow:
+		-4px 4px 0px 0px #e0dee6,
+		4px 4px 0px 0px #e0dee6;
+}
+
+.ql-editor:hover {
+	border-color: #b49aff;
+	box-shadow:
+		-4px 4px 0px 0px #e0dee6,
+		4px 4px 0px 0px #e0dee6;
+}
+
+.ql-editor:focus {
+	border-color: #b49aff;
+	box-shadow:
+		-4px 4px 0px 0px #e0dee6,
+		4px 4px 0px 0px #e0dee6;
+}
+
+.ql-editor:visited {
+	border-color: #b49aff;
+	box-shadow:
+		-4px 4px 0px 0px #e0dee6,
+		4px 4px 0px 0px #e0dee6;
 }
 
 .ql-editor.ql-blank::before {

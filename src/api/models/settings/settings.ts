@@ -1,7 +1,9 @@
 export interface Settings {
 	firstName: string
 	lastName: string
-	barnahus: string
+	barnahusName: string
+	locationCode: string
+	phoneNumber: string
 	email: string
 	newEmail: string
 }

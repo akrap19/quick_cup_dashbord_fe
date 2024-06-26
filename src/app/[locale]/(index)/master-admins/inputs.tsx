@@ -13,7 +13,6 @@ import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
-import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
 import { useTableStore } from '@/store/table'
 import { Admins } from 'api/models/admin/Admins'
@@ -39,7 +38,6 @@ export const Inputs = ({ data, locations }: Props) => {
 		value: '',
 		label: t('MasterAdmins.locationFilterPlaceholder')
 	})
-	useNavbarItems({ title: 'General.masterAdmins', useUserDropdown: true })
 
 	const handleFilterChange = (filter: string, value: string) => {
 		const current = qs.parse(searchParams.toString())

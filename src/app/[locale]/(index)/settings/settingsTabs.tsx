@@ -10,6 +10,8 @@ import { Settings } from 'api/models/settings/settings'
 import { EmailForm } from './emailForm'
 import { PasswordForm } from './passwordForm'
 import { PersonalInfoForm } from './personalInfoForm'
+import { useNavbarItemsStore } from '@/store/navbar'
+import { Loader } from '@/components/custom/loader/Loader'
 
 interface Props {
 	settings: Settings
@@ -18,25 +20,32 @@ interface Props {
 
 const SettingsTabs = ({ settings, session }: Props) => {
 	const t = useTranslations()
+	const { navbarIsLoading } = useNavbarItemsStore()
 	useNavbarItems({ title: 'General.settings' })
 
 	return (
-		<Tabs>
-			<Tabs.Tab value="personalInfo" defaultTab>
-				{t('General.personalInfo')}
-			</Tabs.Tab>
-			<Tabs.Tab value="password">{t('Authorization.password')}</Tabs.Tab>
-			<Tabs.Tab value="email">{t('General.email')}</Tabs.Tab>
-			<Tabs.Panel value="personalInfo">
-				<PersonalInfoForm settings={settings} session={session} />
-			</Tabs.Panel>
-			<Tabs.Panel value="password">
-				<PasswordForm />
-			</Tabs.Panel>
-			<Tabs.Panel value="email">
-				<EmailForm settings={settings} />
-			</Tabs.Panel>
-		</Tabs>
+		<>
+			{navbarIsLoading ? (
+				<Loader />
+			) : (
+				<Tabs>
+					<Tabs.Tab value="personalInfo" defaultTab>
+						{t('General.personalInfo')}
+					</Tabs.Tab>
+					<Tabs.Tab value="password">{t('Authorization.password')}</Tabs.Tab>
+					<Tabs.Tab value="email">{t('General.email')}</Tabs.Tab>
+					<Tabs.Panel value="personalInfo">
+						<PersonalInfoForm settings={settings} session={session} />
+					</Tabs.Panel>
+					<Tabs.Panel value="password">
+						<PasswordForm />
+					</Tabs.Panel>
+					<Tabs.Panel value="email">
+						<EmailForm settings={settings} />
+					</Tabs.Panel>
+				</Tabs>
+			)}
+		</>
 	)
 }
 

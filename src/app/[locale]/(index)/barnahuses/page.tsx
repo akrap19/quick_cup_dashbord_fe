@@ -36,7 +36,7 @@ const BarnahusesPage = async ({ searchParams }: Props) => {
 			buttonLink={ROUTES.ADD_BARNAHUS}
 		/>
 	) : (
-		<ListWrapper>
+		<ListWrapper title="General.barnahus">
 			<Inputs data={transformedLocationsArray} />
 			<DataTable
 				columns={columns}

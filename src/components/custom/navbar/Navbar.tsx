@@ -15,6 +15,7 @@ import { useNavbarItemsStore } from 'store/navbar'
 
 import * as styles from './Navbar.css'
 import { UserDropdown } from '../user-dropdown'
+import { useEffect } from 'react'
 
 interface Props {
 	session: Session | null
@@ -23,7 +24,7 @@ interface Props {
 export const Navbar = ({ session }: Props) => {
 	const router = useRouter()
 	const t = useTranslations()
-	const { navbarItems } = useNavbarItemsStore()
+	const { navbarItems, setNavbarIsLoading } = useNavbarItemsStore()
 
 	const handleBack = () => {
 		if (navbarItems && navbarItems.cancelDialog) {
@@ -32,6 +33,12 @@ export const Navbar = ({ session }: Props) => {
 			router.back()
 		}
 	}
+
+	useEffect(() => {
+		if (navbarItems?.title) {
+			setNavbarIsLoading(false)
+		}
+	}, [navbarItems?.title])
 
 	return (
 		<Box className={styles.navbar}>

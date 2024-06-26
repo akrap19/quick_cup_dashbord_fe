@@ -35,7 +35,7 @@ const AdminsPage = async ({ searchParams }: Props) => {
 			buttonLink={ROUTES.ADD_ADMINS}
 		/>
 	) : (
-		<ListWrapper>
+		<ListWrapper title="General.admins">
 			<Inputs data={adminsData?.users} />
 			<DataTable
 				columns={columns}

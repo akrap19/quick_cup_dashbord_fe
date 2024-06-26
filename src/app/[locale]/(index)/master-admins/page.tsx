@@ -42,7 +42,7 @@ const MasterAdminsPage = async ({ searchParams }: Props) => {
 			buttonLink={ROUTES.ADD_MASTER_ADMINS}
 		/>
 	) : (
-		<ListWrapper>
+		<ListWrapper title={'General.masterAdmins'}>
 			<Inputs data={masterAdminsData?.users} locations={barnahusLocations.data.locations} />
 			<DataTable
 				columns={columns}

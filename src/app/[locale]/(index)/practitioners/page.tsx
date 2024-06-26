@@ -36,7 +36,7 @@ const PractitionersPage = async ({ searchParams }: Props) => {
 			buttonLink={ROUTES.ADD_PRACTITIONERS}
 		/>
 	) : (
-		<ListWrapper>
+		<ListWrapper title="General.practitioners">
 			<Inputs data={transformedPractitionerArray} />
 			<DataTable
 				columns={columns}

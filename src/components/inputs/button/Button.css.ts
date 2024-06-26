@@ -15,6 +15,10 @@ export const button = recipe({
 		':disabled': {
 			cursor: 'default',
 			opacity: '0.3'
+		},
+		':focus-visible': {
+			outline: 'unset',
+			opacity: '0.3'
 		}
 	},
 	variants: {

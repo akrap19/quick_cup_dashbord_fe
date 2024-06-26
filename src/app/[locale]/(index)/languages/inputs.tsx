@@ -12,7 +12,6 @@ import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
-import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
 import { useTableStore } from '@/store/table'
 import { Language } from 'api/models/language/language'
@@ -30,7 +29,6 @@ export const Inputs = ({ data }: Props) => {
 	const confirmDialog = useOpened()
 	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
 	const { push, refresh } = useRouter()
-	useNavbarItems({ title: 'General.languages', useUserDropdown: true })
 	const statusOptions = [
 		{ value: '', label: 'General.allStatuses' },
 		{ value: LanguageStatusEnum.DRAFT, label: 'General.draft' },

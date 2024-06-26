@@ -36,7 +36,7 @@ const LanguagesPage = async ({ searchParams }: Props) => {
 			buttonLink={ROUTES.ADD_LANGUAGES}
 		/>
 	) : (
-		<ListWrapper>
+		<ListWrapper title="General.languages">
 			<Inputs data={data?.languages} />
 			<DataTable
 				columns={columns}

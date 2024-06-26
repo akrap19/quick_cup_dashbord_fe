@@ -9,28 +9,37 @@ import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 
 import { AddButton } from '../button/add-button'
+import { Loader } from '../loader/Loader'
+import { useNavbarItemsStore } from '@/store/navbar'
 
 type Props = { navbarTitle: string; title: string; description: string; buttonLabel: string; buttonLink: string }
 
 export const NoListData = ({ navbarTitle, title, description, buttonLabel, buttonLink }: Props) => {
 	const t = useTranslations()
+	const { navbarIsLoading } = useNavbarItemsStore()
 	useNavbarItems({ title: navbarTitle, useUserDropdown: true })
 
 	return (
-		<Box display="flex" align="center" justify="center" width="100%">
-			<Box textAlign="center" color="neutral.900" style={{ width: '500px', marginTop: '20vh' }}>
-				<Stack gap={6}>
-					<Stack gap={4}>
-						<Heading variant="h2" lineHeight="medium">
-							{t(title)}
-						</Heading>
-						<Text lineHeight="xlarge">{t(description)}</Text>
-					</Stack>
-					<Box>
-						<AddButton buttonLabel={t(buttonLabel)} buttonLink={buttonLink} />
+		<>
+			{navbarIsLoading ? (
+				<Loader />
+			) : (
+				<Box display="flex" align="center" justify="center" width="100%">
+					<Box textAlign="center" color="neutral.900" style={{ width: '500px', marginTop: '20vh' }}>
+						<Stack gap={6}>
+							<Stack gap={4}>
+								<Heading variant="h2" lineHeight="medium">
+									{t(title)}
+								</Heading>
+								<Text lineHeight="xlarge">{t(description)}</Text>
+							</Stack>
+							<Box>
+								<AddButton buttonLabel={t(buttonLabel)} buttonLink={buttonLink} />
+							</Box>
+						</Stack>
 					</Box>
-				</Stack>
-			</Box>
-		</Box>
+				</Box>
+			)}
+		</>
 	)
 }

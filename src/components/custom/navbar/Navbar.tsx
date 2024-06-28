@@ -19,9 +19,10 @@ import { useEffect } from 'react'
 
 interface Props {
 	session: Session | null
+	seenOnboardingSections: string[]
 }
 
-export const Navbar = ({ session }: Props) => {
+export const Navbar = ({ session, seenOnboardingSections }: Props) => {
 	const router = useRouter()
 	const t = useTranslations()
 	const { navbarItems, setNavbarIsLoading } = useNavbarItemsStore()
@@ -72,7 +73,7 @@ export const Navbar = ({ session }: Props) => {
 					)}
 					{navbarItems?.useUserDropdown && (
 						<Box style={{ marginTop: '-0.5rem' }}>
-							<UserDropdown session={session} />
+							<UserDropdown session={session} seenOnboardingSections={seenOnboardingSections} />
 						</Box>
 					)}
 				</Inline>

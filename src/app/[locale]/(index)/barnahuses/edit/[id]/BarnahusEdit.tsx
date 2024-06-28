@@ -2,12 +2,10 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Admins } from 'api/models/admin/Admins'
@@ -33,7 +31,6 @@ interface Props {
 }
 
 const BarnahusEdit = ({ barnahus, locations, masterAdmins }: Props) => {
-	const t = useTranslations()
 	const { back } = useRouter()
 	useNavbarItems({ title: 'Barnahuses.edit', backLabel: 'Barnahuses.back' })
 
@@ -53,7 +50,7 @@ const BarnahusEdit = ({ barnahus, locations, masterAdmins }: Props) => {
 			adminId: barnahus.adminId ?? undefined
 		})
 		if (result?.message === 'OK') {
-			SuccessToast(t('Barnahuses.successfullyEdited'))
+			localStorage.setItem('editMessage', 'Barnahuses.successfullyEdited')
 			back()
 		}
 	}

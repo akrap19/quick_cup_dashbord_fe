@@ -28,11 +28,14 @@ export interface OnboardingData {
 	image: string
 }
 
-type Props = { userRole?: string }
+type Props = {
+	userRole?: string
+	openOnboarding: boolean
+	setOpenOnboarding: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-export const Onboarding = ({ userRole }: Props) => {
+export const Onboarding = ({ userRole, openOnboarding, setOpenOnboarding }: Props) => {
 	const [currentStep, setCurrentStep] = useState(0)
-	const [onboardingOpened, setOnboardingOpened] = useState(true)
 	const [isMounted, setIsMounted] = useState(false)
 	const data: OnboardingData[] = userRole ? onboardingData[userRole] : []
 	const onboardingItemsContainerRef: any = useRef(null)
@@ -60,14 +63,14 @@ export const Onboarding = ({ userRole }: Props) => {
 	}
 
 	const handleOnboardingSeen = async () => {
-		setOnboardingOpened(false)
+		setOpenOnboarding(false)
 		if (userRole) {
 			await onboardingSeen(userRole)
 		}
 	}
 
 	return (
-		<Dialog size="large" opened={onboardingOpened} onClose={() => {}}>
+		<Dialog size="large" opened={openOnboarding} onClose={() => {}}>
 			<Inline gap={12} justifyContent="space-between" flexWrap="nowrap">
 				<Box className={contentLeftContiner}>
 					<Stack alignItems="center" gap={4}>

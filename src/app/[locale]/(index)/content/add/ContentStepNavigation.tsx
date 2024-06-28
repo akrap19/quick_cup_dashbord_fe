@@ -21,7 +21,7 @@ export const ContentStepNavigation = ({ languages }: Props) => {
 	const { currentStep } = useStepsStore()
 	useSteps({
 		totalSteps: 6,
-		currentStep: 1
+		currentStep: 5
 	})
 	useNavbarItems({
 		title: 'ManageContent.add',

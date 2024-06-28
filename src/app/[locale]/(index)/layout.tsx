@@ -5,7 +5,6 @@ import { ReactNode } from 'react'
 
 import { Drawer } from '@/components/custom/drawer'
 import { Navbar } from '@/components/custom/navbar'
-import { Onboarding } from '@/components/custom/onboarding'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { getSeenOnboardings } from 'api/services/onboarding'
@@ -29,11 +28,10 @@ const DashboardLayout = async ({ children }: { children: ReactNode }) => {
 
 	return (
 		<>
-			{!seenOnboardings?.onboardingSections?.includes(userRole) && <Onboarding userRole={userRole} />}
 			{userRole && <Drawer role={userRole} />}
 			<Box flex="1">
 				<Stack>
-					<Navbar session={session} />
+					<Navbar session={session} seenOnboardingSections={seenOnboardings?.onboardingSections} />
 					<Box display="flex" align="center">
 						{children}
 					</Box>

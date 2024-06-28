@@ -10,3 +10,9 @@ export const onboardingSeen = async (onboardingSection: string) => {
 
 	return response?.data
 }
+
+export const deleteOnboarding = async (onboardingSection: string) => {
+	const response = await axiosInstanceWithToken.delete(`/onboarding`, { data: { onboardingSection } })
+
+	return response?.data
+}

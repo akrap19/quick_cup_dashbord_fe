@@ -1,7 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -13,6 +12,7 @@ import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
 
 import { LanguageLabel } from './LanguageLabel'
+import { MobilePreview } from '@/components/custom/mobile-preview'
 
 const formSchema = z.object({
 	generalIntrudactionTitle: z.string().min(1, { message: 'ValidationMeseges.required' })
@@ -58,9 +58,7 @@ export const PreviewAndPublish = () => {
 						</Stack>
 						<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
 							<LanguageLabel />
-							<Box width="100%" display="flex" justify="center">
-								<Image src="/images/mobile.png" width={260} height={518} alt="https://via.placeholder.com/436x212" />
-							</Box>
+							<MobilePreview />
 						</Box>
 					</Stack>
 				</Box>

@@ -2,12 +2,10 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Practitioner } from 'api/models/practitioners/practitioner'
@@ -32,7 +30,6 @@ interface Props {
 }
 
 const PractitionerEdit = ({ practitioner }: Props) => {
-	const t = useTranslations()
 	const { back } = useRouter()
 	useNavbarItems({ title: 'Practitioners.edit', backLabel: 'Practitioners.back' })
 
@@ -54,7 +51,7 @@ const PractitionerEdit = ({ practitioner }: Props) => {
 		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
 		const result = await updatePractitioner({ ...dataWIhoutEmptyString, userId: practitioner.userId })
 		if (result?.message === 'OK') {
-			SuccessToast(t('Practitioners.successfullyEdited'))
+			localStorage.setItem('editMessage', 'Practitioners.successfullyEdited')
 			back()
 		}
 	}

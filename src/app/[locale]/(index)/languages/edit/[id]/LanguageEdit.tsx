@@ -1,13 +1,11 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { BaseCode } from 'api/models/common/baseCode'
 import { Language } from 'api/models/language/language'
@@ -30,7 +28,6 @@ interface Props {
 }
 
 const LanguageEdit = ({ language, languages }: Props) => {
-	const t = useTranslations()
 	const { back } = useRouter()
 	useNavbarItems({ title: 'Languages.edit', backLabel: 'Languages.back' })
 
@@ -50,7 +47,7 @@ const LanguageEdit = ({ language, languages }: Props) => {
 			name: languageName
 		})
 		if (result?.message === 'OK') {
-			SuccessToast(t('Languagees.successfullyEdited'))
+			localStorage.setItem('editMessage', 'Languages.successfullyEdited')
 			back()
 		}
 	}

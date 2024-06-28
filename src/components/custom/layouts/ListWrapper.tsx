@@ -22,7 +22,7 @@ export const ListWrapper = ({ title, children }: ListWrapperProps) => {
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
-				<Box width="100%" paddingY={8} paddingRight={20} paddingLeft={10}>
+				<Box width="100%" paddingY={8} paddingRight={16} paddingLeft={10}>
 					<Stack gap={7}>{children}</Stack>
 				</Box>
 			)}

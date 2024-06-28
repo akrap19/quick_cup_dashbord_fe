@@ -57,7 +57,7 @@ export const SearchDropdown = ({
 	const searchParamsValuelength = name ? (currentSearchParamas[name] ? currentSearchParamas[name]?.length : 0) : 0
 	const presentationalLabelVariant = isFilter ? 'filterLabel' : value ? 'formLabel' : 'placeholder'
 	const noResultMessage =
-		options.length === 0 && !alwaysShowSearch
+		options?.length === 0 && !alwaysShowSearch
 			? 'General.noResoultMessage'
 			: searchParamsValuelength && searchParamsValuelength > 2
 			  ? 'General.noResoultMessage'
@@ -148,7 +148,7 @@ export const SearchDropdown = ({
 						<Box className={dropdownListItemsContainer}>
 							<Stack gap={1}>
 								{options && options.length > 0 ? (
-									options.map(option => (
+									options?.map(option => (
 										<Button size="auto" variant="adaptive" onClick={e => handleDropdownOption(e, option)}>
 											<Box className={dropdownListItem}>
 												<Text fontSize="small">{option.name}</Text>

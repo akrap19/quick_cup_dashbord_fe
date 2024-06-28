@@ -12,7 +12,7 @@ interface Props {
 
 const AddContentPage = async ({ searchParams }: Props) => {
 	const { data } = await getLanguageSearch(searchParams, LanguageStatusEnum.DRAFT)
-	const transformedLanguageArray = data.languages?.map((language: Language) => {
+	const transformedLanguageArray = data?.languages?.map((language: Language) => {
 		return {
 			id: language.languageId,
 			name: language.name

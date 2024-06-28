@@ -20,17 +20,23 @@ export const DataTablePagination = ({ table, pagination }: DataTablePaginationPr
 	const t = useTranslations()
 	const currentPage = table.getState().pagination.pageIndex
 	const totalPages = table.getPageCount()
-	const firstRowIndex = currentPage * pagination.limit + 1
-	const lastRowIndex = Math.min((currentPage + 1) * pagination.limit, pagination.count)
+	const firstRowIndex = currentPage * pagination?.limit + 1
+	const lastRowIndex = Math.min((currentPage + 1) * pagination?.limit, pagination?.count)
+	const paginationLabel =
+		pagination?.count <= 10
+			? t('General.showingAllResult', { results: pagination?.count })
+			: pagination?.count === firstRowIndex
+			  ? t('General.showingSomeResult', { start: firstRowIndex, results: pagination?.count })
+			  : t('General.showingSomeResults', {
+						start: firstRowIndex,
+						end: lastRowIndex,
+						results: pagination?.count
+			    })
 
 	return (
 		<Box className={dataTablePaginationContainer}>
 			<Inline gap={4} alignItems="center">
-				<Text fontSize="small">
-					{pagination.count <= 10
-						? t('General.showingAllResult', { results: pagination.count })
-						: t('General.showingSomeResults', { start: firstRowIndex, end: lastRowIndex, results: pagination.count })}
-				</Text>
+				<Text fontSize="small">{paginationLabel}</Text>
 				{totalPages > 0 ? (
 					<>
 						<Button variant="adaptive" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>

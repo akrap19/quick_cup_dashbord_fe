@@ -29,7 +29,7 @@ const DashboardLayout = async ({ children }: { children: ReactNode }) => {
 
 	return (
 		<>
-			{!seenOnboardings.onboardingSections.includes(userRole) && <Onboarding userRole={userRole} />}
+			{!seenOnboardings?.onboardingSections?.includes(userRole) && <Onboarding userRole={userRole} />}
 			{userRole && <Drawer role={userRole} />}
 			<Box flex="1">
 				<Stack>

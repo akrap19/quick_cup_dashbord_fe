@@ -88,6 +88,7 @@
 		"assignedBarnahusPlaceholder": "No Barnahus assigned yet.",
 		"templates": "Templates",
 		"assignedBarnahusInfoText": "Once the Barnahus is added it will be assigned to this Master-admin, and the information will appear here.",
+		"showingSomeResult": "Showing result {start} of {results} overall",
 		"showingSomeResults": "Showing results {start} - {end} of {results} overall",
 		"showingAllResult": "Showing all results ({results})"
 	},

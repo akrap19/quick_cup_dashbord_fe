@@ -42,7 +42,7 @@ export const Select = ({ hasError, startIcon, sizes, options, value, ...rest }: 
 					endIconSpacing,
 					startIcon && startIconSpacing
 				)}>
-				{options.map(option => (
+				{options?.map(option => (
 					<option key={option.value} value={option.value} disabled={option.disabled}>
 						{t(option.label)}
 					</option>

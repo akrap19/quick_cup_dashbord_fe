@@ -2,12 +2,10 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Admin } from 'api/models/admin/admin'
@@ -32,8 +30,7 @@ interface Props {
 }
 
 const EditMasterAdmin = ({ masterAdmin, barnahuses }: Props) => {
-	const t = useTranslations()
-	const { back, refresh } = useRouter()
+	const { back } = useRouter()
 	useNavbarItems({ title: 'MasterAdmins.edit', backLabel: 'MasterAdmins.back' })
 
 	const form = useForm<Schema>({
@@ -52,11 +49,8 @@ const EditMasterAdmin = ({ masterAdmin, barnahuses }: Props) => {
 		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
 		const result = await updateMasterAdmin({ ...dataWIhoutEmptyString, userId: masterAdmin.userId })
 		if (result?.message === 'OK') {
-			SuccessToast(t('MasterAdmins.successfullyEdited'))
-			refresh()
-			setTimeout(() => {
-				back()
-			}, 500)
+			localStorage.setItem('editMessage', 'MasterAdmins.successfullyEdited')
+			back()
 		}
 	}
 

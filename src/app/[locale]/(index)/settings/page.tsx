@@ -10,6 +10,7 @@ async function SettingsPage() {
 	const { data: settings } = await getSettings()
 	const session = await getServerSession(authOptions)
 
+	console.log('settings', settings)
 	return (
 		<Box paddingTop={8} paddingX={10} width="100%">
 			<Box style={{ maxWidth: '60rem' }}>

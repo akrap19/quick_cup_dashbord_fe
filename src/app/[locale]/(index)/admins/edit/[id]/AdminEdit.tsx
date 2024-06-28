@@ -2,12 +2,10 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Admin } from 'api/models/admin/admin'
@@ -33,7 +31,6 @@ interface Props {
 }
 
 const AdminEdit = ({ admin, barnahus }: Props) => {
-	const t = useTranslations()
 	const { back } = useRouter()
 	useNavbarItems({ title: 'Admins.edit', backLabel: 'Admins.back' })
 
@@ -54,7 +51,7 @@ const AdminEdit = ({ admin, barnahus }: Props) => {
 		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
 		const result = await updateAdmin({ ...dataWIhoutEmptyString, userId: admin.userId })
 		if (result?.message === 'OK') {
-			SuccessToast(t('Admins.successfullyEdited'))
+			localStorage.setItem('editMessage', 'Admins.successfullyEdited')
 			back()
 		}
 	}

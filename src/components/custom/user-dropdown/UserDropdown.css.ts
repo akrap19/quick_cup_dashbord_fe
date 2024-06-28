@@ -14,16 +14,24 @@ export const dropdownListContainer = style({
 	marginTop: '3px'
 })
 
-export const dropdownListItem = style({
+const dropdownListItemTemp = {
 	color: tokens.colors['neutral.900'],
 	padding: tokens.spacing[4],
 	borderBottom: tokens.borders.border.thin,
 	borderColor: tokens.borders.color['neutral.50'],
-	width: '100%',
-	textAlign: 'left',
+	width: '100%'
+}
 
+export const dropdownListItemWithAction = style({
+	...dropdownListItemTemp,
+	textAlign: 'left',
 	':hover': {
 		backgroundColor: tokens.colors['neutral.100'],
 		borderColor: tokens.borders.color['neutral.300']
 	}
+})
+
+export const dropdownListItem = style({
+	...dropdownListItemTemp,
+	textAlign: 'left'
 })

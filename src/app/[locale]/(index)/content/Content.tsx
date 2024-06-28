@@ -16,7 +16,6 @@ export const Content = <TData, TValue>({ contentSection, contentTableData }: Pro
 	const contentDataKey = Object.keys(contentSectionData).find(key => key.includes(contentSection))
 	const contentData = contentDataKey && contentSectionData[contentDataKey as keyof typeof contentSectionData]
 
-	console.log('contentTableData', contentTableData)
 	return (
 		<Box paddingTop={5}>
 			<Stack gap={4}>

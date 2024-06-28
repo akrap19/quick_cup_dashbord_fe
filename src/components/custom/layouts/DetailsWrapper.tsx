@@ -1,13 +1,28 @@
-import { ReactNode } from 'react'
+'use client'
+
+import { ReactNode, useEffect } from 'react'
 
 import { Box } from '@/components/layout/box'
 import { tokens } from '@/style/theme.css'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
+import { useTranslations } from 'next-intl'
 
 interface Props {
 	children: ReactNode
 }
 
 export const DetailsWrapper = ({ children }: Props) => {
+	const t = useTranslations()
+
+	useEffect(() => {
+		const editMessage = localStorage.getItem('editMessage')
+
+		if (editMessage) {
+			SuccessToast(t(editMessage))
+			localStorage.removeItem('editMessage')
+		}
+	}, [])
+
 	return (
 		<Box paddingX={10} paddingTop={10} paddingBottom={8} width="100%">
 			<Box

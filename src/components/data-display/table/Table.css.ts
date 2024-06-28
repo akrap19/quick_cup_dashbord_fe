@@ -43,7 +43,7 @@ export const tableFooter = style({
 export const tableRow = style({
 	borderBottom: border.border,
 	borderColor: border.borderColor,
-	':hover': { background: tokens.colors['neutral.100'] },
+	':hover': { background: tokens.colors['primary.50'] },
 	':last-child': {
 		borderBottom: 'unset'
 	}
@@ -56,6 +56,7 @@ export const tableHead = style({
 	borderBottom: border.border,
 	borderLeft: border.border,
 	borderColor: border.borderColor,
+	backgroundColor: tokens.colors['neutral.100'],
 	...font,
 	':first-child': {
 		width: '72px',

@@ -94,7 +94,7 @@ export const UserDropdown = ({ session }: Props) => {
 				{isOpen && (
 					<Box className={dropdownListContainer}>
 						<Stack>
-							{options.map(option => (
+							{options?.map(option => (
 								<Button size="auto" variant="adaptive" disabled={option.disabled} onClick={option.action}>
 									<Box className={dropdownListItem}>
 										<Text fontSize="medium" lineHeight="xlarge">

@@ -22,7 +22,7 @@ const MasterAdminsPage = async ({ searchParams }: Props) => {
 	const barnahusLocations = await getBarnahuseMasterAdminLocations()
 	const { data: masterAdminsData } = await getMasterAdmins(searchParams)
 	const isInitialListEmpty = masterAdminsData?.users.length === 0 && !searchParams.search && !searchParams.location
-	const transformedMasterAdminArray = masterAdminsData.users?.map((masterAdmin: any) => {
+	const transformedMasterAdminArray = masterAdminsData?.users?.map((masterAdmin: any) => {
 		const locations =
 			masterAdmin.locations.length === 0 ? '-' : masterAdmin.locations?.join(', ').replace(', ', ' (), ')
 
@@ -43,11 +43,11 @@ const MasterAdminsPage = async ({ searchParams }: Props) => {
 		/>
 	) : (
 		<ListWrapper title={'General.masterAdmins'}>
-			<Inputs data={masterAdminsData?.users} locations={barnahusLocations.data.locations} />
+			<Inputs data={masterAdminsData?.users} locations={barnahusLocations?.data?.locations} />
 			<DataTable
 				columns={columns}
 				data={replaceNullInListWithDash(transformedMasterAdminArray)}
-				pagination={masterAdminsData.pagination}
+				pagination={masterAdminsData?.pagination}
 			/>
 		</ListWrapper>
 	)

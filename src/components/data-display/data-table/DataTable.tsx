@@ -55,7 +55,7 @@ export const DataTable = <TData, TValue>({ columns, data, pagination }: Props<TD
 	const table = useReactTable({
 		data,
 		columns,
-		pageCount: Math.ceil(pagination.count / pagination.limit),
+		pageCount: Math.ceil(pagination?.count / pagination?.limit),
 		manualPagination: true,
 		onSortingChange: setSorting,
 		getCoreRowModel: getCoreRowModel(),

@@ -30,11 +30,11 @@ export const Inputs = ({ data, locations }: Props) => {
 	const confirmDialog = useOpened()
 	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
 	const { push, refresh } = useRouter()
-	const formattedLocations = locations.map(location => ({
+	const formattedLocations = locations?.map(location => ({
 		value: location,
 		label: location
 	}))
-	formattedLocations.unshift({
+	formattedLocations?.unshift({
 		value: '',
 		label: t('MasterAdmins.locationFilterPlaceholder')
 	})

@@ -6,7 +6,9 @@ import GlobeIcon from '@/components/icons/block-icon/assets/globe-icon.svg'
 import GroupsIcon from '@/components/icons/block-icon/assets/groups-icon.svg'
 import HouseIcon from '@/components/icons/block-icon/assets/house-icon.svg'
 import PersonIcon from '@/components/icons/block-icon/assets/person-icon.svg'
-import TemplateIcon from '@/components/icons/block-icon/assets/template-icon.svg'
+import ManageIcon from '@/components/icons/block-icon/assets/manage-icon.svg'
+import BriefcaseIcon from '@/components/icons/block-icon/assets/briefcase-icon.svg'
+import DocumentDuplicateIcon from '@/components/icons/block-icon/assets/document-duplicate-icon.svg'
 import { UserRoleEnum } from 'enums/userRoleEnum'
 import { ROUTES } from 'parameters'
 
@@ -31,7 +33,7 @@ export const drawerItems: Item[] = [
 	},
 	{
 		label: 'manageContent',
-		icon: <TemplateIcon />,
+		icon: <ManageIcon />,
 		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN],
 		subItems: [
 			{ label: 'content', icon: <ClipboardListIcon />, route: ROUTES.CONTENT, isSubItem: true },
@@ -46,13 +48,13 @@ export const drawerItems: Item[] = [
 	},
 	{
 		label: 'caseJourney',
-		icon: <TemplateIcon />,
+		icon: <BriefcaseIcon />,
 		route: ROUTES.CASE_JOURNEY,
 		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.PRACTITIONER]
 	},
 	{
 		label: 'templates',
-		icon: <TemplateIcon />,
+		icon: <DocumentDuplicateIcon />,
 		route: ROUTES.TEMPLATES,
 		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.PRACTITIONER]
 	},

@@ -98,8 +98,10 @@ export const Onboarding = ({ userRole, openOnboarding, setOpenOnboarding }: Prop
 						</Stack>
 					</div>
 					<Stack gap={4}>
-						<Button onClick={handleSteps}>{t(isEndOfOnboarding ? 'General.next' : 'Onboarding.letsBegin')}</Button>
-						<Button onClick={handleOnboardingSeen} variant="secondary">
+						<Button variant="primary" onClick={handleSteps}>
+							{t(isEndOfOnboarding ? 'General.next' : 'Onboarding.letsBegin')}
+						</Button>
+						<Button variant="secondary" onClick={handleOnboardingSeen}>
 							{t('Onboarding.close')}
 						</Button>
 					</Stack>

@@ -21,7 +21,7 @@ const CaseFilesForm = ({ cancelDialog }: Props) => {
 		<FormItems openCancelDialog={cancelDialog?.toggleOpened}>
 			<FormControl name="caseId">
 				<FormControl.Label>
-					<RequiredLabel>{t('General.caseId')}</RequiredLabel>
+					<RequiredLabel>{t('CaseFiles.customId')}</RequiredLabel>
 				</FormControl.Label>
 				<TextInput placeholder={t('General.caseIdPlaceholder')} />
 				<FormControl.Message />

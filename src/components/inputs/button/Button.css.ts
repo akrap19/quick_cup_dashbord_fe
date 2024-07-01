@@ -56,40 +56,40 @@ export const button = recipe({
 		},
 		variant: {
 			primary: {
-				backgroundColor: '#6A35FF',
-				color: '#FFFFFF',
-				':hover': { backgroundColor: '#725CFF' },
-				':disabled': { backgroundColor: '#D0C0FF' }
+				backgroundColor: tokens.colors['primary.500'],
+				color: tokens.colors['shades.00'],
+				':hover': { backgroundColor: tokens.colors['primary.400'] },
+				':disabled': { backgroundColor: tokens.colors['primary.200'] }
 			},
 			secondary: {
-				backgroundColor: '#FFFFFF',
+				backgroundColor: tokens.colors['shades.00'],
 				color: tokens.colors['neutral.700'],
 				border: `1px solid ${tokens.colors['neutral.300']}`,
-				':hover': { backgroundColor: '#F6F6F6' },
-				':disabled': { backgroundColor: '#FFFFFF' }
+				':hover': { backgroundColor: tokens.colors['neutral.100'] },
+				':disabled': { backgroundColor: tokens.colors['shades.00'] }
 			},
 			ghost: {
-				backgroundColor: '#FFFFFF',
-				color: '#5135FF',
-				':hover': { backgroundColor: '#F2F0FF' },
-				':disabled': { backgroundColor: '#FFFFFF' }
+				backgroundColor: tokens.colors['shades.00'],
+				color: tokens.colors['primary.500'],
+				':hover': { backgroundColor: tokens.colors['primary.75'] },
+				':disabled': { backgroundColor: tokens.colors['shades.00'] }
 			},
 			adaptive: {
 				backgroundColor: 'transparent',
-				color: '#6A35FF',
+				color: tokens.colors['primary.500'],
 				padding: 'unset'
 			},
 			destructive: {
-				backgroundColor: '#FE5F55',
-				color: '#FCFCFC',
-				':hover': { backgroundColor: '#FF8B84' },
-				':disabled': { backgroundColor: '#EFAFAB' }
+				backgroundColor: tokens.colors['destructive.500'],
+				color: tokens.colors['neutral.50'],
+				':hover': { backgroundColor: tokens.colors['destructive.400'] },
+				':disabled': { backgroundColor: tokens.colors['destructive.200'] }
 			},
 			success: {
-				backgroundColor: '#198754',
-				color: '#FCFCFC',
-				':hover': { backgroundColor: '#20AC6B' },
-				':disabled': { backgroundColor: '#BBF7D0' }
+				backgroundColor: tokens.colors['success.500'],
+				color: tokens.colors['neutral.50'],
+				':hover': { backgroundColor: tokens.colors['success.400'] },
+				':disabled': { backgroundColor: tokens.colors['success.200'] }
 			}
 		}
 	},

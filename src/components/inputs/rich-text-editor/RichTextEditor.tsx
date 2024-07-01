@@ -5,6 +5,7 @@ import { removeHtmlTags } from '@/utils/removeHtmlTags'
 
 import 'react-quill/dist/quill.snow.css'
 import './RichTextEditor.css'
+import { tokens } from '@/style/theme.css'
 
 interface CustomRichTextEditorProps {
 	hasSuccess?: string
@@ -31,9 +32,9 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 
 		if (quillContainer) {
 			if (hasSuccess && removeHtmlTags(hasSuccess)) {
-				quillContainer.style.borderColor = '#22c55e'
+				quillContainer.style.borderColor = tokens.colors['success.500']
 			} else {
-				quillContainer.style.borderColor = '#d6d6dd'
+				quillContainer.style.borderColor = tokens.colors['neutral.300']
 			}
 		}
 	}, [hasSuccess])

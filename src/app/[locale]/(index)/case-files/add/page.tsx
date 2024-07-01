@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 
 import CaseFilesForm from '../form'
+import { useNavbarItems } from '@/hooks/use-navbar-items'
 
 const formSchema = z.object({
 	caseId: z.string().min(1, { message: 'ValidationMeseges.required' }),
@@ -17,6 +18,7 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 const AddCaseFilesPage = () => {
+	useNavbarItems({ title: 'CaseFiles.add', backLabel: 'CaseFiles.back' })
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),

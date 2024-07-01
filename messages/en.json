@@ -91,7 +91,9 @@
 		"assignedBarnahusInfoText": "Once the Barnahus is added it will be assigned to this Master-admin, and the information will appear here.",
 		"showingSomeResult": "Showing result {start} of {results} overall",
 		"showingSomeResults": "Showing results {start} - {end} of {results} overall",
-		"showingAllResult": "Showing all results ({results})"
+		"showingAllResult": "Showing all results ({results})",
+		"addBarnahusOnboardingDescription": "To start working on a Barnahus, you need to add it first. By adding a Barnahus, you enable the assignment of a Master Admin who can manage and organize the necessary actions and assign personel within that Barnahus.",
+		"addMasterAdminOnboardingDescription": "A Master-admin is responsible for maintaining the main dashboard and creating content for their respective Barnahus. Each Master-admin oversees their own Barnahus, with exclusive rights to invite other contributors to their Barnahus dashboard."
 	},
 	"ValidationMeseges": {
 		"required": "This field is required.",
@@ -215,7 +217,7 @@
 		"back": "Back to Master-admins",
 		"cancelAdd": "Cancel adding new Master-admin",
 		"addMasterAdmins": "Add Master-admins",
-		"addAndAssignBarnahus": "Add & Assign Barnahus",
+		"addMasterAdminAndAssignBarnahus": "Add Master-admin & Assign Barnahus",
 		"addAndAssignBarnahusDescription": "Once you've added Master-admins, you'll need to add a Barnahus and assign each Master-admin to their respective Barnahus. Completing this process ensures that the Master-admins receives invitation and gains access to the app.",
 		"searchMasterAdmin": "Search Master-admin",
 		"successfullyCreated": "You added the Master-admin successfully.",
@@ -227,7 +229,12 @@
 		"noListDataDescription": "Add an Master-admin for every Barnahus you want to include. This individual will be in charge of overseeing content for that specific Barnahus and adding their Admins to it.",
 		"addMasterAdminDescription": "Please note that the Master-admin <danger>will not receive an email invitation</danger> until you also add their Barnahus and assign it to this master-admin. Only then will they receive the invitation.",
 		"deleteMasterAdminDescription": "Note: If you delete this Master-admin, they won't be able to access their profile anymore.",
-		"onboardingDescription": "A Master-admin is responsible for maintaining the main dashboard and creating content for their respective Barnahus. Each Master-admin oversees their own Barnahus, with exclusive rights to invite other contributors (admins) to their Barnahus dashboard."
+		"onboardingAddAdminDescription": "If you're the sole captain, you manage all sections alone. Adding an Admin grants them almost identical rights to yours, enabling them to assist with main content setup.",
+		"onboardingAddPractitionerDescription": "Adding a Practitioner allows limited access for case addition and customization of case journeys, as needed.",
+		"onboardingSetupAppContentTitle": "Set up the app content",
+		"onboardingSetupAppContentDescription": "Your main role is to populate content for the app, focusing on showcasing the Journeys experience for Barnahus children. The content you add will be previewed in the dashboard before being published for visibility in the app. You can select the language for content creation at the start or access the Languages section to view all available content languages.",
+		"onboardingCreateCustomiedIDTitle": "Create customized ID",
+		"onboardingCreateCustomiedIDDescription": "Creating a customized ID initiates the process of crafting a personalized journey experience. This unique ID is only designated for this purpose and can be shared with the child if they wish to access the customized experience."
 	},
 	"Practitioners": {
 		"add": "Add Practitioner",
@@ -299,6 +306,7 @@
 		"edit": "Edit Case",
 		"back": "Back to Case files",
 		"searchCase": "Search Case",
+		"customId": "Custom ID",
 		"journeySnapshot": "Journey snapshot",
 		"journeySnapshotPlaceholder": "No journey snapshot yet.",
 		"noListDataDescription": "To begin, add all your Cases to your library so you can customize the Journey based on each Case ID."

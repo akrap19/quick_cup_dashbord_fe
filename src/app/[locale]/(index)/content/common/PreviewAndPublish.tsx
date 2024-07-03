@@ -1,69 +1,64 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
-import { FormProvider, useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey'
+import { MobilePreview } from '@/components/custom/mobile-preview'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { Text } from '@/components/typography/text'
+import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
+import { publishLanguage } from 'api/services/languages'
 
 import { LanguageLabel } from './LanguageLabel'
-import { MobilePreview } from '@/components/custom/mobile-preview'
-
-const formSchema = z.object({
-	generalIntrudactionTitle: z.string().min(1, { message: 'ValidationMeseges.required' })
-})
-
-type Schema = z.infer<typeof formSchema>
 
 export const PreviewAndPublish = () => {
-	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
-	const form = useForm<Schema>({
-		mode: 'onBlur',
-		resolver: zodResolver(formSchema),
-		defaultValues: { generalIntrudactionTitle: '' }
-	})
-	const formData = form?.getValues()
+	const { currentStep, setCurrentStep } = useStepsStore()
+	const { language } = useManageContent()
 
-	const onSubmit = async () => {
-		console.log('data', formData)
-		if (currentStep) {
-			setCurrentStep(currentStep + 1)
+	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+		if (language) {
+			const result = await publishLanguage(language?.id)
+
+			if (result?.message === 'OK') {
+				SuccessToast(t('ManageContent.roomsContentSccessfullyCreated'))
+
+				if (currentStep) {
+					setCurrentStep(currentStep + 1)
+				}
+			}
 		}
 	}
 
 	return (
-		<FormProvider {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)}>
-				<Box paddingTop={6}>
-					<Stack gap={6}>
-						<Stack gap={4}>
-							<Box display="flex" justify="center">
-								<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
-									{t('ManageContent.previewAndPublishContent')}
+		<form onSubmit={onSubmit}>
+			<Box paddingTop={6}>
+				<Stack gap={6}>
+					<Stack gap={4}>
+						<Box display="flex" justify="center">
+							<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
+								{t('ManageContent.previewAndPublishContent')}
+							</Text>
+						</Box>
+						<Box display="flex" justify="center" textAlign="center">
+							<Box style={{ maxWidth: '26rem' }}>
+								<Text fontSize="small" color="neutral.800">
+									{t('ManageContent.previewAndPublishContentDescription')}
 								</Text>
 							</Box>
-							<Box display="flex" justify="center" textAlign="center">
-								<Box style={{ maxWidth: '26rem' }}>
-									<Text fontSize="small" color="neutral.800">
-										{t('ManageContent.previewAndPublishContentDescription')}
-									</Text>
-								</Box>
-							</Box>
-						</Stack>
-						<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
-							<LanguageLabel />
-							<MobilePreview />
 						</Box>
 					</Stack>
-				</Box>
-				<Actions />
-			</form>
-		</FormProvider>
+					<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
+						<LanguageLabel language={language?.name} />
+						<MobilePreview />
+					</Box>
+				</Stack>
+			</Box>
+			<Actions customSubmitLabel="General.publish" />
+		</form>
 	)
 }

@@ -10,24 +10,61 @@ import { Inline } from '@/components/layout/inline'
 
 import * as styles from './PhotoUpload.css'
 import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'
+import { media } from 'api/services/common'
 
 type Props = InputHTMLAttributes<HTMLInputElement>
 
 export const PhotoUpload = ({ ...rest }: Props) => {
 	const t = useTranslations()
-	const [photos, setPhotos] = useState<string[]>()
+	const [photos, setPhotos] = useState<string[]>([])
+	const [mediaId, setMediaId] = useState<string[]>([])
+
 	const handleFileChange = (event: any) => {
 		const { files } = event.target
-		const urlObjects = Object.keys(files).map(key => URL.createObjectURL(files[key]))
-		const photosForUpload = photos ? [...photos, ...urlObjects] : urlObjects
-		setPhotos(photosForUpload)
-		handleInputValue(photosForUpload)
+
+		let newPhotosForUpload: string[] = [...photos]
+		let newUploadedMediaId: string[] = [...mediaId]
+
+		const handleAllFileUploads = async () => {
+			for (const file of files) {
+				const result = await handleFileUpload(file)
+				if (result) {
+					newPhotosForUpload.push(result.urlObject)
+					newUploadedMediaId.push(result.mediaId)
+				}
+			}
+
+			setPhotos(newPhotosForUpload)
+			setMediaId(newUploadedMediaId)
+			handleInputValue(newUploadedMediaId)
+		}
+
+		handleAllFileUploads()
+	}
+
+	const handleFileUpload = async (file: File) => {
+		const result = await media('Image', file)
+
+		if (result?.message === 'OK') {
+			const urlObject = URL.createObjectURL(file)
+			return { urlObject, mediaId: result.data.mediaId }
+		}
+		return null
 	}
 
 	const handleDelete = (file?: string) => {
-		const updatedPhotos = photos?.filter((item: string) => item !== file)
-		setPhotos(updatedPhotos)
-		handleInputValue(updatedPhotos)
+		const index = photos?.findIndex((item: string) => item === file)
+
+		if (index !== -1 && photos) {
+			const updatedPhotos = [...photos]
+			const updatedMediaIds = [...mediaId]
+			updatedPhotos.splice(index, 1)
+			updatedMediaIds.splice(index, 1)
+
+			setPhotos(updatedPhotos)
+			setMediaId(updatedMediaIds)
+			handleInputValue(updatedMediaIds)
+		}
 	}
 
 	const handleInputValue = (value: any) => {

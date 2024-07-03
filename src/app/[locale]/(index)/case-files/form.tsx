@@ -21,7 +21,7 @@ const CaseFilesForm = ({ cancelDialog }: Props) => {
 		<FormItems openCancelDialog={cancelDialog?.toggleOpened}>
 			<FormControl name="caseId">
 				<FormControl.Label>
-					<RequiredLabel>{t('CaseFiles.customId')}</RequiredLabel>
+					<RequiredLabel>{t('CaseFiles.customizedId')}</RequiredLabel>
 				</FormControl.Label>
 				<TextInput placeholder={t('General.caseIdPlaceholder')} />
 				<FormControl.Message />
@@ -30,7 +30,7 @@ const CaseFilesForm = ({ cancelDialog }: Props) => {
 				<FormControl.Label>
 					<RequiredLabel>{t('General.status')}</RequiredLabel>
 				</FormControl.Label>
-				<Select options={[]} />
+				<Select options={[{ value: '', label: 'Select status' }]} />
 				<FormControl.Message />
 			</FormControl>
 			<InputWithInfo infoText="General.barnahusInfoText">

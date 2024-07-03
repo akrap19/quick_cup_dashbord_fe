@@ -5,9 +5,9 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
+import { useNavbarItems } from '@/hooks/use-navbar-items'
 
 import CaseFilesForm from '../form'
-import { useNavbarItems } from '@/hooks/use-navbar-items'
 
 const formSchema = z.object({
 	caseId: z.string().min(1, { message: 'ValidationMeseges.required' }),

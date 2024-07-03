@@ -28,7 +28,7 @@ export const AudioUpload = ({ ...rest }: Props) => {
 		const result = await media('Audio', file)
 
 		if (result?.message === 'OK') {
-			handleInputValue(event)
+			handleInputValue(result.data.mediaId)
 			setAudioFile(file)
 			setAudioElement(audio)
 		}
@@ -92,7 +92,6 @@ export const AudioUpload = ({ ...rest }: Props) => {
 						type="file"
 						accept="audio/*"
 						multiple={false}
-						value={audioFile}
 						onChange={handleFileChange}
 						className={styles.fileInput}
 					/>

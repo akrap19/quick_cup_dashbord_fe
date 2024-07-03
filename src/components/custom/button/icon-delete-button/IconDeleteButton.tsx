@@ -9,7 +9,7 @@ type IconDeleteButtonProps = { onDelete: (file?: string) => void }
 
 export const IconDeleteButton = ({ onDelete }: IconDeleteButtonProps) => {
 	return (
-		<Button size="auto" variant="adaptive" onClick={() => onDelete()}>
+		<Button type="button" size="auto" variant="adaptive" onClick={() => onDelete()}>
 			<div className={iconContainer({ variant: 'trash' })}>
 				<TrashIcon size="medium" color="destructive.500" />
 			</div>

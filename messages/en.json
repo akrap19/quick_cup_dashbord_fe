@@ -59,6 +59,7 @@
 		"edit": "Edit",
 		"draft": "Draft",
 		"published": "Published",
+		"publish": "Publish",
 		"hidden": "Hidden",
 		"allStatuses": "All Statuses",
 		"inactive": "Inactive",
@@ -207,7 +208,8 @@
 		"successfullBulkDelete": "Admins successfully deleted!",
 		"deleteAdminDescription": "If you are certain if you want to delete admins please press delete.",
 		"noListDataDescription": "For this Barnahus you are able to add multiple Admins. This individual will be in charge of overseeing content for this specific Barnahus and adding their Practitioners to it.",
-		"addAdminDescription": "Please note that <important>the Admin will receive an email invitation,</important> which will grant them access to the Journeys dashboard."
+		"addAdminDescription": "Please note that <important>the Admin will receive an email invitation,</important> which will grant them access to the Journeys dashboard.",
+		"onboardingAddPractitionerDescription": "As an Admin, you can add Practitioners to the dashboard, granting them the ability to add customized IDs (cases), and generate custom journeys for the children they serve. However, if you as the Admin will handle these tasks, you may skip this step, depending on your internal organization's decisions regarding dashboard access and rights sharing."
 	},
 	"MasterAdmins": {
 		"add": "Add Master-admin",
@@ -275,6 +277,9 @@
 		"staffDescription": "Staff description",
 		"staffDescriptionPlaceholder": "Write a short description about the Staff Member...",
 		"addAbout": "Add About",
+		"aboutBarnahusContentSccessfullyCreated": "About Barnahus content successfully created!",
+		"roomsContentSccessfullyCreated": "Rooms content successfully created!",
+		"staffContentSccessfullyCreated": "Staff content successfully created!",
 		"previewAndPublishContent": "Preview & publish content",
 		"previewAndPublishContentDescription": "Before publishing the content, please check how the content will look like in the Journeys app.",
 		"contentPublishedTitle": "Congrats, content published!",
@@ -306,7 +311,7 @@
 		"edit": "Edit Case",
 		"back": "Back to Case files",
 		"searchCase": "Search Case",
-		"customId": "Custom ID",
+		"customizedId": "Customized ID",
 		"journeySnapshot": "Journey snapshot",
 		"journeySnapshotPlaceholder": "No journey snapshot yet.",
 		"noListDataDescription": "To begin, add all your Cases to your library so you can customize the Journey based on each Case ID."

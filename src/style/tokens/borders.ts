@@ -7,6 +7,7 @@ export const borders = {
 		small: '0.5rem',
 		medium: '1rem',
 		large: '1.5rem',
+		xlarge: '2rem',
 		xxlarge: '2.5rem',
 		full: '100%'
 	},

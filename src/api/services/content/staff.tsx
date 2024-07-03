@@ -24,6 +24,14 @@ export const createStaff = async (staff: ContentPayload) => {
 	return response?.data
 }
 
+export const createStaffBulk = async (staff: ContentPayload[]) => {
+	const response = await axiosInstanceWithToken.post(`/staff/bulk`, {
+		translations: staff
+	})
+
+	return response?.data
+}
+
 export const updateStaff = async (staff: ContentPayload) => {
 	const response = await axiosInstanceWithToken.put(`/staff/translation`, staff)
 

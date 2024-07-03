@@ -6,7 +6,6 @@ import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { Actions } from '@/components/custom/layouts/manage-journey'
 import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
 import { Button } from '@/components/inputs/button'
 import { FormControl } from '@/components/inputs/form-control'
@@ -74,7 +73,6 @@ export const ContentPublished = () => {
 						</ManageJourneyIntroWrapper>
 					</Box>
 				</Box>
-				<Actions />
 			</form>
 		</FormProvider>
 	)

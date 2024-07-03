@@ -11,7 +11,11 @@ import { useStepsStore } from '@/store/steps'
 import { actions } from './ManageJourney.css'
 import { CancelButton } from '../../button/cancel-button'
 
-export const Actions = () => {
+interface Props {
+	customSubmitLabel?: string
+}
+
+export const Actions = ({ customSubmitLabel }: Props) => {
 	const t = useTranslations()
 	const formContext = useFormContext()
 	const { currentStep, setCurrentStep } = useStepsStore()
@@ -28,8 +32,8 @@ export const Actions = () => {
 				<Button variant="secondary" disabled={currentStep === 1 || !currentStep} onClick={handleBack}>
 					{t('General.back')}
 				</Button>
-				<Button type="submit" variant="primary" disabled={!formContext.formState.isValid}>
-					{t('General.next')}
+				<Button type="submit" variant="primary" disabled={formContext ? !formContext?.formState.isValid : false}>
+					{t(customSubmitLabel ?? 'General.next')}
 				</Button>
 			</Inline>
 			<CancelButton />

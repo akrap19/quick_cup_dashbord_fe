@@ -27,9 +27,7 @@ export const SectionItemFields = ({ index, form }: Props) => {
 					</Text>
 					<FormControl
 						{...form.register(`items[${index}].title`)}
-						errorMessageString={
-							form.formState.errors?.items && form.formState.errors?.items[index]?.generalIntroductionTitle?.message
-						}
+						errorMessageString={form.formState.errors?.items && form.formState.errors?.items[index]?.title?.message}
 						maxLength="50">
 						<TextInput placeholder={t('ManageContent.generalIntroductionPlaceholderTitle')} />
 						<FormControl.CharactersCount />
@@ -43,8 +41,7 @@ export const SectionItemFields = ({ index, form }: Props) => {
 					<FormControl
 						{...form.register(`items[${index}].description`)}
 						errorMessageString={
-							form.formState.errors?.items &&
-							form.formState.errors?.items[index]?.generalIntroductionDescription?.message
+							form.formState.errors?.items && form.formState.errors?.items[index]?.description?.message
 						}
 						maxLength="500">
 						<RichTextEditor placeholder={t('ManageContent.generalIntroductionPlaceholderDescription')} />
@@ -54,7 +51,7 @@ export const SectionItemFields = ({ index, form }: Props) => {
 				</Stack>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-						{t('ManageContent.audioTranslation')}
+						<RequiredLabel>{t('ManageContent.audioTranslation')}</RequiredLabel>
 					</Text>
 					<FormControl {...form.register(`items[${index}].audioId`)}>
 						<AudioUpload />

@@ -8,8 +8,11 @@ import { z } from 'zod'
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { Text } from '@/components/typography/text'
-// import { useStepsStore } from '@/store/steps'
+import { useManageContent } from '@/store/manage-content'
+import { useStepsStore } from '@/store/steps'
+import { createAbout } from 'api/services/content/about'
 import { requiredString } from 'schemas'
 
 import { SectionItemFields } from '../common/SectionItemFields'
@@ -21,8 +24,8 @@ const formSchema = z.object({
 		z.object({
 			title: requiredString.shape.scheme,
 			description: requiredString.shape.scheme,
-			audioId: z.string().optional(),
-			images: z.array(z.string()).optional()
+			audioId: requiredString.shape.scheme,
+			images: z.array(z.string()).nonempty()
 		})
 	)
 })
@@ -30,7 +33,8 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const ManageBarnahusContent = () => {
-	// const { currentStep, setCurrentStep } = useStepsStore()
+	const { currentStep, setCurrentStep } = useStepsStore()
+	const { language } = useManageContent()
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
@@ -61,15 +65,34 @@ export const ManageBarnahusContent = () => {
 			title: '',
 			description: '',
 			audioId: '',
-			images: []
+			images: [] as any
 		})
 	}
 
 	const onSubmit = async () => {
-		console.log('formdata', formData.items)
-		// if (currentStep) {
-		// 	setCurrentStep(currentStep + 1)
-		// }
+		const result = await createAbout({
+			languageId: language?.id,
+			title: formData.items[0].title,
+			description: formData.items[0].description,
+			images: formData.items[0].images,
+			audioId: formData.items[0].audioId
+		})
+
+		// Za bulk upload, treba se popraviti na BE pa onda integrirati na FE
+		// const formDataTmp: ContentPayload[] = [...formData.items]
+		// formDataTmp.forEach(obj => {
+		// 	obj.languageId = language?.id
+		// })
+
+		// const result = await createAboutBulk(formDataTmp)
+
+		if (result?.message === 'OK') {
+			SuccessToast(t('ManageContent.aboutBarnahusContentSccessfullyCreated'))
+
+			if (currentStep) {
+				setCurrentStep(currentStep + 1)
+			}
+		}
 	}
 
 	return (

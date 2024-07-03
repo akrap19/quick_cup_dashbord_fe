@@ -8,8 +8,11 @@ import { z } from 'zod'
 import { Actions } from '@/components/custom/layouts/manage-journey'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { Text } from '@/components/typography/text'
+import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
+import { createRoom } from 'api/services/content/rooms'
 import { requiredString } from 'schemas'
 
 import { SectionItemFields } from '../common/SectionItemFields'
@@ -18,10 +21,10 @@ import { TitleSubsection } from '../common/TitleSubsection'
 const formSchema = z.object({
 	items: z.array(
 		z.object({
-			generalIntroductionTitle: requiredString.shape.scheme,
-			generalIntroductionDescription: requiredString.shape.scheme,
-			audioTranslate: z.string().optional(),
-			photos: z.array(z.string()).optional()
+			title: requiredString.shape.scheme,
+			description: requiredString.shape.scheme,
+			audioId: requiredString.shape.scheme,
+			images: z.array(z.string()).nonempty()
 		})
 	)
 })
@@ -30,6 +33,7 @@ type Schema = z.infer<typeof formSchema>
 
 export const ManageRoomsContent = () => {
 	const { currentStep, setCurrentStep } = useStepsStore()
+	const { language } = useManageContent()
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
@@ -38,10 +42,10 @@ export const ManageRoomsContent = () => {
 		defaultValues: {
 			items: [
 				{
-					generalIntroductionTitle: '',
-					generalIntroductionDescription: '',
-					audioTranslate: '',
-					photos: []
+					title: '',
+					description: '',
+					audioId: '',
+					images: []
 				}
 			]
 		}
@@ -57,17 +61,36 @@ export const ManageRoomsContent = () => {
 
 	const handleAddSection = () => {
 		append({
-			generalIntroductionTitle: '',
-			generalIntroductionDescription: '',
-			audioTranslate: '',
-			photos: []
+			title: '',
+			description: '',
+			audioId: '',
+			images: [] as any
 		})
 	}
 
 	const onSubmit = async () => {
-		console.log('data', formData)
-		if (currentStep) {
-			setCurrentStep(currentStep + 1)
+		const result = await createRoom({
+			languageId: language?.id,
+			title: formData.items[0].title,
+			description: formData.items[0].description,
+			images: formData.items[0].images,
+			audioId: formData.items[0].audioId
+		})
+
+		// Za bulk upload, treba se popraviti na BE pa onda integrirati na FE
+		// const formDataTmp: ContentPayload[] = [...formData.items]
+		// formDataTmp.forEach(obj => {
+		// 	obj.languageId = language?.id
+		// })
+
+		// const result = await createAboutBulk(formDataTmp)
+
+		if (result?.message === 'OK') {
+			SuccessToast(t('ManageContent.roomsContentSccessfullyCreated'))
+
+			if (currentStep) {
+				setCurrentStep(currentStep + 1)
+			}
 		}
 	}
 

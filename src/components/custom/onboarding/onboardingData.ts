@@ -36,31 +36,31 @@ export const onboardingData: onboardingDataByRole = {
 		{
 			title: 'MasterAdmins.onboardingCreateCustomiedIDTitle',
 			description: 'MasterAdmins.onboardingCreateCustomiedIDDescription',
-			image: '/images/onboardingImages/masterAdmin/set-up-content.png'
+			image: '/images/onboardingImages/masterAdmin/create-customized-id.png'
 		}
 	],
 	Admin: [
 		{
-			title: 'MasterAdmins.addMasterAdmins',
-			description: 'MasterAdmins.onboardingDescription',
-			image: '/images/onboardingImages/masterAdmins/add-master-admin.png'
+			title: 'Practitioners.add',
+			description: 'Admins.onboardingAddPractitionerDescription',
+			image: '/images/onboardingImages/masterAdmin/add-practitioner.png'
 		},
 		{
-			title: 'MasterAdmins.addAndAssignBarnahus',
-			description: 'MasterAdmins.addAndAssignBarnahusDescription',
-			image: '/images/onboardingImages/masterAdmins/add-master-admin.png'
+			title: 'MasterAdmins.onboardingSetupAppContentTitle',
+			description: 'MasterAdmins.onboardingSetupAppContentDescription',
+			image: '/images/onboardingImages/masterAdmin/set-up-content.png'
+		},
+		{
+			title: 'MasterAdmins.onboardingCreateCustomiedIDTitle',
+			description: 'MasterAdmins.onboardingCreateCustomiedIDDescription',
+			image: '/images/onboardingImages/masterAdmin/create-customized-id.png'
 		}
 	],
 	Practitioner: [
 		{
-			title: 'MasterAdmins.addMasterAdmins',
-			description: 'MasterAdmins.onboardingDescription',
-			image: '/images/onboardingImages/masterAdmins/add-master-admin.png'
-		},
-		{
-			title: 'MasterAdmins.addAndAssignBarnahus',
-			description: 'MasterAdmins.addAndAssignBarnahusDescription',
-			image: '/images/onboardingImages/masterAdmins/add-master-admin.png'
+			title: 'MasterAdmins.onboardingCreateCustomiedIDTitle',
+			description: 'MasterAdmins.onboardingCreateCustomiedIDDescription',
+			image: '/images/onboardingImages/masterAdmin/create-customized-id.png'
 		}
 	]
 }

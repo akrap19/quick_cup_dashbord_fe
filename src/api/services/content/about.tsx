@@ -24,6 +24,12 @@ export const createAbout = async (about: ContentPayload) => {
 	return response?.data
 }
 
+export const createAboutBulk = async (about: ContentPayload[]) => {
+	const response = await axiosInstanceWithToken.post(`/about/bulk`, { translations: about })
+
+	return response?.data
+}
+
 export const updateAbout = async (about: ContentPayload) => {
 	const response = await axiosInstanceWithToken.put(`/about/translation`, about)
 

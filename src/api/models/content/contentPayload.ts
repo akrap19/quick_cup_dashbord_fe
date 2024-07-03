@@ -3,9 +3,10 @@ export interface ContentPayload {
 	roomId?: string
 	staffId?: string
 	languageId?: string
+	name?: string
 	title: string
 	description: string
-	images: string[]
+	images?: string[]
 	deletedImages?: string[]
 	audioId?: string
 }

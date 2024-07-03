@@ -64,3 +64,9 @@ export const getLanguageSupported = (query: Query) => {
 
 	return fetchWithToken(`language/supported`, queryParams)
 }
+
+export const publishLanguage = async (languageId: string) => {
+	const response = await axiosInstanceWithToken.post(`/language/publish`, { languageId })
+
+	return response?.data
+}

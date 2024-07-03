@@ -1,11 +1,11 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { ReactNode, useEffect } from 'react'
 
 import { Box } from '@/components/layout/box'
-import { tokens } from '@/style/theme.css'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
-import { useTranslations } from 'next-intl'
+import { tokens } from '@/style/theme.css'
 
 interface Props {
 	children: ReactNode

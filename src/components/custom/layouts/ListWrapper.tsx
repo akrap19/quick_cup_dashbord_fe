@@ -1,14 +1,15 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { ReactNode, useEffect } from 'react'
 
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
-import { useNavbarItemsStore } from '@/store/navbar'
-import { Loader } from '../loader/Loader'
-import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
-import { useTranslations } from 'next-intl'
+import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { useNavbarItemsStore } from '@/store/navbar'
+
+import { Loader } from '../loader/Loader'
 
 type ListWrapperProps = {
 	title: string

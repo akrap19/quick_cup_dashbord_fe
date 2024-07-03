@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 
 import { Box } from '@/components/layout/box'
 import { useNavbarItemsStore } from '@/store/navbar'
+
 import { Loader } from '../../loader/Loader'
 
 interface Props {

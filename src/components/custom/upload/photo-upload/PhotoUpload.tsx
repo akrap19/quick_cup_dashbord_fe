@@ -7,10 +7,10 @@ import React, { InputHTMLAttributes, useState } from 'react'
 import { UploadIcon } from '@/components/icons/upload-icon'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
+import { media } from 'api/services/common'
 
 import * as styles from './PhotoUpload.css'
 import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'
-import { media } from 'api/services/common'
 
 type Props = InputHTMLAttributes<HTMLInputElement>
 
@@ -22,8 +22,8 @@ export const PhotoUpload = ({ ...rest }: Props) => {
 	const handleFileChange = (event: any) => {
 		const { files } = event.target
 
-		let newPhotosForUpload: string[] = [...photos]
-		let newUploadedMediaId: string[] = [...mediaId]
+		const newPhotosForUpload: string[] = [...photos]
+		const newUploadedMediaId: string[] = [...mediaId]
 
 		const handleAllFileUploads = async () => {
 			for (const file of files) {

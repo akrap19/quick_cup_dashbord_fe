@@ -1,14 +1,14 @@
 /* eslint-disable no-undef */
+import BriefcaseIcon from '@/components/icons/block-icon/assets/briefcase-icon.svg'
 import ClipboardListIcon from '@/components/icons/block-icon/assets/clipboard-list-icon.svg'
+import DocumentDuplicateIcon from '@/components/icons/block-icon/assets/document-duplicate-icon.svg'
 import FileIcon from '@/components/icons/block-icon/assets/file-icon.svg'
 import GearIcon from '@/components/icons/block-icon/assets/gear-icon.svg'
 import GlobeIcon from '@/components/icons/block-icon/assets/globe-icon.svg'
 import GroupsIcon from '@/components/icons/block-icon/assets/groups-icon.svg'
 import HouseIcon from '@/components/icons/block-icon/assets/house-icon.svg'
-import PersonIcon from '@/components/icons/block-icon/assets/person-icon.svg'
 import ManageIcon from '@/components/icons/block-icon/assets/manage-icon.svg'
-import BriefcaseIcon from '@/components/icons/block-icon/assets/briefcase-icon.svg'
-import DocumentDuplicateIcon from '@/components/icons/block-icon/assets/document-duplicate-icon.svg'
+import PersonIcon from '@/components/icons/block-icon/assets/person-icon.svg'
 import { UserRoleEnum } from 'enums/userRoleEnum'
 import { ROUTES } from 'parameters'
 

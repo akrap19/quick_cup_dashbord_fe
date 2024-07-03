@@ -1,4 +1,5 @@
 import { Box } from '@/components/layout/box'
+
 import * as styles from './Loader.css'
 
 export const Loader = () => {

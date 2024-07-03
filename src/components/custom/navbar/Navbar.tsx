@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { Session } from 'next-auth'
 import { useTranslations } from 'next-intl'
+import { useEffect } from 'react'
 
 import { LeftIcon } from '@/components/icons/left-icon'
 import { LocationIcon } from '@/components/icons/location-icon'
@@ -15,7 +16,6 @@ import { useNavbarItemsStore } from 'store/navbar'
 
 import * as styles from './Navbar.css'
 import { UserDropdown } from '../user-dropdown'
-import { useEffect } from 'react'
 
 interface Props {
 	session: Session | null

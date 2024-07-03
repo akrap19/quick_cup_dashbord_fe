@@ -1,6 +1,7 @@
 // loader.css.ts
+import { keyframes, style } from '@vanilla-extract/css'
+
 import { tokens } from '@/style/theme.css'
-import { style, keyframes } from '@vanilla-extract/css'
 
 const s = '30px'
 const _d = `calc(0.353 * ${s})`

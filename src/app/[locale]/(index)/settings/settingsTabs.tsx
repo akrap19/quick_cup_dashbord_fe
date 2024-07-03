@@ -3,15 +3,15 @@
 import { Session } from 'next-auth'
 import { useTranslations } from 'next-intl'
 
+import { Loader } from '@/components/custom/loader/Loader'
 import { Tabs } from '@/components/navigation/tabs/Tabs'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { useNavbarItemsStore } from '@/store/navbar'
 import { Settings } from 'api/models/settings/settings'
 
 import { EmailForm } from './emailForm'
 import { PasswordForm } from './passwordForm'
 import { PersonalInfoForm } from './personalInfoForm'
-import { useNavbarItemsStore } from '@/store/navbar'
-import { Loader } from '@/components/custom/loader/Loader'
 
 interface Props {
 	settings: Settings

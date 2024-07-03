@@ -7,10 +7,10 @@ import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { useNavbarItemsStore } from '@/store/navbar'
 
 import { AddButton } from '../button/add-button'
 import { Loader } from '../loader/Loader'
-import { useNavbarItemsStore } from '@/store/navbar'
 
 type Props = { navbarTitle: string; title: string; description: string; buttonLabel: string; buttonLink: string }
 

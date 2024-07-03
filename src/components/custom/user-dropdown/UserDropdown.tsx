@@ -15,12 +15,12 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { handleFullName } from '@/utils/handleFullName'
 import { logout } from 'api/services/auth'
+import { deleteOnboarding } from 'api/services/onboarding'
 import { ROUTES } from 'parameters'
 
 import { dropdownListContainer, dropdownListItem, dropdownListItemWithAction } from './UserDropdown.css'
 import CarretDownIcon from '../../icons/block-icon/assets/carret-down-icon.svg'
 import CarretUpIcon from '../../icons/block-icon/assets/carret-up-icon.svg'
-import { deleteOnboarding } from 'api/services/onboarding'
 import { Onboarding } from '../onboarding'
 
 interface Option {

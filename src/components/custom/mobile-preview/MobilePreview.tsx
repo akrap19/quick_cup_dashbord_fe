@@ -1,10 +1,12 @@
 import Image from 'next/image'
+
 import { Box } from '@/components/layout/box'
-import * as styles from './MobilePreview.css'
 import { Stack } from '@/components/layout/stack'
-import { MobilePreviewHeader } from './MobilePreviewHeader'
+
+import * as styles from './MobilePreview.css'
 import { MobilePreviewContent } from './MobilePreviewContent'
 import { MobilePreviewFooter } from './MobilePreviewFooter'
+import { MobilePreviewHeader } from './MobilePreviewHeader'
 
 export const MobilePreview = () => {
 	return (

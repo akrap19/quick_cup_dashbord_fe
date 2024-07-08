@@ -15,11 +15,11 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
-import { Base } from 'api/models/common/base'
 import { ROUTES } from 'parameters'
+import { Language } from 'api/models/language/language'
 
 interface Props {
-	languages: Base[]
+	languages: Language[]
 }
 
 const formSchema = z.object({
@@ -34,6 +34,13 @@ export const SelectLanguage = ({ languages }: Props) => {
 	const { setLanguage } = useManageContent()
 	const t = useTranslations()
 
+	const transformedLanguageArray = languages?.map((language: Language) => {
+		return {
+			id: language.languageId,
+			name: language.name
+		}
+	})
+
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
@@ -41,7 +48,7 @@ export const SelectLanguage = ({ languages }: Props) => {
 	})
 
 	const onSubmit = async (data: any) => {
-		const language = languages.find(language => language.id === data.language)
+		const language = transformedLanguageArray.find(language => language.id === data.language)
 
 		setLanguage(language)
 		push(ROUTES.ADD_CONTENT)
@@ -63,7 +70,12 @@ export const SelectLanguage = ({ languages }: Props) => {
 						</Text>
 						<Box width="100%">
 							<FormControl name="language">
-								<SearchDropdown placeholder="General.language" options={languages} isFilter alwaysShowSearch />
+								<SearchDropdown
+									placeholder="General.language"
+									options={transformedLanguageArray}
+									isFilter
+									alwaysShowSearch
+								/>
 							</FormControl>
 						</Box>
 					</Stack>

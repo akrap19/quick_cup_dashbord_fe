@@ -45,9 +45,16 @@ export const mobilePreviewContentContainer = style({
 
 export const mobilePreviewButton = recipe({
 	base: {
+		fontFamily: `'Helvetica', 'Arial', sans-serif`,
 		display: 'inline-flex',
 		alignItems: 'center',
 		justifyContent: 'center',
+		flex: '1',
+		padding: `${tokens.spacing[5]} ${tokens.spacing[2]}`,
+		fontSize: tokens.typography.size.big,
+		fontWeight: tokens.typography.weight.bold,
+		lineHeight: tokens.typography.lineHeight.medium,
+		textTransform: 'uppercase',
 		cursor: 'pointer',
 		border: 'none',
 		borderRadius: tokens.borders.radius.xlarge,
@@ -66,16 +73,12 @@ export const mobilePreviewButton = recipe({
 		variant: {
 			primary: {
 				backgroundColor: tokens.colors['primary.500'],
-				color: tokens.colors['shades.00'],
-				':hover': { backgroundColor: tokens.colors['primary.400'] },
-				':disabled': { backgroundColor: tokens.colors['primary.200'] }
+				color: tokens.colors['shades.00']
 			},
 			secondary: {
-				backgroundColor: tokens.colors['shades.00'],
-				color: tokens.colors['neutral.700'],
-				border: `1px solid ${tokens.colors['neutral.300']}`,
-				':hover': { backgroundColor: tokens.colors['neutral.100'] },
-				':disabled': { backgroundColor: tokens.colors['shades.00'] }
+				backgroundColor: tokens.colors['shades.transperent'],
+				color: tokens.colors['primary.500'],
+				border: `1px solid ${tokens.colors['primary.500']}`
 			}
 		}
 	},
@@ -85,3 +88,56 @@ export const mobilePreviewButton = recipe({
 })
 
 export type MobilePreviewButtonVariants = RecipeVariants<typeof mobilePreviewButton>
+
+export const mobilePreviewDropdownInput = style({
+	height: '3.5rem',
+	width: '191px',
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'space-between',
+	fontFamily: `'Helvetica', 'Arial', sans-serif`,
+	backgroundColor: tokens.colors['neutral.50'],
+	borderRadius: tokens.borders.radius.medium,
+	padding: `${tokens.spacing[2]} ${tokens.spacing[4]}`
+})
+
+export const MobilePreviewDropdownLabel = recipe({
+	base: {
+		appearance: 'none'
+	},
+	variants: {
+		variant: {
+			selectedLabel: {
+				fontSize: tokens.typography.size.medium,
+				fontWeight: tokens.typography.weight.bold,
+				lineHeight: tokens.typography.lineHeight.xxlarge,
+				color: tokens.colors['neutral.900']
+			},
+			formLabel: {
+				fontSize: tokens.typography.size.small,
+				lineHeight: tokens.typography.lineHeight.medium,
+				color: tokens.colors['neutral.800']
+			},
+			filterLabel: {
+				fontSize: tokens.typography.size.medium,
+				lineHeight: tokens.typography.lineHeight.xlarge,
+				fontWeight: tokens.typography.weight.semibold,
+				color: tokens.colors['neutral.500']
+			}
+		}
+	}
+})
+
+export type MobilePreviewDropdownLabelVariants = RecipeVariants<typeof MobilePreviewDropdownLabel>
+
+export const mobilePreviewDropdownListContainer = style({
+	width: '100%',
+	position: 'absolute',
+	zIndex: tokens.indices.over,
+	backgroundColor: tokens.colors['neutral.50'],
+	padding: tokens.spacing[2],
+	borderRadius: tokens.borders.radius.small,
+	border: tokens.borders.border.thin,
+	borderColor: tokens.borders.color['neutral.300'],
+	marginTop: tokens.spacing[1]
+})

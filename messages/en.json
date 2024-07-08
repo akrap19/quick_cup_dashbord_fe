@@ -256,6 +256,7 @@
 	},
 	"ManageContent": {
 		"add": "Add Content",
+		"delete": "Delete content",
 		"back": "Back to Manage content",
 		"selectContentTitle": "Select Content type to start",
 		"selectContentDescription": "You can make <guidelines>one content type per language</guidelines>. If you want the same content type in another language, create a new one and choose the language. <guidelines>Our software will translate it automatically,</guidelines> and you can adjust it as needed.",
@@ -302,7 +303,15 @@
 		"generalIntroductionTitle": "GENERAL INTRODUCTION (title)",
 		"generalIntroductionPlaceholderTitle": "Write the title of this section...",
 		"generalIntroductionDescription": "GENERAL INTRODUCTION (description)",
-		"generalIntroductionPlaceholderDescription": "Write some general intro text about your Barnahus..."
+		"generalIntroductionPlaceholderDescription": "Write some general intro text about your Barnahus...",
+		"deleteContentDescription": "If you are certain if you want to delete content please press delete.",
+		"successfullyDeleted": "Content successfully deleted!",
+		"successfullBulkDelete": "Contents successfully deleted!",
+		"addAndReviewNewContentTitle": "Review & add new content",
+		"addAndReviewNewContentDescription": "Since this language is selected as auto-translate, feel free to enter the content creation flow and review the translated content in order to publish the selected language.",
+		"addAndReviewNewContentButtonLabel": "Review & add Content",
+		"contentNotAddedTitle": "Content not added",
+		"contentNotAddedDescription": "Since this language is not added, feel free to enter the content in order to publish the selected language."
 	},
 	"CaseFiles": {
 		"add": "Add Case",

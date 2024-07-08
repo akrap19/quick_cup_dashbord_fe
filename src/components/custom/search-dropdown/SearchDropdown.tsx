@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import qs from 'query-string'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useDebounce } from 'rooks'
 
@@ -36,6 +36,7 @@ interface Props {
 	value?: string
 	alwaysShowSearch?: boolean
 	isFilter?: boolean
+	setValue?: Dispatch<SetStateAction<Base>>
 }
 
 export const SearchDropdown = ({
@@ -45,7 +46,8 @@ export const SearchDropdown = ({
 	hasSuccess,
 	value,
 	alwaysShowSearch,
-	isFilter
+	isFilter,
+	setValue
 }: Props) => {
 	const t = useTranslations()
 	const searchParams = useSearchParams()
@@ -82,9 +84,13 @@ export const SearchDropdown = ({
 		e.preventDefault()
 
 		if (name) {
-			formContext.setValue(name, option.id)
-			formContext.trigger(name)
-			setIsOpen(!isOpen)
+			if (formContext) {
+				formContext.setValue(name, option.id)
+				formContext.trigger(name)
+				setIsOpen(!isOpen)
+			} else if (setValue) {
+				setValue(option)
+			}
 		}
 	}
 
@@ -135,7 +141,7 @@ export const SearchDropdown = ({
 			{isOpen && (
 				<Box className={dropdownListContainer}>
 					<Stack gap={2}>
-						{(alwaysShowSearch || options.length > 5) && (
+						{(alwaysShowSearch || options?.length > 5) && (
 							<Box width="100%" paddingX={1}>
 								<SearchInput
 									name={name}
@@ -147,7 +153,7 @@ export const SearchDropdown = ({
 						)}
 						<Box className={dropdownListItemsContainer}>
 							<Stack gap={1}>
-								{options && options.length > 0 ? (
+								{options && options?.length > 0 ? (
 									options?.map(option => (
 										<Button size="auto" variant="adaptive" onClick={e => handleDropdownOption(e, option)}>
 											<Box className={dropdownListItem}>

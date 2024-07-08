@@ -25,7 +25,7 @@ import { DataTablePagination } from './DataTablePagination'
 interface Props<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
 	data: TData[]
-	pagination: Pagination
+	pagination?: Pagination
 }
 
 export const DataTable = <TData, TValue>({ columns, data, pagination }: Props<TData, TValue>) => {
@@ -55,7 +55,7 @@ export const DataTable = <TData, TValue>({ columns, data, pagination }: Props<TD
 	const table = useReactTable({
 		data,
 		columns,
-		pageCount: Math.ceil(pagination?.count / pagination?.limit),
+		pageCount: pagination ? Math.ceil(pagination?.count / pagination?.limit) : 1,
 		manualPagination: true,
 		onSortingChange: setSorting,
 		getCoreRowModel: getCoreRowModel(),
@@ -87,7 +87,7 @@ export const DataTable = <TData, TValue>({ columns, data, pagination }: Props<TD
 				<DataTableHeader table={table} />
 				<DataTableBody table={table} columns={columns} />
 			</Table>
-			<DataTablePagination table={table} pagination={pagination} />
+			{pagination && <DataTablePagination table={table} pagination={pagination} />}
 		</>
 	)
 }

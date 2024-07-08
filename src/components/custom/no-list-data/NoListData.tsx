@@ -12,9 +12,16 @@ import { useNavbarItemsStore } from '@/store/navbar'
 import { AddButton } from '../button/add-button'
 import { Loader } from '../loader/Loader'
 
-type Props = { navbarTitle: string; title: string; description: string; buttonLabel: string; buttonLink: string }
+type Props = {
+	navbarTitle: string
+	title: string
+	description: string
+	buttonLabel: string
+	buttonLink: string
+	distanceFromTop?: string
+}
 
-export const NoListData = ({ navbarTitle, title, description, buttonLabel, buttonLink }: Props) => {
+export const NoListData = ({ navbarTitle, title, description, buttonLabel, buttonLink, distanceFromTop }: Props) => {
 	const t = useTranslations()
 	const { navbarIsLoading } = useNavbarItemsStore()
 	useNavbarItems({ title: navbarTitle, useUserDropdown: true })
@@ -25,7 +32,7 @@ export const NoListData = ({ navbarTitle, title, description, buttonLabel, butto
 				<Loader />
 			) : (
 				<Box display="flex" align="center" justify="center" width="100%">
-					<Box textAlign="center" color="neutral.900" style={{ width: '500px', marginTop: '20vh' }}>
+					<Box textAlign="center" color="neutral.900" style={{ width: '500px', marginTop: distanceFromTop ?? '20vh' }}>
 						<Stack gap={6}>
 							<Stack gap={4}>
 								<Heading variant="h2" lineHeight="medium">

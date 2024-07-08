@@ -3,14 +3,14 @@ import { fetchWithToken } from 'api/instances/FetchWithToken'
 import { ContentPayload } from 'api/models/content/contentPayload'
 
 interface Query {
-	language: string
+	languageId: string
 	page: number
 	limit: number
 }
 
 export const getAbouts = (query: Query) => {
 	const queryParams = {
-		languageId: query.language,
+		languageId: query.languageId,
 		page: query.page ?? 1,
 		limit: query.limit ?? 10
 	}
@@ -40,14 +40,14 @@ export const getAbout = (id: string) => {
 	return fetchWithToken(`about/translation/${id}`)
 }
 
-export const deleteAbout = async (id: string) => {
-	const response = await axiosInstanceWithToken.delete(`/about`, { data: { id } })
+export const deleteAbout = async (aboutId: string) => {
+	const response = await axiosInstanceWithToken.delete(`/about`, { data: { aboutId } })
 
 	return response?.data
 }
 
-export const deleteAbouts = async (ids: string[]) => {
-	const response = await axiosInstanceWithToken.delete(`/about/bulk`, { data: { ids } })
+export const deleteAbouts = async (aboutIds: string[]) => {
+	const response = await axiosInstanceWithToken.delete(`/about/bulk`, { data: { aboutIds } })
 
 	return response?.data
 }

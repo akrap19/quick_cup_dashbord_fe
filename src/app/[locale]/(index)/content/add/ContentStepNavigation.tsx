@@ -4,7 +4,6 @@ import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useSteps } from '@/hooks/use-steps'
 import { useStepsStore } from '@/store/steps'
-import { Base } from 'api/models/common/base'
 
 import { ManageBarnahusContent } from './ManageBarnahusContent'
 import { ManageRoomsContent } from './ManageRoomsContent'
@@ -12,9 +11,10 @@ import { ManageStaffContent } from './ManageStaffContent'
 import { SelectLanguage } from './SelectLanguage'
 import { ContentPublished } from '../common/ContentPublished'
 import { PreviewAndPublish } from '../common/PreviewAndPublish'
+import { Language } from 'api/models/language/language'
 
 interface Props {
-	languages: Base[]
+	languages: Language[]
 }
 
 export const ContentStepNavigation = ({ languages }: Props) => {
@@ -36,7 +36,7 @@ export const ContentStepNavigation = ({ languages }: Props) => {
 			{currentStep === 3 && <ManageRoomsContent />}
 			{currentStep === 4 && <ManageStaffContent />}
 			{currentStep === 5 && <PreviewAndPublish />}
-			{currentStep === 6 && <ContentPublished />}
+			{currentStep === 6 && <ContentPublished languages={languages} />}
 		</ManageJourneyWrapper>
 	)
 }

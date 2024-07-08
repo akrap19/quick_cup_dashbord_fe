@@ -69,3 +69,7 @@ export const getAssignableBarnahus = (query: Query) => {
 
 	return fetchWithToken(`barnahus/assignable`, queryParams)
 }
+
+export const getBarnahustranslations = (barnahusId?: string) => {
+	return fetchWithToken(`barnahus/${barnahusId}/translations`)
+}

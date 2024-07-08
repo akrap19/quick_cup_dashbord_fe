@@ -60,7 +60,8 @@ export const colors = {
 	'destructive.900': '#4D1D1A',
 
 	'shades.00': '#FFFFFF',
-	'shades.100': '#222222'
+	'shades.100': '#222222',
+	'shades.transperent': 'transperent'
 
 	// Add more colors below if needed...
 }

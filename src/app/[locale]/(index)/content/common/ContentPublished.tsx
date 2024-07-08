@@ -10,36 +10,50 @@ import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-jo
 import { Button } from '@/components/inputs/button'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label/RequiredLabel'
-import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { ROUTES } from 'parameters'
+import { SearchDropdown } from '@/components/custom/search-dropdown'
+import { translateLanguage } from 'api/services/languages'
+import { Language } from 'api/models/language/language'
 
-const formSchema = z.object({})
+interface Props {
+	languages: Language[]
+}
+
+const formSchema = z.object({
+	language: z.string().min(1, { message: 'ValidationMeseges.required' })
+})
 
 type Schema = z.infer<typeof formSchema>
 
-export const ContentPublished = () => {
-	const { push } = useRouter()
-	const router = useRouter()
+export const ContentPublished = ({ languages }: Props) => {
 	const t = useTranslations()
-	const languageOptions = [
-		{ value: '', label: t('ManageContent.selectLanguage') },
-		{ value: 'se', label: t('Languages.en') },
-		{ value: 'en', label: t('Languages.se') }
-	]
+	const router = useRouter()
+
+	const transformedLanguageArray = languages
+		?.filter((language: Language) => language.autoTranslate)
+		.map((language: Language) => {
+			return {
+				id: language.languageId,
+				name: language.name
+			}
+		})
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
-		defaultValues: { generalIntrudactionTitle: '' }
+		defaultValues: { language: '' }
 	})
+
 	const formData = form?.getValues()
 
 	const onSubmit = async () => {
-		console.log('data', formData)
-		push(ROUTES.AUTOTRANSLATE_AND_REVIEW)
+		const result = await translateLanguage(formData.language)
+
+		if (result?.message === 'OK') {
+			console.log('result', result)
+		}
 	}
 
 	return (
@@ -61,9 +75,11 @@ export const ContentPublished = () => {
 											<FormControl.Label>
 												<RequiredLabel>{t('General.language')}</RequiredLabel>
 											</FormControl.Label>
-											<Select sizes="large" options={languageOptions} />
+											<SearchDropdown placeholder="General.language" options={transformedLanguageArray} isFilter />
 										</FormControl>
-										<Button type="submit">{t('ManageContent.autoTranslateAndReviewContent')}</Button>
+										<Button type="submit" disabled={!form.formState.isValid}>
+											{t('ManageContent.autoTranslateAndReviewContent')}
+										</Button>
 										<Button onClick={() => router.back()} variant="secondary">
 											{t('ManageContent.backToContentPage')}
 										</Button>

@@ -21,7 +21,7 @@ export const DataTableHeader = <TData, TValue>({ table }: Props<TData, TValue>) 
 				<TableRow key={headerGroup.id}>
 					<TableHead>
 						<Checkbox
-							checked={table.getIsAllRowsSelected()}
+							checked={table?.getIsAllRowsSelected()}
 							indeterminate={table.getIsSomeRowsSelected()}
 							onChange={table.getToggleAllRowsSelectedHandler()}
 						/>

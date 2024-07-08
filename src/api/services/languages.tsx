@@ -36,7 +36,7 @@ export const getLanguage = (id: string) => {
 	return fetchWithToken(`language/${id}`)
 }
 
-export const getLanguageSearch = (query: Query, status: string) => {
+export const getLanguageSearch = (query: Query, status?: string) => {
 	const queryParams = {
 		search: query.language,
 		status
@@ -67,6 +67,12 @@ export const getLanguageSupported = (query: Query) => {
 
 export const publishLanguage = async (languageId: string) => {
 	const response = await axiosInstanceWithToken.post(`/language/publish`, { languageId })
+
+	return response?.data
+}
+
+export const translateLanguage = async (languageId: string) => {
+	const response = await axiosInstanceWithToken.post(`/language/translate`, { languageId })
 
 	return response?.data
 }

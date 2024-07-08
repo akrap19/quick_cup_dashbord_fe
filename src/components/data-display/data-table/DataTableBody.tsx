@@ -7,6 +7,8 @@ import { NoResult } from '@/components/custom/no-result/NoResult'
 import { Checkbox } from '@/components/inputs/checkbox'
 
 import { TableBody, TableCell, TableCellWithLink, TableRow } from '../table'
+import { Badge } from '@/components/custom/badge'
+import { Box } from '@/components/layout/box'
 
 interface Props<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
@@ -30,7 +32,13 @@ export const DataTableBody = <TData, TValue>({ columns, table }: Props<TData, TV
 						</TableCell>
 						{row.getVisibleCells().map((cell: Cell<TData, unknown>) => (
 							<TableCellWithLink key={cell.id} href={`${pathname}/${row.original?.id}`}>
-								{flexRender(cell.column.columnDef.cell, cell.getContext())}
+								{cell.column.id.includes('status') ? (
+									<Box position="relative">
+										<Badge variant={cell.getValue() as any} />
+									</Box>
+								) : (
+									flexRender(cell.column.columnDef.cell, cell.getContext())
+								)}
 							</TableCellWithLink>
 						))}
 					</TableRow>

@@ -15,7 +15,7 @@ import { useStepsStore } from '@/store/steps'
 import { createRoom } from 'api/services/content/rooms'
 import { requiredString } from 'schemas'
 
-import { SectionItemFields } from '../common/SectionItemFields'
+import { SectionItemsFields } from '../common/SectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
 
 const formSchema = z.object({
@@ -122,7 +122,7 @@ export const ManageRoomsContent = () => {
 								/>
 								{fields.map((field, index) => (
 									<div key={field.id}>
-										<SectionItemFields index={index} form={form} />
+										<SectionItemsFields index={index} form={form} />
 									</div>
 								))}
 							</Stack>

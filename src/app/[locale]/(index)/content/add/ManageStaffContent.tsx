@@ -16,7 +16,7 @@ import { useStepsStore } from '@/store/steps'
 import { createStaff } from 'api/services/content/staff'
 import { requiredString } from 'schemas'
 
-import { StaffSectionItemFields } from '../common/StaffSectionItemFields'
+import { StaffSectionItemsFields } from '../common/StaffSectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
 
 const formSchema = z.object({
@@ -115,7 +115,7 @@ export const ManageStaffContent = () => {
 												<Divider />
 											</Box>
 										)}
-										<StaffSectionItemFields index={index} form={form} />
+										<StaffSectionItemsFields index={index} form={form} />
 									</div>
 								))}
 							</Stack>

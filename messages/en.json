@@ -288,6 +288,7 @@
 		"autoTranslateAndReviewContent": "Auto-translate & review content",
 		"backToContentPage": "Back to Content page",
 		"addAboutInfoText": "Add more sections if you have more than five.",
+		"autoTranslate": "auto-translate",
 		"addRoom": "Add Room",
 		"addRoomInfoText": "Add more rooms if you have more than five.",
 		"roomsDescription": "Here are five templates for rooms generally used in Barnahus. You can rename the rooms with any name your Barnahus uses.",
@@ -311,7 +312,10 @@
 		"addAndReviewNewContentDescription": "Since this language is selected as auto-translate, feel free to enter the content creation flow and review the translated content in order to publish the selected language.",
 		"addAndReviewNewContentButtonLabel": "Review & add Content",
 		"contentNotAddedTitle": "Content not added",
-		"contentNotAddedDescription": "Since this language is not added, feel free to enter the content in order to publish the selected language."
+		"contentNotAddedDescription": "Since this language is not added, feel free to enter the content in order to publish the selected language.",
+		"addAboutDescription": "To add new about, start by adding content in the default language. The system will automatically translate it to other languages. Ensure you review all content before saving and publishing.",
+		"addRoomDescription": "To add new room, start by adding content in the default language. The system will automatically translate it to other languages. Ensure you review all content before saving and publishing.",
+		"addStaffDescription": "To add new staff, start by adding content in the default language. The system will automatically translate it to other languages. Ensure you review all content before saving and publishing."
 	},
 	"CaseFiles": {
 		"add": "Add Case",

@@ -47,7 +47,7 @@ export const ManageRoomsContent = () => {
 						<Box padding={6} borderTop="thin" borderColor="neutral.300">
 							<Stack gap={4}>
 								<LanguageLabel />
-								{/* <SectionItemFields /> */}
+								{/* <SectionItemsFields /> */}
 							</Stack>
 						</Box>
 					</Stack>

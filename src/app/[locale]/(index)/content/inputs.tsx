@@ -107,7 +107,6 @@ export const Inputs = ({ data, languages, buttonLabel, buttonLink, languageValue
 		handleValueChange(languageValue.id)
 	}, [languageValue])
 
-	console.log('currentLanguage', currentLanguage)
 	return (
 		<div>
 			{checkedItemsLength === 0 ? (

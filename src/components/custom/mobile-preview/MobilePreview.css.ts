@@ -95,7 +95,6 @@ export const mobilePreviewDropdownInput = style({
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'space-between',
-	fontFamily: `'Helvetica', 'Arial', sans-serif`,
 	backgroundColor: tokens.colors['neutral.50'],
 	borderRadius: tokens.borders.radius.medium,
 	padding: `${tokens.spacing[2]} ${tokens.spacing[4]}`
@@ -103,26 +102,21 @@ export const mobilePreviewDropdownInput = style({
 
 export const MobilePreviewDropdownLabel = recipe({
 	base: {
-		appearance: 'none'
+		fontFamily: `'Helvetica', 'Arial', sans-serif`,
+		appearance: 'none',
+		color: tokens.colors['neutral.900']
 	},
 	variants: {
 		variant: {
 			selectedLabel: {
 				fontSize: tokens.typography.size.medium,
 				fontWeight: tokens.typography.weight.bold,
-				lineHeight: tokens.typography.lineHeight.xxlarge,
-				color: tokens.colors['neutral.900']
+				lineHeight: tokens.typography.lineHeight.xxlarge
 			},
-			formLabel: {
-				fontSize: tokens.typography.size.small,
-				lineHeight: tokens.typography.lineHeight.medium,
-				color: tokens.colors['neutral.800']
-			},
-			filterLabel: {
+			dropDownItemLabel: {
 				fontSize: tokens.typography.size.medium,
-				lineHeight: tokens.typography.lineHeight.xlarge,
-				fontWeight: tokens.typography.weight.semibold,
-				color: tokens.colors['neutral.500']
+				fontWeight: tokens.typography.weight.regular,
+				lineHeight: tokens.typography.lineHeight.xlarge
 			}
 		}
 	}
@@ -135,9 +129,7 @@ export const mobilePreviewDropdownListContainer = style({
 	position: 'absolute',
 	zIndex: tokens.indices.over,
 	backgroundColor: tokens.colors['neutral.50'],
-	padding: tokens.spacing[2],
-	borderRadius: tokens.borders.radius.small,
-	border: tokens.borders.border.thin,
-	borderColor: tokens.borders.color['neutral.300'],
-	marginTop: tokens.spacing[1]
+	padding: tokens.spacing[4],
+	borderRadius: tokens.borders.radius.medium,
+	marginTop: tokens.spacing[4]
 })

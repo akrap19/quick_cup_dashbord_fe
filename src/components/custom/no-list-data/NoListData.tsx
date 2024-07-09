@@ -19,12 +19,23 @@ type Props = {
 	buttonLabel: string
 	buttonLink: string
 	distanceFromTop?: string
+	setNavbarItems?: boolean
 }
 
-export const NoListData = ({ navbarTitle, title, description, buttonLabel, buttonLink, distanceFromTop }: Props) => {
+export const NoListData = ({
+	navbarTitle,
+	title,
+	description,
+	buttonLabel,
+	buttonLink,
+	distanceFromTop,
+	setNavbarItems = true
+}: Props) => {
 	const t = useTranslations()
 	const { navbarIsLoading } = useNavbarItemsStore()
-	useNavbarItems({ title: navbarTitle, useUserDropdown: true })
+	if (setNavbarItems) {
+		useNavbarItems({ title: navbarTitle, useUserDropdown: true })
+	}
 
 	return (
 		<>

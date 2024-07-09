@@ -11,13 +11,16 @@ import { Inline } from '@/components/layout/inline'
 import * as styles from './Tabs.css'
 import { TabsProvider, useTabsProvider } from './TabsProvider'
 
-interface Props {
+type TabsProps = {
 	children: ReactNode
 }
+
+type Props = TabsProps & styles.TabsWrapperVariants
 
 interface Tab {
 	value: string
 	defaultTab?: boolean
+	currentlyActiveTab?: boolean
 	children: ReactNode
 }
 
@@ -31,7 +34,7 @@ interface TabsComposition {
 	Panel: FC<Panel>
 }
 
-export const Tabs: FC<Props> & TabsComposition = ({ children }: Props) => {
+export const Tabs: FC<Props> & TabsComposition = ({ children, size, variant = 'button' }: Props) => {
 	const tabs = getChildrenByType(children, [Tabs.Tab])
 	const button = getChildrenByType(children, [AddButton, Button])
 	const panel = getChildrenByType(children, [Tabs.Panel])
@@ -39,15 +42,15 @@ export const Tabs: FC<Props> & TabsComposition = ({ children }: Props) => {
 	return (
 		<TabsProvider>
 			<Inline justifyContent="space-between" alignItems="flex-end">
-				<div className={styles.tabsWrapper({ size: button ? 'small' : 'large' })}>{tabs}</div>
-				<div>{button}</div>
+				<div className={styles.tabsWrapper({ size: size ? size : button ? 'small' : 'large', variant })}>{tabs}</div>
+				<div style={{ height: '3rem' }}>{button}</div>
 			</Inline>
 			<div>{panel}</div>
 		</TabsProvider>
 	)
 }
 
-Tabs.Tab = ({ value, children, defaultTab }: Tab) => {
+Tabs.Tab = ({ value, children, defaultTab, currentlyActiveTab }: Tab) => {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const { activeTab, onActiveTabChange } = useTabsProvider()
 
@@ -58,11 +61,13 @@ Tabs.Tab = ({ value, children, defaultTab }: Tab) => {
 		}
 	}, [])
 
-	return (
+	return currentlyActiveTab !== undefined ? (
+		<span className={clsx(styles.tab({ variant: 'span' }), currentlyActiveTab && styles.activeTab)}>{children}</span>
+	) : (
 		<button
 			type="button"
 			onClick={() => onActiveTabChange(value)}
-			className={clsx(styles.tab, activeTab === value && styles.activeTab)}>
+			className={clsx(styles.tab({ variant: 'button' }), activeTab === value && styles.activeTab)}>
 			{children}
 		</button>
 	)

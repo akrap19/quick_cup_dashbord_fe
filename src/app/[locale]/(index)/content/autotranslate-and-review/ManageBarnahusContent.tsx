@@ -47,7 +47,7 @@ export const ManageBarnahusContent = () => {
 							<Box paddingBottom={6} borderBottom="thin" borderColor="neutral.300">
 								<Stack gap={4}>
 									<LanguageLabel />
-									{/* <SectionItemFields /> */}
+									{/* <SectionItemsFields /> */}
 								</Stack>
 							</Box>
 							<WorkingHours />

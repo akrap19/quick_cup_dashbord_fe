@@ -15,7 +15,7 @@ import { useStepsStore } from '@/store/steps'
 import { createAbout } from 'api/services/content/about'
 import { requiredString } from 'schemas'
 
-import { SectionItemFields } from '../common/SectionItemFields'
+import { SectionItemsFields } from '../common/SectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
 import { WorkingHours } from '../common/WorkingHours'
 
@@ -115,7 +115,7 @@ export const ManageBarnahusContent = () => {
 									/>
 									{fields.map((field, index) => (
 										<div key={field.id}>
-											<SectionItemFields index={index} form={form} />
+											<SectionItemsFields index={index} form={form} />
 										</div>
 									))}
 								</Stack>

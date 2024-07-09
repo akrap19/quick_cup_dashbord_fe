@@ -10,7 +10,7 @@ import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
 
 import { LanguageLabel } from '../common/LanguageLabel'
-import { StaffSectionItemFields } from '../common/StaffSectionItemFields'
+import { StaffSectionItemsFields } from '../common/StaffSectionItemsFields'
 
 const formSchema = z.object({})
 
@@ -46,7 +46,7 @@ export const ManageStaffContent = () => {
 						<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
 							<Stack gap={4}>
 								<LanguageLabel />
-								<StaffSectionItemFields />
+								<StaffSectionItemsFields />
 							</Stack>
 						</Box>
 					</Stack>

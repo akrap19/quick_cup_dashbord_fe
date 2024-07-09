@@ -36,9 +36,9 @@ export const getLanguage = (id: string) => {
 	return fetchWithToken(`language/${id}`)
 }
 
-export const getLanguageSearch = (query: Query, status?: string) => {
+export const getLanguageSearch = (query?: Query, status?: string) => {
 	const queryParams = {
-		search: query.language,
+		search: query?.language,
 		status
 	}
 

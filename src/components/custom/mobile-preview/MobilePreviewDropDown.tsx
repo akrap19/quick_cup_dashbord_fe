@@ -67,14 +67,18 @@ export const MobilePreviewDropdown = ({ options, value, setValue }: Props) => {
 			</Stack>
 			{isOpen && (
 				<Box className={mobilePreviewDropdownListContainer}>
-					<Stack gap={1}>
-						{options?.map((option: string) => (
-							<Button size="auto" variant="adaptive" onClick={e => handleDropdownOption(e, option)}>
-								<Box>
-									<Text fontSize="small">{option}</Text>
-								</Box>
-							</Button>
-						))}
+					<Stack gap={4}>
+						{options?.map((option: string) =>
+							value === option ? (
+								<Text className={MobilePreviewDropdownLabel({ variant: 'selectedLabel' })}>{option}</Text>
+							) : (
+								<Button size="auto" variant="adaptive" onClick={e => handleDropdownOption(e, option)}>
+									<Box width="100%" textAlign="left">
+										<Text className={MobilePreviewDropdownLabel({ variant: 'dropDownItemLabel' })}>{option}</Text>
+									</Box>
+								</Button>
+							)
+						)}
 					</Stack>
 				</Box>
 			)}

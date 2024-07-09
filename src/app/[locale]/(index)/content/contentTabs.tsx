@@ -14,6 +14,7 @@ import { Loader } from '@/components/custom/loader/Loader'
 import { useNavbarItemsStore } from '@/store/navbar'
 import { useState } from 'react'
 import { Language } from 'api/models/language/language'
+import { Box } from '@/components/layout/box'
 
 // eslint-disable-next-line
 interface Props<TData, TValue> {
@@ -42,7 +43,9 @@ export const ContentTabs = <TData, TValue>({ aboutData, roomsData, staffData, la
 					<Tabs.Tab value="aboutBarnahus" defaultTab>
 						{t('General.aboutBarnahus')}
 					</Tabs.Tab>
-					<Tabs.Tab value="rooms">{t('General.rooms')}</Tabs.Tab>
+					<Tabs.Tab value="rooms">
+						<Box>{t('General.rooms')}</Box>
+					</Tabs.Tab>
 					<Tabs.Tab value="staff">{t('General.staff')}</Tabs.Tab>
 					<Tabs.Panel value="aboutBarnahus">
 						<Content

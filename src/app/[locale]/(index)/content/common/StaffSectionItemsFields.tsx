@@ -1,5 +1,3 @@
-'use client'
-
 import { useTranslations } from 'next-intl'
 
 import { PhotoUpload } from '@/components/custom/upload/photo-upload'
@@ -12,7 +10,12 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { tokens } from '@/style/theme.css'
 
-export const StaffSectionItemFields = () => {
+interface Props {
+	form: any
+	index: number
+}
+
+export const StaffSectionItemsFields = ({ index, form }: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -23,7 +26,7 @@ export const StaffSectionItemFields = () => {
 						<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
 							<RequiredLabel>{t('ManageContent.staffPhoto')}</RequiredLabel>
 						</Text>
-						<FormControl name="images">
+						<FormControl {...form.register(`items[${index}].images`)}>
 							<PhotoUpload />
 							<FormControl.Message />
 						</FormControl>
@@ -41,7 +44,10 @@ export const StaffSectionItemFields = () => {
 							<RequiredLabel>{t('ManageContent.staffName')}</RequiredLabel>
 						</Text>
 						<Box>
-							<FormControl name="name" maxLength="30">
+							<FormControl
+								{...form.register(`items[${index}].name`)}
+								errorMessageString={form.formState.errors?.items && form.formState.errors?.items[index]?.name?.message}
+								maxLength="30">
 								<TextInput placeholder={t('ManageContent.staffNamePlaceholder')} />
 								<FormControl.CharactersCount />
 								<FormControl.Message />
@@ -53,7 +59,10 @@ export const StaffSectionItemFields = () => {
 							<RequiredLabel>{t('ManageContent.staffRole')}</RequiredLabel>
 						</Text>
 						<Box>
-							<FormControl name="title" maxLength="30">
+							<FormControl
+								{...form.register(`items[${index}].title`)}
+								errorMessageString={form.formState.errors?.items && form.formState.errors?.items[index]?.titke?.message}
+								maxLength="30">
 								<TextInput placeholder={t('ManageContent.staffRolePlaceholder')} />
 								<FormControl.CharactersCount />
 								<FormControl.Message />
@@ -66,7 +75,12 @@ export const StaffSectionItemFields = () => {
 						<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
 							<RequiredLabel>{t('ManageContent.staffDescription')}</RequiredLabel>
 						</Text>
-						<FormControl name="description" maxLength="500">
+						<FormControl
+							{...form.register(`items[${index}].description`)}
+							errorMessageString={
+								form.formState.errors?.items && form.formState.errors?.items[index]?.description?.message
+							}
+							maxLength="500">
 							<RichTextEditor placeholder={t('ManageContent.staffDescriptionPlaceholder')} />
 							<FormControl.CharactersCount />
 							<FormControl.Message />

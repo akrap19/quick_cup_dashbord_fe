@@ -1,3 +1,4 @@
+import { Loader } from '@/components/custom/loader/Loader'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { DataTable } from '@/components/data-display/data-table'
 import { Box } from '@/components/layout/box'
@@ -51,26 +52,32 @@ export const Content = <TData, TValue>({
 						setLanguageValue={setLanguageValue}
 					/>
 				)}
-				{contentTableData?.length > 0 ? (
-					<DataTable columns={columns} data={contentTableDataWithFormatedDate} />
-				) : currentLanguage?.autoTranslate ? (
-					<NoListData
-						navbarTitle="General.content"
-						title={'ManageContent.addAndReviewNewContentTitle'}
-						description={'ManageContent.addAndReviewNewContentDescription'}
-						buttonLabel={'ManageContent.addAndReviewNewContentButtonLabel'}
-						buttonLink={ROUTES.ADD_CONTENT}
-						distanceFromTop="8vh"
-					/>
+				{contentTableData ? (
+					contentTableData?.length > 0 ? (
+						<DataTable columns={columns} data={contentTableDataWithFormatedDate} />
+					) : currentLanguage?.autoTranslate ? (
+						<NoListData
+							navbarTitle="General.content"
+							title={'ManageContent.addAndReviewNewContentTitle'}
+							description={'ManageContent.addAndReviewNewContentDescription'}
+							buttonLabel={'ManageContent.addAndReviewNewContentButtonLabel'}
+							buttonLink={ROUTES.ADD_CONTENT}
+							distanceFromTop="8vh"
+							setNavbarItems={false}
+						/>
+					) : (
+						<NoListData
+							navbarTitle="General.content"
+							title={'ManageContent.contentNotAddedTitle'}
+							description={'ManageContent.contentNotAddedDescription'}
+							buttonLabel={'ManageContent.add'}
+							buttonLink={ROUTES.ADD_CONTENT}
+							distanceFromTop="8vh"
+							setNavbarItems={false}
+						/>
+					)
 				) : (
-					<NoListData
-						navbarTitle="General.content"
-						title={'ManageContent.contentNotAddedTitle'}
-						description={'ManageContent.contentNotAddedDescription'}
-						buttonLabel={'ManageContent.add'}
-						buttonLink={ROUTES.ADD_CONTENT}
-						distanceFromTop="8vh"
-					/>
+					<Loader />
 				)}
 			</Stack>
 		</Box>

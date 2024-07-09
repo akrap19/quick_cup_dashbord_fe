@@ -10,17 +10,25 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 
-export const SectionItemFields = () => {
+interface Props {
+	form: any
+	index: number
+}
+
+export const SectionItemsFields = ({ index, form }: Props) => {
 	const t = useTranslations()
 
 	return (
-		<Box paddingRight={16}>
+		<Box paddingRight={16} paddingBottom={6} borderBottom="thin" borderColor="neutral.300">
 			<Stack gap={6}>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
 						<RequiredLabel>{t('ManageContent.generalIntroductionTitle')}</RequiredLabel>
 					</Text>
-					<FormControl name="title" maxLength="50">
+					<FormControl
+						{...form.register(`items[${index}].title`)}
+						errorMessageString={form.formState.errors?.items && form.formState.errors?.items[index]?.title?.message}
+						maxLength="50">
 						<TextInput placeholder={t('ManageContent.generalIntroductionPlaceholderTitle')} />
 						<FormControl.CharactersCount />
 						<FormControl.Message />
@@ -30,7 +38,12 @@ export const SectionItemFields = () => {
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
 						<RequiredLabel>{t('ManageContent.generalIntroductionDescription')}</RequiredLabel>
 					</Text>
-					<FormControl name="description" maxLength="500">
+					<FormControl
+						{...form.register(`items[${index}].description`)}
+						errorMessageString={
+							form.formState.errors?.items && form.formState.errors?.items[index]?.description?.message
+						}
+						maxLength="500">
 						<RichTextEditor placeholder={t('ManageContent.generalIntroductionPlaceholderDescription')} />
 						<FormControl.CharactersCount />
 						<FormControl.Message />
@@ -40,7 +53,7 @@ export const SectionItemFields = () => {
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
 						<RequiredLabel>{t('ManageContent.audioTranslation')}</RequiredLabel>
 					</Text>
-					<FormControl name="audioId">
+					<FormControl {...form.register(`items[${index}].audioId`)}>
 						<AudioUpload />
 						<FormControl.Message />
 					</FormControl>
@@ -49,7 +62,7 @@ export const SectionItemFields = () => {
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
 						<RequiredLabel>{t('General.photos')}</RequiredLabel>
 					</Text>
-					<FormControl name="images">
+					<FormControl {...form.register(`items[${index}].images`)}>
 						<PhotoUpload />
 						<FormControl.Message />
 					</FormControl>

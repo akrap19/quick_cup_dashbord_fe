@@ -1,43 +1,13 @@
-'use client'
+import { getServerSession } from 'next-auth/next'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { authOptions } from 'app/api/auth/[...nextauth]/auth'
 
-import { FormWrapper } from '@/components/custom/layouts/add-form'
-import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { CaseFilesAdd } from './CaseFilesAdd'
 
-import CaseFilesForm from '../form'
+const CaseFilesAddPage = async () => {
+	const session = await getServerSession(authOptions)
 
-const formSchema = z.object({
-	caseId: z.string().min(1, { message: 'ValidationMeseges.required' }),
-	status: z.string().min(1, { message: 'ValidationMeseges.required' }),
-	barnahus: z.string().min(1, { message: 'ValidationMeseges.required' })
-})
-
-type Schema = z.infer<typeof formSchema>
-
-const AddCaseFilesPage = () => {
-	useNavbarItems({ title: 'CaseFiles.add', backLabel: 'CaseFiles.back' })
-	const form = useForm<Schema>({
-		mode: 'onBlur',
-		resolver: zodResolver(formSchema),
-		defaultValues: { caseId: '', status: '', barnahus: '' }
-	})
-
-	const onSubmit = async (data: Schema) => {
-		console.log(data)
-	}
-
-	return (
-		<FormWrapper>
-			<FormProvider {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<CaseFilesForm />
-				</form>
-			</FormProvider>
-		</FormWrapper>
-	)
+	return <CaseFilesAdd barnahus={session?.user.barnahusRoles[0]} />
 }
 
-export default AddCaseFilesPage
+export default CaseFilesAddPage

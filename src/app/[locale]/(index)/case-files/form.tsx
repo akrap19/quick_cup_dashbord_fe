@@ -6,7 +6,7 @@ import { InputWithInfo } from '@/components/custom/inputs/input-with-info/InputW
 import { FormItems } from '@/components/custom/layouts/add-form'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
-import { Select } from '@/components/inputs/select'
+import { SearchDropdown } from '@/components/custom/search-dropdown'
 import { TextInput } from '@/components/inputs/text-input'
 import { OpenedProps } from '@/hooks/use-toggle'
 
@@ -16,29 +16,37 @@ interface Props {
 
 const CaseFilesForm = ({ cancelDialog }: Props) => {
 	const t = useTranslations()
+	const options = [
+		{ id: 'open', name: t('General.open') },
+		{ id: 'inProgress', name: t('General.inProgress') },
+		{ id: 'closed', name: t('General.closed') },
+		{ id: 'other', name: t('General.other') }
+	]
 
 	return (
 		<FormItems openCancelDialog={cancelDialog?.toggleOpened}>
-			<FormControl name="caseId">
-				<FormControl.Label>
-					<RequiredLabel>{t('CaseFiles.customizedId')}</RequiredLabel>
-				</FormControl.Label>
-				<TextInput placeholder={t('General.caseIdPlaceholder')} />
-				<FormControl.Message />
-			</FormControl>
+			<InputWithInfo infoText="CaseFiles.customizedIdInfoText">
+				<FormControl name="caseId">
+					<FormControl.Label>
+						<RequiredLabel>{t('CaseFiles.customizedId')}</RequiredLabel>
+					</FormControl.Label>
+					<TextInput placeholder={t('General.caseIdPlaceholder')} />
+					<FormControl.Message />
+				</FormControl>
+			</InputWithInfo>
 			<FormControl name="status">
 				<FormControl.Label>
 					<RequiredLabel>{t('General.status')}</RequiredLabel>
 				</FormControl.Label>
-				<Select options={[{ value: '', label: 'Select status' }]} />
+				<SearchDropdown placeholder="General.status" options={options} />
 				<FormControl.Message />
 			</FormControl>
-			<InputWithInfo infoText="General.barnahusInfoText">
+			<InputWithInfo infoText="CaseFiles.barnahusInfoText">
 				<FormControl name="barnahus">
 					<FormControl.Label>
 						<RequiredLabel>{t('General.barnahus')}</RequiredLabel>
 					</FormControl.Label>
-					<TextInput placeholder={t('General.barnahusPlaceholder')} />
+					<TextInput disabled placeholder={t('General.barnahusPlaceholder')} />
 					<FormControl.Message />
 				</FormControl>
 			</InputWithInfo>

@@ -15,33 +15,33 @@ export const getCaseFiles = (query: Query) => {
 		limit: query.limit ?? 10
 	}
 
-	return fetchWithToken(`case-file`, queryParams)
+	return fetchWithToken(`case`, queryParams)
 }
 
 export const createCaseFile = async (caseFile: CaseFilePayload) => {
-	const response = await axiosInstanceWithToken.post(`/case-file`, caseFile)
+	const response = await axiosInstanceWithToken.post(`/case`, caseFile)
 
 	return response?.data
 }
 
 export const updateCaseFile = async (caseFile: CaseFilePayload) => {
-	const response = await axiosInstanceWithToken.put(`/case-file`, caseFile)
+	const response = await axiosInstanceWithToken.put(`/case`, caseFile)
 
 	return response?.data
 }
 
 export const getCaseFile = (id: string) => {
-	return fetchWithToken(`case-file/${id}`)
+	return fetchWithToken(`case/${id}`)
 }
 
 export const deleteCaseFile = async (id: string) => {
-	const response = await axiosInstanceWithToken.delete(`/case-file`, { data: { id } })
+	const response = await axiosInstanceWithToken.delete(`/case`, { data: { id } })
 
 	return response?.data
 }
 
 export const deleteCaseFiles = async (ids: string[]) => {
-	const response = await axiosInstanceWithToken.delete(`/case-file/bulk`, { data: { ids } })
+	const response = await axiosInstanceWithToken.delete(`/case/bulk`, { data: { ids } })
 
 	return response?.data
 }

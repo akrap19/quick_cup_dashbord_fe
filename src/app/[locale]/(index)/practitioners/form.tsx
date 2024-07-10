@@ -17,7 +17,7 @@ interface Props {
 
 const PractitionerForm = ({ isEdit, cancelDialog }: Props) => {
 	const t = useTranslations()
-	const testOptions = [
+	const options = [
 		{ id: 'Coordinator', name: 'Coordinator' },
 		{ id: 'Police', name: 'Police' },
 		{ id: 'Social services/social worker', name: 'Social services/social worker' },
@@ -62,7 +62,7 @@ const PractitionerForm = ({ isEdit, cancelDialog }: Props) => {
 				<FormControl.Label>
 					<RequiredLabel>{t('General.role')}</RequiredLabel>
 				</FormControl.Label>
-				<SearchDropdown placeholder="General.role" options={testOptions} />
+				<SearchDropdown placeholder="General.role" options={options} />
 				<FormControl.Message />
 			</FormControl>
 			<FormControl name="phoneNumber">

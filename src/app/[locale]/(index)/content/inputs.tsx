@@ -42,7 +42,7 @@ export const Inputs = ({ data, languages, buttonLabel, buttonLink, languageValue
 	const dataWithTransformedId = data?.map(item => {
 		return {
 			...item,
-			id: item.aboutId ?? item.roomId ?? item.staffId
+			id: item.aboutTranslationId ?? item.roomTranslationId ?? item.staffTranslationId
 		}
 	})
 	const transformedLanguageArray: Base[] = languages?.map((language: Language) => {
@@ -69,12 +69,12 @@ export const Inputs = ({ data, languages, buttonLabel, buttonLink, languageValue
 		const index = Object.keys(checkedItems)
 		const numericIndex = parseInt(index[0], 10)
 
-		if (data[numericIndex].staffId) {
-			push(ROUTES.EDIT_STAFF_CONTENT + data[numericIndex].staffId)
-		} else if (data[numericIndex].aboutId) {
-			push(ROUTES.EDIT_ABOUT_CONTENT + data[numericIndex].aboutId)
-		} else if (data[numericIndex].roomId) {
-			push(ROUTES.EDIT_ROOM_CONTENT + data[numericIndex].roomId)
+		if (data[numericIndex].staffTranslationId) {
+			push(ROUTES.EDIT_STAFF_CONTENT + data[numericIndex].staffTranslationId)
+		} else if (data[numericIndex].aboutTranslationId) {
+			push(ROUTES.EDIT_ABOUT_CONTENT + data[numericIndex].aboutTranslationId)
+		} else if (data[numericIndex].roomTranslationId) {
+			push(ROUTES.EDIT_ROOM_CONTENT + data[numericIndex].roomTranslationId)
 		}
 	}
 

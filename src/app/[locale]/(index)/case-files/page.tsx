@@ -29,7 +29,7 @@ const CaseFilesPage = async ({ searchParams }: Props) => {
 			buttonLink={ROUTES.ADD_CASE_FILES}
 		/>
 	) : (
-		<ListWrapper>
+		<ListWrapper title="General.caseFiles">
 			<Inputs />
 			<DataTable
 				columns={columns}

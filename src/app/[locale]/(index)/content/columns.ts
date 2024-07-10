@@ -2,8 +2,11 @@ import type { ColumnDef } from '@tanstack/react-table'
 
 export type ManageContentColumn = {
 	aboutId: string
+	aboutTranslationId: string
 	roomId: string
+	roomTranslationId: string
 	staffId: string
+	staffTranslationId: string
 	contentType: string
 	updated: string
 	status: string

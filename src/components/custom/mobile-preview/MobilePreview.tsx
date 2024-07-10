@@ -19,7 +19,7 @@ export const MobilePreview = () => {
 			<Image src="/images/mobile.png" width={260} height={518} alt="mobile" />
 			<Box className={styles.mobilePreview}>
 				<Box>
-					<Image src="/images/mobile-background.png" width={225} height={487} alt="mobile" />
+					<Image src="/images/mobile-background.png" width={225} height={487} alt="mobile-background" />
 				</Box>
 				<Box className={styles.mobilePreviewContainer}>
 					<Stack gap={10}>

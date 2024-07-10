@@ -36,7 +36,8 @@ export const mobilePreviewBackButtonWrapper = style({
 
 export const mobilePreviewContentContainer = style({
 	width: '100%',
-	height: '556px',
+	height: '548px',
+	fontFamily: `'Helvetica', 'Arial', sans-serif`,
 	backgroundColor: '#DAF3F8',
 	boxShadow: '0px 0px 20px 0px #A4D7E1',
 	borderRadius: tokens.borders.radius.medium,

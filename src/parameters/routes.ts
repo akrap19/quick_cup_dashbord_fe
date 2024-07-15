@@ -30,7 +30,7 @@ export const ROUTES = {
 	AUTOTRANSLATE_AND_REVIEW: '/content/autotranslate-and-review',
 	CASE_FILES: '/case-files',
 	ADD_CASE_FILES: '/case-files/add',
-	EDIT_CASE_FILES: '/case-files/edit',
+	EDIT_CASE_FILES: '/case-files/edit/',
 	CASE_JOURNEY: '/case-journey',
 	TEMPLATES: '/templates',
 	SETTINGS: '/settings'

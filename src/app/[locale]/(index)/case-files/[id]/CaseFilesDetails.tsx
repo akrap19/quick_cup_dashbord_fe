@@ -13,6 +13,7 @@ import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { CaseFiles } from 'api/models/caseFiles/caseFiles'
 import { ROUTES } from 'parameters'
+import { useNavbarItemsStore } from '@/store/navbar'
 
 interface Props {
 	caseFiles: CaseFiles
@@ -20,19 +21,20 @@ interface Props {
 
 export const CaseFilesDetails = ({ caseFiles }: Props) => {
 	const t = useTranslations()
+	const { navbarIsLoading } = useNavbarItemsStore()
 	useNavbarItems({
-		title: 'BH-123456',
+		title: caseFiles?.customId,
 		backLabel: 'CaseFiles.back',
-		actionButton: <EditButton buttonLabel="CaseFiles.edit" buttonLink={ROUTES.EDIT_CASE_FILES + caseFiles.id} />
+		actionButton: <EditButton buttonLabel="CaseFiles.edit" buttonLink={ROUTES.EDIT_CASE_FILES + caseFiles?.caseId} />
 	})
 
 	return (
 		<Box width="100%">
 			<DetailsWrapper>
 				<Stack gap={4}>
-					<Label>{t('General.caseId')}</Label>
+					<Label>{t('CaseFiles.customId')}</Label>
 					<Text fontSize="small" color="neutral.800">
-						{caseFiles.caseID}
+						{caseFiles?.customId}
 					</Text>
 				</Stack>
 				<Stack gap={4}>
@@ -48,24 +50,26 @@ export const CaseFilesDetails = ({ caseFiles }: Props) => {
 					</Text>
 				</Stack>
 			</DetailsWrapper>
-			<Box paddingX={10} width="100%">
-				<Box
-					padding={6}
-					style={{ maxWidth: '60rem' }}
-					backgroundColor="neutral.50"
-					border="thin"
-					borderColor="neutral.300">
-					<Stack gap={4}>
-						<Inline gap={4} alignItems="center">
-							<Label>{t('CaseFiles.journeySnapshot')}</Label>
-							<InputInfo infoText="Barnahuses.assignedMasterAdminInfoText" />
-						</Inline>
-						<Text fontSize="small" color="neutral.800">
-							{t('CaseFiles.journeySnapshotPlaceholder')}
-						</Text>
-					</Stack>
+			{!navbarIsLoading && (
+				<Box paddingX={10} width="100%">
+					<Box
+						padding={6}
+						style={{ maxWidth: '60rem' }}
+						backgroundColor="neutral.50"
+						border="thin"
+						borderColor="neutral.300">
+						<Stack gap={4}>
+							<Inline gap={4} alignItems="center">
+								<Label>{t('CaseFiles.journeySnapshot')}</Label>
+								<InputInfo infoText="Barnahuses.assignedMasterAdminInfoText" />
+							</Inline>
+							<Text fontSize="small" color="neutral.800">
+								{t('CaseFiles.journeySnapshotPlaceholder')}
+							</Text>
+						</Stack>
+					</Box>
 				</Box>
-			</Box>
+			)}
 		</Box>
 	)
 }

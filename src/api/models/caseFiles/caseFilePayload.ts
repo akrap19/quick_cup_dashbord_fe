@@ -1,6 +1,6 @@
 export interface CaseFilePayload {
 	id?: string
-	caseId: string
+	userId: string
 	status: string
-	barnahus: string
+	customId: string
 }

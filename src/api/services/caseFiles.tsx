@@ -34,14 +34,14 @@ export const getCaseFile = (id: string) => {
 	return fetchWithToken(`case/${id}`)
 }
 
-export const deleteCaseFile = async (id: string) => {
-	const response = await axiosInstanceWithToken.delete(`/case`, { data: { id } })
+export const deleteCaseFile = async (caseId: string) => {
+	const response = await axiosInstanceWithToken.delete(`/case`, { data: { caseId } })
 
 	return response?.data
 }
 
-export const deleteCaseFiles = async (ids: string[]) => {
-	const response = await axiosInstanceWithToken.delete(`/case/bulk`, { data: { ids } })
+export const deleteCaseFiles = async (caseIds: string[]) => {
+	const response = await axiosInstanceWithToken.delete(`/case/bulk`, { data: { caseIds } })
 
 	return response?.data
 }

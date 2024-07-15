@@ -2,6 +2,7 @@ import { ListWrapper } from '@/components/custom/layouts'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { DataTable } from '@/components/data-display/data-table'
 import { replaceNullInListWithDash } from '@/utils/replaceNullInListWithDash'
+import { CaseFile } from 'api/models/caseFiles/caseFile'
 import { getCaseFiles } from 'api/services/caseFiles'
 import { ROUTES } from 'parameters'
 
@@ -18,8 +19,15 @@ interface Props {
 
 const CaseFilesPage = async ({ searchParams }: Props) => {
 	const { data: caseFilesData } = await getCaseFiles(searchParams)
-	const isInitialListEmpty = (caseFilesData?.users.length === 0 && !searchParams.search) || caseFilesData === null
+	const isInitialListEmpty = (caseFilesData?.cases?.length === 0 && !searchParams.search) || caseFilesData === null
+	const transformedAdminArray = caseFilesData?.cases?.map((caseFile: CaseFile) => {
+		return {
+			...caseFile,
+			id: caseFile.caseId
+		}
+	})
 
+	console.log('caseFilesData', caseFilesData)
 	return isInitialListEmpty ? (
 		<NoListData
 			navbarTitle="General.caseFiles"
@@ -30,10 +38,10 @@ const CaseFilesPage = async ({ searchParams }: Props) => {
 		/>
 	) : (
 		<ListWrapper title="General.caseFiles">
-			<Inputs />
+			<Inputs data={caseFilesData?.cases} />
 			<DataTable
 				columns={columns}
-				data={replaceNullInListWithDash(caseFilesData?.caseFiles)}
+				data={replaceNullInListWithDash(transformedAdminArray)}
 				pagination={caseFilesData.pagination}
 			/>
 		</ListWrapper>

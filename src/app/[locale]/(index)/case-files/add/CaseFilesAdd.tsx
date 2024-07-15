@@ -20,18 +20,19 @@ import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
 import { useOpened } from '@/hooks/use-toggle'
 
 const formSchema = z.object({
-	caseId: requiredString.shape.scheme,
 	status: requiredString.shape.scheme,
-	barnahus: requiredString.shape.scheme
+	customId: requiredString.shape.scheme,
+	barnahus: z.string().optional()
 })
 
 type Schema = z.infer<typeof formSchema>
 
 interface Props {
+	userId?: string
 	barnahus?: Barnahus
 }
 
-export const CaseFilesAdd = ({ barnahus }: Props) => {
+export const CaseFilesAdd = ({ userId, barnahus }: Props) => {
 	const t = useTranslations()
 	const { push, refresh } = useRouter()
 	const confirmDialog = useOpened()
@@ -40,7 +41,7 @@ export const CaseFilesAdd = ({ barnahus }: Props) => {
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { caseId: '', status: '', barnahus: barnahus?.location }
+		defaultValues: { status: '', customId: '', barnahus: barnahus?.location }
 	})
 
 	const handleDialog = () => {
@@ -49,7 +50,7 @@ export const CaseFilesAdd = ({ barnahus }: Props) => {
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		const result = await createCaseFile(data)
+		const result = await createCaseFile({ userId: userId ?? '', status: data.status, customId: data.customId })
 		if (result?.message === 'OK') {
 			SuccessToast(t('CaseFiles.successfullyCreated'))
 			push(ROUTES.CASE_FILES)

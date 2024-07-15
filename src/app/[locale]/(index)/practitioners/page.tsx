@@ -19,7 +19,7 @@ interface Props {
 const PractitionersPage = async ({ searchParams }: Props) => {
 	const { data: practitionersData } = await getPractitioners(searchParams)
 	const isInitialListEmpty =
-		(practitionersData?.users.length === 0 && !searchParams.search) || practitionersData === null
+		(practitionersData?.users?.length === 0 && !searchParams.search) || practitionersData === null
 	const transformedPractitionerArray = practitionersData?.users?.map((practitioner: any) => {
 		return {
 			...practitioner,

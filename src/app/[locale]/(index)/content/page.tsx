@@ -47,7 +47,7 @@ const ContentPage = async ({ searchParams }: Props) => {
 				aboutData={aboutData?.abouts}
 				roomsData={roomsData?.rooms}
 				staffData={staffData?.staff}
-				languages={languages.languages}
+				languages={languages?.languages}
 			/>
 		</Box>
 	)

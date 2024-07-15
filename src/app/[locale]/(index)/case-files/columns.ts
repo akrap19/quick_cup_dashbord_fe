@@ -4,20 +4,20 @@ import { CaseFiles } from 'api/models/caseFiles/caseFiles'
 
 export const columns: Array<ColumnDef<CaseFiles>> = [
 	{
-		accessorKey: 'caseID',
-		header: 'ID'
+		accessorKey: 'customId',
+		header: 'CaseFiles.customId'
 	},
 	{
 		accessorKey: 'status',
-		header: 'Status'
+		header: 'General.status'
 	},
 
 	{
 		accessorKey: 'lastJourneySnapshot',
-		header: 'Last Journey Snapshot'
+		header: 'General.lastJourneySnapshot'
 	},
 	{
 		accessorKey: 'caseJourneyUpdates',
-		header: 'Case Journey Updates'
+		header: 'General.caseJourneyUpdates'
 	}
 ]

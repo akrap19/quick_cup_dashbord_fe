@@ -26,7 +26,7 @@ const CaseFilesForm = ({ cancelDialog }: Props) => {
 	return (
 		<FormItems openCancelDialog={cancelDialog?.toggleOpened}>
 			<InputWithInfo infoText="CaseFiles.customizedIdInfoText">
-				<FormControl name="caseId">
+				<FormControl name="customId">
 					<FormControl.Label>
 						<RequiredLabel>{t('CaseFiles.customizedId')}</RequiredLabel>
 					</FormControl.Label>

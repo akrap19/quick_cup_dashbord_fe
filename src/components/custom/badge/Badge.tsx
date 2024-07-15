@@ -8,7 +8,11 @@ type Props = BadgeVariants & Record<string, unknown>
 const variantTextMap: Record<string, string> = {
 	draft: 'General.draft',
 	published: 'General.published',
-	hidden: 'General.hidden'
+	hidden: 'General.hidden',
+	open: 'General.open',
+	inProgress: 'General.inProgress',
+	closed: 'General.closed',
+	other: 'General.other'
 }
 
 export const Badge = ({ variant = 'draft' }: Props) => {

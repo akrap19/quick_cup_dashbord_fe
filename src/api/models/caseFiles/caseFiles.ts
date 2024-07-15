@@ -1,6 +1,7 @@
 export interface CaseFiles {
-	id: string
-	caseID: string
+	caseId: string
+	customId: string
+	barnahus: string
 	status: string
 	lastJourneySnapshot: string
 	caseJourneyUpdates: string

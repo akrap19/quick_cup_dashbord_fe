@@ -22,7 +22,7 @@ export const MobilePreview = () => {
 					<Image src="/images/mobile-background.png" width={225} height={487} alt="mobile-background" />
 				</Box>
 				<Box className={styles.mobilePreviewContainer}>
-					<Stack gap={10}>
+					<Stack gap={8}>
 						<MobilePreviewHeader
 							contentTypes={contentTypes}
 							contentType={contentType}

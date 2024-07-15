@@ -70,12 +70,7 @@ export const SelectLanguage = ({ languages }: Props) => {
 						</Text>
 						<Box width="100%">
 							<FormControl name="language">
-								<SearchDropdown
-									placeholder="General.language"
-									options={transformedLanguageArray}
-									isFilter
-									alwaysShowSearch
-								/>
+								<SearchDropdown placeholder="General.language" options={transformedLanguageArray} isFilter />
 							</FormControl>
 						</Box>
 					</Stack>

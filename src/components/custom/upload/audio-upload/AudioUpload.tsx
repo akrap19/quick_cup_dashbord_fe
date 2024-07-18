@@ -7,7 +7,7 @@ import { PauseIcon } from '@/components/icons/pause-icon'
 import { PlayIcon } from '@/components/icons/play-icon'
 import { Button } from '@/components/inputs/button'
 import { Inline } from '@/components/layout/inline'
-import { media } from 'api/services/common'
+import { deleteMedia, media } from 'api/services/common'
 
 import * as styles from './AudioUpload.css'
 import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'
@@ -34,14 +34,21 @@ export const AudioUpload = ({ ...rest }: Props) => {
 		}
 	}
 
-	const handleDelete = () => {
+	const handleDelete = async () => {
 		if (isAudioPlaying) {
 			audioElement?.pause()
 			setIsAudioPlaying(!isAudioPlaying)
 		}
-		handleInputValue(undefined)
-		setAudioFile(undefined)
-		setAudioElement(undefined)
+
+		if (rest && rest.value) {
+			const result = await deleteMedia(rest.value.toString())
+
+			if (result?.message === 'OK') {
+				handleInputValue(undefined)
+				setAudioFile(undefined)
+				setAudioElement(undefined)
+			}
+		}
 	}
 
 	const playAudioFile = (e: React.MouseEvent<HTMLButtonElement>) => {

@@ -12,12 +12,13 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
-import { createAbout } from 'api/services/content/about'
+import { createAboutBulk } from 'api/services/content/about'
 import { requiredString } from 'schemas'
 
 import { SectionItemsFields } from '../common/SectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
 import { WorkingHours } from '../common/WorkingHours'
+import { ContentPayload } from 'api/models/content/contentPayload'
 
 const formSchema = z.object({
 	items: z.array(
@@ -70,21 +71,12 @@ export const ManageBarnahusContent = () => {
 	}
 
 	const onSubmit = async () => {
-		const result = await createAbout({
-			languageId: language?.id,
-			title: formData.items[0].title,
-			description: formData.items[0].description,
-			images: formData.items[0].images,
-			audioId: formData.items[0].audioId
+		const formDataTmp: ContentPayload[] = [...formData.items]
+		formDataTmp.forEach(obj => {
+			obj.languageId = language?.id
 		})
 
-		// Za bulk upload, treba se popraviti na BE pa onda integrirati na FE
-		// const formDataTmp: ContentPayload[] = [...formData.items]
-		// formDataTmp.forEach(obj => {
-		// 	obj.languageId = language?.id
-		// })
-
-		// const result = await createAboutBulk(formDataTmp)
+		const result = await createAboutBulk(formDataTmp)
 
 		if (result?.message === 'OK') {
 			SuccessToast(t('ManageContent.aboutBarnahusContentSccessfullyCreated'))

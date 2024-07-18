@@ -17,7 +17,6 @@ interface Props {
 
 export const SectionItemsFields = ({ index, form }: Props) => {
 	const t = useTranslations()
-
 	return (
 		<Box paddingRight={16} paddingBottom={6} borderBottom="thin" borderColor="neutral.300">
 			<Stack gap={6}>

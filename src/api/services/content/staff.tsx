@@ -25,7 +25,7 @@ export const createStaff = async (staff: ContentPayload) => {
 }
 
 export const createStaffBulk = async (staff: ContentPayload[]) => {
-	const response = await axiosInstanceWithToken.post(`/staff/bulk`, {
+	const response = await axiosInstanceWithToken.post(`/staff/translation/bulk`, {
 		translations: staff
 	})
 

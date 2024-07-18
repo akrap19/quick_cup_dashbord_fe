@@ -7,7 +7,7 @@ import React, { InputHTMLAttributes, useState } from 'react'
 import { UploadIcon } from '@/components/icons/upload-icon'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
-import { media } from 'api/services/common'
+import { deleteMedia, media } from 'api/services/common'
 
 import * as styles from './PhotoUpload.css'
 import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'
@@ -52,18 +52,22 @@ export const PhotoUpload = ({ ...rest }: Props) => {
 		return null
 	}
 
-	const handleDelete = (file?: string) => {
+	const handleDelete = async (file?: string) => {
 		const index = photos?.findIndex((item: string) => item === file)
 
 		if (index !== -1 && photos) {
 			const updatedPhotos = [...photos]
 			const updatedMediaIds = [...mediaId]
-			updatedPhotos.splice(index, 1)
-			updatedMediaIds.splice(index, 1)
 
-			setPhotos(updatedPhotos)
-			setMediaId(updatedMediaIds)
-			handleInputValue(updatedMediaIds)
+			const result = await deleteMedia(updatedMediaIds[index])
+
+			if (result?.message === 'OK') {
+				updatedPhotos.splice(index, 1)
+				updatedMediaIds.splice(index, 1)
+				setPhotos(updatedPhotos)
+				setMediaId(updatedMediaIds)
+				handleInputValue(updatedMediaIds)
+			}
 		}
 	}
 
@@ -98,7 +102,7 @@ export const PhotoUpload = ({ ...rest }: Props) => {
 						<Box className={styles.imageDeleteIconContainer}>
 							<IconDeleteButton onDelete={() => handleDelete(photo)} />
 						</Box>
-						<Image src={photo} width={212} height={212} alt="logo" />
+						<Image src={photo} width={212} height={212} alt="uploadedPhoto" style={{ objectFit: 'cover' }} />
 					</Box>
 				))}
 		</Inline>

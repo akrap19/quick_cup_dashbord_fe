@@ -32,8 +32,7 @@ const ContentPage = async ({ searchParams }: Props) => {
 		barnahusTranslations?.roomsData?.pagination?.count > 0 ||
 		barnahusTranslations?.staffData?.pagination?.count > 0
 
-	// return !doesContentHasData ? (
-	return false ? (
+	return !doesContentHasData ? (
 		<NoListData
 			navbarTitle="General.content"
 			title="NoListData.letsStart"

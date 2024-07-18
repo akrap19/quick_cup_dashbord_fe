@@ -6,6 +6,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin')
 const withVanillaExtract = createVanillaExtractPlugin()
 
+const createNextIntlPlugin = require('next-intl/plugin')
+const withNextIntl = createNextIntlPlugin()
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: false,
@@ -44,4 +47,4 @@ const nextConfig = {
 	output: 'standalone'
 }
 
-module.exports = withVanillaExtract(withBundleAnalyzer(nextConfig))
+module.exports = withVanillaExtract(withBundleAnalyzer(withNextIntl(nextConfig)))

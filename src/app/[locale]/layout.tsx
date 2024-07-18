@@ -1,5 +1,3 @@
-'use client'
-
 import { Inter } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { NextIntlClientProvider } from 'next-intl'
@@ -9,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import '@/style/app.css'
 import { Box } from '@/components/layout/box'
-import { lastDeployTime } from '@/utils/logLastDeployTime'
 
 const inter = Inter({
 	weight: ['400', '600', '700', '800'],
@@ -33,7 +30,6 @@ const getMessages = async (locale: string) => {
 const LocaleLayout = async ({ children, params: { locale } }: Props) => {
 	const messages = await getMessages(locale)
 
-	lastDeployTime()
 	return (
 		<html lang={locale}>
 			<body className={inter.className}>

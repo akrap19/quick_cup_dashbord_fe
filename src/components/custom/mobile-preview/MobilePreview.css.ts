@@ -37,11 +37,13 @@ export const mobilePreviewBackButtonWrapper = style({
 export const mobilePreviewContentContainer = style({
 	width: '100%',
 	height: '552px',
+	overflow: 'auto',
 	fontFamily: `'Helvetica', 'Arial', sans-serif`,
 	backgroundColor: '#DAF3F8',
 	boxShadow: '0px 0px 20px 0px #A4D7E1',
 	borderRadius: tokens.borders.radius.medium,
-	padding: tokens.spacing[4]
+	padding: tokens.spacing[4],
+	scrollbarWidth: 'none'
 })
 
 export const mobilePreviewButton = recipe({

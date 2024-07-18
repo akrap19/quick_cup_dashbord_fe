@@ -12,3 +12,11 @@ export const media = async (type: string, file: File) => {
 
 	return response?.data
 }
+
+export const deleteMedia = async (mediaId: string) => {
+	const response = await axiosInstanceWithToken.delete(`/media`, {
+		data: { mediaId }
+	})
+
+	return response?.data
+}

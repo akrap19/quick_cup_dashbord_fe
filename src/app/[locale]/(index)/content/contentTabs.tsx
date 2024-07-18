@@ -27,7 +27,7 @@ interface Props<TData, TValue> {
 export const ContentTabs = <TData, TValue>({ aboutData, roomsData, staffData, languages }: Props<TData, TValue>) => {
 	const t = useTranslations()
 	const { navbarIsLoading } = useNavbarItemsStore()
-	const languageBase: Base = { id: languages[0].languageId, name: languages[0].name }
+	const languageBase: Base = { id: languages[0]?.languageId, name: languages[0]?.name }
 	const [languageValue, setLanguageValue] = useState(languageBase)
 	useNavbarItems({ title: 'General.content', useUserDropdown: true })
 

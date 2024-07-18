@@ -42,7 +42,7 @@ export const Inputs = ({ data, languages, buttonLabel, buttonLink, languageValue
 	const dataWithTransformedId = data?.map(item => {
 		return {
 			...item,
-			id: item.aboutTranslationId ?? item.roomTranslationId ?? item.staffTranslationId
+			id: item.aboutId ?? item.roomId ?? item.staffId
 		}
 	})
 	const transformedLanguageArray: Base[] = languages?.map((language: Language) => {

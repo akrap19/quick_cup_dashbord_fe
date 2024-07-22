@@ -10,7 +10,12 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 
-export const SectionItemFields = () => {
+interface Props {
+	initialAudioUrl?: string
+	initialImagesUrls?: string[]
+}
+
+export const SectionItemFields = ({ initialAudioUrl, initialImagesUrls }: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -41,7 +46,7 @@ export const SectionItemFields = () => {
 						<RequiredLabel>{t('ManageContent.audioTranslation')}</RequiredLabel>
 					</Text>
 					<FormControl name="audioId">
-						<AudioUpload />
+						<AudioUpload initialAudioUrl={initialAudioUrl} />
 						<FormControl.Message />
 					</FormControl>
 				</Stack>
@@ -50,7 +55,7 @@ export const SectionItemFields = () => {
 						<RequiredLabel>{t('General.photos')}</RequiredLabel>
 					</Text>
 					<FormControl name="images">
-						<PhotoUpload />
+						<PhotoUpload initialImagesUrls={initialImagesUrls} />
 						<FormControl.Message />
 					</FormControl>
 				</Stack>

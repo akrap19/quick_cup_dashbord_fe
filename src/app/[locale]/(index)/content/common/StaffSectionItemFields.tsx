@@ -12,7 +12,11 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { tokens } from '@/style/theme.css'
 
-export const StaffSectionItemFields = () => {
+interface Props {
+	initialImagesUrls?: string[]
+}
+
+export const StaffSectionItemFields = ({ initialImagesUrls }: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -24,7 +28,7 @@ export const StaffSectionItemFields = () => {
 							<RequiredLabel>{t('ManageContent.staffPhoto')}</RequiredLabel>
 						</Text>
 						<FormControl name="images">
-							<PhotoUpload />
+							<PhotoUpload initialImagesUrls={initialImagesUrls} />
 							<FormControl.Message />
 						</FormControl>
 					</Stack>

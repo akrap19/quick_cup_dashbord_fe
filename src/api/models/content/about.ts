@@ -1,5 +1,8 @@
+import { Audio } from '../common/audio'
+
 interface AboutImage {
 	aboutImageId: string
+	mediaId: string
 	url: string
 }
 
@@ -10,5 +13,6 @@ export interface About {
 	description: string
 	updated: string
 	status: string
-	aboutimages: AboutImage[]
+	audio: Audio
+	aboutImages: AboutImage[]
 }

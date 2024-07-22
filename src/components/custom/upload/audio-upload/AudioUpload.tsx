@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import React, { InputHTMLAttributes, useState } from 'react'
+import React, { InputHTMLAttributes, useState, useEffect } from 'react'
 
 import { PauseIcon } from '@/components/icons/pause-icon'
 import { PlayIcon } from '@/components/icons/play-icon'
@@ -13,9 +13,11 @@ import * as styles from './AudioUpload.css'
 import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'
 import { iconContainer } from '../../button/icon-delete-button/IconDeleteButton.css'
 
-type Props = InputHTMLAttributes<HTMLInputElement>
+type Props = InputHTMLAttributes<HTMLInputElement> & {
+	initialAudioUrl?: string
+}
 
-export const AudioUpload = ({ ...rest }: Props) => {
+export const AudioUpload = ({ initialAudioUrl, ...rest }: Props) => {
 	const [isAudioPlaying, setIsAudioPlaying] = useState(false)
 	const [audioFile, setAudioFile] = useState<File>()
 	const [audioElement, setAudioElement] = useState<HTMLAudioElement>()
@@ -40,15 +42,21 @@ export const AudioUpload = ({ ...rest }: Props) => {
 			setIsAudioPlaying(!isAudioPlaying)
 		}
 
-		if (rest && rest.value) {
+		if (rest && rest.value && !initialAudioUrl) {
 			const result = await deleteMedia(rest.value.toString())
 
 			if (result?.message === 'OK') {
-				handleInputValue(undefined)
-				setAudioFile(undefined)
-				setAudioElement(undefined)
+				handleRemovingAudio()
 			}
+		} else if (initialAudioUrl) {
+			handleRemovingAudio()
 		}
+	}
+
+	const handleRemovingAudio = () => {
+		handleInputValue(undefined)
+		setAudioFile(undefined)
+		setAudioElement(undefined)
 	}
 
 	const playAudioFile = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -68,9 +76,17 @@ export const AudioUpload = ({ ...rest }: Props) => {
 		}
 	}
 
+	useEffect(() => {
+		if (initialAudioUrl) {
+			const audio = new Audio(initialAudioUrl)
+			audio.loop = true
+			setAudioElement(audio)
+		}
+	}, [])
+
 	return (
 		<div>
-			{audioFile ? (
+			{audioFile || initialAudioUrl ? (
 				<div className={styles.fileContainer}>
 					<Inline justifyContent="space-between">
 						<Inline alignItems="center" gap={4}>
@@ -85,7 +101,7 @@ export const AudioUpload = ({ ...rest }: Props) => {
 							</Button>
 							<div className={styles.fileLabelConteiner}>
 								<label htmlFor={rest.id} className={styles.fileLabel}>
-									{audioFile.name}
+									{audioFile?.name}
 								</label>
 							</div>
 						</Inline>

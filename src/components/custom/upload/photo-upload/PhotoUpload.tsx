@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import React, { InputHTMLAttributes, useState } from 'react'
+import React, { InputHTMLAttributes, useEffect, useState } from 'react'
 
 import { UploadIcon } from '@/components/icons/upload-icon'
 import { Box } from '@/components/layout/box'
@@ -12,9 +12,11 @@ import { deleteMedia, media } from 'api/services/common'
 import * as styles from './PhotoUpload.css'
 import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'
 
-type Props = InputHTMLAttributes<HTMLInputElement>
+type Props = InputHTMLAttributes<HTMLInputElement> & {
+	initialImagesUrls?: string[]
+}
 
-export const PhotoUpload = ({ ...rest }: Props) => {
+export const PhotoUpload = ({ initialImagesUrls, ...rest }: Props) => {
 	const t = useTranslations()
 	const [photos, setPhotos] = useState<string[]>([])
 	const [mediaId, setMediaId] = useState<string[]>([])
@@ -55,20 +57,28 @@ export const PhotoUpload = ({ ...rest }: Props) => {
 	const handleDelete = async (file?: string) => {
 		const index = photos?.findIndex((item: string) => item === file)
 
-		if (index !== -1 && photos) {
-			const updatedPhotos = [...photos]
+		if (index !== -1 && photos && !initialImagesUrls) {
 			const updatedMediaIds = [...mediaId]
 
 			const result = await deleteMedia(updatedMediaIds[index])
 
 			if (result?.message === 'OK') {
-				updatedPhotos.splice(index, 1)
-				updatedMediaIds.splice(index, 1)
-				setPhotos(updatedPhotos)
-				setMediaId(updatedMediaIds)
-				handleInputValue(updatedMediaIds)
+				handleRemovingImage(index)
 			}
+		} else if (initialImagesUrls) {
+			handleRemovingImage(index)
 		}
+	}
+
+	const handleRemovingImage = (index: number) => {
+		const updatedPhotos = [...photos]
+		const updatedMediaIds = [...mediaId]
+
+		updatedPhotos.splice(index, 1)
+		updatedMediaIds.splice(index, 1)
+		setPhotos(updatedPhotos)
+		setMediaId(updatedMediaIds)
+		handleInputValue(updatedMediaIds)
 	}
 
 	const handleInputValue = (value: any) => {
@@ -76,6 +86,15 @@ export const PhotoUpload = ({ ...rest }: Props) => {
 			rest.onChange(value)
 		}
 	}
+
+	useEffect(() => {
+		if (initialImagesUrls) {
+			setPhotos(initialImagesUrls)
+		}
+		if (rest.value) {
+			setMediaId(rest.value as string[])
+		}
+	}, [])
 
 	return (
 		<Inline gap={6}>

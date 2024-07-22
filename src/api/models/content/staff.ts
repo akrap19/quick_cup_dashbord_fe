@@ -11,5 +11,5 @@ export interface Staff {
 	description: string
 	updated: string
 	status: string
-	staffimages: StaffImage[]
+	staffImages: StaffImage[]
 }

@@ -1,3 +1,5 @@
+import { Audio } from '../common/audio'
+
 interface RoomImage {
 	roomImageId: string
 	url: string
@@ -10,5 +12,6 @@ export interface Room {
 	description: string
 	updated: string
 	status: string
-	roomimages: RoomImage[]
+	audio: Audio
+	roomImages: RoomImage[]
 }

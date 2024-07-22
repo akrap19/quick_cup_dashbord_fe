@@ -32,6 +32,8 @@ export const EditRoomForm = ({ room }: Props) => {
 	const t = useTranslations()
 	const { refresh } = useRouter()
 	const { currentStep, setCurrentStep } = useStepsStore()
+	const defaultImageIds = room?.roomImages?.map(roomImage => roomImage?.roomImageId)
+	const defaultImages = room?.roomImages?.map(roomImage => roomImage?.url)
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
@@ -39,19 +41,24 @@ export const EditRoomForm = ({ room }: Props) => {
 		defaultValues: {
 			title: room?.title,
 			description: room?.description,
-			audioId: '',
-			images: []
+			audioId: room?.audio?.id,
+			images: defaultImageIds
 		}
 	})
 
 	const formData = form?.getValues()
 
 	const onSubmit = async () => {
+		// its for bug, it doesnt know that image was changed
+		const { images } = form.watch()
+		const deletedImages = defaultImageIds.filter(id => !images.includes(id))
+
 		const result = await updateRoom({
 			roomTranslationId: room.roomTranslationId,
 			title: formData.title,
 			description: formData.description,
-			images: formData.images,
+			images,
+			deletedImages: deletedImages,
 			audioId: formData.audioId
 		})
 
@@ -69,7 +76,7 @@ export const EditRoomForm = ({ room }: Props) => {
 		<Box paddingTop={6}>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<SectionItemFields />
+					<SectionItemFields initialAudioUrl={room?.audio?.url} initialImagesUrls={defaultImages} />
 					<Actions />
 				</form>
 			</FormProvider>

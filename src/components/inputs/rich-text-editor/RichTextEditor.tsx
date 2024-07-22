@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-import { TextareaHTMLAttributes, useEffect, useMemo, useRef } from 'react'
+import { TextareaHTMLAttributes, useEffect, useMemo } from 'react'
 
 import { removeHtmlTags } from '@/utils/removeHtmlTags'
 
@@ -65,22 +65,29 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 	}
 
 	useEffect(() => {
-		if (id) {
-			const quillContainer = document.getElementById(id)
-			const qlEditor: any = quillContainer?.querySelector('.ql-editor')
+		if (!id) return
 
-			if (qlEditor) {
-				console.log('quillContainer', quillContainer)
-				if (hasSuccess && removeHtmlTags(hasSuccess) && !hasError) {
-					qlEditor.style.borderColor = tokens.colors['success.500']
-				} else if (hasError) {
-					qlEditor.style.borderColor = tokens.colors['destructive.500']
-				} else {
-					qlEditor.style.borderColor = tokens.colors['neutral.300']
+		const checkQuillContainer = (resolve: () => void) => {
+			const quillContainer = document.getElementById(id)
+			if (quillContainer) {
+				const qlEditor = quillContainer.querySelector('.ql-editor') as HTMLElement | null
+				if (qlEditor) {
+					if (hasSuccess && removeHtmlTags(hasSuccess) && !hasError) {
+						qlEditor.style.borderColor = tokens.colors['success.500']
+					} else if (hasError) {
+						qlEditor.style.borderColor = tokens.colors['destructive.500']
+					} else {
+						qlEditor.style.borderColor = tokens.colors['neutral.300']
+					}
+					resolve()
 				}
+			} else {
+				setTimeout(() => checkQuillContainer(resolve), 100)
 			}
 		}
-	}, [hasSuccess, hasError, id])
+
+		new Promise<void>(resolve => checkQuillContainer(resolve))
+	}, [hasSuccess, hasError, id, tokens])
 
 	return (
 		<ReactQuill

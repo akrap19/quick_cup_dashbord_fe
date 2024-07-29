@@ -5,21 +5,24 @@ import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { About } from 'api/models/content/about'
-import { Room } from 'api/models/content/room'
-import { Staff } from 'api/models/content/staff'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { tokens } from '@/style/theme.css'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 import * as styles from './MobilePreview.css'
 
 interface Props {
 	content: any
+	currentImage: number
+	setCurrentImage: Dispatch<SetStateAction<number>>
 }
 
-export const MobilePreviewContent = ({ content }: Props) => {
+export const MobilePreviewContent = ({ content, currentImage, setCurrentImage }: Props) => {
 	const [isAudioPlaying, setIsAudioPlaying] = useState(false)
 	const [audioElement, setAudioElement] = useState<HTMLAudioElement>()
+	const contentImages =
+		(content?.aboutImages && content?.aboutImages) ??
+		(content?.roomImages && content?.roomImages) ??
+		(content?.staffImages && content?.staffImages)
 
 	const playAudioFile = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault()
@@ -44,13 +47,16 @@ export const MobilePreviewContent = ({ content }: Props) => {
 		}
 	}, [content])
 
+	console.log('content?.description', content?.description)
 	return (
 		<Box className={styles.mobilePreviewContentContainer}>
 			<Stack gap={3}>
-				<Inline justifyContent="space-between" alignItems="center">
-					<Text fontSize="xxbig" fontWeight="bold" lineHeight="medium" color="neutral.900">
-						{content?.title}
-					</Text>
+				<Inline justifyContent="space-between" alignItems="flex-start">
+					<Box style={{ width: '268px' }}>
+						<Text fontSize="xxbig" fontWeight="bold" lineHeight="medium" color="neutral.900">
+							{content?.title}
+						</Text>
+					</Box>
 					{content?.audioURL && (
 						<Button size="auto" variant="adaptive" onClick={playAudioFile}>
 							{isAudioPlaying ? (
@@ -62,13 +68,30 @@ export const MobilePreviewContent = ({ content }: Props) => {
 					)}
 				</Inline>
 				<Box borderRadius="small">
-					<Image alt="mobile-preview" src="/images/mobile-preview-template.png" height={234} width={302} />
+					<img
+						alt="mobile-preview"
+						src={contentImages[currentImage]?.url}
+						style={{ objectFit: 'contain', maxWidth: '302px' }}
+					/>
 				</Box>
 				<Stack gap={6}>
-					<Inline justifyContent="space-around" gap={4}>
-						<Box backgroundColor="primary.500" borderRadius="full" style={{ height: '12px', width: '12px' }} />
+					<Inline justifyContent="space-around">
+						<Inline gap={4}>
+							{contentImages?.map((_: any, index: number) => (
+								<Button
+									size="auto"
+									variant="adaptive"
+									disabled={index === currentImage}
+									onClick={() => setCurrentImage(index)}>
+									<Box backgroundColor="primary.500" borderRadius="full" style={{ height: '12px', width: '12px' }} />
+								</Button>
+							))}
+						</Inline>
 					</Inline>
-					<Text lineHeight="xlarge">{content?.description}</Text>
+					<div
+						dangerouslySetInnerHTML={{ __html: content?.description }}
+						style={{ lineHeight: tokens.typography.lineHeight.xlarge, color: tokens.colors['neutral.900'] }}
+					/>
 				</Stack>
 			</Stack>
 		</Box>

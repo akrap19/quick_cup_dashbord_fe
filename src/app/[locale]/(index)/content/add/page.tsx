@@ -7,6 +7,7 @@ import { ContentStepNavigation } from './ContentStepNavigation'
 interface Props {
 	searchParams: {
 		language?: string
+		languageId?: string
 	}
 }
 

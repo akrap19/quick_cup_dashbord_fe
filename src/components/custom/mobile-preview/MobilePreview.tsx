@@ -18,8 +18,20 @@ interface Props {
 
 export const MobilePreview = ({ content }: Props) => {
 	const [contentType, setContentType] = useState('abouts')
+	const [currentImage, setCurrentImage] = useState(0)
 	const [currentContentPage, setCurrentContentPage] = useState(0)
-	const currentContent = content[contentType as keyof Content][currentContentPage]
+	const currentContent = content && content[contentType as keyof Content][currentContentPage]
+
+	const handleContentType = (contentType: string) => {
+		setCurrentImage(0)
+		setCurrentContentPage(0)
+		setContentType(contentType)
+	}
+
+	const handleContentPage = (contentPage: number) => {
+		setCurrentImage(0)
+		setCurrentContentPage(contentPage)
+	}
 
 	return (
 		<Box width="100%" display="flex" justify="center">
@@ -33,11 +45,19 @@ export const MobilePreview = ({ content }: Props) => {
 						<MobilePreviewHeader
 							contentTypes={contentTypes}
 							contentType={contentType}
-							setContentType={setContentType}
+							handleContentType={handleContentType}
 						/>
 						<Stack gap={6}>
-							<MobilePreviewContent content={currentContent} />
-							<MobilePreviewFooter />
+							<MobilePreviewContent
+								content={currentContent}
+								currentImage={currentImage}
+								setCurrentImage={setCurrentImage}
+							/>
+							<MobilePreviewFooter
+								totalContentPages={content[contentType as keyof Content]?.length}
+								currentContentPage={currentContentPage}
+								handleContentPage={handleContentPage}
+							/>
 						</Stack>
 					</Stack>
 				</Box>

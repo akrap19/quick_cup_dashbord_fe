@@ -22,10 +22,10 @@ import CarretUpIcon from '../../icons/block-icon/assets/carret-up-icon.svg'
 interface Props {
 	options: string[]
 	value: string
-	setValue: Dispatch<SetStateAction<string>>
+	handleContentType: (contentType: string) => void
 }
 
-export const MobilePreviewDropdown = ({ options, value, setValue }: Props) => {
+export const MobilePreviewDropdown = ({ options, value, handleContentType }: Props) => {
 	const t = useTranslations()
 	const [isOpen, setIsOpen] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
@@ -33,7 +33,7 @@ export const MobilePreviewDropdown = ({ options, value, setValue }: Props) => {
 	const handleDropdownOption = (e: React.MouseEvent<HTMLButtonElement>, option: string) => {
 		e.preventDefault()
 
-		setValue(option)
+		handleContentType(option)
 	}
 
 	const handleDropDownOpening = (e: React.MouseEvent<HTMLButtonElement>) => {

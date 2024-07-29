@@ -13,10 +13,12 @@ import { PreviewAndPublish } from '../common/PreviewAndPublish'
 
 const AddContentPage = () => {
 	const { currentStep } = useStepsStore()
+
 	useSteps({
 		totalSteps: 5,
 		currentStep: 1
 	})
+
 	useNavbarItems({
 		title: 'ManageContent.add',
 		backLabel: 'ManageContent.back',

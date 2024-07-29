@@ -89,13 +89,16 @@ export const ManageStaffContent = () => {
 		if (result?.message === 'OK') {
 			SuccessToast(t('ManageContent.staffContentSccessfullyCreated'))
 
+			let routeReplaced = false
+
 			if (language?.id) {
 				const newParams = new URLSearchParams(searchParams.toString())
 				newParams.set('languageId', language?.id)
 				router.replace(`${pathname}?${newParams.toString()}`)
+				routeReplaced = true
 			}
 
-			if (currentStep) {
+			if (currentStep && routeReplaced) {
 				setCurrentStep(currentStep + 1)
 			}
 		}

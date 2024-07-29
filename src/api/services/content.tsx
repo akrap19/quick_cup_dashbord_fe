@@ -1,12 +1,12 @@
 import { fetchWithToken } from 'api/instances/FetchWithToken'
 
 interface Query {
-	language?: string
+	languageId?: string
 }
 
 export const getContent = (query: Query) => {
 	const queryParams = {
-		languageId: query.language
+		languageId: query.languageId
 	}
 
 	return fetchWithToken(`content`, { languageId: queryParams.languageId })

@@ -16,6 +16,8 @@ import { Text } from '@/components/typography/text'
 import { SearchDropdown } from '@/components/custom/search-dropdown'
 import { translateLanguage } from 'api/services/languages'
 import { Language } from 'api/models/language/language'
+import { useManageContent } from '@/store/manage-content'
+import { ROUTES } from 'parameters'
 
 interface Props {
 	languages: Language[]
@@ -30,6 +32,7 @@ type Schema = z.infer<typeof formSchema>
 export const ContentPublished = ({ languages }: Props) => {
 	const t = useTranslations()
 	const router = useRouter()
+	const { setContent } = useManageContent()
 
 	const transformedLanguageArray = languages
 		?.filter((language: Language) => language.autoTranslate)
@@ -52,7 +55,8 @@ export const ContentPublished = ({ languages }: Props) => {
 		const result = await translateLanguage(formData.language)
 
 		if (result?.message === 'OK') {
-			console.log('result', result)
+			setContent(result?.data)
+			router.push(ROUTES.AUTOTRANSLATE_AND_REVIEW)
 		}
 	}
 

@@ -28,7 +28,7 @@ export const Inputs = ({ data }: Props) => {
 	const searchParams = useSearchParams()
 	const confirmDialog = useOpened()
 	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
-	const { push, refresh } = useRouter()
+	const { push, replace, refresh } = useRouter()
 	const statusOptions = [
 		{ value: '', label: 'General.allStatuses' },
 		{ value: LanguageStatusEnum.DRAFT, label: 'General.draft' },
@@ -47,7 +47,7 @@ export const Inputs = ({ data }: Props) => {
 			{ skipEmptyString: true }
 		)
 
-		push(url)
+		replace(url)
 	}
 
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)

@@ -15,7 +15,7 @@ type Props = {
 		opened: boolean
 		toggleOpened: () => void
 	}
-	onSubmit: () => Promise<void>
+	onSubmit?: () => Promise<void>
 }
 
 export const ConfirmActionDialog = ({
@@ -47,9 +47,11 @@ export const ConfirmActionDialog = ({
 				<Button variant="secondary" disabled={buttonActionLoading} onClick={confirmDialog.toggleOpened}>
 					{t('General.cancel')}
 				</Button>
-				<Button disabled={buttonActionLoading} onClick={() => onSubmit()}>
-					{t(buttonActionLoading ? 'General.loading' : buttonLabel)}
-				</Button>
+				{onSubmit && (
+					<Button disabled={buttonActionLoading} onClick={() => onSubmit()}>
+						{t(buttonActionLoading ? 'General.loading' : buttonLabel)}
+					</Button>
+				)}
 			</ConfirmDialog.Actions>
 		</ConfirmDialog>
 	)

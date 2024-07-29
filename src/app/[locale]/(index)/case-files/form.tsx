@@ -17,10 +17,10 @@ interface Props {
 const CaseFilesForm = ({ cancelDialog }: Props) => {
 	const t = useTranslations()
 	const options = [
-		{ id: 'open', name: t('General.open') },
-		{ id: 'inProgress', name: t('General.inProgress') },
-		{ id: 'closed', name: t('General.closed') },
-		{ id: 'other', name: t('General.other') }
+		{ id: 'Open', name: t('General.open') },
+		{ id: 'InProgress', name: t('General.inProgress') },
+		{ id: 'Closed', name: t('General.closed') },
+		{ id: 'Other', name: t('General.other') }
 	]
 
 	return (

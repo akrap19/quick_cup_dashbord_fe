@@ -55,8 +55,7 @@ export const ManageBarnahusContent = () => {
 
 	const formData = form?.getValues()
 
-	// const { fields, append, remove } = useFieldArray({
-	const { fields, append } = useFieldArray({
+	const { fields, append, remove } = useFieldArray({
 		control: form.control,
 		name: 'items'
 	})
@@ -68,6 +67,11 @@ export const ManageBarnahusContent = () => {
 			audioId: '',
 			images: [] as any
 		})
+	}
+
+	const handleRemoveSection = () => {
+		const removeIndex = formData?.items?.length - 1
+		remove(removeIndex)
 	}
 
 	const onSubmit = async () => {
@@ -101,9 +105,12 @@ export const ManageBarnahusContent = () => {
 							<Box>
 								<Stack gap={4}>
 									<TitleSubsection
-										buttonLabel="ManageContent.addAbout"
+										addButtonLabel="ManageContent.addAbout"
+										removeButtonLabel="ManageContent.removeAbout"
 										infoText="ManageContent.addAboutInfoText"
-										onClick={handleAddSection}
+										showRemoveButton={formData?.items?.length > 1}
+										handleAddSection={handleAddSection}
+										handleRemoveSection={handleRemoveSection}
 									/>
 									{fields.map((field, index) => (
 										<div key={field.id}>

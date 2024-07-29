@@ -9,13 +9,14 @@ import { TextInput } from '@/components/inputs/text-input'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
+import { Audio } from 'api/models/common/audio'
 
 interface Props {
-	initialAudioUrl?: string
+	initialAudio?: Audio
 	initialImagesUrls?: string[]
 }
 
-export const SectionItemFields = ({ initialAudioUrl, initialImagesUrls }: Props) => {
+export const SectionItemFields = ({ initialAudio, initialImagesUrls }: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -46,7 +47,7 @@ export const SectionItemFields = ({ initialAudioUrl, initialImagesUrls }: Props)
 						<RequiredLabel>{t('ManageContent.audioTranslation')}</RequiredLabel>
 					</Text>
 					<FormControl name="audioId">
-						<AudioUpload initialAudioUrl={initialAudioUrl} />
+						<AudioUpload initialAudio={initialAudio} />
 						<FormControl.Message />
 					</FormControl>
 				</Stack>

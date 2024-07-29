@@ -10,7 +10,7 @@ const variantTextMap: Record<string, string> = {
 	published: 'General.published',
 	hidden: 'General.hidden',
 	open: 'General.open',
-	inProgress: 'General.inProgress',
+	inprogress: 'General.inProgress',
 	closed: 'General.closed',
 	other: 'General.other'
 }

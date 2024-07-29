@@ -8,16 +8,17 @@ import { PlayIcon } from '@/components/icons/play-icon'
 import { Button } from '@/components/inputs/button'
 import { Inline } from '@/components/layout/inline'
 import { deleteMedia, media } from 'api/services/common'
+import { Audio } from 'api/models/common/audio'
 
 import * as styles from './AudioUpload.css'
 import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'
 import { iconContainer } from '../../button/icon-delete-button/IconDeleteButton.css'
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
-	initialAudioUrl?: string
+	initialAudio?: Audio
 }
 
-export const AudioUpload = ({ initialAudioUrl, ...rest }: Props) => {
+export const AudioUpload = ({ initialAudio, ...rest }: Props) => {
 	const [isAudioPlaying, setIsAudioPlaying] = useState(false)
 	const [audioFile, setAudioFile] = useState<File>()
 	const [audioElement, setAudioElement] = useState<HTMLAudioElement>()
@@ -25,7 +26,7 @@ export const AudioUpload = ({ initialAudioUrl, ...rest }: Props) => {
 
 	const handleFileChange = async (event: any) => {
 		const file = event.target.files[0]
-		const audio = new Audio(URL.createObjectURL(file))
+		const audio = new window.Audio(URL.createObjectURL(file))
 		audio.loop = true
 		const result = await media('Audio', file)
 
@@ -42,14 +43,16 @@ export const AudioUpload = ({ initialAudioUrl, ...rest }: Props) => {
 			setIsAudioPlaying(!isAudioPlaying)
 		}
 
-		if (rest && rest.value && !initialAudioUrl) {
-			const result = await deleteMedia(rest.value.toString())
+		if (rest && rest.value) {
+			if (rest.value.toString() !== initialAudio?.id) {
+				const result = await deleteMedia(rest.value.toString())
 
-			if (result?.message === 'OK') {
+				if (result?.message === 'OK') {
+					handleRemovingAudio()
+				}
+			} else if (rest.value.toString() === initialAudio?.id) {
 				handleRemovingAudio()
 			}
-		} else if (initialAudioUrl) {
-			handleRemovingAudio()
 		}
 	}
 
@@ -77,8 +80,8 @@ export const AudioUpload = ({ initialAudioUrl, ...rest }: Props) => {
 	}
 
 	useEffect(() => {
-		if (initialAudioUrl) {
-			const audio = new Audio(initialAudioUrl)
+		if (initialAudio?.url) {
+			const audio = new window.Audio(initialAudio?.url)
 			audio.loop = true
 			setAudioElement(audio)
 		}
@@ -86,7 +89,7 @@ export const AudioUpload = ({ initialAudioUrl, ...rest }: Props) => {
 
 	return (
 		<div>
-			{audioFile || initialAudioUrl ? (
+			{audioFile || initialAudio ? (
 				<div className={styles.fileContainer}>
 					<Inline justifyContent="space-between">
 						<Inline alignItems="center" gap={4}>
@@ -101,7 +104,7 @@ export const AudioUpload = ({ initialAudioUrl, ...rest }: Props) => {
 							</Button>
 							<div className={styles.fileLabelConteiner}>
 								<label htmlFor={rest.id} className={styles.fileLabel}>
-									{audioFile?.name}
+									{audioFile?.name ?? initialAudio?.name}
 								</label>
 							</div>
 						</Inline>

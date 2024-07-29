@@ -8,11 +8,18 @@ import { MobilePreviewContent } from './MobilePreviewContent'
 import { MobilePreviewFooter } from './MobilePreviewFooter'
 import { MobilePreviewHeader } from './MobilePreviewHeader'
 import { useState } from 'react'
+import { Content } from 'api/models/content/content'
 
-const contentTypes = ['About Barnahus', 'Rooms', 'Staff']
+const contentTypes = ['abouts', 'rooms', 'staff']
 
-export const MobilePreview = () => {
-	const [contentType, setContentType] = useState('About Barnahus')
+interface Props {
+	content: Content
+}
+
+export const MobilePreview = ({ content }: Props) => {
+	const [contentType, setContentType] = useState('abouts')
+	const [currentContentPage, setCurrentContentPage] = useState(0)
+	const currentContent = content[contentType as keyof Content][currentContentPage]
 
 	return (
 		<Box width="100%" display="flex" justify="center">
@@ -29,7 +36,7 @@ export const MobilePreview = () => {
 							setContentType={setContentType}
 						/>
 						<Stack gap={6}>
-							<MobilePreviewContent />
+							<MobilePreviewContent content={currentContent} />
 							<MobilePreviewFooter />
 						</Stack>
 					</Stack>

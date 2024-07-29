@@ -31,7 +31,7 @@ interface Props<TData, TValue> {
 export const DataTable = <TData, TValue>({ columns, data, pagination }: Props<TData, TValue>) => {
 	const { checkedItems } = useTableStore()
 	const searchParams = useSearchParams()
-	const { push } = useRouter()
+	const { replace } = useRouter()
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 	const [rowSelection, setRowSelection] = useState({})
 	const [sorting, setSorting] = useState<SortingState>([])
@@ -49,7 +49,7 @@ export const DataTable = <TData, TValue>({ columns, data, pagination }: Props<TD
 			{ skipEmptyString: true }
 		)
 
-		push(url)
+		replace(url)
 	}
 
 	const table = useReactTable({

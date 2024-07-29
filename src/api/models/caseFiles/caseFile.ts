@@ -3,5 +3,6 @@ export interface CaseFile {
 	customId: string
 	status: string
 	barnahus: string
+	updatedAt: string
 	lastJourneySnapshot: string
 }

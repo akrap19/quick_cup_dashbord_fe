@@ -13,8 +13,13 @@ import { useStepsStore } from '@/store/steps'
 import { publishLanguage } from 'api/services/languages'
 
 import { LanguageLabel } from './LanguageLabel'
+import { Content } from 'api/models/content/content'
 
-export const PreviewAndPublish = () => {
+interface Props {
+	content: Content
+}
+
+export const PreviewAndPublish = ({ content }: Props) => {
 	const t = useTranslations()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const { language } = useManageContent()
@@ -54,7 +59,7 @@ export const PreviewAndPublish = () => {
 					</Stack>
 					<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
 						<LanguageLabel language={language?.name} />
-						<MobilePreview />
+						<MobilePreview content={content} />
 					</Box>
 				</Stack>
 			</Box>

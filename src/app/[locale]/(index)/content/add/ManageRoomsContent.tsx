@@ -54,8 +54,7 @@ export const ManageRoomsContent = () => {
 
 	const formData = form?.getValues()
 
-	// const { fields, append, remove } = useFieldArray({
-	const { fields, append } = useFieldArray({
+	const { fields, append, remove } = useFieldArray({
 		control: form.control,
 		name: 'items'
 	})
@@ -67,6 +66,11 @@ export const ManageRoomsContent = () => {
 			audioId: '',
 			images: [] as any
 		})
+	}
+
+	const handleRemoveSection = () => {
+		const removeIndex = formData?.items?.length - 1
+		remove(removeIndex)
 	}
 
 	const onSubmit = async () => {
@@ -108,9 +112,12 @@ export const ManageRoomsContent = () => {
 						<Box padding={6} borderTop="thin" borderColor="neutral.300">
 							<Stack gap={4}>
 								<TitleSubsection
-									buttonLabel="ManageContent.addRoom"
+									addButtonLabel="ManageContent.addRoom"
+									removeButtonLabel="ManageContent.removeRoom"
 									infoText="ManageContent.addRoomInfoText"
-									onClick={handleAddSection}
+									showRemoveButton={formData?.items?.length > 1}
+									handleAddSection={handleAddSection}
+									handleRemoveSection={handleRemoveSection}
 								/>
 								{fields.map((field, index) => (
 									<div key={field.id}>

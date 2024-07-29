@@ -76,7 +76,7 @@ export const EditAboutForm = ({ about }: Props) => {
 		<Box paddingTop={6}>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<SectionItemFields initialAudioUrl={about?.audio?.url} initialImagesUrls={defaultImages} />
+					<SectionItemFields initialAudio={about?.audio} initialImagesUrls={defaultImages} />
 					<Actions />
 				</form>
 			</FormProvider>

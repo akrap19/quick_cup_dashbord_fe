@@ -3,9 +3,9 @@ import { fetchWithToken } from 'api/instances/FetchWithToken'
 import { ContentPayload } from 'api/models/content/contentPayload'
 
 interface Query {
-	languageId: string
-	page: number
-	limit: number
+	languageId?: string
+	page?: number
+	limit?: number
 }
 
 export const getStaffs = (query: Query) => {

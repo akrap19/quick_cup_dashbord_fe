@@ -19,6 +19,7 @@ import { requiredString } from 'schemas'
 import { StaffSectionItemsFields } from '../common/StaffSectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
 import { ContentPayload } from 'api/models/content/contentPayload'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 
 const formSchema = z.object({
 	items: z.array(
@@ -34,6 +35,9 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const ManageStaffContent = () => {
+	const searchParams = useSearchParams()
+	const router = useRouter()
+	const pathname = usePathname()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const { language } = useManageContent()
 	const t = useTranslations()
@@ -55,8 +59,7 @@ export const ManageStaffContent = () => {
 
 	const formData = form?.getValues()
 
-	// const { fields, append, remove } = useFieldArray({
-	const { fields, append } = useFieldArray({
+	const { fields, append, remove } = useFieldArray({
 		control: form.control,
 		name: 'items'
 	})
@@ -70,6 +73,11 @@ export const ManageStaffContent = () => {
 		})
 	}
 
+	const handleRemoveSection = () => {
+		const removeIndex = formData?.items?.length - 1
+		remove(removeIndex)
+	}
+
 	const onSubmit = async () => {
 		const formDataTmp: ContentPayload[] = [...formData.items]
 		formDataTmp.forEach(obj => {
@@ -80,6 +88,12 @@ export const ManageStaffContent = () => {
 
 		if (result?.message === 'OK') {
 			SuccessToast(t('ManageContent.staffContentSccessfullyCreated'))
+
+			if (language?.id) {
+				const newParams = new URLSearchParams(searchParams.toString())
+				newParams.set('languageId', language?.id)
+				router.replace(`${pathname}?${newParams.toString()}`)
+			}
 
 			if (currentStep) {
 				setCurrentStep(currentStep + 1)
@@ -99,7 +113,14 @@ export const ManageStaffContent = () => {
 						</Box>
 						<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
 							<Stack gap={4}>
-								<TitleSubsection buttonLabel="ManageContent.addStaff" onClick={handleAddSection} />
+								<TitleSubsection
+									addButtonLabel="ManageContent.addStaff"
+									removeButtonLabel="ManageContent.removeStaff"
+									infoText="ManageContent.addStaffInfoText"
+									showRemoveButton={formData?.items?.length > 1}
+									handleAddSection={handleAddSection}
+									handleRemoveSection={handleRemoveSection}
+								/>
 								{fields.map((field: any, index: number) => (
 									<div key={field.id}>
 										{index > 0 && (

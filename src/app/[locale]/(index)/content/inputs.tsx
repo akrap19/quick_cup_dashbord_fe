@@ -33,7 +33,7 @@ interface Props {
 
 export const Inputs = ({ data, languages, buttonLabel, buttonLink, languageValue, setLanguageValue }: Props) => {
 	const t = useTranslations()
-	const { push, refresh } = useRouter()
+	const { push, replace, refresh } = useRouter()
 	const searchParams = useSearchParams()
 	const confirmDialog = useOpened()
 	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
@@ -62,7 +62,7 @@ export const Inputs = ({ data, languages, buttonLabel, buttonLink, languageValue
 			{ skipEmptyString: true }
 		)
 
-		push(url)
+		replace(url)
 	}
 
 	const handleEdit = () => {

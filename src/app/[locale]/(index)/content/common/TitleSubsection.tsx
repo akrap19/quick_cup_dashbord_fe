@@ -7,21 +7,41 @@ import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
+import { RemoveButton } from '@/components/custom/button/remove-button'
 
 interface Props {
-	buttonLabel: string
+	addButtonLabel: string
+	removeButtonLabel: string
 	infoText?: string
-	onClick?: MouseEventHandler<HTMLButtonElement>
+	showRemoveButton?: boolean
+	handleAddSection?: MouseEventHandler<HTMLButtonElement>
+	handleRemoveSection?: MouseEventHandler<HTMLButtonElement>
 }
 
-export const TitleSubsection = ({ buttonLabel, infoText, onClick }: Props) => {
+export const TitleSubsection = ({
+	addButtonLabel,
+	removeButtonLabel,
+	infoText,
+	showRemoveButton,
+	handleAddSection,
+	handleRemoveSection
+}: Props) => {
 	const t = useTranslations()
 	const { language } = useManageContent()
 
 	return (
 		<Inline justifyContent="space-between" alignItems="center">
 			<Inline gap={5} alignItems="center">
-				<AddButton type="button" size="small2" variant="secondary" buttonLabel={buttonLabel} onClick={onClick} />
+				<AddButton
+					type="button"
+					size="small2"
+					variant="secondary"
+					buttonLabel={addButtonLabel}
+					onClick={handleAddSection}
+				/>
+				{showRemoveButton && (
+					<RemoveButton type="button" size="small2" buttonLabel={removeButtonLabel} onClick={handleRemoveSection} />
+				)}
 				{infoText && <InputInfo infoText={t(infoText)} />}
 			</Inline>
 			{language && (

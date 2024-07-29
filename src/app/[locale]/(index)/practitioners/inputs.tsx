@@ -27,7 +27,7 @@ export const Inputs = ({ data }: Props) => {
 	const searchParams = useSearchParams()
 	const confirmDialog = useOpened()
 	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
-	const { push, refresh } = useRouter()
+	const { push, replace, refresh } = useRouter()
 
 	const handleFilterChange = (filter: string, value: string) => {
 		const current = qs.parse(searchParams.toString())
@@ -40,7 +40,7 @@ export const Inputs = ({ data }: Props) => {
 			{ skipEmptyString: true }
 		)
 
-		push(url)
+		replace(url)
 	}
 
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)

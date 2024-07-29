@@ -4,6 +4,7 @@ import { DataTable } from '@/components/data-display/data-table'
 import { replaceNullInListWithDash } from '@/utils/replaceNullInListWithDash'
 import { CaseFile } from 'api/models/caseFiles/caseFile'
 import { getCaseFiles } from 'api/services/caseFiles'
+import { format } from 'date-fns'
 import { ROUTES } from 'parameters'
 
 import { columns } from './columns'
@@ -23,10 +24,12 @@ const CaseFilesPage = async ({ searchParams }: Props) => {
 	const transformedAdminArray = caseFilesData?.cases?.map((caseFile: CaseFile) => {
 		return {
 			...caseFile,
-			id: caseFile.caseId
+			id: caseFile.caseId,
+			caseJourneyUpdates: format(caseFile.updatedAt, 'dd/MM/yyyy')
 		}
 	})
 
+	console.log('testest', transformedAdminArray)
 	return isInitialListEmpty ? (
 		<NoListData
 			navbarTitle="General.caseFiles"

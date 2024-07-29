@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import React, { InputHTMLAttributes, useEffect, useState } from 'react'
+import React, { InputHTMLAttributes, useEffect, useRef, useState } from 'react'
 
 import { UploadIcon } from '@/components/icons/upload-icon'
 import { Box } from '@/components/layout/box'
@@ -20,6 +20,7 @@ export const PhotoUpload = ({ initialImagesUrls, ...rest }: Props) => {
 	const t = useTranslations()
 	const [photos, setPhotos] = useState<string[]>([])
 	const [mediaId, setMediaId] = useState<string[]>([])
+	const fileInputRef = useRef<HTMLInputElement>(null)
 
 	const handleFileChange = (event: any) => {
 		const { files } = event.target
@@ -39,6 +40,11 @@ export const PhotoUpload = ({ initialImagesUrls, ...rest }: Props) => {
 			setPhotos(newPhotosForUpload)
 			setMediaId(newUploadedMediaId)
 			handleInputValue(newUploadedMediaId)
+
+			// Reset the input value to allow the same file to be uploaded again
+			if (fileInputRef.current) {
+				fileInputRef.current.value = ''
+			}
 		}
 
 		handleAllFileUploads()
@@ -106,6 +112,7 @@ export const PhotoUpload = ({ initialImagesUrls, ...rest }: Props) => {
 				multiple
 				onChange={handleFileChange}
 				className={styles.fileInput}
+				ref={fileInputRef}
 			/>
 			<label htmlFor={rest.id} className={styles.photoUploadLabel}>
 				<Box padding={2}>
@@ -117,7 +124,7 @@ export const PhotoUpload = ({ initialImagesUrls, ...rest }: Props) => {
 			</label>
 			{photos &&
 				photos.map((photo: string) => (
-					<Box position="relative" style={{ height: '212px' }}>
+					<Box position="relative" style={{ height: '212px' }} key={photo}>
 						<Box className={styles.imageDeleteIconContainer}>
 							<IconDeleteButton onDelete={() => handleDelete(photo)} />
 						</Box>

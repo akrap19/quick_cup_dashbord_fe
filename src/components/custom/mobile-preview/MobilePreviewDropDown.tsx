@@ -60,7 +60,7 @@ export const MobilePreviewDropdown = ({ options, value, setValue }: Props) => {
 			<Stack>
 				<Button size="auto" variant="adaptive" onClick={handleDropDownOpening}>
 					<Box className={clsx(mobilePreviewDropdownInput, endIconSpacing)}>
-						<Text className={MobilePreviewDropdownLabel({ variant: 'selectedLabel' })}>{value}</Text>
+						<Text className={MobilePreviewDropdownLabel({ variant: 'selectedLabel' })}>{t('General.' + value)}</Text>
 						<BlockIcon icon={isOpen ? CarretUpIcon : CarretDownIcon} size="large" color="neutral.800" />
 					</Box>
 				</Button>
@@ -70,11 +70,15 @@ export const MobilePreviewDropdown = ({ options, value, setValue }: Props) => {
 					<Stack gap={4}>
 						{options?.map((option: string) =>
 							value === option ? (
-								<Text className={MobilePreviewDropdownLabel({ variant: 'selectedLabel' })}>{option}</Text>
+								<Text className={MobilePreviewDropdownLabel({ variant: 'selectedLabel' })}>
+									{t('General.' + option)}
+								</Text>
 							) : (
 								<Button size="auto" variant="adaptive" onClick={e => handleDropdownOption(e, option)}>
 									<Box width="100%" textAlign="left">
-										<Text className={MobilePreviewDropdownLabel({ variant: 'dropDownItemLabel' })}>{option}</Text>
+										<Text className={MobilePreviewDropdownLabel({ variant: 'dropDownItemLabel' })}>
+											{t('General.' + option)}
+										</Text>
 									</Box>
 								</Button>
 							)

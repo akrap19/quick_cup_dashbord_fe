@@ -73,7 +73,7 @@
 
 .ql-editor {
 	font-family: 'Inter', sans-serif;
-	padding: 10px 12px !important;
+	padding: 10px 48px 10px 12px !important;
 	background-color: #fff;
 	border-radius: 8px;
 	border-right: 1px solid #d6d6dd;
@@ -115,4 +115,26 @@
 	color: #d6d6d6;
 	font-size: 0.875rem;
 	left: 12px;
+}
+
+.ql-stroke:hover {
+	color: #faa977;
+	stroke: #faa977 !important;
+	fill: #faa977;
+}
+
+.ql-picker-label::before .ql-stroke:hover {
+	color: #faa977 !important;
+	stroke: #faa977 !important;
+	fill: #faa977 !important;
+}
+
+.ql-picker-label::before:hover {
+	color: #faa977;
+	stroke: #faa977;
+	fill: #faa977;
+}
+
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke {
+	stroke: #faa977 !important;
 }

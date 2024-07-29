@@ -12,16 +12,18 @@ import { SelectLanguage } from './SelectLanguage'
 import { ContentPublished } from '../common/ContentPublished'
 import { PreviewAndPublish } from '../common/PreviewAndPublish'
 import { Language } from 'api/models/language/language'
+import { Content } from 'api/models/content/content'
 
 interface Props {
 	languages: Language[]
+	content: Content
 }
 
-export const ContentStepNavigation = ({ languages }: Props) => {
+export const ContentStepNavigation = ({ languages, content }: Props) => {
 	const { currentStep } = useStepsStore()
 	useSteps({
 		totalSteps: 6,
-		currentStep: 1
+		currentStep: 5
 	})
 	useNavbarItems({
 		title: 'ManageContent.add',
@@ -35,7 +37,7 @@ export const ContentStepNavigation = ({ languages }: Props) => {
 			{currentStep === 2 && <ManageBarnahusContent />}
 			{currentStep === 3 && <ManageRoomsContent />}
 			{currentStep === 4 && <ManageStaffContent />}
-			{currentStep === 5 && <PreviewAndPublish />}
+			{currentStep === 5 && <PreviewAndPublish content={content} />}
 			{currentStep === 6 && <ContentPublished languages={languages} />}
 		</ManageJourneyWrapper>
 	)

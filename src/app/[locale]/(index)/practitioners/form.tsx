@@ -9,6 +9,7 @@ import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
 import { OpenedProps } from '@/hooks/use-toggle'
+import { useSearchParams } from 'next/navigation'
 
 interface Props {
 	isEdit?: boolean
@@ -16,6 +17,8 @@ interface Props {
 }
 
 const PractitionerForm = ({ isEdit, cancelDialog }: Props) => {
+	const searchParams = useSearchParams()
+	const userProfesionSearchParams = searchParams.get('userProfession')
 	const t = useTranslations()
 	const options = [
 		{ id: 'Coordinator', name: 'Coordinator' },
@@ -25,6 +28,9 @@ const PractitionerForm = ({ isEdit, cancelDialog }: Props) => {
 		{ id: 'Nurse', name: 'Nurse' },
 		{ id: 'Other', name: 'Other' }
 	]
+	const filteredOptions = options.filter(option =>
+		option.name.toLocaleLowerCase().includes(userProfesionSearchParams?.toLocaleLowerCase() ?? '')
+	)
 
 	return (
 		<FormItems openCancelDialog={cancelDialog?.toggleOpened}>
@@ -62,7 +68,7 @@ const PractitionerForm = ({ isEdit, cancelDialog }: Props) => {
 				<FormControl.Label>
 					<RequiredLabel>{t('General.role')}</RequiredLabel>
 				</FormControl.Label>
-				<SearchDropdown placeholder="General.role" options={options} />
+				<SearchDropdown placeholder="General.role" options={filteredOptions} alwaysShowSearch={true} />
 				<FormControl.Message />
 			</FormControl>
 			<FormControl name="phoneNumber">

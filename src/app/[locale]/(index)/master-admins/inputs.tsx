@@ -18,6 +18,7 @@ import { useTableStore } from '@/store/table'
 import { Admins } from 'api/models/admin/Admins'
 import { deleteMasterAdmin, deleteMasterAdmins } from 'api/services/masterAdmins'
 import { ROUTES } from 'parameters'
+import { useState } from 'react'
 
 interface Props {
 	data: Admins[]
@@ -28,8 +29,13 @@ export const Inputs = ({ data, locations }: Props) => {
 	const t = useTranslations()
 	const searchParams = useSearchParams()
 	const confirmDialog = useOpened()
+	const [itemsForDelete, setItemsForDelete] = useState<string[]>([])
+	const [confirmDialogDescription, setItemsForDeleteDescription] = useState<string>(
+		'MasterAdmin.deleteMasterAdminDescription'
+	)
 	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
-	const { push, refresh } = useRouter()
+	const indexes = Object.keys(checkedItems)
+	const { push, replace, refresh } = useRouter()
 	const formattedLocations = locations?.map(location => ({
 		value: location,
 		label: location
@@ -51,7 +57,7 @@ export const Inputs = ({ data, locations }: Props) => {
 			{ skipEmptyString: true }
 		)
 
-		push(url)
+		replace(url)
 	}
 
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)
@@ -64,14 +70,8 @@ export const Inputs = ({ data, locations }: Props) => {
 	}
 
 	const handleDelete = async () => {
-		const indexes = Object.keys(checkedItems)
-		const ids = indexes.map(index => {
-			const numericIndex = parseInt(index, 10)
-			return data[numericIndex].userId
-		})
-
-		const isDeleteBulk = ids.length > 1
-		const result = await (isDeleteBulk ? deleteMasterAdmins(ids) : deleteMasterAdmin(ids[0]))
+		const isDeleteBulk = itemsForDelete.length > 1
+		const result = await (isDeleteBulk ? deleteMasterAdmins(itemsForDelete) : deleteMasterAdmin(itemsForDelete[0]))
 
 		if (result?.message === 'OK') {
 			SuccessToast(t(isDeleteBulk ? 'MasterAdmins.successfullBulkDelete' : 'MasterAdmins.successfullyDeleted'))
@@ -79,6 +79,28 @@ export const Inputs = ({ data, locations }: Props) => {
 			confirmDialog.toggleOpened()
 			refresh()
 		}
+	}
+
+	const handleDialogs = () => {
+		let ids: string[] = []
+
+		indexes.map(index => {
+			const numericIndex = parseInt(index, 10)
+
+			if (data[numericIndex].deletable) {
+				ids.push(data[numericIndex].userId)
+			}
+		})
+
+		if (ids.length === indexes.length) {
+			setItemsForDeleteDescription('MasterAdmins.deleteMasterAdminDescription')
+		} else if (ids.length === 0) {
+			setItemsForDeleteDescription('MasterAdmins.noDeleteMasterAdminDescription')
+		} else if (ids.length < indexes.length) {
+			setItemsForDeleteDescription('MasterAdmins.partialDeleteMasterAdminDescription')
+		}
+		setItemsForDelete(ids)
+		confirmDialog.toggleOpened()
 	}
 
 	return (
@@ -106,14 +128,14 @@ export const Inputs = ({ data, locations }: Props) => {
 					<AddButton buttonLabel={t('MasterAdmins.add')} buttonLink={ROUTES.ADD_MASTER_ADMINS} />
 				</Inline>
 			) : (
-				<DataTableActions onEdit={handleEdit} onDelete={() => confirmDialog.toggleOpened()} />
+				<DataTableActions onEdit={handleEdit} onDelete={handleDialogs} />
 			)}
 			<ConfirmActionDialog
 				title="MasterAdmins.delete"
-				description="MasterAdmins.deleteMasterAdminDescription"
+				description={confirmDialogDescription}
 				buttonLabel="General.delete"
 				confirmDialog={confirmDialog}
-				onSubmit={handleDelete}
+				onSubmit={itemsForDelete.length !== 0 ? handleDelete : undefined}
 			/>
 		</div>
 	)

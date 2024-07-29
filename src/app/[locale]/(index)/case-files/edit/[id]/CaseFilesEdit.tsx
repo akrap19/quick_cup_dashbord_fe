@@ -12,6 +12,8 @@ import { CaseFile } from 'api/models/caseFiles/caseFile'
 import { requiredString } from 'schemas'
 
 import CaseFileForm from '../../form'
+import { updateCaseFile } from 'api/services/caseFiles'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 
 const formSchema = z.object({
 	status: requiredString.shape.scheme,
@@ -27,7 +29,7 @@ interface Props {
 
 const CaseFileEdit = ({ caseFile }: Props) => {
 	const t = useTranslations()
-	const { back } = useRouter()
+	const { back, refresh } = useRouter()
 	useNavbarItems({ title: 'CaseFiles.edit', backLabel: 'CaseFiles.back' })
 
 	const form = useForm<Schema>({
@@ -38,11 +40,12 @@ const CaseFileEdit = ({ caseFile }: Props) => {
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		// const result = await updateCaseFile({ ...data, id: caseFile.id })
-		// if (result?.message === 'OK') {
-		// 	SuccessToast(t('CaseFiles.successfullyEdited'))
-		// 	back()
-		// }
+		const result = await updateCaseFile({ ...data, caseId: caseFile.caseId })
+		if (result?.message === 'OK') {
+			SuccessToast(t('CaseFiles.successfullyEdited'))
+			back()
+			refresh()
+		}
 	}
 
 	return (

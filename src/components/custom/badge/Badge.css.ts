@@ -31,11 +31,11 @@ export const badge = recipe({
 				color: tokens.colors['success.700'],
 				background: tokens.colors['success.100']
 			},
-			inProgress: {
+			inprogress: {
 				color: tokens.colors['warning.700'],
 				background: tokens.colors['warning.100']
 			},
-			colosed: {
+			closed: {
 				color: tokens.colors['destructive.700'],
 				background: tokens.colors['destructive.100']
 			},

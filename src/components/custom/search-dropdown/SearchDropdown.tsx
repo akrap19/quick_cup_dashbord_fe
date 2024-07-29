@@ -52,7 +52,7 @@ export const SearchDropdown = ({
 	const t = useTranslations()
 	const searchParams = useSearchParams()
 	const formContext = useFormContext()
-	const { push } = useRouter()
+	const { replace } = useRouter()
 	const [isOpen, setIsOpen] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
 	const currentSearchParamas = qs.parse(searchParams.toString())
@@ -75,7 +75,7 @@ export const SearchDropdown = ({
 			{ skipEmptyString: true }
 		)
 
-		push(url)
+		replace(url)
 	}
 
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)

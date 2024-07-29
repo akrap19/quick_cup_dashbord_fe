@@ -7,6 +7,8 @@ import 'react-quill/dist/quill.snow.css'
 import './RichTextEditor.css'
 import { tokens } from '@/style/theme.css'
 import ReactQuill from 'react-quill'
+import { CheckIcon } from '@/components/icons/check-icon'
+import { Box } from '@/components/layout/box'
 
 interface CustomRichTextEditorProps {
 	hasSuccess?: string
@@ -90,13 +92,20 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 	}, [hasSuccess, hasError, id, tokens])
 
 	return (
-		<ReactQuill
-			id={id}
-			className={'ql-test'}
-			theme="snow"
-			placeholder={placeholder}
-			value={value as any}
-			onChange={onChangeWithMaxLengthCheck}
-		/>
+		<Box position="relative">
+			{hasSuccess && removeHtmlTags(hasSuccess) && (
+				<Box position="absolute" zIndex="over" style={{ top: '50px', right: '8px' }}>
+					<CheckIcon size="medium" color="success.500" />
+				</Box>
+			)}
+			<ReactQuill
+				id={id}
+				className={'ql-test'}
+				theme="snow"
+				placeholder={placeholder}
+				value={value as any}
+				onChange={onChangeWithMaxLengthCheck}
+			/>
+		</Box>
 	)
 }

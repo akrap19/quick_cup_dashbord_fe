@@ -15,7 +15,7 @@ interface Props {
 export const MobilePreviewHeader = ({ contentTypes, contentType, handleContentType }: Props) => {
 	return (
 		<Inline justifyContent="space-between">
-			<Button variant="adaptive">
+			<Button type="button" variant="adaptive">
 				<Box className={styles.mobilePreviewBackButtonWrapper}>
 					<LeftArrowIcon size="xlarge" color="neutral.900" />
 				</Box>

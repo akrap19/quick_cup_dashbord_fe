@@ -23,7 +23,6 @@ const LanguageDetails = ({ language }: Props) => {
 		actionButton: <EditButton buttonLabel="Languages.edit" buttonLink={ROUTES.EDIT_LANGUAGES + language.languageId} />
 	})
 
-	console.log('language.autoTranslate', language.autoTranslate)
 	return (
 		<DetailsWrapper>
 			<Stack gap={4}>

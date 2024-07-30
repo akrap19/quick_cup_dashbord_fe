@@ -47,7 +47,6 @@ export const MobilePreviewContent = ({ content, currentImage, setCurrentImage }:
 		}
 	}, [content])
 
-	console.log('content?.description', content?.description)
 	return (
 		<Box className={styles.mobilePreviewContentContainer}>
 			<Stack gap={3}>

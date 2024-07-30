@@ -13,9 +13,10 @@ import { tokens } from '@/style/theme.css'
 interface Props {
 	form: any
 	index: number
+	initialImagesUrls?: string[]
 }
 
-export const StaffSectionItemsFields = ({ index, form }: Props) => {
+export const StaffSectionItemsFields = ({ index, form, initialImagesUrls }: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -27,7 +28,7 @@ export const StaffSectionItemsFields = ({ index, form }: Props) => {
 							<RequiredLabel>{t('ManageContent.staffPhoto')}</RequiredLabel>
 						</Text>
 						<FormControl {...form.register(`items[${index}].images`)}>
-							<PhotoUpload />
+							<PhotoUpload initialImagesUrls={initialImagesUrls} />
 							<FormControl.Message />
 						</FormControl>
 					</Stack>

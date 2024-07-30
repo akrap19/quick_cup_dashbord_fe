@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
@@ -11,20 +11,52 @@ import { useStepsStore } from '@/store/steps'
 
 import { LanguageLabel } from '../common/LanguageLabel'
 import { StaffSectionItemsFields } from '../common/StaffSectionItemsFields'
+import { Staff } from 'api/models/content/staff'
+import { requiredString } from 'schemas'
+import { useManageContent } from '@/store/manage-content'
 
-const formSchema = z.object({})
+interface Props {
+	staff?: Staff[]
+}
+
+const formSchema = z.object({
+	items: z.array(
+		z.object({
+			images: z.array(z.string()).nonempty(),
+			name: requiredString.shape.scheme,
+			title: requiredString.shape.scheme,
+			description: requiredString.shape.scheme
+		})
+	)
+})
 
 type Schema = z.infer<typeof formSchema>
 
-export const ManageStaffContent = () => {
+export const ManageStaffContent = ({ staff }: Props) => {
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
+	const { language } = useManageContent()
+
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
-		defaultValues: { generalIntrudactionTitle: '' }
+		defaultValues: {
+			items: staff?.map(item => {
+				return {
+					images: item?.staffImages?.map(image => image?.staffImageId),
+					name: item?.name,
+					title: item?.title,
+					description: item?.description
+				}
+			})
+		}
 	})
 	const formData = form?.getValues()
+
+	const { fields } = useFieldArray({
+		control: form.control,
+		name: 'items'
+	})
 
 	const onSubmit = async () => {
 		console.log('data', formData)
@@ -45,8 +77,18 @@ export const ManageStaffContent = () => {
 						</Box>
 						<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
 							<Stack gap={4}>
-								<LanguageLabel />
-								<StaffSectionItemsFields />
+								<LanguageLabel language={language?.name} />
+								{fields.map((field, index) => (
+									<div key={field.id}>
+										{staff && (
+											<StaffSectionItemsFields
+												index={index}
+												form={form}
+												initialImagesUrls={staff[index]?.staffImages?.map(image => image.url)}
+											/>
+										)}
+									</div>
+								))}
 							</Stack>
 						</Box>
 					</Stack>

@@ -17,6 +17,7 @@ type Props = ButtonProps & MobilePreviewButtonVariants & RequiredProps
 export const MobilePreviewButton = ({ variant = 'primary', className, ...rest }: Props) => {
 	return (
 		<button
+			type="button"
 			className={clsx(mobilePreviewButton({ variant }), className)}
 			{...(rest as ButtonHTMLAttributes<HTMLButtonElement>)}
 		/>

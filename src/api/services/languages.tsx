@@ -32,7 +32,7 @@ export const updateLanguage = async (language: LanguagePayload) => {
 	return response?.data
 }
 
-export const getLanguage = (id: string) => {
+export const getLanguage = (id?: string) => {
 	return fetchWithToken(`language/${id}`)
 }
 
@@ -71,7 +71,7 @@ export const publishLanguage = async (languageId: string) => {
 	return response?.data
 }
 
-export const translateLanguage = async (languageId: string) => {
+export const translateLanguage = async (languageId?: string) => {
 	const response = await axiosInstanceWithToken.post(`/language/translate`, { languageId })
 
 	return response?.data

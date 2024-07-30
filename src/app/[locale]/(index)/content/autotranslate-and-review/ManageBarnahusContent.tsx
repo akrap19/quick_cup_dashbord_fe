@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
@@ -13,25 +13,54 @@ import { useStepsStore } from '@/store/steps'
 
 import { LanguageLabel } from '../common/LanguageLabel'
 import { WorkingHours } from '../common/WorkingHours'
+import { About } from 'api/models/content/about'
+import { requiredString } from 'schemas'
+import { SectionItemsFields } from '../common/SectionItemsFields'
 import { useManageContent } from '@/store/manage-content'
 
-const formSchema = z.object({})
+interface Props {
+	abouts?: About[]
+}
+
+const formSchema = z.object({
+	items: z.array(
+		z.object({
+			title: requiredString.shape.scheme,
+			description: requiredString.shape.scheme,
+			audioId: requiredString.shape.scheme,
+			images: z.array(z.string()).nonempty()
+		})
+	)
+})
 
 type Schema = z.infer<typeof formSchema>
 
-export const ManageBarnahusContent = () => {
+export const ManageBarnahusContent = ({ abouts }: Props) => {
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
-	const { content } = useManageContent()
-
-	console.log('content', content)
+	const { language } = useManageContent()
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
-		defaultValues: { generalIntrudactionTitle: '' }
+		defaultValues: {
+			items: abouts?.map(about => {
+				return {
+					title: about?.title,
+					description: about?.description,
+					audioId: '',
+					images: about?.aboutImages?.map(image => image?.aboutImageId)
+				}
+			})
+		}
 	})
+
 	const formData = form?.getValues()
+
+	const { fields } = useFieldArray({
+		control: form.control,
+		name: 'items'
+	})
 
 	const onSubmit = async () => {
 		console.log('data', formData)
@@ -51,10 +80,20 @@ export const ManageBarnahusContent = () => {
 							</Text>
 						</Box>
 						<Box paddingY={4} paddingX={5} borderTop="thin" borderColor="neutral.300">
-							<Box paddingBottom={6} borderBottom="thin" borderColor="neutral.300">
+							<Box>
 								<Stack gap={4}>
-									<LanguageLabel />
-									{/* <SectionItemsFields /> */}
+									<LanguageLabel language={language?.name} />
+									{fields.map((field, index) => (
+										<div key={field.id}>
+											{abouts && (
+												<SectionItemsFields
+													index={index}
+													form={form}
+													initialImagesUrls={abouts[index]?.aboutImages?.map(image => image.url)}
+												/>
+											)}
+										</div>
+									))}
 								</Stack>
 							</Box>
 							<WorkingHours />

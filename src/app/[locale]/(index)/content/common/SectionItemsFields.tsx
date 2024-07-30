@@ -13,10 +13,12 @@ import { Text } from '@/components/typography/text'
 interface Props {
 	form: any
 	index: number
+	initialImagesUrls?: string[]
 }
 
-export const SectionItemsFields = ({ index, form }: Props) => {
+export const SectionItemsFields = ({ index, form, initialImagesUrls }: Props) => {
 	const t = useTranslations()
+
 	return (
 		<Box paddingRight={16} paddingBottom={6} borderBottom="thin" borderColor="neutral.300">
 			<Stack gap={6}>
@@ -62,7 +64,7 @@ export const SectionItemsFields = ({ index, form }: Props) => {
 						<RequiredLabel>{t('General.photos')}</RequiredLabel>
 					</Text>
 					<FormControl {...form.register(`items[${index}].images`)}>
-						<PhotoUpload />
+						<PhotoUpload initialImagesUrls={initialImagesUrls} />
 						<FormControl.Message />
 					</FormControl>
 				</Stack>

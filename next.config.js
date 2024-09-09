@@ -15,9 +15,12 @@ const nextConfig = {
 	images: {
 		domains: ['via.placeholder.com', 'storage.googleapis.com']
 	},
-	experimental: {
-		appDir: true
-	},
+	// TODO: remove this
+	// https://nextjs.org/docs/app/api-reference/next-config-js/appDir
+	// We're using next14^
+	// experimental: {
+	// 	appDir: true
+	// },
 	webpack(config) {
 		config.module.rules.push({
 			test: /\.svg$/,

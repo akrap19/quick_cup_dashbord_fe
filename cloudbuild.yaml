@@ -72,9 +72,9 @@ tags:
 
 availableSecrets:
   secretManager:
-    - versionName: projects/232931877685/secrets/NEXT_PUBLIC_API_BASE_URL/versions/1
+    - versionName: projects/232931877685/secrets/NEXT_PUBLIC_API_BASE_URL/versions/latest
       env: NEXT_PUBLIC_API_BASE_URL
-    - versionName: projects/232931877685/secrets/NEXTAUTH_SECRET/versions/1
+    - versionName: projects/232931877685/secrets/NEXTAUTH_SECRET/versions/latest
       env: NEXTAUTH_SECRET
-    - versionName: projects/232931877685/secrets/ANALYZE/versions/1
+    - versionName: projects/232931877685/secrets/ANALYZE/versions/latest
       env: ANALYZE

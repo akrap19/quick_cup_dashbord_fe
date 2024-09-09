@@ -1,4 +1,17 @@
 steps:
+  - name: 'alpine'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL" > .env
+        echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
+        echo "ANALYZE=$ANALYZE" >> .env
+    secretEnv:
+      - NEXT_PUBLIC_API_BASE_URL
+      - NEXTAUTH_SECRET
+      - ANALYZE
+
   - name: gcr.io/cloud-builders/docker
     args:
       - build
@@ -9,6 +22,7 @@ steps:
       - .
       - '-f'
       - Dockerfile
+      - 'ENV_FILE=.env'
     id: Build
   - name: gcr.io/cloud-builders/docker
     args:
@@ -46,3 +60,12 @@ substitutions:
 tags:
   - gcp-cloud-build-deploy-cloud-run
   - gcp-cloud-build-deploy-cloud-run-managed
+
+availableSecrets:
+  secretManager:
+    - versionName: projects/barnahus/secrets/NEXT_PUBLIC_API_BASE_URL/versions/latest
+      env: NEXT_PUBLIC_API_BASE_URL
+    - versionName: projects/barnahus/secrets/NEXTAUTH_SECRET/versions/latest
+      env: NEXTAUTH_SECRET
+    - versionName: projects/barnahus/secrets/ANALYZE/versions/latest
+      env: ANALYZE

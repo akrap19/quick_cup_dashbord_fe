@@ -72,9 +72,9 @@ tags:
 
 availableSecrets:
   secretManager:
-    - versionName: projects/barnahus/secrets/NEXT_PUBLIC_API_BASE_URL/versions/1
+    - versionName: projects/232931877685/secrets/NEXT_PUBLIC_API_BASE_URL/latest
       env: NEXT_PUBLIC_API_BASE_URL
-    - versionName: projects/barnahus/secrets/NEXTAUTH_SECRET/versions/1
+    - versionName: projects/232931877685/secrets/NEXTAUTH_SECRET/latest
       env: NEXTAUTH_SECRET
-    - versionName: projects/barnahus/secrets/ANALYZE/versions/1
+    - versionName: projects/232931877685/secrets/ANALYZE/latest
       env: ANALYZE

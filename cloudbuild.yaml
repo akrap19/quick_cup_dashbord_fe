@@ -42,6 +42,7 @@ substitutions:
   _AR_HOSTNAME: europe-north1-docker.pkg.dev
   _PLATFORM: managed
   _DEPLOY_REGION: europe-north1
+  _SERVICE_NAME: barnahus-journeys-fe-dev
 tags:
   - gcp-cloud-build-deploy-cloud-run
   - gcp-cloud-build-deploy-cloud-run-managed

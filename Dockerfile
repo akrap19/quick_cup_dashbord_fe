@@ -56,7 +56,7 @@ COPY --from=builder /app/.next/static ./.next/static
 COPY .env .env
 
 # Set the correct permission for prerender cache and other directories
-RUN mkdir .next
+# RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
 # Run the container as the nextjs user

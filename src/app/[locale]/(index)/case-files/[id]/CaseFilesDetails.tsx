@@ -11,9 +11,9 @@ import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { useNavbarItemsStore } from '@/store/navbar'
 import { CaseFiles } from 'api/models/caseFiles/caseFiles'
 import { ROUTES } from 'parameters'
-import { useNavbarItemsStore } from '@/store/navbar'
 
 interface Props {
 	caseFiles: CaseFiles
@@ -25,6 +25,7 @@ export const CaseFilesDetails = ({ caseFiles }: Props) => {
 	useNavbarItems({
 		title: caseFiles?.customId,
 		backLabel: 'CaseFiles.back',
+		// eslint-disable-next-line
 		actionButton: <EditButton buttonLabel="CaseFiles.edit" buttonLink={ROUTES.EDIT_CASE_FILES + caseFiles?.caseId} />
 	})
 

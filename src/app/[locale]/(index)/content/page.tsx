@@ -1,3 +1,5 @@
+import { getServerSession } from 'next-auth/next'
+
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { Box } from '@/components/layout/box'
 import { getBarnahustranslations } from 'api/services/barnahuses'
@@ -5,7 +7,6 @@ import { getAbouts } from 'api/services/content/about'
 import { getRooms } from 'api/services/content/rooms'
 import { getStaffs } from 'api/services/content/staff'
 import { getLanguageSearch } from 'api/services/languages'
-import { getServerSession } from 'next-auth/next'
 import { authOptions } from 'app/api/auth/[...nextauth]/auth'
 import { ROUTES } from 'parameters'
 

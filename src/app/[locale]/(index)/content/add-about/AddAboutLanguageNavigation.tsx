@@ -1,18 +1,20 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
+import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey'
 import { Loader } from '@/components/custom/loader/Loader'
-import { useNavbarItems } from '@/hooks/use-navbar-items'
-import { useSteps } from '@/hooks/use-steps'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
-import { Text } from '@/components/typography/text'
-import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey'
-import { useTranslations } from 'next-intl'
-import { AddAboutForm } from './AddAboutForm'
-import { Language } from 'api/models/language/language'
-import { useNavbarItemsStore } from '@/store/navbar'
 import { Tabs } from '@/components/navigation/tabs'
+import { Text } from '@/components/typography/text'
+import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { useSteps } from '@/hooks/use-steps'
+import { useNavbarItemsStore } from '@/store/navbar'
 import { useStepsStore } from '@/store/steps'
+import { Language } from 'api/models/language/language'
+
+import { AddAboutForm } from './AddAboutForm'
 
 interface Props {
 	languages: Language[]
@@ -35,7 +37,7 @@ export const AddAboutLanguageNavigation = ({ languages }: Props) => {
 	})
 
 	return (
-		<>
+		<div>
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
@@ -77,6 +79,6 @@ export const AddAboutLanguageNavigation = ({ languages }: Props) => {
 					</Box>
 				</ManageJourneyWrapper>
 			)}
-		</>
+		</div>
 	)
 }

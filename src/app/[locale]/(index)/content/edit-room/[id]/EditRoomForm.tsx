@@ -1,19 +1,20 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { requiredString } from 'schemas'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 
-import { useStepsStore } from '@/store/steps'
-import { Box } from '@/components/layout/box'
 import { Actions } from '@/components/custom/layouts/manage-journey'
-import { useRouter } from 'next/navigation'
-import { SectionItemFields } from '../../common/SectionItemFields'
+import { Box } from '@/components/layout/box'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
+import { useStepsStore } from '@/store/steps'
 import { Room } from 'api/models/content/room'
 import { updateRoom } from 'api/services/content/rooms'
+import { requiredString } from 'schemas'
+
+// import { SectionItemFields } from '../../common/SectionItemFields'
 
 interface Props {
 	room: Room
@@ -33,7 +34,7 @@ export const EditRoomForm = ({ room }: Props) => {
 	const { refresh } = useRouter()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const defaultImageIds = room?.roomImages?.map(roomImage => roomImage?.roomImageId)
-	const defaultImages = room?.roomImages?.map(roomImage => roomImage?.url)
+	// const defaultImages = room?.roomImages?.map(roomImage => roomImage?.url)
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
@@ -58,7 +59,7 @@ export const EditRoomForm = ({ room }: Props) => {
 			title: formData.title,
 			description: formData.description,
 			images,
-			deletedImages: deletedImages,
+			deletedImages,
 			audioId: formData.audioId
 		})
 
@@ -76,7 +77,7 @@ export const EditRoomForm = ({ room }: Props) => {
 		<Box paddingTop={6}>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<SectionItemFields initialAudioUrl={room?.audio?.url} initialImagesUrls={defaultImages} />
+					{/* <SectionItemFields initialAudioUrl={room?.audio?.url} initialImagesUrls={defaultImages} /> */}
 					<Actions />
 				</form>
 			</FormProvider>

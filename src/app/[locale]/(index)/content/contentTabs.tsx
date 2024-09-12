@@ -1,20 +1,20 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import { useState } from 'react'
 
 import { AddButton } from '@/components/custom/button/add-button'
+import { Loader } from '@/components/custom/loader/Loader'
+import { Box } from '@/components/layout/box'
 import { Tabs } from '@/components/navigation/tabs/Tabs'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { useNavbarItemsStore } from '@/store/navbar'
+import { Base } from 'api/models/common/base'
+import { Language } from 'api/models/language/language'
 import { ROUTES } from 'parameters'
 
-import { Content } from './Content'
-import { Base } from 'api/models/common/base'
 import { ManageContentColumn } from './columns'
-import { Loader } from '@/components/custom/loader/Loader'
-import { useNavbarItemsStore } from '@/store/navbar'
-import { useState } from 'react'
-import { Language } from 'api/models/language/language'
-import { Box } from '@/components/layout/box'
+import { Content } from './Content'
 
 // eslint-disable-next-line
 interface Props<TData, TValue> {
@@ -32,7 +32,7 @@ export const ContentTabs = <TData, TValue>({ aboutData, roomsData, staffData, la
 	useNavbarItems({ title: 'General.content', useUserDropdown: true })
 
 	return (
-		<>
+		<div>
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
@@ -76,6 +76,6 @@ export const ContentTabs = <TData, TValue>({ aboutData, roomsData, staffData, la
 					</Tabs.Panel>
 				</Tabs>
 			)}
-		</>
+		</div>
 	)
 }

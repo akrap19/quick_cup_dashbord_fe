@@ -24,7 +24,7 @@ const SettingsTabs = ({ settings, session }: Props) => {
 	useNavbarItems({ title: 'General.settings' })
 
 	return (
-		<>
+		<div>
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
@@ -45,7 +45,7 @@ const SettingsTabs = ({ settings, session }: Props) => {
 					</Tabs.Panel>
 				</Tabs>
 			)}
-		</>
+		</div>
 	)
 }
 

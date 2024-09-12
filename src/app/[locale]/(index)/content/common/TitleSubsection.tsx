@@ -2,12 +2,12 @@ import { useTranslations } from 'next-intl'
 import { MouseEventHandler } from 'react'
 
 import { AddButton } from '@/components/custom/button/add-button'
+import { RemoveButton } from '@/components/custom/button/remove-button'
 import { InputInfo } from '@/components/inputs/input-info'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
-import { RemoveButton } from '@/components/custom/button/remove-button'
 
 interface Props {
 	addButtonLabel: string

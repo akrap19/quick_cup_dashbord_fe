@@ -4,9 +4,9 @@ import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { ButtonHTMLAttributes, MouseEventHandler } from 'react'
 
+import { MinusIcon } from '@/components/icons/minus-icon'
 import { Button } from '@/components/inputs/button'
 import { ButtonVariants } from '@/components/inputs/button/Button.css'
-import { MinusIcon } from '@/components/icons/minus-icon'
 
 type RemoveButtonProps = { buttonLabel: string; buttonLink?: string; onClick?: MouseEventHandler<HTMLButtonElement> }
 

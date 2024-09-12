@@ -9,14 +9,14 @@ import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
+import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
-
-import { LanguageLabel } from '../common/LanguageLabel'
-import { WorkingHours } from '../common/WorkingHours'
 import { About } from 'api/models/content/about'
 import { requiredString } from 'schemas'
+
+import { LanguageLabel } from '../common/LanguageLabel'
 import { SectionItemsFields } from '../common/SectionItemsFields'
-import { useManageContent } from '@/store/manage-content'
+import { WorkingHours } from '../common/WorkingHours'
 
 interface Props {
 	abouts?: About[]

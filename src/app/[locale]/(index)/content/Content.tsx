@@ -1,3 +1,6 @@
+import { format } from 'date-fns'
+import { Dispatch, SetStateAction } from 'react'
+
 import { Loader } from '@/components/custom/loader/Loader'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { DataTable } from '@/components/data-display/data-table'
@@ -5,11 +8,9 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Base } from 'api/models/common/base'
 import { Language } from 'api/models/language/language'
-import { format } from 'date-fns'
 import { ROUTES } from 'parameters'
-import { Dispatch, SetStateAction } from 'react'
 
-import { columns, ManageContentColumn } from './columns'
+import { ManageContentColumn, columns } from './columns'
 import { contentSectionData } from './data'
 import { Inputs } from './inputs'
 
@@ -58,9 +59,9 @@ export const Content = <TData, TValue>({
 					) : currentLanguage?.autoTranslate ? (
 						<NoListData
 							navbarTitle="General.content"
-							title={'ManageContent.addAndReviewNewContentTitle'}
-							description={'ManageContent.addAndReviewNewContentDescription'}
-							buttonLabel={'ManageContent.addAndReviewNewContentButtonLabel'}
+							title="ManageContent.addAndReviewNewContentTitle"
+							description="ManageContent.addAndReviewNewContentDescription"
+							buttonLabel="ManageContent.addAndReviewNewContentButtonLabel"
 							buttonLink={ROUTES.ADD_CONTENT}
 							distanceFromTop="8vh"
 							setNavbarItems={false}
@@ -68,9 +69,9 @@ export const Content = <TData, TValue>({
 					) : (
 						<NoListData
 							navbarTitle="General.content"
-							title={'ManageContent.contentNotAddedTitle'}
-							description={'ManageContent.contentNotAddedDescription'}
-							buttonLabel={'ManageContent.add'}
+							title="ManageContent.contentNotAddedTitle"
+							description="ManageContent.contentNotAddedDescription"
+							buttonLabel="ManageContent.add"
 							buttonLink={ROUTES.ADD_CONTENT}
 							distanceFromTop="8vh"
 							setNavbarItems={false}

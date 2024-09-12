@@ -1,5 +1,7 @@
-import { Inline } from '@/components/layout/inline'
 import { useTranslations } from 'next-intl'
+
+import { Inline } from '@/components/layout/inline'
+
 import { MobilePreviewButton } from './MobilePreviewButton'
 
 interface Props {
@@ -22,7 +24,7 @@ export const MobilePreviewFooter = ({ totalContentPages, currentContentPage, han
 			<MobilePreviewButton
 				disabled={currentContentPage + 1 === totalContentPages}
 				onClick={() => handleContentPage(currentContentPage + 1)}>
-				{t('General.next') + ` ${currentContentPage + 1}/${totalContentPages}`}
+				{`${t('General.next')} ${currentContentPage + 1}/${totalContentPages}`}
 			</MobilePreviewButton>
 		</Inline>
 	)

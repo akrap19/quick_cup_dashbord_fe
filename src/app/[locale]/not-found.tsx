@@ -1,6 +1,7 @@
 'use client'
 
 import { redirect, useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 
 import { BrandLogo } from '@/components/custom/brand-logo/BrandLogo'
@@ -11,7 +12,6 @@ import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
 import { atoms } from '@/style/atoms.css'
 import { ROUTES } from 'parameters'
-import { useSession } from 'next-auth/react'
 
 const NotFound = () => {
 	const t = useTranslations()

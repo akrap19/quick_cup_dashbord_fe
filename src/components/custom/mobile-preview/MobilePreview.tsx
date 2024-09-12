@@ -1,14 +1,14 @@
 import Image from 'next/image'
+import { useState } from 'react'
 
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
+import { Content } from 'api/models/content/content'
 
 import * as styles from './MobilePreview.css'
 import { MobilePreviewContent } from './MobilePreviewContent'
 import { MobilePreviewFooter } from './MobilePreviewFooter'
 import { MobilePreviewHeader } from './MobilePreviewHeader'
-import { useState } from 'react'
-import { Content } from 'api/models/content/content'
 
 const contentTypes = ['abouts', 'rooms', 'staff']
 

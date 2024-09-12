@@ -7,13 +7,13 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { CaseFile } from 'api/models/caseFiles/caseFile'
+import { updateCaseFile } from 'api/services/caseFiles'
 import { requiredString } from 'schemas'
 
 import CaseFileForm from '../../form'
-import { updateCaseFile } from 'api/services/caseFiles'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 
 const formSchema = z.object({
 	status: requiredString.shape.scheme,

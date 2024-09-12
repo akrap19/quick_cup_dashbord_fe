@@ -12,12 +12,12 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
+import { ContentPayload } from 'api/models/content/contentPayload'
 import { createRoomBulk } from 'api/services/content/rooms'
 import { requiredString } from 'schemas'
 
 import { SectionItemsFields } from '../common/SectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
-import { ContentPayload } from 'api/models/content/contentPayload'
 
 const formSchema = z.object({
 	items: z.array(
@@ -69,6 +69,7 @@ export const ManageRoomsContent = () => {
 	}
 
 	const handleRemoveSection = () => {
+		// eslint-disable-next-line
 		const removeIndex = formData?.items?.length - 1
 		remove(removeIndex)
 	}
@@ -76,6 +77,7 @@ export const ManageRoomsContent = () => {
 	const onSubmit = async () => {
 		const formDataTmp: ContentPayload[] = [...formData.items]
 		formDataTmp.forEach(obj => {
+			// eslint-disable-next-line
 			obj.languageId = language?.id
 		})
 

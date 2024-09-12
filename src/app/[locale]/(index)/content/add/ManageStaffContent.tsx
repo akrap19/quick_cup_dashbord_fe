@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -13,13 +14,12 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
+import { ContentPayload } from 'api/models/content/contentPayload'
 import { createStaffBulk } from 'api/services/content/staff'
 import { requiredString } from 'schemas'
 
 import { StaffSectionItemsFields } from '../common/StaffSectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
-import { ContentPayload } from 'api/models/content/contentPayload'
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 
 const formSchema = z.object({
 	items: z.array(
@@ -74,6 +74,7 @@ export const ManageStaffContent = () => {
 	}
 
 	const handleRemoveSection = () => {
+		// eslint-disable-next-line
 		const removeIndex = formData?.items?.length - 1
 		remove(removeIndex)
 	}
@@ -81,6 +82,7 @@ export const ManageStaffContent = () => {
 	const onSubmit = async () => {
 		const formDataTmp: ContentPayload[] = [...formData.items]
 		formDataTmp.forEach(obj => {
+			// eslint-disable-next-line
 			obj.languageId = language?.id
 		})
 

@@ -2,7 +2,7 @@
 
 import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { BlockIcon } from '@/components/icons/block-icon'
 import { Button } from '@/components/inputs/button'
@@ -12,8 +12,8 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 
 import {
-	mobilePreviewDropdownInput,
 	MobilePreviewDropdownLabel,
+	mobilePreviewDropdownInput,
 	mobilePreviewDropdownListContainer
 } from './MobilePreview.css'
 import CarretDownIcon from '../../icons/block-icon/assets/carret-down-icon.svg'
@@ -60,7 +60,7 @@ export const MobilePreviewDropdown = ({ options, value, handleContentType }: Pro
 			<Stack>
 				<Button size="auto" variant="adaptive" onClick={handleDropDownOpening}>
 					<Box className={clsx(mobilePreviewDropdownInput, endIconSpacing)}>
-						<Text className={MobilePreviewDropdownLabel({ variant: 'selectedLabel' })}>{t('General.' + value)}</Text>
+						<Text className={MobilePreviewDropdownLabel({ variant: 'selectedLabel' })}>{t(`General.${value}`)}</Text>
 						<BlockIcon icon={isOpen ? CarretUpIcon : CarretDownIcon} size="large" color="neutral.800" />
 					</Box>
 				</Button>
@@ -71,13 +71,13 @@ export const MobilePreviewDropdown = ({ options, value, handleContentType }: Pro
 						{options?.map((option: string) =>
 							value === option ? (
 								<Text className={MobilePreviewDropdownLabel({ variant: 'selectedLabel' })}>
-									{t('General.' + option)}
+									{t(`General.${option}`)}
 								</Text>
 							) : (
 								<Button size="auto" variant="adaptive" onClick={e => handleDropdownOption(e, option)}>
 									<Box width="100%" textAlign="left">
 										<Text className={MobilePreviewDropdownLabel({ variant: 'dropDownItemLabel' })}>
-											{t('General.' + option)}
+											{t(`General.${option}`)}
 										</Text>
 									</Box>
 								</Button>

@@ -1,19 +1,20 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { requiredString } from 'schemas'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 
-import { useStepsStore } from '@/store/steps'
-import { createAbout } from 'api/services/content/about'
-import { SectionItemFields } from '../common/SectionItemFields'
-import { Box } from '@/components/layout/box'
 import { Actions } from '@/components/custom/layouts/manage-journey'
+import { Box } from '@/components/layout/box'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
+import { useStepsStore } from '@/store/steps'
 import { Language } from 'api/models/language/language'
-import { useRouter } from 'next/navigation'
+import { createAbout } from 'api/services/content/about'
+import { requiredString } from 'schemas'
+
+import { SectionItemFields } from '../common/SectionItemFields'
 
 interface Props {
 	language: Language

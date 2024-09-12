@@ -1,5 +1,6 @@
 import { getAbout } from 'api/services/content/about'
 import { getLanguageSearch } from 'api/services/languages'
+
 import { EditAboutLanguageNavigation } from './EditAboutLanguageNavigation'
 
 interface Props {

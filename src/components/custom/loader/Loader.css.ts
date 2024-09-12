@@ -4,7 +4,7 @@ import { keyframes, style } from '@vanilla-extract/css'
 import { tokens } from '@/style/theme.css'
 
 const s = '30px'
-const _d = `calc(0.353 * ${s})`
+const d = `calc(0.353 * ${s})`
 
 const l6 = keyframes({
 	'0%': { transform: 'translate(0, 0)' },
@@ -17,7 +17,7 @@ const l6 = keyframes({
 export const loader = style({
 	vars: {
 		'--s': s,
-		'--_d': _d
+		'--_d': d
 	},
 	width: `calc(var(--s) + var(--_d))`,
 	aspectRatio: '1',
@@ -26,7 +26,7 @@ export const loader = style({
 
 export const loaderBefore = style({
 	vars: {
-		'--_d': _d
+		'--_d': d
 	},
 	content: '""',
 	gridArea: '1/1',
@@ -37,7 +37,7 @@ export const loaderBefore = style({
 
 export const loaderAfter = style({
 	vars: {
-		'--_d': _d
+		'--_d': d
 	},
 	content: '""',
 	gridArea: '1/1',

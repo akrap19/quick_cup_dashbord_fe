@@ -49,7 +49,7 @@ export const Tabs: FC<Props> & TabsComposition = ({ children, size, variant = 'b
 						whiteSpace: 'nowrap',
 						scrollbarWidth: 'thin'
 					}}>
-					<div className={styles.tabsWrapper({ size: size ? size : button ? 'small' : 'large', variant })}>{tabs}</div>
+					<div className={styles.tabsWrapper({ size: size || (button ? 'small' : 'large'), variant })}>{tabs}</div>
 				</div>
 			</Inline>
 			<div>{panel}</div>

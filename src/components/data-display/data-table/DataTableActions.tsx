@@ -5,10 +5,10 @@ import { useTranslations } from 'next-intl'
 import { PencilIcon } from '@/components/icons/pencil-icon'
 import { TrashIcon } from '@/components/icons/trash-icon'
 import { Button } from '@/components/inputs/button'
+import { ButtonVariants } from '@/components/inputs/button/Button.css'
 import { Inline } from '@/components/layout/inline'
 import { Text } from '@/components/typography/text'
 import { useTableStore } from '@/store/table'
-import { ButtonVariants } from '@/components/inputs/button/Button.css'
 
 type DataTableActionsProps = {
 	onEdit: () => void

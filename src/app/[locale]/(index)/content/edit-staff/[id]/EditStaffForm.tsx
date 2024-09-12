@@ -1,18 +1,19 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { requiredString } from 'schemas'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 
-import { useStepsStore } from '@/store/steps'
-import { Box } from '@/components/layout/box'
 import { Actions } from '@/components/custom/layouts/manage-journey'
-import { useRouter } from 'next/navigation'
+import { Box } from '@/components/layout/box'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
+import { useStepsStore } from '@/store/steps'
 import { Staff } from 'api/models/content/staff'
 import { updateStaff } from 'api/services/content/staff'
+import { requiredString } from 'schemas'
+
 import { StaffSectionItemFields } from '../../common/StaffSectionItemFields'
 
 interface Props {
@@ -59,7 +60,7 @@ export const EditStaffForm = ({ staff }: Props) => {
 			title: formData.title,
 			description: formData.description,
 			images: formData.images,
-			deletedImages: deletedImages
+			deletedImages
 		})
 
 		if (result?.message === 'OK') {

@@ -18,7 +18,7 @@ import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
 import { useLoading } from '@/hooks/use-loading'
 import { ROUTES } from 'parameters'
-import { emailSchema, passwordSchema, requiredString } from 'schemas'
+import { emailSchema, passwordSchema } from 'schemas'
 import { atoms } from 'style/atoms.css'
 
 const formSchema = z.object({

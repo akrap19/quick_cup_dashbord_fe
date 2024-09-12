@@ -7,13 +7,13 @@ import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
+import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
+import { Staff } from 'api/models/content/staff'
+import { requiredString } from 'schemas'
 
 import { LanguageLabel } from '../common/LanguageLabel'
 import { StaffSectionItemsFields } from '../common/StaffSectionItemsFields'
-import { Staff } from 'api/models/content/staff'
-import { requiredString } from 'schemas'
-import { useManageContent } from '@/store/manage-content'
 
 interface Props {
 	staff?: Staff[]

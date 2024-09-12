@@ -3,12 +3,12 @@
 import { Cell, ColumnDef, Table, flexRender } from '@tanstack/react-table'
 import { usePathname } from 'next/navigation'
 
+import { Badge } from '@/components/custom/badge'
 import { NoResult } from '@/components/custom/no-result/NoResult'
 import { Checkbox } from '@/components/inputs/checkbox'
+import { Box } from '@/components/layout/box'
 
 import { TableBody, TableCell, TableCellWithLink, TableRow } from '../table'
-import { Badge } from '@/components/custom/badge'
-import { Box } from '@/components/layout/box'
 
 interface Props<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]

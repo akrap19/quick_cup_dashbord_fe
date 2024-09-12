@@ -7,15 +7,15 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
+import { SearchDropdown } from '@/components/custom/search-dropdown'
 import { Button } from '@/components/inputs/button'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label/RequiredLabel'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { SearchDropdown } from '@/components/custom/search-dropdown'
-import { translateLanguage } from 'api/services/languages'
 import { Language } from 'api/models/language/language'
+import { translateLanguage } from 'api/services/languages'
 import { ROUTES } from 'parameters'
 
 interface Props {
@@ -56,7 +56,7 @@ export const ContentPublished = ({ languages }: Props) => {
 			if (typeof window !== 'undefined') {
 				localStorage.setItem('content', JSON.stringify(result?.data))
 			}
-			router.push(ROUTES.AUTOTRANSLATE_AND_REVIEW + '?languageId=' + formData?.language)
+			router.push(`${ROUTES.AUTOTRANSLATE_AND_REVIEW}?languageId=${formData?.language}`)
 		}
 	}
 

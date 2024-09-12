@@ -1,26 +1,27 @@
 'use client'
 
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import qs from 'query-string'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 
 import { AddButton } from '@/components/custom/button/add-button'
 import { SearchDropdown } from '@/components/custom/search-dropdown'
+import { DataTableActions } from '@/components/data-display/data-table/DataTableActions'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
-import { Base } from 'api/models/common/base'
-import { Dispatch, SetStateAction, useEffect } from 'react'
-import qs from 'query-string'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useTableStore } from '@/store/table'
 import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
-import { useOpened } from '@/hooks/use-toggle'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
-import { ManageContentColumn } from './columns'
-import { ROUTES } from 'parameters'
-import { DataTableActions } from '@/components/data-display/data-table/DataTableActions'
+import { useOpened } from '@/hooks/use-toggle'
+import { useTableStore } from '@/store/table'
+import { Base } from 'api/models/common/base'
+import { Language } from 'api/models/language/language'
 import { deleteAbout, deleteAbouts } from 'api/services/content/about'
 import { deleteRoom, deleteRooms } from 'api/services/content/rooms'
-import { deleteStaffs, deleteStaff } from 'api/services/content/staff'
-import { Language } from 'api/models/language/language'
+import { deleteStaff, deleteStaffs } from 'api/services/content/staff'
+import { ROUTES } from 'parameters'
+
+import { ManageContentColumn } from './columns'
 
 interface Props {
 	data: ManageContentColumn[]
@@ -53,7 +54,7 @@ export const Inputs = ({ data, languages, buttonLabel, buttonLink, languageValue
 	})
 
 	const handleValueChange = (value: string) => {
-		const query = { ...currentSearchParamas, ['languageId']: value }
+		const query = { ...currentSearchParamas, languageId: value }
 		const url = qs.stringifyUrl(
 			{
 				url: window.location.href,

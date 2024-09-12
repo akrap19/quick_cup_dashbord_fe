@@ -1,14 +1,13 @@
 import dynamic from 'next/dynamic'
 import { TextareaHTMLAttributes, useEffect, useMemo } from 'react'
 
-import { removeHtmlTags } from '@/utils/removeHtmlTags'
-
 import 'react-quill/dist/quill.snow.css'
 import './RichTextEditor.css'
-import { tokens } from '@/style/theme.css'
-import ReactQuill from 'react-quill'
+
 import { CheckIcon } from '@/components/icons/check-icon'
 import { Box } from '@/components/layout/box'
+import { tokens } from '@/style/theme.css'
+import { removeHtmlTags } from '@/utils/removeHtmlTags'
 
 interface CustomRichTextEditorProps {
 	hasSuccess?: string
@@ -24,6 +23,7 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 		const regex = /<\/[^>]*>$/
 
 		while (regex.test(htmlString)) {
+			// eslint-disable-next-line
 			htmlString = htmlString.replace(regex, '')
 		}
 
@@ -36,17 +36,11 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 
 		if (match) {
 			return match[0]
-		} else {
-			return ''
 		}
+		return ''
 	}
 
-	const onChangeWithMaxLengthCheck = (
-		value: string,
-		delta: any,
-		source: any,
-		editor: ReactQuill.UnprivilegedEditor
-	) => {
+	const onChangeWithMaxLengthCheck = (value: string) => {
 		const textWithoutHtmlTags = removeHtmlTags(value)
 
 		if (onChange && maxLength) {
@@ -87,7 +81,7 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 				setTimeout(() => checkQuillContainer(resolve), 100)
 			}
 		}
-
+		// eslint-disable-next-line
 		new Promise<void>(resolve => checkQuillContainer(resolve))
 	}, [hasSuccess, hasError, id, tokens])
 
@@ -100,7 +94,7 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 			)}
 			<ReactQuill
 				id={id}
-				className={'ql-test'}
+				className="ql-test"
 				theme="snow"
 				placeholder={placeholder}
 				value={value as any}

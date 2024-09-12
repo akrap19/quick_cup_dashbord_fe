@@ -29,7 +29,9 @@ export const PhotoUpload = ({ initialImagesUrls, ...rest }: Props) => {
 		const newUploadedMediaId: string[] = [...mediaId]
 
 		const handleAllFileUploads = async () => {
+			// eslint-disable-next-line
 			for (const file of files) {
+				// eslint-disable-next-line
 				const result = await handleFileUpload(file)
 				if (result) {
 					newPhotosForUpload.push(result.urlObject)

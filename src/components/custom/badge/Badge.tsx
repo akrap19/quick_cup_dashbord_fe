@@ -1,5 +1,6 @@
-import { Box } from 'components/layout/box'
 import { useTranslations } from 'next-intl'
+
+import { Box } from 'components/layout/box'
 
 import { BadgeVariants, badge } from './Badge.css'
 

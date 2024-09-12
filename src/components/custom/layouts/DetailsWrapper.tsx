@@ -5,8 +5,8 @@ import { ReactNode, useEffect } from 'react'
 
 import { Box } from '@/components/layout/box'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
-import { tokens } from '@/style/theme.css'
 import { useNavbarItemsStore } from '@/store/navbar'
+import { tokens } from '@/style/theme.css'
 
 import { Loader } from '../loader/Loader'
 
@@ -28,7 +28,7 @@ export const DetailsWrapper = ({ children }: Props) => {
 	}, [])
 
 	return (
-		<>
+		<div>
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
@@ -51,6 +51,6 @@ export const DetailsWrapper = ({ children }: Props) => {
 					</Box>
 				</Box>
 			)}
-		</>
+		</div>
 	)
 }

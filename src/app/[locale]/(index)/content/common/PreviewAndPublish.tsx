@@ -1,6 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import { FormEvent } from 'react'
 
 import { Actions } from '@/components/custom/layouts/manage-journey'
 import { MobilePreview } from '@/components/custom/mobile-preview'
@@ -10,10 +11,10 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
+import { Content } from 'api/models/content/content'
 import { publishLanguage } from 'api/services/languages'
 
 import { LanguageLabel } from './LanguageLabel'
-import { Content } from 'api/models/content/content'
 
 interface Props {
 	content: Content
@@ -24,7 +25,7 @@ export const PreviewAndPublish = ({ content }: Props) => {
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const { language } = useManageContent()
 
-	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		if (language) {
 			const result = await publishLanguage(language?.id)

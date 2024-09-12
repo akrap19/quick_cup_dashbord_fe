@@ -4,9 +4,9 @@ import { useTranslations } from 'next-intl'
 
 import { InputWithInfo } from '@/components/custom/inputs/input-with-info/InputWithInfo'
 import { FormItems } from '@/components/custom/layouts/add-form'
+import { SearchDropdown } from '@/components/custom/search-dropdown'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
-import { SearchDropdown } from '@/components/custom/search-dropdown'
 import { TextInput } from '@/components/inputs/text-input'
 import { OpenedProps } from '@/hooks/use-toggle'
 

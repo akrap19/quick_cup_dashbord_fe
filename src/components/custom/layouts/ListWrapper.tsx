@@ -31,7 +31,7 @@ export const ListWrapper = ({ title, children }: ListWrapperProps) => {
 	}, [])
 
 	return (
-		<>
+		<div>
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
@@ -39,6 +39,6 @@ export const ListWrapper = ({ title, children }: ListWrapperProps) => {
 					<Stack gap={7}>{children}</Stack>
 				</Box>
 			)}
-		</>
+		</div>
 	)
 }

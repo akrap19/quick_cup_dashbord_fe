@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import qs from 'query-string'
+import { useState } from 'react'
 import { useDebounce } from 'rooks'
 
 import { AddButton } from '@/components/custom/button/add-button'
@@ -18,7 +19,6 @@ import { useTableStore } from '@/store/table'
 import { Admins } from 'api/models/admin/Admins'
 import { deleteMasterAdmin, deleteMasterAdmins } from 'api/services/masterAdmins'
 import { ROUTES } from 'parameters'
-import { useState } from 'react'
 
 interface Props {
 	data: Admins[]
@@ -82,7 +82,7 @@ export const Inputs = ({ data, locations }: Props) => {
 	}
 
 	const handleDialogs = () => {
-		let ids: string[] = []
+		const ids: string[] = []
 
 		indexes.map(index => {
 			const numericIndex = parseInt(index, 10)
@@ -90,6 +90,7 @@ export const Inputs = ({ data, locations }: Props) => {
 			if (data[numericIndex].deletable) {
 				ids.push(data[numericIndex].userId)
 			}
+			return null
 		})
 
 		if (ids.length === indexes.length) {

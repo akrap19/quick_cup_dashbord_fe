@@ -5,12 +5,12 @@ import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
+import { SearchDropdown } from '@/components/custom/search-dropdown'
 import { FormControl } from '@/components/inputs/form-control'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
-import { SearchDropdown } from '@/components/custom/search-dropdown'
 
 const formSchema = z.object({
 	customId: z.string().min(1, { message: 'ValidationMeseges.required' })

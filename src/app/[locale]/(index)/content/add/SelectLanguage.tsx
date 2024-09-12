@@ -15,8 +15,8 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
-import { ROUTES } from 'parameters'
 import { Language } from 'api/models/language/language'
+import { ROUTES } from 'parameters'
 
 interface Props {
 	languages: Language[]

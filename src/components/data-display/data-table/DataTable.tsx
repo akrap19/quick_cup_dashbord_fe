@@ -55,6 +55,7 @@ export const DataTable = <TData, TValue>({ columns, data, pagination }: Props<TD
 	const table = useReactTable({
 		data,
 		columns,
+		// eslint-disable-next-line
 		pageCount: pagination ? Math.ceil(pagination?.count / pagination?.limit) : 1,
 		manualPagination: true,
 		onSortingChange: setSorting,

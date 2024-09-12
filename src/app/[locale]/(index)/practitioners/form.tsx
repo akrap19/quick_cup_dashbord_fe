@@ -1,5 +1,6 @@
 'use client'
 
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 
 import { InputWithInfo } from '@/components/custom/inputs/input-with-info/InputWithInfo'
@@ -9,7 +10,6 @@ import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
 import { OpenedProps } from '@/hooks/use-toggle'
-import { useSearchParams } from 'next/navigation'
 
 interface Props {
 	isEdit?: boolean
@@ -68,7 +68,7 @@ const PractitionerForm = ({ isEdit, cancelDialog }: Props) => {
 				<FormControl.Label>
 					<RequiredLabel>{t('General.role')}</RequiredLabel>
 				</FormControl.Label>
-				<SearchDropdown placeholder="General.role" options={filteredOptions} alwaysShowSearch={true} />
+				<SearchDropdown placeholder="General.role" options={filteredOptions} alwaysShowSearch />
 				<FormControl.Message />
 			</FormControl>
 			<FormControl name="phoneNumber">

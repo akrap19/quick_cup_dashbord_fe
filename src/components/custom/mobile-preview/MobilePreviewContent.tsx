@@ -1,3 +1,5 @@
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+
 import { AudioIcon } from '@/components/icons/audio-icon'
 import { PauseIcon } from '@/components/icons/pause-icon'
 import { Button } from '@/components/inputs/button'
@@ -6,7 +8,6 @@ import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { tokens } from '@/style/theme.css'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 import * as styles from './MobilePreview.css'
 
@@ -19,10 +20,7 @@ interface Props {
 export const MobilePreviewContent = ({ content, currentImage, setCurrentImage }: Props) => {
 	const [isAudioPlaying, setIsAudioPlaying] = useState(false)
 	const [audioElement, setAudioElement] = useState<HTMLAudioElement>()
-	const contentImages =
-		(content?.aboutImages && content?.aboutImages) ??
-		(content?.roomImages && content?.roomImages) ??
-		(content?.staffImages && content?.staffImages)
+	const contentImages = content?.aboutImages ?? content?.roomImages ?? content?.staffImages
 
 	const playAudioFile = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault()

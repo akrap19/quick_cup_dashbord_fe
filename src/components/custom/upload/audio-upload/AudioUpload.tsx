@@ -1,14 +1,14 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import React, { InputHTMLAttributes, useState, useEffect } from 'react'
+import React, { InputHTMLAttributes, useEffect, useState } from 'react'
 
 import { PauseIcon } from '@/components/icons/pause-icon'
 import { PlayIcon } from '@/components/icons/play-icon'
 import { Button } from '@/components/inputs/button'
 import { Inline } from '@/components/layout/inline'
-import { deleteMedia, media } from 'api/services/common'
 import { Audio } from 'api/models/common/audio'
+import { deleteMedia, media } from 'api/services/common'
 
 import * as styles from './AudioUpload.css'
 import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'

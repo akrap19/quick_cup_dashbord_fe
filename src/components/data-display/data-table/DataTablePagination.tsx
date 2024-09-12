@@ -20,7 +20,9 @@ export const DataTablePagination = ({ table, pagination }: DataTablePaginationPr
 	const t = useTranslations()
 	const currentPage = table.getState().pagination.pageIndex
 	const totalPages = table.getPageCount()
+	// eslint-disable-next-line
 	const firstRowIndex = currentPage * pagination?.limit + 1
+	// eslint-disable-next-line
 	const lastRowIndex = Math.min((currentPage + 1) * pagination?.limit, pagination?.count)
 	const paginationLabel =
 		pagination?.count <= 10

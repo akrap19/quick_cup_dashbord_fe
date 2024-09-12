@@ -1,19 +1,20 @@
 'use client'
 
+import { useEffect } from 'react'
+
 import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useSteps } from '@/hooks/use-steps'
+import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
+import { Content } from 'api/models/content/content'
+import { Language } from 'api/models/language/language'
 
 import { ManageBarnahusContent } from './ManageBarnahusContent'
 import { ManageRoomsContent } from './ManageRoomsContent'
 import { ManageStaffContent } from './ManageStaffContent'
 import { ContentPublished } from '../common/ContentPublished'
 import { PreviewAndPublish } from '../common/PreviewAndPublish'
-import { Language } from 'api/models/language/language'
-import { Content } from 'api/models/content/content'
-import { useManageContent } from '@/store/manage-content'
-import { useEffect } from 'react'
 
 interface Props {
 	language: Language

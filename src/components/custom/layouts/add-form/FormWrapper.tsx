@@ -13,7 +13,7 @@ export const FormWrapper = ({ children }: Props) => {
 	const { navbarIsLoading } = useNavbarItemsStore()
 
 	return (
-		<div>
+		<Box width="100%">
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
@@ -28,6 +28,6 @@ export const FormWrapper = ({ children }: Props) => {
 					</Box>
 				</Box>
 			)}
-		</div>
+		</Box>
 	)
 }

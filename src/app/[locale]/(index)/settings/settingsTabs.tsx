@@ -4,6 +4,7 @@ import { Session } from 'next-auth'
 import { useTranslations } from 'next-intl'
 
 import { Loader } from '@/components/custom/loader/Loader'
+import { Box } from '@/components/layout/box'
 import { Tabs } from '@/components/navigation/tabs/Tabs'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useNavbarItemsStore } from '@/store/navbar'
@@ -24,7 +25,7 @@ const SettingsTabs = ({ settings, session }: Props) => {
 	useNavbarItems({ title: 'General.settings' })
 
 	return (
-		<div>
+		<Box width="100%">
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
@@ -45,7 +46,7 @@ const SettingsTabs = ({ settings, session }: Props) => {
 					</Tabs.Panel>
 				</Tabs>
 			)}
-		</div>
+		</Box>
 	)
 }
 

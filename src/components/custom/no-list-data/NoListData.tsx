@@ -38,7 +38,7 @@ export const NoListData = ({
 		useNavbarItems({ title: navbarTitle, useUserDropdown: true })
 	}
 	return (
-		<div>
+		<Box width="100%">
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
@@ -58,6 +58,6 @@ export const NoListData = ({
 					</Box>
 				</Box>
 			)}
-		</div>
+		</Box>
 	)
 }

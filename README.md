@@ -7,7 +7,7 @@ Barnahus is a unique and innovative approach to child protection and justice, pr
 
 
 
-## Installation
+## Installation 
 
 To use this starter template, click on the "Use this template" on the [GitHub](https://github.com/Cinnamon-Agency/template-nextjs-internal) or you can simply clone this repository:
 

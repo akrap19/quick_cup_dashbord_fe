@@ -14,6 +14,7 @@ steps:
       - NEXT_PUBLIC_API_BASE_URL
       - NEXTAUTH_SECRET
       - ANALYZE
+      - NEXTAUTH_URL
 
   # Step 2: Docker build, passing the .env file as build argument
   - name: gcr.io/cloud-builders/docker

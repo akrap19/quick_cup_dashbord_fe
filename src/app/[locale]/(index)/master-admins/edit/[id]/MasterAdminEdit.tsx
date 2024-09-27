@@ -30,7 +30,7 @@ interface Props {
 }
 
 const EditMasterAdmin = ({ masterAdmin, barnahuses }: Props) => {
-	const { back } = useRouter()
+	const { back, refresh } = useRouter()
 	useNavbarItems({ title: 'MasterAdmins.edit', backLabel: 'MasterAdmins.back' })
 
 	const form = useForm<Schema>({
@@ -50,6 +50,7 @@ const EditMasterAdmin = ({ masterAdmin, barnahuses }: Props) => {
 		const result = await updateMasterAdmin({ ...dataWIhoutEmptyString, userId: masterAdmin.userId })
 		if (result?.message === 'OK') {
 			localStorage.setItem('editMessage', 'MasterAdmins.successfullyEdited')
+			refresh()
 			back()
 		}
 	}

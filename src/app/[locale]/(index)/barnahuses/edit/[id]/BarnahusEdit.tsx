@@ -31,7 +31,7 @@ interface Props {
 }
 
 const BarnahusEdit = ({ barnahus, locations, masterAdmins }: Props) => {
-	const { back } = useRouter()
+	const { back, refresh } = useRouter()
 	useNavbarItems({ title: 'Barnahuses.edit', backLabel: 'Barnahuses.back' })
 
 	const form = useForm<Schema>({
@@ -51,6 +51,7 @@ const BarnahusEdit = ({ barnahus, locations, masterAdmins }: Props) => {
 		})
 		if (result?.message === 'OK') {
 			localStorage.setItem('editMessage', 'Barnahuses.successfullyEdited')
+			refresh()
 			back()
 		}
 	}

@@ -13,6 +13,7 @@ import { TextInput } from '@/components/inputs/text-input'
 import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
+import { useLoading } from '@/hooks/use-loading'
 import { forgotPassword } from 'api/services/auth'
 import { ROUTES } from 'parameters/routes'
 import { emailSchema } from 'schemas'
@@ -26,6 +27,7 @@ type Schema = z.infer<typeof formSchema>
 
 const ForgotPasswordPage = () => {
 	const t = useTranslations()
+	const loading = useLoading()
 	const { push } = useRouter()
 
 	const form = useForm<Schema>({
@@ -36,9 +38,13 @@ const ForgotPasswordPage = () => {
 
 	const onSubmit = async (data: Schema) => {
 		const { email } = data
+		loading.toggleLoading()
 		const result = await forgotPassword(email)
+
 		if (result?.message === 'OK') {
 			push(`${ROUTES.FORGOT_PASSWORD_SUCCESS}?email=${email}`)
+		} else {
+			loading.toggleLoading()
 		}
 	}
 
@@ -62,8 +68,8 @@ const ForgotPasswordPage = () => {
 							<TextInput placeholder={t('General.emailPlaceholder')} />
 							<FormControl.Message />
 						</FormControl>
-						<Button type="submit" disabled={!form.formState.isValid}>
-							{t('Authorization.ForgotPassword.sendInstructions')}
+						<Button type="submit" disabled={!form.formState.isValid || loading.isLoading}>
+							{t(loading.isLoading ? 'General.loading' : 'Authorization.ForgotPassword.sendInstructions')}
 						</Button>
 					</Stack>
 				</form>

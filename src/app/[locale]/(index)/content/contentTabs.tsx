@@ -32,7 +32,7 @@ export const ContentTabs = <TData, TValue>({ aboutData, roomsData, staffData, la
 	useNavbarItems({ title: 'General.content', useUserDropdown: true })
 
 	return (
-		<div>
+		<Box width="100%">
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
@@ -76,6 +76,6 @@ export const ContentTabs = <TData, TValue>({ aboutData, roomsData, staffData, la
 					</Tabs.Panel>
 				</Tabs>
 			)}
-		</div>
+		</Box>
 	)
 }

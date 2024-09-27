@@ -25,11 +25,11 @@ const SettingsTabs = ({ settings, session }: Props) => {
 	useNavbarItems({ title: 'General.settings' })
 
 	return (
-		<Box width="100%">
+		<Box>
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
-				<Tabs>
+				<Tabs size="large">
 					<Tabs.Tab value="personalInfo" defaultTab>
 						{t('General.personalInfo')}
 					</Tabs.Tab>

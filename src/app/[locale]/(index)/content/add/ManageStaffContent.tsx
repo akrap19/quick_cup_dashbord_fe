@@ -36,7 +36,7 @@ type Schema = z.infer<typeof formSchema>
 
 export const ManageStaffContent = () => {
 	const searchParams = useSearchParams()
-	const router = useRouter()
+	const { replace } = useRouter()
 	const pathname = usePathname()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const { language } = useManageContent()
@@ -96,7 +96,7 @@ export const ManageStaffContent = () => {
 			if (language?.id) {
 				const newParams = new URLSearchParams(searchParams.toString())
 				newParams.set('languageId', language?.id)
-				router.replace(`${pathname}?${newParams.toString()}`)
+				replace(`${pathname}?${newParams.toString()}`)
 				routeReplaced = true
 			}
 

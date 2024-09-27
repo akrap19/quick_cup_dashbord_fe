@@ -28,7 +28,7 @@ export const DetailsWrapper = ({ children }: Props) => {
 	}, [])
 
 	return (
-		<div>
+		<Box width="100%">
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
@@ -51,6 +51,6 @@ export const DetailsWrapper = ({ children }: Props) => {
 					</Box>
 				</Box>
 			)}
-		</div>
+		</Box>
 	)
 }

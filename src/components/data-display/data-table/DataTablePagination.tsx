@@ -41,12 +41,16 @@ export const DataTablePagination = ({ table, pagination }: DataTablePaginationPr
 				<Text fontSize="small">{paginationLabel}</Text>
 				{totalPages > 0 ? (
 					<>
-						<Button variant="adaptive" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+						<Button
+							size="auto"
+							variant="adaptive"
+							onClick={() => table.previousPage()}
+							disabled={!table.getCanPreviousPage()}>
 							<Text color="neutral.200">{t('General.previous')}</Text>
 						</Button>
 						<Inline gap={2} alignItems="center">
 							{Array.from({ length: totalPages }).map((_, index) => (
-								<Button variant="adaptive">
+								<Button size="auto" variant="adaptive">
 									<Text
 										color={currentPage === index ? 'neutral.500' : 'neutral.400'}
 										onClick={() => table.setPageIndex(index)}>
@@ -55,7 +59,7 @@ export const DataTablePagination = ({ table, pagination }: DataTablePaginationPr
 								</Button>
 							))}
 						</Inline>
-						<Button variant="adaptive" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+						<Button size="auto" variant="adaptive" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
 							<Text color="neutral.200">{t('General.next')}</Text>
 						</Button>
 					</>

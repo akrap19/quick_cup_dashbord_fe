@@ -43,7 +43,11 @@ export const PersonalInfoForm = ({ settings, session }: Props) => {
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { firstName: settings?.firstName, lastName: settings?.lastName, phoneNumber: settings?.phoneNumber }
+		defaultValues: {
+			firstName: settings?.firstName,
+			lastName: settings?.lastName,
+			phoneNumber: settings?.phoneNumber ?? ''
+		}
 	})
 
 	const onSubmit = async (data: Schema) => {

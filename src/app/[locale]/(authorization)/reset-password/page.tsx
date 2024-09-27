@@ -104,8 +104,8 @@ const ResetYourPasswordPage = () => {
 								<FormControl.Message />
 							</FormControl>
 						</Stack>
-						<Button type="submit" disabled={!form.formState.isValid}>
-							{t('Authorization.resetPassword')}
+						<Button type="submit" disabled={!form.formState.isValid || loading.isLoading}>
+							{t(loading.isLoading ? 'General.loading' : 'Authorization.resetPassword')}
 						</Button>
 					</Stack>
 				</form>

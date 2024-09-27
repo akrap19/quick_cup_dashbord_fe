@@ -28,7 +28,7 @@ interface Props {
 }
 
 const LanguageEdit = ({ language, languages }: Props) => {
-	const { back } = useRouter()
+	const { back, refresh } = useRouter()
 	useNavbarItems({ title: 'Languages.edit', backLabel: 'Languages.back' })
 
 	const form = useForm<Schema>({
@@ -48,6 +48,7 @@ const LanguageEdit = ({ language, languages }: Props) => {
 		})
 		if (result?.message === 'OK') {
 			localStorage.setItem('editMessage', 'Languages.successfullyEdited')
+			refresh()
 			back()
 		}
 	}

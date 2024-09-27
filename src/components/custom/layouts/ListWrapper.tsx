@@ -32,6 +32,7 @@ export const ListWrapper = ({ title, children }: ListWrapperProps) => {
 
 	return (
 		<Box width="100%">
+			<p>{process.env.NEXTAUTH_URL}</p>
 			{navbarIsLoading ? (
 				<Loader />
 			) : (

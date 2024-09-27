@@ -21,7 +21,7 @@ import { passwordSchema, requiredString } from 'schemas'
 
 const formSchema = z
 	.object({
-		currentPassword: passwordSchema.shape.password,
+		currentPassword: requiredString.shape.scheme,
 		newPassword: passwordSchema.shape.password,
 		confirmPassword: requiredString.shape.scheme
 	})

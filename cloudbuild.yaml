@@ -8,10 +8,13 @@ steps:
         echo "NEXT_PUBLIC_API_BASE_URL=$$NEXT_PUBLIC_API_BASE_URL" > .env
         echo "NEXTAUTH_SECRET=$$NEXTAUTH_SECRET" >> .env
         echo "ANALYZE=$$ANALYZE" >> .env
+        echo "NEXTAUTH_URL=$$NEXTAUTH_URL" >> .env
+
     secretEnv:
       - NEXT_PUBLIC_API_BASE_URL
       - NEXTAUTH_SECRET
       - ANALYZE
+      - NEXTAUTH_URL
 
   # Step 2: Docker build, passing the .env file as build argument
   - name: gcr.io/cloud-builders/docker
@@ -77,3 +80,5 @@ availableSecrets:
       env: NEXTAUTH_SECRET
     - versionName: projects/232931877685/secrets/ANALYZE/versions/latest
       env: ANALYZE
+    - versionName: projects/232931877685/secrets/NEXTAUTH_URL/versions/latest
+      env: NEXTAUTH_URL

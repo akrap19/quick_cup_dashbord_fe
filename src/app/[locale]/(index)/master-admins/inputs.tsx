@@ -35,6 +35,7 @@ export const Inputs = ({ data, locations }: Props) => {
 	)
 	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
 	const indexes = checkedItems ? Object?.keys(checkedItems) : []
+
 	const { push, replace, refresh } = useRouter()
 	const formattedLocations = locations?.map(location => ({
 		value: location,

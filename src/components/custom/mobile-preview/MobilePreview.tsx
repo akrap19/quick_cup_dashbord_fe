@@ -33,7 +33,6 @@ export const MobilePreview = ({ content }: Props) => {
 		setCurrentContentPage(contentPage)
 	}
 
-
 	return (
 		<Box width="100%" display="flex" justify="center">
 			<Image src="/images/mobile.png" width={260} height={518} alt="mobile" />

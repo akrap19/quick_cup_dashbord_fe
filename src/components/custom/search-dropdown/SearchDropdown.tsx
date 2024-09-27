@@ -4,7 +4,6 @@ import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 
-
 import { BlockIcon } from '@/components/icons/block-icon'
 import { Button } from '@/components/inputs/button'
 import { InputWrapper } from '@/components/inputs/input-wrapper'
@@ -44,7 +43,6 @@ export const SearchDropdown = ({
 	const [isOpen, setIsOpen] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
 	const presentationalLabelVariant = isFilter ? 'filterLabel' : value ? 'formLabel' : 'placeholder'
-
 
 	const handleDropDownOpening = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault()

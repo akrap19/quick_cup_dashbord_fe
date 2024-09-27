@@ -29,7 +29,8 @@ interface Props {
 	practitioner: Practitioner
 }
 
-	const { back, refresh } = useRouter
+const PractitionerEdit = ({ practitioner }: Props) => {
+	const { back, refresh } = useRouter()
 	useNavbarItems({ title: 'Practitioners.edit', backLabel: 'Practitioners.back' })
 
 	const form = useForm<Schema>({

@@ -33,10 +33,12 @@ export const NoListData = ({
 }: Props) => {
 	const t = useTranslations()
 	const { navbarIsLoading } = useNavbarItemsStore()
+
 	if (setNavbarItems) {
 		// eslint-disable-next-line
 		useNavbarItems({ title: navbarTitle, useUserDropdown: true })
 	}
+
 	return (
 		<Box width="100%">
 			{navbarIsLoading ? (

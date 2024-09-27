@@ -37,7 +37,9 @@ export const MasterAdminDetails = ({ masterAdmin }: Props) => {
 			<Stack gap={4}>
 				<Label>{t('General.barnahus')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{masterAdmin.location ?? t('General.barnahus') + t('General.notDefined')}
+					{masterAdmin.locations.length > 0
+						? masterAdmin.locations.join(', ')
+						: t('General.barnahus') + t('General.notDefined')}
 				</Text>
 			</Stack>
 			<Stack gap={4}>

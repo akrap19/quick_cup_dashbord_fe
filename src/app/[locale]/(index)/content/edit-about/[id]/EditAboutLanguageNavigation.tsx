@@ -39,7 +39,7 @@ export const EditAboutLanguageNavigation = ({ about, languages }: Props) => {
 	})
 
 	return (
-		<div>
+		<Box width="100%">
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
@@ -81,6 +81,6 @@ export const EditAboutLanguageNavigation = ({ about, languages }: Props) => {
 					</Box>
 				</ManageJourneyWrapper>
 			)}
-		</div>
+		</Box>
 	)
 }

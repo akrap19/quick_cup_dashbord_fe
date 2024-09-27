@@ -37,7 +37,7 @@ export const AddRoomLanguageNavigation = ({ languages }: Props) => {
 	})
 
 	return (
-		<div>
+		<Box width="100%">
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
@@ -79,6 +79,6 @@ export const AddRoomLanguageNavigation = ({ languages }: Props) => {
 					</Box>
 				</ManageJourneyWrapper>
 			)}
-		</div>
+		</Box>
 	)
 }

@@ -30,7 +30,7 @@ interface Props {
 }
 
 const PractitionerEdit = ({ practitioner }: Props) => {
-	const { back } = useRouter()
+	const { back, refresh } = useRouter()
 	useNavbarItems({ title: 'Practitioners.edit', backLabel: 'Practitioners.back' })
 
 	const form = useForm<Schema>({
@@ -52,6 +52,7 @@ const PractitionerEdit = ({ practitioner }: Props) => {
 		const result = await updatePractitioner({ ...dataWIhoutEmptyString, userId: practitioner.userId })
 		if (result?.message === 'OK') {
 			localStorage.setItem('editMessage', 'Practitioners.successfullyEdited')
+			refresh()
 			back()
 		}
 	}

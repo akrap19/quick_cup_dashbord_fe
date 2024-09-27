@@ -5,5 +5,6 @@ export interface Admin {
 	email: string
 	phoneNumber: string
 	location: string
+	locations: string[]
 	locationCode: string
 }

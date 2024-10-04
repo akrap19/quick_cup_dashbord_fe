@@ -1,7 +1,6 @@
 'use client'
 
-import type { CSSProperties } from 'react'
-import { useState } from 'react'
+import { CSSProperties, Dispatch, SetStateAction } from 'react'
 import { DragDropContext, Draggable, DraggingStyle, DropResult, Droppable, NotDraggingStyle } from 'react-beautiful-dnd'
 
 import { Box } from '@/components/layout/box'
@@ -11,7 +10,12 @@ import { Text } from '@/components/typography/text'
 import { tokens } from 'style/theme.css'
 
 import { Card } from './Card'
-import { cardsData } from './CardData'
+import { CardBase } from 'api/models/common/cardBase'
+
+interface Props {
+	cards: CardBase[]
+	setCards: Dispatch<SetStateAction<CardBase[]>>
+}
 
 const reorder = (list: any, startIndex: number, endIndex: number): any => {
 	const result = Array.from(list)
@@ -21,9 +25,7 @@ const reorder = (list: any, startIndex: number, endIndex: number): any => {
 	return result
 }
 
-export const RearrangeableCards = () => {
-	const [cards, setCards] = useState(cardsData)
-
+export const RearrangeableCards = ({ cards, setCards }: Props) => {
 	const getItemStyle = (draggableStyle: DraggingStyle | NotDraggingStyle | any | undefined): CSSProperties => ({
 		userSelect: 'none',
 		padding: tokens.spacing[2],
@@ -41,17 +43,26 @@ export const RearrangeableCards = () => {
 		setCards(items)
 	}
 
+	const handleRemoveItem = (id: string) => {
+		const newCards = cards?.filter(card => card.id !== id)
+
+		setCards(newCards)
+	}
+
 	return (
 		<Box
+			position="relative"
 			style={{
 				minWidth: '28.375rem'
 			}}>
 			<Stack gap={4}>
 				{cards.map((card, i) => (
 					<Inline gap={6} alignItems="center">
-						<Text fontWeight="bold" fontSize="small" color="neutral.800">
-							{`${i + 1}.`}
-						</Text>
+						<Box style={{ width: '8px' }}>
+							<Text fontWeight="bold" fontSize="small" color="neutral.800">
+								{`${i + 1}.`}
+							</Text>
+						</Box>
 						<Box
 							borderRadius="small"
 							backgroundColor="neutral.150"
@@ -63,20 +74,22 @@ export const RearrangeableCards = () => {
 					</Inline>
 				))}
 			</Stack>
-			<Box position="absolute" style={{ top: '15rem', marginLeft: '1.75rem' }}>
+			<Box position="absolute" style={{ top: '-8px', marginLeft: '1.5rem' }}>
 				<DragDropContext onDragEnd={onDragEnd}>
 					<Droppable droppableId="droppable">
 						{provided => (
 							<div {...provided.droppableProps} ref={provided.innerRef}>
 								{cards.map((card, i) => (
-									<Draggable key={card.id} draggableId={card.id} index={i}>
+									<Draggable key={card.id} draggableId={card.order.toString()} index={i}>
 										{provided => (
 											<div
 												ref={provided.innerRef}
 												{...provided.draggableProps}
 												{...provided.dragHandleProps}
 												style={getItemStyle(provided.draggableProps.style)}>
-												<Card>{card.text}</Card>
+												<Card id={card.id} handleRemoveItem={handleRemoveItem}>
+													{card.title}
+												</Card>
 											</div>
 										)}
 									</Draggable>

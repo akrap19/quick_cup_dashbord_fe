@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 
 import { Box } from '@/components/layout/box'
@@ -11,13 +12,15 @@ import { useNavbarItemsStore } from '@/store/navbar'
 
 import { AddButton } from '../button/add-button'
 import { Loader } from '../loader/Loader'
+import { MouseEventHandler } from 'react'
 
 type Props = {
 	navbarTitle: string
 	title: string
 	description: string
 	buttonLabel: string
-	buttonLink: string
+	buttonLink?: string
+	onClick?: MouseEventHandler<HTMLButtonElement>
 	distanceFromTop?: string
 	setNavbarItems?: boolean
 }
@@ -28,11 +31,14 @@ export const NoListData = ({
 	description,
 	buttonLabel,
 	buttonLink,
+	onClick,
 	distanceFromTop,
 	setNavbarItems = true
 }: Props) => {
 	const t = useTranslations()
 	const { navbarIsLoading } = useNavbarItemsStore()
+	const { push } = useRouter()
+	const onClickMethod = !buttonLink ? onClick : () => push(buttonLink)
 
 	if (setNavbarItems) {
 		// eslint-disable-next-line
@@ -54,7 +60,7 @@ export const NoListData = ({
 								<Text lineHeight="xlarge">{t(description)}</Text>
 							</Stack>
 							<Box>
-								<AddButton buttonLabel={t(buttonLabel)} buttonLink={buttonLink} />
+								<AddButton buttonLabel={t(buttonLabel)} onClick={onClickMethod} />
 							</Box>
 						</Stack>
 					</Box>

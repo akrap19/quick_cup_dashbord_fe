@@ -8,11 +8,16 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Base } from 'api/models/common/base'
 import { Language } from 'api/models/language/language'
+import { useRouter } from 'next/navigation'
 import { ROUTES } from 'parameters'
 
 import { ManageContentColumn, columns } from './columns'
 import { contentSectionData } from './data'
 import { Inputs } from './inputs'
+import { useManageContent } from '@/store/manage-content'
+import { AddButton } from '@/components/custom/button/add-button'
+import { useTranslations } from 'next-intl'
+import { tokens } from '@/style/theme.css'
 
 // eslint-disable-next-line
 interface Props<TData, TValue> {
@@ -30,6 +35,9 @@ export const Content = <TData, TValue>({
 	languageValue,
 	setLanguageValue
 }: Props<TData, TValue>) => {
+	const t = useTranslations()
+	const { push } = useRouter()
+	const { setLanguage } = useManageContent()
 	const contentDataKey = Object.keys(contentSectionData).find(key => key.includes(contentSection))
 	const contentData = contentDataKey && contentSectionData[contentDataKey as keyof typeof contentSectionData]
 	const currentLanguage = languages?.find(language => language.languageId === languageValue.id)
@@ -40,47 +48,68 @@ export const Content = <TData, TValue>({
 		}
 	})
 
+	const handleAddContent = () => {
+		if (currentLanguage) {
+			setLanguage({ id: currentLanguage?.languageId, name: currentLanguage?.name })
+			push(ROUTES.ADD_CONTENT)
+		}
+	}
+
 	return (
-		<Box paddingTop={5}>
-			<Stack gap={4}>
-				{contentData && (
-					<Inputs
-						data={contentTableData}
-						languages={languages}
-						buttonLabel={contentData?.buttonLabel}
-						buttonLink={contentData?.buttonLink}
-						languageValue={languageValue}
-						setLanguageValue={setLanguageValue}
-					/>
-				)}
-				{contentTableData ? (
-					contentTableData?.length > 0 ? (
-						<DataTable columns={columns} data={contentTableDataWithFormatedDate} />
-					) : currentLanguage?.autoTranslate ? (
-						<NoListData
-							navbarTitle="General.content"
-							title="ManageContent.addAndReviewNewContentTitle"
-							description="ManageContent.addAndReviewNewContentDescription"
-							buttonLabel="ManageContent.addAndReviewNewContentButtonLabel"
-							buttonLink={ROUTES.ADD_CONTENT}
-							distanceFromTop="8vh"
-							setNavbarItems={false}
+		<>
+			{contentTableData?.length > 0 && (
+				<Box position="absolute" style={{ marginTop: `-44px`, right: tokens.spacing[16] }}>
+					{currentLanguage?.autoTranslate ? (
+						<AddButton
+							buttonLabel={t('ManageContent.addAndReviewNewContentButtonLabel')}
+							buttonLink={ROUTES.AUTOTRANSLATE_AND_REVIEW + `?languageId=${currentLanguage?.languageId}`}
 						/>
 					) : (
-						<NoListData
-							navbarTitle="General.content"
-							title="ManageContent.contentNotAddedTitle"
-							description="ManageContent.contentNotAddedDescription"
-							buttonLabel="ManageContent.add"
-							buttonLink={ROUTES.ADD_CONTENT}
-							distanceFromTop="8vh"
-							setNavbarItems={false}
+						<AddButton buttonLabel={t('ManageContent.add')} onClick={handleAddContent} />
+					)}
+				</Box>
+			)}
+			<Box paddingTop={6}>
+				<Stack gap={4}>
+					{contentData && (
+						<Inputs
+							data={contentTableData}
+							languages={languages}
+							buttonLabel={contentData?.buttonLabel}
+							buttonLink={contentData?.buttonLink}
+							languageValue={languageValue}
+							setLanguageValue={setLanguageValue}
 						/>
-					)
-				) : (
-					<Loader />
-				)}
-			</Stack>
-		</Box>
+					)}
+					{contentTableData ? (
+						contentTableData?.length > 0 ? (
+							<DataTable columns={columns} data={contentTableDataWithFormatedDate} />
+						) : currentLanguage?.autoTranslate ? (
+							<NoListData
+								navbarTitle="General.content"
+								title="ManageContent.addAndReviewNewContentTitle"
+								description="ManageContent.addAndReviewNewContentDescription"
+								buttonLabel="ManageContent.addAndReviewNewContentButtonLabel"
+								buttonLink={ROUTES.AUTOTRANSLATE_AND_REVIEW + `?languageId=${currentLanguage?.languageId}`}
+								distanceFromTop="8vh"
+								setNavbarItems={false}
+							/>
+						) : (
+							<NoListData
+								navbarTitle="General.content"
+								title="ManageContent.contentNotAddedTitle"
+								description="ManageContent.contentNotAddedDescription"
+								buttonLabel="ManageContent.add"
+								onClick={handleAddContent}
+								distanceFromTop="8vh"
+								setNavbarItems={false}
+							/>
+						)
+					) : (
+						<Loader />
+					)}
+				</Stack>
+			</Box>
+		</>
 	)
 }

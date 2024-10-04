@@ -11,3 +11,7 @@ export const getContent = (query: Query) => {
 
 	return fetchWithToken(`content`, { languageId: queryParams.languageId })
 }
+
+export const getTemplate = () => {
+	return fetchWithToken(`/content/template`)
+}

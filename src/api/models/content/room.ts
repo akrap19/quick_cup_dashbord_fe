@@ -9,6 +9,7 @@ export interface Room {
 	roomId: string
 	roomTranslationId: string
 	title: string
+	orderNumber: number
 	description: string
 	updated: string
 	status: string

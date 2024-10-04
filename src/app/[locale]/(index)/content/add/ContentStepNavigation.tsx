@@ -13,6 +13,7 @@ import { ManageStaffContent } from './ManageStaffContent'
 import { SelectLanguage } from './SelectLanguage'
 import { ContentPublished } from '../common/ContentPublished'
 import { PreviewAndPublish } from '../common/PreviewAndPublish'
+import { useManageContent } from '@/store/manage-content'
 
 interface Props {
 	languages: Language[]
@@ -21,9 +22,11 @@ interface Props {
 
 export const ContentStepNavigation = ({ languages, content }: Props) => {
 	const { currentStep } = useStepsStore()
+	const { language } = useManageContent()
+
 	useSteps({
 		totalSteps: 6,
-		currentStep: 1
+		currentStep: language ? 2 : 5
 	})
 	useNavbarItems({
 		title: 'ManageContent.add',

@@ -12,7 +12,7 @@ export const getStaffs = (query: Query) => {
 	const queryParams = {
 		languageId: query.languageId,
 		page: query.page ?? 1,
-		limit: query.limit ?? 10
+		limit: query.limit ?? 100
 	}
 
 	return fetchWithToken(`staff/translation`, queryParams)

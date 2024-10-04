@@ -29,7 +29,7 @@ export const ContentStepNavigation = ({ language, languages }: Props) => {
 
 	useSteps({
 		totalSteps: 5,
-		currentStep: 5
+		currentStep: 1
 	})
 
 	useNavbarItems({

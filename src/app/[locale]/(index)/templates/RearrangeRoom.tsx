@@ -11,13 +11,21 @@ import { RearrangeableCards } from '@/components/custom/rearrengable-cards/Rearr
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
+import { Box } from '@/components/layout/box'
+import { CardBase } from 'api/models/common/cardBase'
+import { Dispatch, SetStateAction } from 'react'
+
+interface Props {
+	cards: CardBase[]
+	setCards: Dispatch<SetStateAction<CardBase[]>>
+}
 
 const formSchema = z.object({})
 
 type Schema = z.infer<typeof formSchema>
 
-export const RearrangeRoom = () => {
-	const { setCurrentStep } = useStepsStore()
+export const RearrangeRoom = ({ cards, setCards }: Props) => {
+	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
@@ -27,23 +35,25 @@ export const RearrangeRoom = () => {
 	})
 
 	const onSubmit = async () => {
-		setCurrentStep(3)
+		setCurrentStep(currentStep + 1)
 	}
 
 	return (
 		<FormProvider {...form}>
 			<form style={{ width: '100%' }} onSubmit={form.handleSubmit(onSubmit)}>
-				<ManageJourneyIntroWrapper>
-					<Stack gap={6} alignItems="center">
-						<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
-							{t('CaseJourney.dragToRearrangeTitle')}
-						</Text>
-						<Text fontSize="small" color="neutral.800" textAlign="center">
-							{t('CaseJourney.dragToRearrangeDescription')}
-						</Text>
-						<RearrangeableCards />
-					</Stack>
-				</ManageJourneyIntroWrapper>
+				<Box paddingTop={12} paddingBottom={8}>
+					<ManageJourneyIntroWrapper>
+						<Stack gap={6} alignItems="center">
+							<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
+								{t('CaseJourney.dragToRearrangeTitle')}
+							</Text>
+							<Text fontSize="small" color="neutral.800" textAlign="center">
+								{t('CaseJourney.dragToRearrangeDescription')}
+							</Text>
+							<RearrangeableCards cards={cards} setCards={setCards} />
+						</Stack>
+					</ManageJourneyIntroWrapper>
+				</Box>
 				<Actions />
 			</form>
 		</FormProvider>

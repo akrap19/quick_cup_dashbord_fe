@@ -39,7 +39,6 @@ export const Inputs = ({ data, languages, buttonLabel, buttonLink, languageValue
 	const confirmDialog = useOpened()
 	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
 	const currentSearchParamas = qs.parse(searchParams.toString())
-	const currentLanguage = languages?.find(language => language.languageId === languageValue.id)
 	const dataWithTransformedId = data?.map(item => {
 		return {
 			...item,
@@ -123,9 +122,7 @@ export const Inputs = ({ data, languages, buttonLabel, buttonLink, languageValue
 							alwaysShowSearch
 						/>
 					</Box>
-					{(data?.length > 0 || currentLanguage?.autoTranslate) && (
-						<AddButton size="medium" variant="secondary" buttonLabel={t(buttonLabel)} buttonLink={buttonLink} />
-					)}
+					<AddButton size="medium" variant="secondary" buttonLabel={t(buttonLabel)} buttonLink={buttonLink} />
 				</Inline>
 			) : (
 				<DataTableActions size="medium" onEdit={handleEdit} onDelete={() => confirmDialog.toggleOpened()} />

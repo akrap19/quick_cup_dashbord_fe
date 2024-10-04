@@ -1,9 +1,9 @@
 'use client'
 
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
-import { AddButton } from '@/components/custom/button/add-button'
 import { Loader } from '@/components/custom/loader/Loader'
 import { Box } from '@/components/layout/box'
 import { Tabs } from '@/components/navigation/tabs/Tabs'
@@ -11,7 +11,6 @@ import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useNavbarItemsStore } from '@/store/navbar'
 import { Base } from 'api/models/common/base'
 import { Language } from 'api/models/language/language'
-import { ROUTES } from 'parameters'
 
 import { ManageContentColumn } from './columns'
 import { Content } from './Content'
@@ -27,7 +26,13 @@ interface Props<TData, TValue> {
 export const ContentTabs = <TData, TValue>({ aboutData, roomsData, staffData, languages }: Props<TData, TValue>) => {
 	const t = useTranslations()
 	const { navbarIsLoading } = useNavbarItemsStore()
-	const languageBase: Base = { id: languages[0]?.languageId, name: languages[0]?.name }
+	const searchParams = useSearchParams()
+	const languageId = searchParams.get('languageId')
+	const currentLanguage = languages?.find((language: any) => language.languageId === languageId)
+	const languageBase: Base = {
+		id: currentLanguage ? currentLanguage.languageId : languages[0]?.languageId,
+		name: currentLanguage ? currentLanguage.name : languages[0]?.name
+	}
 	const [languageValue, setLanguageValue] = useState(languageBase)
 	useNavbarItems({ title: 'General.content', useUserDropdown: true })
 
@@ -37,9 +42,6 @@ export const ContentTabs = <TData, TValue>({ aboutData, roomsData, staffData, la
 				<Loader />
 			) : (
 				<Tabs>
-					{(aboutData?.length > 0 || roomsData?.length > 0 || staffData?.length > 0) && (
-						<AddButton buttonLabel={t('ManageContent.add')} buttonLink={ROUTES.ADD_CONTENT} />
-					)}
 					<Tabs.Tab value="aboutBarnahus" defaultTab>
 						{t('General.aboutBarnahus')}
 					</Tabs.Tab>

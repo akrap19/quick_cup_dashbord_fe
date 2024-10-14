@@ -4,13 +4,15 @@ import { CaseFilePayload } from 'api/models/caseFiles/caseFilePayload'
 
 interface Query {
 	search: string
-	page: number
-	limit: number
+	status?: string
+	page?: number
+	limit?: number
 }
 
 export const getCaseFiles = (query: Query) => {
 	const queryParams = {
 		search: query.search,
+		status: query.status,
 		page: query.page ?? 1,
 		limit: query.limit ?? 10
 	}
@@ -44,4 +46,13 @@ export const deleteCaseFiles = async (caseIds: string[]) => {
 	const response = await axiosInstanceWithToken.delete(`/case/bulk`, { data: { caseIds } })
 
 	return response?.data
+}
+
+export const getCaseFilesSearch = (query: Query) => {
+	const queryParams = {
+		search: query.search,
+		status: query.status
+	}
+
+	return fetchWithToken(`case/search`, queryParams)
 }

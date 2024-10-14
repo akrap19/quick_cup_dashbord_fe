@@ -1,4 +1,4 @@
-interface StaffImage {
+export interface StaffImage {
 	staffImageId: string
 	url: string
 }

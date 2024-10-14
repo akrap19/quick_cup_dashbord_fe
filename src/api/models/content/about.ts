@@ -13,6 +13,7 @@ export interface About {
 	description: string
 	updated: string
 	status: string
-	audio: Audio
+	audio?: Audio
+	audioURL?: string
 	aboutImages: AboutImage[]
 }

@@ -16,9 +16,10 @@ import { iconContainer } from '../../button/icon-delete-button/IconDeleteButton.
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
 	initialAudio?: Audio
+	disableDelete?: boolean
 }
 
-export const AudioUpload = ({ initialAudio, ...rest }: Props) => {
+export const AudioUpload = ({ initialAudio, disableDelete, ...rest }: Props) => {
 	const [isAudioPlaying, setIsAudioPlaying] = useState(false)
 	const [audioFile, setAudioFile] = useState<File>()
 	const [audioElement, setAudioElement] = useState<HTMLAudioElement>()
@@ -108,7 +109,7 @@ export const AudioUpload = ({ initialAudio, ...rest }: Props) => {
 								</label>
 							</div>
 						</Inline>
-						<IconDeleteButton onDelete={handleDelete} />
+						{disableDelete && <IconDeleteButton onDelete={handleDelete} />}{' '}
 					</Inline>
 				</div>
 			) : (

@@ -11,6 +11,7 @@ export const fileContainer = style({
 	borderRadius: tokens.borders.radius.small,
 	padding: `${tokens.spacing[2]} ${tokens.spacing[3]}`,
 	border: tokens.borders.border.thin,
+	backgroundColor: tokens.colors['shades.00'],
 	borderColor: tokens.borders.color['neutral.300']
 })
 

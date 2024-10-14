@@ -1,0 +1,93 @@
+'use client'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
+import { Box } from '@/components/layout/box'
+import { Text } from '@/components/typography/text'
+import { Stack } from '@/components/layout/stack'
+import { useStepsStore } from '@/store/steps'
+import { Room } from 'api/models/content/room'
+import { SelectContentItem } from './SelectContentItem'
+import { requiredString } from 'schemas'
+import { useManageTemplate } from '@/store/manage-template'
+import { useTemplate } from '@/hooks/use-template'
+
+interface Props {
+	rooms: Room[]
+}
+
+const formSchema = z.object({
+	items: z.array(
+		z.object({
+			roomId: requiredString.shape.scheme,
+			includeAudio: z.boolean(),
+			includeDescription: z.boolean(),
+			includeImage: z.boolean(),
+			orderNumber: z.number()
+		})
+	)
+})
+
+type Schema = z.infer<typeof formSchema>
+
+export const SelectRoomsContent = ({ rooms }: Props) => {
+	const { setRooms } = useManageTemplate()
+	const { currentStep, setCurrentStep } = useStepsStore()
+	const t = useTranslations()
+	const defaultValues = {
+		items: rooms.map((room: Room, i: number) => ({
+			roomId: room.roomId,
+			includeAudio: false,
+			includeDescription: false,
+			includeImage: false,
+			orderNumber: i + 1
+		}))
+	}
+
+	const form = useForm<Schema>({
+		mode: 'onBlur',
+		resolver: zodResolver(formSchema),
+		defaultValues
+	})
+
+	const onSubmit = async (data: Schema) => {
+		setRooms(data?.items)
+		if (currentStep) {
+			setCurrentStep(currentStep + 1)
+		}
+	}
+
+	return (
+		<FormProvider {...form}>
+			<form style={{ width: '100%' }} onSubmit={form.handleSubmit(onSubmit)}>
+				<Box paddingX={6} paddingY={8} display="flex" justify="center" width="100%">
+					<Stack gap={6}>
+						<Text color="neutral.800" fontSize="xbig" fontWeight="semibold" textAlign="center">
+							{t('CaseJourney.selectRoomsContentTitle')}
+						</Text>
+						<Box
+							style={{
+								maxWidth: '26rem'
+							}}>
+							<Text color="neutral.800" fontSize="small" textAlign="center">
+								{t('CaseJourney.selectRoomsContentDescription')}
+							</Text>
+						</Box>
+					</Stack>
+				</Box>
+				<Box padding={6} borderTop="thin" borderColor="neutral.300">
+					<Stack gap={6}>
+						{rooms?.map((room: Room, i: number) => (
+							<SelectContentItem data={room} form={form} index={i} hideDivider={rooms?.length === i + 1} />
+						))}
+					</Stack>
+				</Box>
+				<Actions />
+			</form>
+		</FormProvider>
+	)
+}

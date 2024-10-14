@@ -1,3 +1,5 @@
+'use client'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -9,28 +11,51 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
 import { About } from 'api/models/content/about'
-import { SelectBarnahusContentItem } from './SelectBarnahusContentItem'
+import { SelectContentItem } from './SelectContentItem'
+import { requiredString } from 'schemas'
+import { useManageTemplate } from '@/store/manage-template'
 
 interface Props {
 	abouts: About[]
 }
 
-const formSchema = z.object({})
+const formSchema = z.object({
+	items: z.array(
+		z.object({
+			aboutId: requiredString.shape.scheme,
+			includeAudio: z.boolean(),
+			includeDescription: z.boolean(),
+			includeImage: z.boolean()
+		})
+	)
+})
 
 type Schema = z.infer<typeof formSchema>
 
 export const SelectBarnahusContent = ({ abouts }: Props) => {
-	const { setCurrentStep } = useStepsStore()
+	const { setAbouts } = useManageTemplate()
+	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
+	const defaultValues = {
+		items: abouts?.map((about: About) => ({
+			aboutId: about.aboutId,
+			includeAudio: false,
+			includeDescription: false,
+			includeImage: false
+		}))
+	}
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
-		defaultValues: { caseId: '' }
+		defaultValues
 	})
 
-	const onSubmit = async () => {
-		setCurrentStep(4)
+	const onSubmit = async (data: Schema) => {
+		setAbouts(data?.items)
+		if (currentStep) {
+			setCurrentStep(currentStep + 1)
+		}
 	}
 
 	return (
@@ -54,7 +79,7 @@ export const SelectBarnahusContent = ({ abouts }: Props) => {
 				<Box padding={6} borderTop="thin" borderColor="neutral.300">
 					<Stack gap={6}>
 						{abouts?.map((about: About, i: number) => (
-							<SelectBarnahusContentItem about={about} hideDivider={abouts?.length === i + 1} />
+							<SelectContentItem data={about} form={form} index={i} hideDivider={abouts?.length === i + 1} />
 						))}
 						{/* <Box backgroundColor="neutral.100">
 							<Stack gap={4}>

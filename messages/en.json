@@ -1,6 +1,7 @@
 {
 	"General": {
 		"add": "Add",
+		"save": "Save",
 		"addAndInvite": "Add and invite",
 		"assignedBy": "Assigned by",
 		"action": "Action",
@@ -57,6 +58,7 @@
 		"caseJourneyUpdates": "Case Journey updates",
 		"caseJourney": "Case Journey",
 		"save&Add": "Save & add",
+		"save&Continue": "Save & continue",
 		"cancel": "Cancel",
 		"previous": "Previous",
 		"next": "Next",
@@ -379,6 +381,8 @@
 		"selectBarnahusContentDescription": "Pick the language and sections you want for the chosen Case to customize the Journey.",
 		"selectRoomsContentTitle": "Select Rooms content",
 		"selectRoomsContentDescription": "Pick the language and sections you want for the chosen Case to customize the Journey.",
+		"selectStaffContentTitle": "Select Staff content",
+		"selectStaffContentDescription": "Pick the language and sections you want for the chosen Case to customize the Journey.",
 		"dragToRearrangeTitle": "Drag to rearrange the rooms",
 		"dragToRearrangeDescription": "Rearrange the rooms at Barnahus based on each case's needs. You can delete any unrelevant rooms.",
 		"whatToExpect": "What to expect",
@@ -401,8 +405,22 @@
 		"verificationSuccessfullySent": "Verification successfully sent!"
 	},
 	"Templates": {
+		"name": "Template name",
+		"nameTitle": "Please enter template name",
+		"nameDescription": "To easily recognize the template, please choose a name that is most suitable and descriptive for the template you are going to create.",
 		"selectTemplate": "Select template",
 		"selectTemplateTitle": "Select template to start",
-		"selectTemplateDescription": "To create case from template, please choose or search for the desired template that suits your case best and modify it by your needs."
+		"selectTemplateDescription": "To create case from template, please choose or search for the desired template that suits your case best and modify it by your needs.",
+		"previewAndSaveContent": "Preview & save content",
+		"previewAndSaveContentDescription": "Before saving the template, please check how the content of template will look like in the Journeys app.",
+		"templateSccessfullyCreated": "Template successfully created!",
+		"templateSavedTitle": "Congrats, template created!",
+		"templateSavedDescription": "Now that you've created a template, you can easily use it to create case journeys.",
+		"createAnotherTemplate": "Create another template",
+		"goToCaseJourney": "Go to Case Journey",
+		"chooseCaseJourneyTypeCreationTitle": "Choose your way of creating Case Journey",
+		"chooseCaseJourneyTypeCreationDescription": "You can either create a Case Journey from a template, which includes pre-selected data from content, or custom Case Journey from the full content.",
+		"createFromTemplate": "Create from template",
+		"createCustom": "Create custom"
 	}
 }

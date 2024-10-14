@@ -1,33 +1,32 @@
-'use client'
+import { CaseFileSearch } from 'api/models/caseFiles/caseFileSearch'
+import { getCaseFilesSearch } from 'api/services/caseFiles'
+import { getLanguageSearch } from 'api/services/languages'
+import { CaseFileEnum } from 'enums/caseFileEnum'
+import { LanguageStatusEnum } from 'enums/languageStatusEnum'
+import CaseJourneyStepNavigation from './CaseJourneyStepNavigation'
 
-import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
-import { useNavbarItems } from '@/hooks/use-navbar-items'
-import { useSteps } from '@/hooks/use-steps'
-import { useStepsStore } from '@/store/steps'
-
-import { RearrangeRoom } from './RearrangeRoom'
-import { SelectBarnahusContent } from './SelectBarnahusContent'
-import { SelectCaseId } from './SelectCaseId'
-import { SelectRoomsContent } from './SelectRoomsContent'
-
-const AddContentPage = () => {
-	const { currentStep } = useStepsStore()
-	useSteps({
-		totalSteps: 5,
-		currentStep: 1
-	})
-	useNavbarItems({
-		title: 'General.caseJourney'
-	})
-
-	return (
-		<ManageJourneyWrapper>
-			{currentStep === 1 && <SelectCaseId />}
-			{currentStep === 2 && <RearrangeRoom />}
-			{currentStep === 3 && <SelectBarnahusContent />}
-			{currentStep === 4 && <SelectRoomsContent />}
-		</ManageJourneyWrapper>
-	)
+interface Props {
+	searchParams: {
+		search: string
+		language?: string
+		languageId?: string
+	}
 }
 
-export default AddContentPage
+const CaseJourneyPage = async ({ searchParams }: Props) => {
+	const { data: caseFilesSearchData } = await getCaseFilesSearch({
+		search: searchParams.search,
+		status: CaseFileEnum.OPEN
+	})
+	const { data: languageData } = await getLanguageSearch(searchParams, LanguageStatusEnum.DRAFT)
+	const transformedCaseFilesSearchData = caseFilesSearchData.map((caseFile: CaseFileSearch) => {
+		return {
+			id: caseFile.caseId,
+			name: caseFile.customId
+		}
+	})
+
+	return <CaseJourneyStepNavigation caseFiles={transformedCaseFilesSearchData} languages={languageData?.languages} />
+}
+
+export default CaseJourneyPage

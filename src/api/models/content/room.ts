@@ -13,6 +13,6 @@ export interface Room {
 	description: string
 	updated: string
 	status: string
-	audio: Audio
+	audio?: Audio
 	roomImages: RoomImage[]
 }

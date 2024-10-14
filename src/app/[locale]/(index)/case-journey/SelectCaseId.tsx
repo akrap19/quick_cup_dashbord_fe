@@ -11,6 +11,11 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
+import { Base } from 'api/models/common/base'
+
+interface Props {
+	caseFiles: Base[]
+}
 
 const formSchema = z.object({
 	customId: z.string().min(1, { message: 'ValidationMeseges.required' })
@@ -18,7 +23,7 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-export const SelectCaseId = () => {
+export const SelectCaseId = ({ caseFiles }: Props) => {
 	const { setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 
@@ -45,7 +50,7 @@ export const SelectCaseId = () => {
 						</Text>
 						<Box width="100%">
 							<FormControl name="customId">
-								<SearchDropdown placeholder="General.language" options={[]} isFilter />
+								<SearchDropdown placeholder="CaseFiles.customId" options={caseFiles} isFilter />
 							</FormControl>
 						</Box>
 					</Stack>

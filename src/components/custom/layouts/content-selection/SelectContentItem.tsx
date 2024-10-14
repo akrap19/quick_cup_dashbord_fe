@@ -1,4 +1,4 @@
-import { AudioIcon } from '@/components/icons/audio-icon'
+import { AudioUpload } from '@/components/custom/upload/audio-upload'
 import { Checkbox } from '@/components/inputs/checkbox'
 import { FormControl } from '@/components/inputs/form-control'
 import { Box } from '@/components/layout/box'
@@ -7,33 +7,34 @@ import { Divider } from '@/components/layout/divider'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { About, AboutImage } from 'api/models/content/about'
 import Image from 'next/image'
+import { AboutImage } from 'api/models/content/about'
 
 interface Props {
-	about: About
+	data: any
+	form: any
+	index: number
 	hideDivider: boolean
 }
 
-export const SelectBarnahusContentItem = ({ about, hideDivider }: Props) => {
+export const SelectContentItem = ({ data, form, index, hideDivider }: Props) => {
 	const t = useTranslations()
 
-	console.log('about', about)
 	return (
 		<Box>
 			<Stack gap={4}>
 				<Box backgroundColor="neutral.100">
-					<Inline justifyContent="space-between">
-						<Inline gap={4}>
+					<Stack gap={4}>
+						<Inline justifyContent="space-between">
 							<Text fontWeight="semibold" lineHeight="xlarge" color="neutral.900" textTransform="uppercase">
 								{t('General.audio')}
 							</Text>
-							<AudioIcon color="neutral.800" />
+							<FormControl {...form.register(`items[${index}].includeAudio`)}>
+								<Checkbox />
+							</FormControl>
 						</Inline>
-						<FormControl name="audio">
-							<Checkbox />
-						</FormControl>
-					</Inline>
+						<AudioUpload initialAudio={{ url: data?.audioURL }} />
+					</Stack>
 				</Box>
 				<Box paddingBottom={8}>
 					<Stack gap={6}>
@@ -41,15 +42,15 @@ export const SelectBarnahusContentItem = ({ about, hideDivider }: Props) => {
 							<Stack gap={4}>
 								<Inline justifyContent="space-between">
 									<Text fontWeight="semibold" lineHeight="xlarge" color="neutral.900" textTransform="uppercase">
-										{about.title}
+										{data.title}
 									</Text>
-									<FormControl name="generalIntroduction">
+									<FormControl {...form.register(`items[${index}].includeDescription`)}>
 										<Checkbox />
 									</FormControl>
 								</Inline>
 								<Box paddingRight={20}>
 									<Text fontSize="small" color="neutral.800">
-										<div dangerouslySetInnerHTML={{ __html: about?.description }} />
+										<div dangerouslySetInnerHTML={{ __html: data?.description }} />
 									</Text>
 								</Box>
 							</Stack>
@@ -60,20 +61,30 @@ export const SelectBarnahusContentItem = ({ about, hideDivider }: Props) => {
 									<Text fontWeight="semibold" lineHeight="xlarge" color="neutral.900" textTransform="uppercase">
 										{t('General.photos')}
 									</Text>
-									<FormControl name="generalIntroduction">
+									<FormControl {...form.register(`items[${index}].includeImage`)}>
 										<Checkbox />
 									</FormControl>
 								</Inline>
 								<Inline gap={6}>
-									{about?.aboutImages?.map((image: AboutImage) => (
-										<Image
-											src={image?.url}
-											width={212}
-											height={212}
-											alt="uploadedPhoto"
-											style={{ objectFit: 'cover' }}
-										/>
-									))}
+									{data?.aboutImages
+										? data?.aboutImages?.map((image: AboutImage) => (
+												<Image
+													src={image?.url}
+													width={212}
+													height={212}
+													alt="uploadedPhoto"
+													style={{ objectFit: 'cover' }}
+												/>
+										  ))
+										: data?.roomImages?.map((image: AboutImage) => (
+												<Image
+													src={image?.url}
+													width={212}
+													height={212}
+													alt="uploadedPhoto"
+													style={{ objectFit: 'cover' }}
+												/>
+										  ))}
 								</Inline>
 							</Stack>
 						</Box>

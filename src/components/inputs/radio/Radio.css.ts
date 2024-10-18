@@ -6,7 +6,7 @@ export const radioWrapper = style({
 	display: 'inline-flex',
 	alignItems: 'center',
 	cursor: 'pointer',
-	gap: tokens.spacing[4]
+	gap: tokens.spacing[3]
 })
 
 export const hiddenRadio = style({
@@ -24,7 +24,7 @@ export const radioField = style({
 })
 
 export const radioDecorator = style({
-	borderColor: 'currentcolor',
+	borderColor: 'neutral.500',
 	borderWidth: '2px',
 	borderRadius: tokens.borders.radius.full,
 	borderStyle: 'solid',

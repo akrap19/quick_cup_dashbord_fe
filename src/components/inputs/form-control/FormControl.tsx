@@ -14,10 +14,12 @@ import { Stack } from 'components/layout/stack'
 import { Text } from 'components/typography/text'
 
 import { Checkbox } from '../checkbox'
+import { CheckboxGroup } from '../checkbox-group'
 import { Label } from '../label'
 import { NumericInput } from '../numeric-input'
 import { PasswordInput } from '../password-input'
 import { PatternInput } from '../pattern-input'
+import { RadioGroup } from '../radio-group'
 import { RichTextEditor } from '../rich-text-editor'
 import { Select } from '../select'
 import { Textarea } from '../text-area'
@@ -51,7 +53,9 @@ export const FormControl = ({ name, maxLength, successMessageString, errorMessag
 		AudioUpload,
 		PhotoUpload,
 		Checkbox,
-		SearchDropdown
+		CheckboxGroup,
+		SearchDropdown,
+		RadioGroup
 	])
 
 	return (

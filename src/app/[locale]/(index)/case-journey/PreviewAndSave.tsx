@@ -9,24 +9,26 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { Text } from '@/components/typography/text'
+import { useCaseJourneyStore } from '@/store/case-journey'
 import { useManageContentSelection } from '@/store/manage-content-selection'
 import { useStepsStore } from '@/store/steps'
 import { About } from 'api/models/content/about'
 import { Content } from 'api/models/content/content'
 import { Room } from 'api/models/content/room'
 import { Staff } from 'api/models/content/staff'
-import { Template } from 'api/models/template/template'
-import { createTemplate } from 'api/services/templates'
+import { createCustomCase } from 'api/services/content'
+import { CaseJourneyTypeEnum } from 'enums/caseJourneyType'
 
 interface Props {
-	templateData: Content
+	content: Content
 }
 
-export const PreviewAndSave = ({ templateData }: Props) => {
+export const PreviewAndSave = ({ content }: Props) => {
 	const t = useTranslations()
 	const { name, abouts, rooms, staff } = useManageContentSelection()
+	const { type } = useCaseJourneyStore()
 	const { currentStep, setCurrentStep } = useStepsStore()
-	const mergedAboutData = templateData?.abouts
+	const mergedAboutData = content?.abouts
 		?.map(item => {
 			const includeFlag = abouts?.find(flag => flag.aboutId === item.aboutId)
 
@@ -40,7 +42,7 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 				  }
 		})
 		.filter(item => item !== null)
-	const mergedRoomData = templateData?.rooms
+	const mergedRoomData = content?.rooms
 		?.map(item => {
 			const includeFlag = rooms?.find(flag => flag.roomId === item.roomId)
 
@@ -54,7 +56,7 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 				  }
 		})
 		.filter(item => item !== null)
-	const mergedStaffData = templateData?.staff
+	const mergedStaffData = content?.staff
 		?.map(item => {
 			const includeFlag = staff?.find(flag => flag.staffId === item.staffId)
 
@@ -75,11 +77,19 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		const templateData: Template = { name, abouts, rooms, staff }
-		const result = await createTemplate(templateData)
+		let result
+
+		if (type === CaseJourneyTypeEnum.TEMPLATE) {
+			const caseJourneyData = { name, abouts, rooms, staff }
+			// result = await createCase(caseJourneyData)
+			console.log(caseJourneyData)
+		} else {
+			const customCaseJourneyData = { name, abouts, rooms, staff }
+			result = await createCustomCase(customCaseJourneyData)
+		}
 
 		if (result?.message === 'OK') {
-			SuccessToast(t('Templates.templateSccessfullyCreated'))
+			SuccessToast(t('Templates.roomsContentSccessfullyCreated'))
 
 			if (currentStep) {
 				setCurrentStep(currentStep + 1)

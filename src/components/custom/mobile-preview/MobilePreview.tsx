@@ -54,7 +54,7 @@ export const MobilePreview = ({ content }: Props) => {
 								setCurrentImage={setCurrentImage}
 							/>
 							<MobilePreviewFooter
-								totalContentPages={content[contentType as keyof Content]?.length}
+								totalContentPages={content ? content[contentType as keyof Content]?.length : 0}
 								currentContentPage={currentContentPage}
 								handleContentPage={handleContentPage}
 							/>

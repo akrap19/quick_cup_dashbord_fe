@@ -2,18 +2,18 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
+import { Dispatch, SetStateAction } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
 import { RearrangeableCards } from '@/components/custom/rearrengable-cards/RearrangeableCards'
+import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
-import { Box } from '@/components/layout/box'
 import { CardBase } from 'api/models/common/cardBase'
-import { Dispatch, SetStateAction } from 'react'
 
 interface Props {
 	cards: CardBase[]

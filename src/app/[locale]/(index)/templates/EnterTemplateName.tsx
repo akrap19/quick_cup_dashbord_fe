@@ -9,13 +9,13 @@ import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-jo
 import { Button } from '@/components/inputs/button'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label/RequiredLabel'
+import { TextInput } from '@/components/inputs/text-input'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { requiredString } from 'schemas'
-import { TextInput } from '@/components/inputs/text-input'
+import { useManageContentSelection } from '@/store/manage-content-selection'
 import { useStepsStore } from '@/store/steps'
-import { useManageTemplate } from '@/store/manage-template'
+import { requiredString } from 'schemas'
 
 const formSchema = z.object({
 	name: requiredString.shape.scheme
@@ -24,7 +24,7 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const EnterTemplateName = () => {
-	const { setName } = useManageTemplate()
+	const { setName } = useManageContentSelection()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 

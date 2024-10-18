@@ -7,10 +7,10 @@ import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
+import { CardBase } from 'api/models/common/cardBase'
 import { tokens } from 'style/theme.css'
 
 import { Card } from './Card'
-import { CardBase } from 'api/models/common/cardBase'
 
 interface Props {
 	cards: CardBase[]
@@ -56,7 +56,7 @@ export const RearrangeableCards = ({ cards, setCards }: Props) => {
 				minWidth: '28.375rem'
 			}}>
 			<Stack gap={4}>
-				{cards.map((card, i) => (
+				{cards?.map((card, i) => (
 					<Inline gap={6} alignItems="center">
 						<Box style={{ width: '8px' }}>
 							<Text fontWeight="bold" fontSize="small" color="neutral.800">
@@ -79,7 +79,7 @@ export const RearrangeableCards = ({ cards, setCards }: Props) => {
 					<Droppable droppableId="droppable">
 						{provided => (
 							<div {...provided.droppableProps} ref={provided.innerRef}>
-								{cards.map((card, i) => (
+								{cards?.map((card, i) => (
 									<Draggable key={card.id} draggableId={card.order.toString()} index={i}>
 										{provided => (
 											<div

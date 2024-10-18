@@ -3,6 +3,7 @@
 import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useSteps } from '@/hooks/use-steps'
+import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
 import { Content } from 'api/models/content/content'
 import { Language } from 'api/models/language/language'
@@ -13,7 +14,6 @@ import { ManageStaffContent } from './ManageStaffContent'
 import { SelectLanguage } from './SelectLanguage'
 import { ContentPublished } from '../common/ContentPublished'
 import { PreviewAndPublish } from '../common/PreviewAndPublish'
-import { useManageContent } from '@/store/manage-content'
 
 interface Props {
 	languages: Language[]
@@ -26,7 +26,7 @@ export const ContentStepNavigation = ({ languages, content }: Props) => {
 
 	useSteps({
 		totalSteps: 6,
-		currentStep: language ? 6 : 1
+		currentStep: language ? 2 : 1
 	})
 	useNavbarItems({
 		title: 'ManageContent.add',

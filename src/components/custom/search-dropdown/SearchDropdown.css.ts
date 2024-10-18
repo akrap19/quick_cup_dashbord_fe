@@ -33,7 +33,7 @@ export const dropdownListContainer = style({
 	width: '100%',
 	position: 'absolute',
 	zIndex: tokens.indices.over,
-	backgroundColor: tokens.colors['neutral.50'],
+	backgroundColor: tokens.colors['shades.00'],
 	padding: tokens.spacing[2],
 	borderRadius: tokens.borders.radius.small,
 	border: tokens.borders.border.thin,

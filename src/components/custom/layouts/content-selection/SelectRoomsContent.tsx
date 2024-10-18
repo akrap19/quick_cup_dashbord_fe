@@ -7,14 +7,14 @@ import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { Box } from '@/components/layout/box'
-import { Text } from '@/components/typography/text'
 import { Stack } from '@/components/layout/stack'
+import { Text } from '@/components/typography/text'
+import { useManageContentSelection } from '@/store/manage-content-selection'
 import { useStepsStore } from '@/store/steps'
 import { Room } from 'api/models/content/room'
-import { SelectContentItem } from './SelectContentItem'
 import { requiredString } from 'schemas'
-import { useManageTemplate } from '@/store/manage-template'
-import { useTemplate } from '@/hooks/use-template'
+
+import { SelectContentItem } from './SelectContentItem'
 
 interface Props {
 	rooms: Room[]
@@ -27,6 +27,7 @@ const formSchema = z.object({
 			includeAudio: z.boolean(),
 			includeDescription: z.boolean(),
 			includeImage: z.boolean(),
+			includeImages: z.boolean(),
 			orderNumber: z.number()
 		})
 	)
@@ -35,7 +36,7 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const SelectRoomsContent = ({ rooms }: Props) => {
-	const { setRooms } = useManageTemplate()
+	const { setRooms } = useManageContentSelection()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 	const defaultValues = {
@@ -44,6 +45,7 @@ export const SelectRoomsContent = ({ rooms }: Props) => {
 			includeAudio: false,
 			includeDescription: false,
 			includeImage: false,
+			includeImages: false,
 			orderNumber: i + 1
 		}))
 	}

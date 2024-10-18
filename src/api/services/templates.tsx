@@ -5,6 +5,13 @@ import { Template } from 'api/models/template/template'
 interface Query {
 	page?: number
 	limit?: number
+	search?: string
+}
+
+export const createTemplate = async (templateData: Template) => {
+	const response = await axiosInstanceWithToken.post(`/template`, templateData)
+
+	return response?.data
 }
 
 export const getTemplates = (query: Query) => {
@@ -16,8 +23,16 @@ export const getTemplates = (query: Query) => {
 	return fetchWithToken(`template`, queryParams)
 }
 
-export const createTemplate = async (templateData: Template) => {
-	const response = await axiosInstanceWithToken.post(`/template`, templateData)
+export const getTemplatesSearch = (query: Query) => {
+	const queryParams = {
+		page: 1,
+		limit: 1000,
+		search: query.search
+	}
 
-	return response?.data
+	return fetchWithToken(`template`, queryParams)
+}
+
+export const getTemplate = (templateId?: string) => {
+	return fetchWithToken(`template/${templateId}`)
 }

@@ -23,13 +23,13 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-export const SelectCaseJourneyType = () => {
+export const SelectTemplateType = () => {
 	const { setType } = useCaseJourneyStore()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 	const options = [
-		{ label: t('CaseJourney.createFromTemplate'), value: CaseJourneyTypeEnum.TEMPLATE },
-		{ label: t('CaseJourney.createCustom'), value: CaseJourneyTypeEnum.CUSTOM }
+		{ label: t('CaseJourney.useReadyMadeTemplate'), value: CaseJourneyTypeEnum.TEMPLATE },
+		{ label: t('CaseJourney.customizeTemplate'), value: CaseJourneyTypeEnum.CUSTOM_TEMPLATE }
 	]
 
 	const form = useForm<Schema>({
@@ -52,11 +52,11 @@ export const SelectCaseJourneyType = () => {
 					<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
 						<ManageJourneyIntroWrapper>
 							<Stack gap={6} alignItems="center">
-								<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
-									{t('CaseJourney.chooseCaseJourneyTypeCreationTitle')}
+								<Text fontSize="xbig" fontWeight="semibold" color="neutral.800" textAlign="center">
+									{t('CaseJourney.chooseCreateFromTemplateTypeTitle')}
 								</Text>
 								<Text fontSize="small" color="neutral.800" textAlign="center">
-									{t('CaseJourney.chooseCaseJourneyTypeCreationDescription')}
+									{t('CaseJourney.chooseCreateFromTemplateTypeDescription')}
 								</Text>
 								<Box width="100%">
 									<FormControl name="caseJourneyType">

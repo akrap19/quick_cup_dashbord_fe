@@ -1,23 +1,23 @@
 import { format } from 'date-fns'
+import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Dispatch, SetStateAction } from 'react'
 
+import { AddButton } from '@/components/custom/button/add-button'
 import { Loader } from '@/components/custom/loader/Loader'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { DataTable } from '@/components/data-display/data-table'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
+import { useManageContent } from '@/store/manage-content'
+import { tokens } from '@/style/theme.css'
 import { Base } from 'api/models/common/base'
 import { Language } from 'api/models/language/language'
-import { useRouter } from 'next/navigation'
 import { ROUTES } from 'parameters'
 
 import { ManageContentColumn, columns } from './columns'
 import { contentSectionData } from './data'
 import { Inputs } from './inputs'
-import { useManageContent } from '@/store/manage-content'
-import { AddButton } from '@/components/custom/button/add-button'
-import { useTranslations } from 'next-intl'
-import { tokens } from '@/style/theme.css'
 
 // eslint-disable-next-line
 interface Props<TData, TValue> {
@@ -62,7 +62,7 @@ export const Content = <TData, TValue>({
 					{currentLanguage?.autoTranslate ? (
 						<AddButton
 							buttonLabel={t('ManageContent.addAndReviewNewContentButtonLabel')}
-							buttonLink={ROUTES.AUTOTRANSLATE_AND_REVIEW + `?languageId=${currentLanguage?.languageId}`}
+							buttonLink={`${ROUTES.AUTOTRANSLATE_AND_REVIEW}?languageId=${currentLanguage?.languageId}`}
 						/>
 					) : (
 						<AddButton buttonLabel={t('ManageContent.add')} onClick={handleAddContent} />
@@ -90,7 +90,7 @@ export const Content = <TData, TValue>({
 								title="ManageContent.addAndReviewNewContentTitle"
 								description="ManageContent.addAndReviewNewContentDescription"
 								buttonLabel="ManageContent.addAndReviewNewContentButtonLabel"
-								buttonLink={ROUTES.AUTOTRANSLATE_AND_REVIEW + `?languageId=${currentLanguage?.languageId}`}
+								buttonLink={`${ROUTES.AUTOTRANSLATE_AND_REVIEW}?languageId=${currentLanguage?.languageId}`}
 								distanceFromTop="8vh"
 								setNavbarItems={false}
 							/>

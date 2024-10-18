@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 
 import { AboutTemplate } from 'api/models/template/aboutTemplate'
-import { StaffTemplate } from 'api/models/template/staffTemplate'
 import { RoomTemplate } from 'api/models/template/roomTemplate'
+import { StaffTemplate } from 'api/models/template/staffTemplate'
 
 type ManageTemplate = {
 	name?: string
@@ -15,7 +15,7 @@ type ManageTemplate = {
 	setStaff: (staff?: StaffTemplate[]) => void
 }
 
-export const useManageTemplate = create<ManageTemplate>(set => ({
+export const useManageContentSelection = create<ManageTemplate>(set => ({
 	name: undefined,
 	setName: name => set(() => ({ name })),
 	abouts: undefined,

@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { MouseEventHandler } from 'react'
 
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
@@ -12,7 +13,6 @@ import { useNavbarItemsStore } from '@/store/navbar'
 
 import { AddButton } from '../button/add-button'
 import { Loader } from '../loader/Loader'
-import { MouseEventHandler } from 'react'
 
 type Props = {
 	navbarTitle: string

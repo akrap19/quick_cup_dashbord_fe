@@ -9,11 +9,12 @@ import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
+import { useManageContentSelection } from '@/store/manage-content-selection'
 import { useStepsStore } from '@/store/steps'
 import { About } from 'api/models/content/about'
-import { SelectContentItem } from './SelectContentItem'
 import { requiredString } from 'schemas'
-import { useManageTemplate } from '@/store/manage-template'
+
+import { SelectContentItem } from './SelectContentItem'
 
 interface Props {
 	abouts: About[]
@@ -25,7 +26,8 @@ const formSchema = z.object({
 			aboutId: requiredString.shape.scheme,
 			includeAudio: z.boolean(),
 			includeDescription: z.boolean(),
-			includeImage: z.boolean()
+			includeImage: z.boolean(),
+			includeImages: z.boolean()
 		})
 	)
 })
@@ -33,7 +35,7 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const SelectBarnahusContent = ({ abouts }: Props) => {
-	const { setAbouts } = useManageTemplate()
+	const { setAbouts } = useManageContentSelection()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 	const defaultValues = {
@@ -41,7 +43,8 @@ export const SelectBarnahusContent = ({ abouts }: Props) => {
 			aboutId: about.aboutId,
 			includeAudio: false,
 			includeDescription: false,
-			includeImage: false
+			includeImage: false,
+			includeImages: false
 		}))
 	}
 

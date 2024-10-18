@@ -1,7 +1,7 @@
-export interface AboutTemplate {
-	aboutId: string
+export interface RoomCustomCase {
+	roomId: string
 	includeAudio: boolean
 	includeDescription: boolean
 	includeImage: boolean
-	includeImages: boolean
+	orderNumber: number
 }

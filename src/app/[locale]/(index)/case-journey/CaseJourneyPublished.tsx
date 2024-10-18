@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 
 import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
@@ -9,11 +8,9 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
-import { ROUTES } from 'parameters'
 
-export const TemplatePublished = () => {
+export const CaseJourneyPublished = () => {
 	const t = useTranslations()
-	const router = useRouter()
 	const { setCurrentStep } = useStepsStore()
 
 	return (
@@ -22,17 +19,17 @@ export const TemplatePublished = () => {
 				<ManageJourneyIntroWrapper>
 					<Stack gap={6} alignItems="center">
 						<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
-							{t('Templates.templateSavedTitle')}
+							{t('CaseJourney.caseJourneySavedTitle')}
 						</Text>
 						<Text fontSize="small" color="neutral.800" textAlign="center">
-							{t('Templates.templateSavedDescription')}
+							{t('CaseJourney.caseJourneySavedDescription')}
 						</Text>
 						<Box width="100%" style={{ maxWidth: '20.5rem' }}>
 							<Stack gap={6}>
-								<Button onClick={() => setCurrentStep(1)}>{t('Templates.createAnotherTemplate')}</Button>
-								<Button onClick={() => router.push(ROUTES.CASE_JOURNEY)} variant="secondary">
+								<Button onClick={() => setCurrentStep(1)}>{t('CaseJourney.createAnotherCaseJourney')}</Button>
+								{/* <Button onClick={() => router.push(ROUTES.CASE_JOURNEY)} variant="secondary">
 									{t('Templates.goToCaseJourney')}
-								</Button>
+								</Button> */}
 							</Stack>
 						</Box>
 					</Stack>

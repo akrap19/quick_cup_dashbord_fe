@@ -78,6 +78,7 @@
 		"titleNotDefined": "Title not defined",
 		"rooms": "Rooms",
 		"content": "Content",
+		"template": "Template",
 		"characters": " characters",
 		"searchMinInstructions": "Enter minimum three characters for search",
 		"logOut": "Log out",
@@ -301,6 +302,7 @@
 		"roomsContentSccessfullyUpdated": "Rooms content successfully updated!",
 		"staffContentSccessfullyCreated": "Staff content successfully created!",
 		"staffContentSccessfullyUpdated": "Staff content successfully updated!",
+		"contentSuccessfullyPublished": "Content successfully published!",
 		"previewAndPublishContent": "Preview & publish content",
 		"previewAndPublishContentDescription": "Before publishing the content, please check how the content will look like in the Journeys app.",
 		"contentPublishedTitle": "Congrats, content published!",
@@ -386,7 +388,20 @@
 		"dragToRearrangeTitle": "Drag to rearrange the rooms",
 		"dragToRearrangeDescription": "Rearrange the rooms at Barnahus based on each case's needs. You can delete any unrelevant rooms.",
 		"whatToExpect": "What to expect",
-		"contactInforamtion": "Contact information"
+		"contactInforamtion": "Contact information",
+		"caseJourneySavedTitle": "Congrats, Case Journey created!",
+		"caseJourneySavedDescription": "Now that you've created a Case Journey, you can use it inside mobile app.",
+		"createAnotherCaseJourney": "Create another Case Journey",
+		"chooseCaseJourneyTypeCreationTitle": "Choose your way of creating Case Journey",
+		"chooseCaseJourneyTypeCreationDescription": "You can either create a Case Journey from a template, which includes pre-selected data from content, or custom Case Journey from the full content.",
+		"createFromTemplate": "Create from template",
+		"createCustom": "Create custom",
+		"selectTemplate": "Select template",
+		"selectTemplateDescription": "Please select template so you can create Case Journey from it.",
+		"chooseCreateFromTemplateTypeTitle": "Choose a way you want to use template",
+		"chooseCreateFromTemplateTypeDescription": "You can either use ready-made template that has already customized content or you can customized it even further and make it more case specific.",
+		"useReadyMadeTemplate": "Use a ready-made template",
+		"customizeTemplate": "Customize template"
 	},
 	"Settings": {
 		"personalInfoSuccessfullyUpdated": "Personal info successfully updated!",
@@ -417,10 +432,6 @@
 		"templateSavedTitle": "Congrats, template created!",
 		"templateSavedDescription": "Now that you've created a template, you can easily use it to create case journeys.",
 		"createAnotherTemplate": "Create another template",
-		"goToCaseJourney": "Go to Case Journey",
-		"chooseCaseJourneyTypeCreationTitle": "Choose your way of creating Case Journey",
-		"chooseCaseJourneyTypeCreationDescription": "You can either create a Case Journey from a template, which includes pre-selected data from content, or custom Case Journey from the full content.",
-		"createFromTemplate": "Create from template",
-		"createCustom": "Create custom"
+		"goToCaseJourney": "Go to Case Journey"
 	}
 }

@@ -31,7 +31,7 @@ export const PreviewAndPublish = ({ content }: Props) => {
 			const result = await publishLanguage(language?.id)
 
 			if (result?.message === 'OK') {
-				SuccessToast(t('ManageContent.roomsContentSccessfullyCreated'))
+				SuccessToast(t('ManageContent.contentSuccessfullyPublished'))
 
 				if (currentStep) {
 					setCurrentStep(currentStep + 1)

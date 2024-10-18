@@ -7,13 +7,14 @@ import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { Box } from '@/components/layout/box'
-import { Text } from '@/components/typography/text'
 import { Stack } from '@/components/layout/stack'
+import { Text } from '@/components/typography/text'
+import { useManageContentSelection } from '@/store/manage-content-selection'
 import { useStepsStore } from '@/store/steps'
-import { requiredString } from 'schemas'
 import { Staff } from 'api/models/content/staff'
+import { requiredString } from 'schemas'
+
 import { SelectStaffContentItem } from './SelectStaffContentItem'
-import { useManageTemplate } from '@/store/manage-template'
 
 interface Props {
 	staffs: Staff[]
@@ -25,7 +26,8 @@ const formSchema = z.object({
 			staffId: requiredString.shape.scheme,
 			includeName: z.boolean(),
 			includeDescription: z.boolean(),
-			includeImage: z.boolean()
+			includeImage: z.boolean(),
+			includeImages: z.boolean()
 		})
 	)
 })
@@ -33,7 +35,7 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const SelectStaffContent = ({ staffs }: Props) => {
-	const { setStaff } = useManageTemplate()
+	const { setStaff } = useManageContentSelection()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 	const defaultValues = {
@@ -41,7 +43,8 @@ export const SelectStaffContent = ({ staffs }: Props) => {
 			staffId: staff.staffId,
 			includeName: false,
 			includeDescription: false,
-			includeImage: false
+			includeImage: false,
+			includeImages: false
 		}))
 	}
 

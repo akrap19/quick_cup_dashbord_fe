@@ -41,7 +41,6 @@ export const SearchDropdown = ({
 }: Props) => {
 	const t = useTranslations()
 	const [isOpen, setIsOpen] = useState(false)
-	const [currentOption, setCurrentOption] = useState<Base>()
 	const ref = useRef<HTMLDivElement>(null)
 	const presentationalLabelVariant = isFilter ? 'filterLabel' : value ? 'formLabel' : 'placeholder'
 

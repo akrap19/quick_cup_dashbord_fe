@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+
 import {
 	RearrangeRoom,
 	SelectBarnahusContent,
@@ -13,10 +15,9 @@ import { useStepsStore } from '@/store/steps'
 import { CardBase } from 'api/models/common/cardBase'
 import { Content } from 'api/models/content/content'
 import { Room } from 'api/models/content/room'
-import { useState } from 'react'
+
 import { EnterTemplateName } from './EnterTemplateName'
 import { PreviewAndSave } from './PreviewAndSave'
-
 import { TemplatePublished } from './TemplatePublished'
 
 interface Props {
@@ -39,7 +40,7 @@ export const TemplateStepNavigation = ({ templateData }: Props) => {
 
 	useSteps({
 		totalSteps: 7,
-		currentStep: 7
+		currentStep: 1
 	})
 	useNavbarItems({
 		title: 'General.templates'

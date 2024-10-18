@@ -14,36 +14,29 @@ import { FormControl } from '@/components/inputs/form-control'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
-import { Language } from 'api/models/language/language'
+import { Base } from 'api/models/common/base'
 import { requiredString } from 'schemas'
 
 interface Props {
-	languages: Language[]
+	templates: Base[]
 }
 
 const formSchema = z.object({
-	language: requiredString.shape.scheme
+	template: requiredString.shape.scheme
 })
 
 type Schema = z.infer<typeof formSchema>
 
-export const SelectLanguage = ({ languages }: Props) => {
+export const SelectTemplate = ({ templates }: Props) => {
 	const { currentStep, setCurrentStep } = useStepsStore()
-	const { setLanguage } = useManageContent()
 	const t = useTranslations()
 	const { replace } = useRouter()
 	const searchParams = useSearchParams()
 	const currentSearchParamas = qs.parse(searchParams.toString())
-	const transformedLanguageArray = languages?.map((language: Language) => {
-		return {
-			id: language.languageId,
-			name: language.name
-		}
-	})
-	const handleLanguage = (value: string) => {
-		const query = { ...currentSearchParamas, languageId: value }
+
+	const handleTemplate = (value: string) => {
+		const query = { ...currentSearchParamas, templateId: value }
 		const url = qs.stringifyUrl(
 			{
 				url: window.location.href,
@@ -58,16 +51,12 @@ export const SelectLanguage = ({ languages }: Props) => {
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
-		defaultValues: { language: '' }
+		defaultValues: { template: '' }
 	})
 
 	const onSubmit = async (data: any) => {
-		const language = transformedLanguageArray.find(language => language.id === data.language)
+		handleTemplate(data.template)
 
-		setLanguage(language)
-		if (language?.id) {
-			handleLanguage(language?.id)
-		}
 		if (currentStep) {
 			setCurrentStep(currentStep + 1)
 		}
@@ -79,19 +68,14 @@ export const SelectLanguage = ({ languages }: Props) => {
 				<ManageJourneyIntroWrapper>
 					<Stack gap={6} alignItems="center">
 						<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
-							{t('ManageContent.selectLanguage')}
+							{t('CaseJourney.selectTemplate')}
 						</Text>
 						<Text fontSize="small" color="neutral.800" textAlign="center">
-							{t('ManageContent.selectLanguageDescription')}
+							{t('CaseJourney.selectTemplateDescription')}
 						</Text>
 						<Box width="100%">
-							<FormControl name="language">
-								<SearchDropdown
-									placeholder="General.language"
-									options={transformedLanguageArray}
-									alwaysShowSearch
-									isFilter
-								/>
+							<FormControl name="template">
+								<SearchDropdown placeholder="General.template" options={templates} alwaysShowSearch isFilter />
 							</FormControl>
 						</Box>
 					</Stack>

@@ -1,4 +1,5 @@
 export enum CaseJourneyTypeEnum {
 	CUSTOM = 'Custom',
-	TEMPLATE = 'Template'
+	TEMPLATE = 'Template',
+	CUSTOM_TEMPLATE = 'CustomTemplate'
 }

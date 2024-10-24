@@ -51,7 +51,11 @@ export const PersonalInfoForm = ({ settings, session }: Props) => {
 	})
 
 	const onSubmit = async (data: Schema) => {
-		const result = await personal(data.firstName, data.lastName, data.phoneNumber)
+		const result = await personal(
+			data.firstName,
+			data.lastName,
+			data.phoneNumber && data.phoneNumber === '' ? null : data.phoneNumber
+		)
 		if (result?.message === 'OK') {
 			router.refresh()
 			SuccessToast(t('Settings.personalInfoSuccessfullyUpdated'))

@@ -13,9 +13,10 @@ import { TableBody, TableCell, TableCellWithLink, TableRow } from '../table'
 interface Props<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
 	table: Table<TData>
+	contentSection?: string
 }
 
-export const DataTableBody = <TData, TValue>({ columns, table }: Props<TData, TValue>) => {
+export const DataTableBody = <TData, TValue>({ columns, table, contentSection }: Props<TData, TValue>) => {
 	const pathname = usePathname()
 
 	return (
@@ -31,7 +32,9 @@ export const DataTableBody = <TData, TValue>({ columns, table }: Props<TData, TV
 							/>
 						</TableCell>
 						{row.getVisibleCells().map((cell: Cell<TData, unknown>) => (
-							<TableCellWithLink key={cell.id} href={`${pathname}/${row.original?.id}`}>
+							<TableCellWithLink
+								key={cell.id}
+								href={`${pathname}/${contentSection ? contentSection + '/' : ''}${row.original?.id}`}>
 								{cell.column.id.includes('status') ? (
 									<Box position="relative">
 										<Badge variant={cell.getValue() as any} />

@@ -83,7 +83,7 @@ export const Content = <TData, TValue>({
 					)}
 					{contentTableData ? (
 						contentTableData?.length > 0 ? (
-							<DataTable columns={columns} data={contentTableDataWithFormatedDate} />
+							<DataTable columns={columns} data={contentTableDataWithFormatedDate} contentSection={contentSection} />
 						) : currentLanguage?.autoTranslate ? (
 							<NoListData
 								navbarTitle="General.content"

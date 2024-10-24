@@ -26,8 +26,26 @@ const ContentPage = async ({ searchParams }: Props) => {
 	const { data: barnahusTranslations } = await getBarnahustranslations(session?.user?.barnahusRoles[0]?.barnahusId)
 	const { data: languages } = await getLanguageSearch(searchParams)
 	const { data: aboutData } = await getAbouts(searchParams)
+	const transformedAboutArray = aboutData?.abouts?.map((about: any) => {
+		return {
+			...about,
+			id: about.aboutTranslationId
+		}
+	})
 	const { data: roomsData } = await getRooms(searchParams)
+	const transformedRoomArray = roomsData?.rooms?.map((room: any) => {
+		return {
+			...room,
+			id: room.roomTranslationId
+		}
+	})
 	const { data: staffData } = await getStaffs(searchParams)
+	const transformedStaffArray = staffData?.staff?.map((staff: any) => {
+		return {
+			...staff,
+			id: staff.staffTranslationId
+		}
+	})
 	const doesContentHasData =
 		barnahusTranslations?.aboutData?.pagination?.count > 0 ||
 		barnahusTranslations?.roomsData?.pagination?.count > 0 ||
@@ -44,9 +62,9 @@ const ContentPage = async ({ searchParams }: Props) => {
 	) : (
 		<Box paddingTop={8} paddingLeft={10} paddingRight={16} width="100%">
 			<ContentTabs
-				aboutData={aboutData?.abouts}
-				roomsData={roomsData?.rooms}
-				staffData={staffData?.staff}
+				aboutData={transformedAboutArray}
+				roomsData={transformedRoomArray}
+				staffData={transformedStaffArray}
 				languages={languages?.languages}
 			/>
 		</Box>

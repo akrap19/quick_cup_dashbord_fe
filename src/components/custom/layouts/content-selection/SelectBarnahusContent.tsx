@@ -12,7 +12,6 @@ import { Text } from '@/components/typography/text'
 import { useManageContentSelection } from '@/store/manage-content-selection'
 import { useStepsStore } from '@/store/steps'
 import { About } from 'api/models/content/about'
-import { requiredString } from 'schemas'
 
 import { SelectContentItem } from './SelectContentItem'
 
@@ -23,7 +22,7 @@ interface Props {
 const formSchema = z.object({
 	items: z.array(
 		z.object({
-			aboutId: requiredString.shape.scheme,
+			aboutId: z.string(),
 			includeAudio: z.boolean(),
 			includeDescription: z.boolean(),
 			includeImage: z.boolean(),
@@ -84,7 +83,8 @@ export const SelectBarnahusContent = ({ abouts }: Props) => {
 						{abouts?.map((about: About, i: number) => (
 							<SelectContentItem data={about} form={form} index={i} hideDivider={abouts?.length === i + 1} />
 						))}
-						{/* <Box backgroundColor="neutral.100">
+					</Stack>
+					{/* <Box backgroundColor="neutral.100">
 							<Stack gap={4}>
 								<Inline justifyContent="space-between">
 									<Text fontWeight="semibold" lineHeight="xlarge" color="neutral.900" textTransform="uppercase">
@@ -112,7 +112,6 @@ export const SelectBarnahusContent = ({ abouts }: Props) => {
 								</ul>
 							</Stack>
 						</Box> */}
-					</Stack>
 				</Box>
 				<Actions />
 			</form>

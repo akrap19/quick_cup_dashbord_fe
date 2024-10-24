@@ -15,7 +15,7 @@ import { AddButton } from '../button/add-button'
 import { Loader } from '../loader/Loader'
 
 type Props = {
-	navbarTitle: string
+	navbarTitle?: string
 	title: string
 	description: string
 	buttonLabel: string
@@ -42,7 +42,7 @@ export const NoListData = ({
 
 	if (setNavbarItems) {
 		// eslint-disable-next-line
-		useNavbarItems({ title: navbarTitle, useUserDropdown: true })
+		useNavbarItems({ title: navbarTitle ?? '', useUserDropdown: true })
 	}
 
 	return (

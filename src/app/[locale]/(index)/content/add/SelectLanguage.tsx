@@ -68,6 +68,7 @@ export const SelectLanguage = ({ languages }: Props) => {
 		if (language?.id) {
 			handleLanguage(language?.id)
 		}
+		console.log('current step', currentStep)
 		if (currentStep) {
 			setCurrentStep(currentStep + 1)
 		}

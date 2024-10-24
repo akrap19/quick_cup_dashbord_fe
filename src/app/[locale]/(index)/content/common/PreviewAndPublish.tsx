@@ -15,6 +15,7 @@ import { Content } from 'api/models/content/content'
 import { publishLanguage } from 'api/services/languages'
 
 import { LanguageLabel } from './LanguageLabel'
+import { Loader } from '@/components/custom/loader/Loader'
 
 interface Props {
 	content: Content
@@ -59,8 +60,14 @@ export const PreviewAndPublish = ({ content }: Props) => {
 						</Box>
 					</Stack>
 					<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
-						<LanguageLabel language={language?.name} />
-						<MobilePreview content={content} />
+						{content ? (
+							<>
+								<LanguageLabel language={language?.name} />
+								<MobilePreview content={content} />
+							</>
+						) : (
+							<Loader />
+						)}
 					</Box>
 				</Stack>
 			</Box>

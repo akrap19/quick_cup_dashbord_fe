@@ -24,7 +24,6 @@ const formSchema = z.object({
 		z.object({
 			images: z.array(z.string()).nonempty(),
 			name: requiredString.shape.scheme,
-			title: requiredString.shape.scheme,
 			description: requiredString.shape.scheme
 		})
 	)
@@ -45,7 +44,6 @@ export const ManageStaffContent = ({ staff }: Props) => {
 				return {
 					images: item?.staffImages?.map(image => image?.staffImageId),
 					name: item?.name,
-					title: item?.title,
 					description: item?.description
 				}
 			})

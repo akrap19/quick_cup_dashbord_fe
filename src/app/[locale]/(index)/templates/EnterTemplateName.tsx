@@ -5,8 +5,8 @@ import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
-import { Button } from '@/components/inputs/button'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label/RequiredLabel'
 import { TextInput } from '@/components/inputs/text-input'
@@ -57,22 +57,18 @@ export const EnterTemplateName = () => {
 									{t('Templates.nameDescription')}
 								</Text>
 								<Box width="100%" style={{ maxWidth: '20.5rem' }}>
-									<Stack gap={6}>
-										<FormControl name="name">
-											<FormControl.Label>
-												<RequiredLabel>{t('Templates.name')}</RequiredLabel>
-											</FormControl.Label>
-											<TextInput />
-										</FormControl>
-										<Button type="submit" disabled={!form.formState.isValid}>
-											{t('General.save&Continue')}
-										</Button>
-									</Stack>
+									<FormControl name="name">
+										<FormControl.Label>
+											<RequiredLabel>{t('Templates.name')}</RequiredLabel>
+										</FormControl.Label>
+										<TextInput />
+									</FormControl>
 								</Box>
 							</Stack>
 						</ManageJourneyIntroWrapper>
 					</Box>
 				</Box>
+				<Actions />
 			</form>
 		</FormProvider>
 	)

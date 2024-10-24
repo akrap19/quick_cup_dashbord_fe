@@ -18,7 +18,7 @@ import { requiredString } from 'schemas'
 
 import { SectionItemsFields } from '../common/SectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
-import { WorkingHours } from '../common/WorkingHours'
+import { Divider } from '@/components/layout/divider'
 
 const formSchema = z.object({
 	items: z.array(
@@ -114,14 +114,15 @@ export const ManageBarnahusContent = () => {
 										handleAddSection={handleAddSection}
 										handleRemoveSection={handleRemoveSection}
 									/>
-									{fields.map((field, index) => (
+									{fields?.map((field, index) => (
 										<div key={field.id}>
 											<SectionItemsFields index={index} form={form} />
+											{index + 1 !== fields?.length && <Divider />}
 										</div>
 									))}
 								</Stack>
 							</Box>
-							<WorkingHours />
+							{/* <WorkingHours /> */}
 						</Box>
 					</Stack>
 				</Box>

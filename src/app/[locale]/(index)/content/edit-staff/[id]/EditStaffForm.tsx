@@ -22,7 +22,6 @@ interface Props {
 
 const formSchema = z.object({
 	name: requiredString.shape.scheme,
-	title: requiredString.shape.scheme,
 	description: requiredString.shape.scheme,
 	images: z.array(z.string()).nonempty()
 })
@@ -41,7 +40,6 @@ export const EditStaffForm = ({ staff }: Props) => {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			name: staff?.name,
-			title: staff?.title,
 			description: staff?.description,
 			images: defaultImageIds
 		}
@@ -57,7 +55,6 @@ export const EditStaffForm = ({ staff }: Props) => {
 		const result = await updateStaff({
 			staffTranslationId: staff.staffTranslationId,
 			name: formData.name,
-			title: formData.title,
 			description: formData.description,
 			images: formData.images,
 			deletedImages

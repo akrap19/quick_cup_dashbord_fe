@@ -41,6 +41,7 @@ export const SearchDropdown = ({
 }: Props) => {
 	const t = useTranslations()
 	const [isOpen, setIsOpen] = useState(false)
+	const [nonFilteredOptions, setNonFilteredOptions] = useState<Base[]>([])
 	const ref = useRef<HTMLDivElement>(null)
 	const presentationalLabelVariant = isFilter ? 'filterLabel' : value ? 'formLabel' : 'placeholder'
 
@@ -50,7 +51,7 @@ export const SearchDropdown = ({
 	}
 
 	const handleValueLabel = (id: string) => {
-		const selectedOption = options?.find(option => option.id === id)
+		const selectedOption = nonFilteredOptions?.find(option => option.id === id)
 		return selectedOption?.name ?? id
 	}
 
@@ -59,6 +60,12 @@ export const SearchDropdown = ({
 			setIsOpen(false)
 		}
 	}
+
+	useEffect(() => {
+		if (options?.length > nonFilteredOptions?.length) {
+			setNonFilteredOptions(options)
+		}
+	}, [options])
 
 	useEffect(() => {
 		document.addEventListener('mousedown', handleClickOutside)

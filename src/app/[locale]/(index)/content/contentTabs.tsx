@@ -51,7 +51,7 @@ export const ContentTabs = <TData, TValue>({ aboutData, roomsData, staffData, la
 					<Tabs.Tab value="staff">{t('General.staff')}</Tabs.Tab>
 					<Tabs.Panel value="aboutBarnahus">
 						<Content
-							contentSection="aboutBarnahus"
+							contentSection="about"
 							contentTableData={aboutData}
 							languages={languages}
 							languageValue={languageValue}

@@ -23,7 +23,6 @@ interface Props {
 const formSchema = z.object({
 	images: z.array(z.string()).nonempty(),
 	name: requiredString.shape.scheme,
-	title: requiredString.shape.scheme,
 	description: requiredString.shape.scheme
 })
 
@@ -40,7 +39,6 @@ export const AddStaffForm = ({ language }: Props) => {
 		defaultValues: {
 			images: [],
 			name: '',
-			title: '',
 			description: ''
 		}
 	})
@@ -51,7 +49,6 @@ export const AddStaffForm = ({ language }: Props) => {
 		const result = await createStaff({
 			languageId: language?.languageId,
 			name: formData.name,
-			title: formData.title,
 			description: formData.description,
 			images: formData.images
 		})

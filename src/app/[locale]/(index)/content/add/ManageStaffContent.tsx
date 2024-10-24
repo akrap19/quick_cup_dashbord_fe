@@ -1,8 +1,9 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import qs from 'query-string'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -37,7 +38,6 @@ type Schema = z.infer<typeof formSchema>
 export const ManageStaffContent = () => {
 	const searchParams = useSearchParams()
 	const { replace } = useRouter()
-	const pathname = usePathname()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const { language } = useManageContent()
 	const t = useTranslations()
@@ -79,6 +79,20 @@ export const ManageStaffContent = () => {
 		remove(removeIndex)
 	}
 
+	const handleLocation = (value: string) => {
+		const current = qs.parse(searchParams.toString())
+		const query = { ...current, ['languageId']: value }
+		const url = qs.stringifyUrl(
+			{
+				url: window.location.href,
+				query
+			},
+			{ skipEmptyString: true }
+		)
+
+		replace(url)
+	}
+
 	const onSubmit = async () => {
 		const formDataTmp: ContentPayload[] = [...formData.items]
 		formDataTmp.forEach(obj => {
@@ -91,16 +105,11 @@ export const ManageStaffContent = () => {
 		if (result?.message === 'OK') {
 			SuccessToast(t('ManageContent.staffContentSccessfullyCreated'))
 
-			let routeReplaced = false
-
 			if (language?.id) {
-				const newParams = new URLSearchParams(searchParams.toString())
-				newParams.set('languageId', language?.id)
-				replace(`${pathname}?${newParams.toString()}`)
-				routeReplaced = true
+				handleLocation(language?.id)
 			}
 
-			if (currentStep && routeReplaced) {
+			if (currentStep) {
 				setCurrentStep(currentStep + 1)
 			}
 		}

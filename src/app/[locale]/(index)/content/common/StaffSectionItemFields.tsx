@@ -33,38 +33,18 @@ export const StaffSectionItemFields = ({ initialImagesUrls }: Props) => {
 						</FormControl>
 					</Stack>
 				</Box>
-				<div
-					style={{
-						display: 'grid',
-						gridTemplateColumns: 'repeat(2, 1fr)',
-						columnGap: tokens.spacing[6],
-						rowGap: tokens.spacing[4]
-					}}>
-					<Stack gap={4}>
-						<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-							<RequiredLabel>{t('ManageContent.staffName')}</RequiredLabel>
-						</Text>
-						<Box>
-							<FormControl name="name" maxLength="30">
-								<TextInput placeholder={t('ManageContent.staffNamePlaceholder')} />
-								<FormControl.CharactersCount />
-								<FormControl.Message />
-							</FormControl>
-						</Box>
-					</Stack>
-					<Stack gap={4}>
-						<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-							<RequiredLabel>{t('ManageContent.staffRole')}</RequiredLabel>
-						</Text>
-						<Box>
-							<FormControl name="title" maxLength="30">
-								<TextInput placeholder={t('ManageContent.staffRolePlaceholder')} />
-								<FormControl.CharactersCount />
-								<FormControl.Message />
-							</FormControl>
-						</Box>
-					</Stack>
-				</div>
+				<Stack gap={4}>
+					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
+						<RequiredLabel>{t('ManageContent.staffName')}</RequiredLabel>
+					</Text>
+					<Box>
+						<FormControl name="name" maxLength="30">
+							<TextInput placeholder={t('ManageContent.staffNamePlaceholder')} />
+							<FormControl.CharactersCount />
+							<FormControl.Message />
+						</FormControl>
+					</Box>
+				</Stack>
 				<Box paddingTop={4} paddingBottom={8}>
 					<Stack gap={4}>
 						<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">

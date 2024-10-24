@@ -19,6 +19,9 @@ import { Room } from 'api/models/content/room'
 import { EnterTemplateName } from './EnterTemplateName'
 import { PreviewAndSave } from './PreviewAndSave'
 import { TemplatePublished } from './TemplatePublished'
+import { NoListData } from '@/components/custom/no-list-data/NoListData'
+import { ROUTES } from 'parameters'
+import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
 
 interface Props {
 	templateData: Content
@@ -43,12 +46,27 @@ export const TemplateStepNavigation = ({ templateData }: Props) => {
 		currentStep: 1
 	})
 	useNavbarItems({
-		title: 'General.templates'
+		title: 'General.templates',
+		useUserDropdown: true
 	})
 
+	console.log('templateData', templateData)
 	return (
 		<ManageJourneyWrapper>
-			{currentStep === 1 && <EnterTemplateName />}
+			{currentStep === 1 && templateData?.abouts?.length > 0 ? (
+				<EnterTemplateName />
+			) : (
+				<ManageJourneyIntroWrapper>
+					<NoListData
+						title="Templates.noContentPublishedTitle"
+						description="Templates.noContentPublishedDescription"
+						setNavbarItems={false}
+						buttonLabel="ManageContent.add"
+						buttonLink={ROUTES.ADD_CONTENT}
+						distanceFromTop="0px"
+					/>
+				</ManageJourneyIntroWrapper>
+			)}
 			{currentStep === 2 && <SelectBarnahusContent abouts={templateData?.abouts} />}
 			{currentStep === 3 && <RearrangeRoom cards={cards} setCards={setCards} />}
 			{currentStep === 4 && <SelectRoomsContent rooms={reorderedRooms} />}

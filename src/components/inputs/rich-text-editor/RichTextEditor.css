@@ -22,6 +22,12 @@
 	stroke: #ec7b35;
 }
 
+.ql-snow.ql-toolbar .ql-picker-label:focus-visible {
+	outline: unset !important;
+	color: #ec7b35;
+	stroke: #ec7b35;
+}
+
 .ql-picker-options {
 	border-radius: 8px;
 	border: 1px solid #d6d6dd !important;
@@ -51,6 +57,24 @@
 
 .ql-snow.ql-toolbar button:hover {
 	color: #ec7b35;
+}
+
+.ql-snow.ql-toolbar button svg:focus {
+	outline: unset !important;
+	color: #ec7b35 !important;
+	stroke: #ec7b35 !important;
+}
+
+.ql-snow.ql-toolbar button:focus {
+	outline: unset !important;
+	color: #ec7b35 !important;
+	stroke: #ec7b35 !important;
+}
+
+.ql-snow.ql-toolbar button:focus-visible {
+	outline: unset !important;
+	color: #ec7b35 !important;
+	stroke: #ec7b35 !important;
 }
 
 .ql-snow .ql-stroke {

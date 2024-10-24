@@ -30,8 +30,7 @@ export const ContentStepNavigation = ({ languages, content }: Props) => {
 	})
 	useNavbarItems({
 		title: 'ManageContent.add',
-		backLabel: 'ManageContent.back',
-		location: 'Barnahus Stockholm, Sweden'
+		backLabel: 'ManageContent.back'
 	})
 
 	return (

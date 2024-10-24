@@ -1,6 +1,6 @@
 import { Audio } from '../common/audio'
 
-interface RoomImage {
+export interface RoomImage {
 	roomImageId: string
 	url: string
 }

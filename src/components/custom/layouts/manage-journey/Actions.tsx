@@ -32,7 +32,6 @@ export const Actions = ({ customSubmitLabel }: Props) => {
 				<Button variant="secondary" disabled={currentStep === 1 || !currentStep} onClick={handleBack}>
 					{t('General.back')}
 				</Button>
-
 				<Button type="submit" variant="primary" disabled={formContext ? !formContext?.formState.isValid : false}>
 					{t(customSubmitLabel ?? 'General.next')}
 				</Button>

@@ -24,7 +24,7 @@ export const SectionItemFields = ({ initialAudio, initialImagesUrls }: Props) =>
 			<Stack gap={6}>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
-						<RequiredLabel>{t('ManageContent.generalIntroductionTitle')}</RequiredLabel>
+						<RequiredLabel>{t('General.title')}</RequiredLabel>
 					</Text>
 					<FormControl name="title" maxLength="50">
 						<TextInput placeholder={t('ManageContent.generalIntroductionPlaceholderTitle')} />
@@ -34,7 +34,7 @@ export const SectionItemFields = ({ initialAudio, initialImagesUrls }: Props) =>
 				</Stack>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
-						<RequiredLabel>{t('ManageContent.generalIntroductionDescription')}</RequiredLabel>
+						<RequiredLabel>{t('General.description')}</RequiredLabel>
 					</Text>
 					<FormControl name="description" maxLength="500">
 						<RichTextEditor placeholder={t('ManageContent.generalIntroductionPlaceholderDescription')} />

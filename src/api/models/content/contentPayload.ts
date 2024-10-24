@@ -7,7 +7,7 @@ export interface ContentPayload {
 	staffTranslationId?: string
 	languageId?: string
 	name?: string
-	title: string
+	title?: string
 	description: string
 	images?: string[]
 	deletedImages?: string[]

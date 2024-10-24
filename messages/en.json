@@ -78,7 +78,10 @@
 		"titleNotDefined": "Title not defined",
 		"rooms": "Rooms",
 		"content": "Content",
+		"title": "Title",
+		"description": "Description",
 		"template": "Template",
+		"templates": "Templates",
 		"characters": " characters",
 		"searchMinInstructions": "Enter minimum three characters for search",
 		"logOut": "Log out",
@@ -102,7 +105,6 @@
 		"notDefined": " is not defined",
 		"fullNameNotDefined": "Full name not defined",
 		"assignedBarnahusPlaceholder": "No Barnahus assigned yet.",
-		"templates": "Templates",
 		"assignedBarnahusInfoText": "Once the Barnahus is added it will be assigned to this Master-admin, and the information will appear here.",
 		"showingSomeResult": "Showing result {start} of {results} overall",
 		"showingSomeResults": "Showing results {start} - {end} of {results} overall",
@@ -432,6 +434,8 @@
 		"templateSavedTitle": "Congrats, template created!",
 		"templateSavedDescription": "Now that you've created a template, you can easily use it to create case journeys.",
 		"createAnotherTemplate": "Create another template",
-		"goToCaseJourney": "Go to Case Journey"
+		"goToCaseJourney": "Go to Case Journey",
+		"noContentPublishedTitle": "Content was not published",
+		"noContentPublishedDescription": "There is no content to choose from so please go to add content and add content and publish it so you can create template."
 	}
 }

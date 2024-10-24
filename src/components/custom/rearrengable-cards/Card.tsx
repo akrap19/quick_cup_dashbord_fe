@@ -12,10 +12,11 @@ import { card } from './Card.css'
 interface Props {
 	id: string
 	children: ReactNode
+	disableDelete: boolean
 	handleRemoveItem: (id: string) => void
 }
 
-export const Card = ({ id, children, handleRemoveItem }: Props) => {
+export const Card = ({ id, children, disableDelete, handleRemoveItem }: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -26,7 +27,12 @@ export const Card = ({ id, children, handleRemoveItem }: Props) => {
 					{t(children)}
 				</Text>
 			</Inline>
-			<Button onClick={() => handleRemoveItem(id)} type="button" variant="adaptive" size="auto">
+			<Button
+				type="button"
+				variant="adaptive"
+				size="auto"
+				disabled={disableDelete}
+				onClick={() => handleRemoveItem(id)}>
 				<TrashIcon color="destructive.500" />
 			</Button>
 		</div>

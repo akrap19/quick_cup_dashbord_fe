@@ -20,11 +20,11 @@ export const SectionItemsFields = ({ index, form, initialImagesUrls }: Props) =>
 	const t = useTranslations()
 
 	return (
-		<Box paddingRight={16} paddingBottom={6} borderBottom="thin" borderColor="neutral.300">
+		<Box paddingRight={16} paddingBottom={6}>
 			<Stack gap={6}>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
-						<RequiredLabel>{t('ManageContent.generalIntroductionTitle')}</RequiredLabel>
+						<RequiredLabel>{t('General.title')}</RequiredLabel>
 					</Text>
 					<FormControl
 						{...form.register(`items[${index}].title`)}
@@ -37,7 +37,7 @@ export const SectionItemsFields = ({ index, form, initialImagesUrls }: Props) =>
 				</Stack>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
-						<RequiredLabel>{t('ManageContent.generalIntroductionDescription')}</RequiredLabel>
+						<RequiredLabel>{t('General.description')}</RequiredLabel>
 					</Text>
 					<FormControl
 						{...form.register(`items[${index}].description`)}

@@ -41,17 +41,15 @@ export const Tabs: FC<Props> & TabsComposition = ({ children, size, variant = 'b
 
 	return (
 		<TabsProvider>
-			<Inline justifyContent="space-between" alignItems="flex-end">
-				<div
-					style={{
-						display: 'flex',
-						overflowX: 'auto',
-						whiteSpace: 'nowrap',
-						scrollbarWidth: 'thin'
-					}}>
-					<div className={styles.tabsWrapper({ size: size || (button ? 'small' : 'large'), variant })}>{tabs}</div>
-				</div>
-			</Inline>
+			<div
+				style={{
+					display: 'flex',
+					overflowX: 'auto',
+					whiteSpace: 'nowrap',
+					scrollbarWidth: 'thin'
+				}}>
+				<div className={styles.tabsWrapper({ size: size || (button ? 'small' : 'large'), variant })}>{tabs}</div>
+			</div>
 			<div>{panel}</div>
 		</TabsProvider>
 	)

@@ -65,11 +65,13 @@ export const MobilePreviewContent = ({ content, currentImage, setCurrentImage }:
 					)}
 				</Inline>
 				<Box borderRadius="small">
-					<img
-						alt="mobile-preview"
-						src={contentImages[currentImage]?.url}
-						style={{ objectFit: 'contain', maxWidth: '302px' }}
-					/>
+					{contentImages && (
+						<img
+							alt="mobile-preview"
+							src={contentImages[currentImage]?.url}
+							style={{ objectFit: 'contain', maxWidth: '302px' }}
+						/>
+					)}
 				</Box>
 				<Stack gap={6}>
 					<Inline justifyContent="space-around">

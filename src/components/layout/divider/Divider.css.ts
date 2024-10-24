@@ -5,5 +5,5 @@ import { tokens } from 'style/theme.css'
 export const divider = style({
 	width: '100%',
 	height: '1px',
-	background: tokens.colors['neutral.200']
+	background: tokens.colors['neutral.300']
 })

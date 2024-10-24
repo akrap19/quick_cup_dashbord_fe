@@ -16,7 +16,6 @@ import { requiredString } from 'schemas'
 
 import { LanguageLabel } from '../common/LanguageLabel'
 import { SectionItemsFields } from '../common/SectionItemsFields'
-import { WorkingHours } from '../common/WorkingHours'
 
 interface Props {
 	abouts?: About[]
@@ -96,7 +95,7 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 									))}
 								</Stack>
 							</Box>
-							<WorkingHours />
+							{/* <WorkingHours /> */}
 						</Box>
 					</Stack>
 				</Box>

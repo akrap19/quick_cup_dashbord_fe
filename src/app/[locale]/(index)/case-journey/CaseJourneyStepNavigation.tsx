@@ -82,7 +82,8 @@ const CaseJourneyStepNavigation = ({ caseFiles, languages, content, templates, t
 		currentStep: 1
 	})
 	useNavbarItems({
-		title: 'General.caseJourney'
+		title: 'General.caseJourney',
+		useUserDropdown: true
 	})
 
 	return (
@@ -100,10 +101,10 @@ const CaseJourneyStepNavigation = ({ caseFiles, languages, content, templates, t
 			{currentStep === 9 && type === CaseJourneyTypeEnum.CUSTOM && <CaseJourneyPublished />}
 
 			{/* Template */}
-			{currentStep === 4 && type === (CaseJourneyTypeEnum.TEMPLATE || CaseJourneyTypeEnum.CUSTOM_TEMPLATE) && (
+			{currentStep === 4 && (type === CaseJourneyTypeEnum.TEMPLATE || type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE) && (
 				<SelectTemplate templates={templates} />
 			)}
-			{currentStep === 5 && type === (CaseJourneyTypeEnum.TEMPLATE || CaseJourneyTypeEnum.CUSTOM_TEMPLATE) && (
+			{currentStep === 5 && (type === CaseJourneyTypeEnum.TEMPLATE || type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE) && (
 				<SelectTemplateType />
 			)}
 

@@ -28,19 +28,19 @@ const LanguageDetails = ({ language }: Props) => {
 			<Stack gap={4}>
 				<Label>{t('Barnahuses.barnahusName')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{language.name}
+					{language.name ?? t('Languages.barnahusName') + t('General.notDefined')}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.status')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{language.status}
+					{language.status ?? t('Languages.status') + t('General.notDefined')}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('Languages.autoTranslate')}</Label>
 				<Text fontSize="small" color="neutral.800" textTransform="capitalize">
-					{language.autoTranslate.toString()}
+					{language.autoTranslate.toString() ?? t('Languages.autoTranslate') + t('General.notDefined')}
 				</Text>
 			</Stack>
 		</DetailsWrapper>

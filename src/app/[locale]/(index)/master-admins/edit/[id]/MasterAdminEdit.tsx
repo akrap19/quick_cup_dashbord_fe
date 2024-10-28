@@ -16,6 +16,7 @@ import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
 import MasterAdminForm from '../../form'
 
 const formSchema = z.object({
+	barnahus: requiredString.shape.scheme,
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
 	phoneNumber: phoneNumberScheme.shape.phone,
@@ -37,6 +38,7 @@ const EditMasterAdmin = ({ masterAdmin, barnahuses }: Props) => {
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
+			barnahus: masterAdmin.locations[0],
 			firstName: masterAdmin.firstName,
 			lastName: masterAdmin.lastName,
 			phoneNumber: masterAdmin.phoneNumber ?? '',

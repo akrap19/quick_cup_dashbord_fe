@@ -24,9 +24,12 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const SelectTemplateType = () => {
-	const { setType } = useCaseJourneyStore()
+	const { type, setType } = useCaseJourneyStore()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
+	if (type !== CaseJourneyTypeEnum.TEMPLATE) {
+		setType(CaseJourneyTypeEnum.TEMPLATE)
+	}
 	const options = [
 		{ label: t('CaseJourney.useReadyMadeTemplate'), value: CaseJourneyTypeEnum.TEMPLATE },
 		{ label: t('CaseJourney.customizeTemplate'), value: CaseJourneyTypeEnum.CUSTOM_TEMPLATE }

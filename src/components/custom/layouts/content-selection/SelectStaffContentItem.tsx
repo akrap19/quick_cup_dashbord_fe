@@ -9,6 +9,7 @@ import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { Staff, StaffImage } from 'api/models/content/staff'
+import { tokens } from '@/style/theme.css'
 
 interface Props {
 	data: Staff
@@ -43,12 +44,31 @@ export const SelectStaffContentItem = ({ data, form, index, hideDivider }: Props
 					</Box>
 				)}
 				{data?.name && (
-					<Stack gap={6}>
-						<Box backgroundColor="neutral.100">
+					<div
+						style={{
+							display: 'grid',
+							gridTemplateColumns: 'repeat(2, 1fr)',
+							backgroundColor: tokens.colors['neutral.100'],
+							columnGap: tokens.spacing[6],
+							rowGap: tokens.spacing[4]
+						}}>
+						<Stack gap={6}>
+							<Stack gap={4}>
+								<Text fontWeight="semibold" lineHeight="xlarge" color="neutral.900" textTransform="uppercase">
+									{t('ManageContent.staffName')}
+								</Text>
+								<Box paddingRight={20}>
+									<Text fontSize="small" color="neutral.800">
+										{data?.name}
+									</Text>
+								</Box>
+							</Stack>
+						</Stack>
+						<Stack gap={6}>
 							<Stack gap={4}>
 								<Inline justifyContent="space-between">
 									<Text fontWeight="semibold" lineHeight="xlarge" color="neutral.900" textTransform="uppercase">
-										{t('ManageContent.staffName')}
+										{t('ManageContent.staffRole')}
 									</Text>
 									<FormControl {...form.register(`items[${index}].includeName`)}>
 										<Checkbox />
@@ -56,12 +76,12 @@ export const SelectStaffContentItem = ({ data, form, index, hideDivider }: Props
 								</Inline>
 								<Box paddingRight={20}>
 									<Text fontSize="small" color="neutral.800">
-										{data?.name}
+										{data?.title}
 									</Text>
 								</Box>
 							</Stack>
-						</Box>
-					</Stack>
+						</Stack>
+					</div>
 				)}
 				{data?.description?.length > 0 && (
 					<Box paddingBottom={8}>

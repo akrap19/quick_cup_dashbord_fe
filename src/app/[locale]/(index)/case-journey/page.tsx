@@ -23,7 +23,8 @@ interface Props {
 
 const CaseJourneyPage = async ({ searchParams }: Props) => {
 	const { data: languageData } = await getLanguageSearch(searchParams, LanguageStatusEnum.PUBLISHED)
-	const { data: contentData } = await getContent(searchParams)
+	const data = await getContent(searchParams)
+	// const { data: contentData } = await getContent(searchParams)
 
 	const { data: caseFilesSearchData } = await getCaseFilesSearch({
 		search: searchParams.customId,
@@ -123,13 +124,13 @@ const CaseJourneyPage = async ({ searchParams }: Props) => {
 			staff: filteredStaff
 		}
 	}
-	const template = processData(contentData, templateData?.template)
+	const template = processData(data.data, templateData?.template)
 
 	return (
 		<CaseJourneyStepNavigation
 			caseFiles={transformedCaseFilesSearchData}
 			languages={languageData?.languages}
-			content={contentData}
+			content={data.data}
 			templates={transformedTemplateSearchData}
 			template={template as any}
 		/>

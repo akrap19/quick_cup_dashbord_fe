@@ -15,7 +15,6 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { Language } from 'api/models/language/language'
-import { translateLanguage } from 'api/services/languages'
 import { ROUTES } from 'parameters'
 
 interface Props {
@@ -50,14 +49,7 @@ export const ContentPublished = ({ languages }: Props) => {
 	const formData = form?.getValues()
 
 	const onSubmit = async () => {
-		const result = await translateLanguage(formData.language)
-
-		if (result?.message === 'OK') {
-			if (typeof window !== 'undefined') {
-				localStorage.setItem('content', JSON.stringify(result?.data))
-			}
-			router.push(`${ROUTES.AUTOTRANSLATE_AND_REVIEW}?languageId=${formData?.language}`)
-		}
+		router.push(`${ROUTES.AUTOTRANSLATE_AND_REVIEW}?languageId=${formData?.language}`)
 	}
 
 	return (

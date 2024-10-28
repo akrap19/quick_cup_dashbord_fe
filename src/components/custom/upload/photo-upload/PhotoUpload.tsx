@@ -11,6 +11,7 @@ import { deleteMedia, media } from 'api/services/common'
 
 import * as styles from './PhotoUpload.css'
 import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'
+import { ErrorToast } from '@/components/overlay/toast-messages/ErrorToastmessage'
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
 	initialImagesUrls?: string[]
@@ -24,32 +25,43 @@ export const PhotoUpload = ({ initialImagesUrls, ...rest }: Props) => {
 
 	const handleFileChange = (event: any) => {
 		const { files } = event.target
+		const maxSize = 10 * 1024 * 1024 // 10 MB in bytes
 
-		const newPhotosForUpload: string[] = [...photos]
-		const newUploadedMediaId: string[] = [...mediaId]
+		const checkSize = Array.from(files).filter((file: any) => {
+			if (file.size > maxSize) {
+				ErrorToast(t('General.photoUploadError'))
+				return false
+			}
+			return true
+		})
 
-		const handleAllFileUploads = async () => {
-			// eslint-disable-next-line
-			for (const file of files) {
+		if (checkSize?.length) {
+			const newPhotosForUpload: string[] = [...photos]
+			const newUploadedMediaId: string[] = [...mediaId]
+
+			const handleAllFileUploads = async () => {
 				// eslint-disable-next-line
-				const result = await handleFileUpload(file)
-				if (result) {
-					newPhotosForUpload.push(result.urlObject)
-					newUploadedMediaId.push(result.mediaId)
+				for (const file of files) {
+					// eslint-disable-next-line
+					const result = await handleFileUpload(file)
+					if (result) {
+						newPhotosForUpload.push(result.urlObject)
+						newUploadedMediaId.push(result.mediaId)
+					}
+				}
+
+				setPhotos(newPhotosForUpload)
+				setMediaId(newUploadedMediaId)
+				handleInputValue(newUploadedMediaId)
+
+				// Reset the input value to allow the same file to be uploaded again
+				if (fileInputRef.current) {
+					fileInputRef.current.value = ''
 				}
 			}
 
-			setPhotos(newPhotosForUpload)
-			setMediaId(newUploadedMediaId)
-			handleInputValue(newUploadedMediaId)
-
-			// Reset the input value to allow the same file to be uploaded again
-			if (fileInputRef.current) {
-				fileInputRef.current.value = ''
-			}
+			handleAllFileUploads()
 		}
-
-		handleAllFileUploads()
 	}
 
 	const handleFileUpload = async (file: File) => {

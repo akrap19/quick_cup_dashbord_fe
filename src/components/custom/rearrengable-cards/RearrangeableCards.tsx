@@ -51,14 +51,16 @@ export const RearrangeableCards = ({ cards, setCards }: Props) => {
 		setCards(newCards)
 	}
 
-	const isArraysEqual = (arr1: CardBase[], arr2: CardBase[]): boolean => {
-		if (arr1.length !== arr2.length) return false
+	const isArraysEqual = (arr1?: CardBase[], arr2?: CardBase[]): boolean => {
+		if (arr1?.length !== arr2?.length) return true
 
-		for (let i = 0; i < arr1.length; i++) {
-			if (arr1[i] !== arr2[i]) return false
+		if (arr1 && arr2) {
+			for (let i = 0; i < arr1?.length; i++) {
+				if (arr1[i] !== arr2[i]) return true
+			}
 		}
 
-		return true
+		return false
 	}
 
 	const handleResetCards = () => {
@@ -125,10 +127,12 @@ export const RearrangeableCards = ({ cards, setCards }: Props) => {
 						</Droppable>
 					</DragDropContext>
 				</Box>
-				{isArraysEqual(initialCards, cards) && (
+				{isArraysEqual(cards, initialCards) && (
 					<Box>
 						<Button type="button" size="auto" variant="adaptive" onClick={handleResetCards}>
-							Reset rooms
+							<Text fontSize="small" textDecoration="underline">
+								Reset rooms
+							</Text>
 						</Button>
 					</Box>
 				)}

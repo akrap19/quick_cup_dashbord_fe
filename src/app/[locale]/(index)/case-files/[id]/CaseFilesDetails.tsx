@@ -29,25 +29,26 @@ export const CaseFilesDetails = ({ caseFiles }: Props) => {
 		actionButton: <EditButton buttonLabel="CaseFiles.edit" buttonLink={ROUTES.EDIT_CASE_FILES + caseFiles?.caseId} />
 	})
 
+	console.log('caseFiles', caseFiles)
 	return (
 		<Box width="100%">
 			<DetailsWrapper>
 				<Stack gap={4}>
 					<Label>{t('CaseFiles.customId')}</Label>
 					<Text fontSize="small" color="neutral.800">
-						{caseFiles?.customId}
+						{caseFiles?.customId ?? t('CaseFiles.customId') + t('General.notDefined')}
 					</Text>
 				</Stack>
 				<Stack gap={4}>
 					<Label>{t('General.status')}</Label>
 					<Text fontSize="small" color="neutral.800">
-						{caseFiles.status}
+						{caseFiles?.status ?? t('General.status') + t('General.notDefined')}
 					</Text>
 				</Stack>
 				<Stack gap={4}>
 					<Label>{t('General.barnahus')}</Label>
 					<Text fontSize="small" color="neutral.800">
-						{t('General.barnahusPlaceholder')}
+						{caseFiles?.barnahusLocation ?? t('General.barnahus') + t('General.notDefined')}
 					</Text>
 				</Stack>
 			</DetailsWrapper>

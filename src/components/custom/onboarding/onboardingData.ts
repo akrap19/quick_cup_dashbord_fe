@@ -37,6 +37,16 @@ export const onboardingData: onboardingDataByRole = {
 			title: 'MasterAdmins.onboardingCreateCustomiedIDTitle',
 			description: 'MasterAdmins.onboardingCreateCustomiedIDDescription',
 			image: '/images/onboardingImages/masterAdmin/create-customized-id.png'
+		},
+		{
+			title: 'MasterAdmins.onboardingCreateTemplateTitle',
+			description: 'MasterAdmins.onboardingCreateTemplateDescription',
+			image: '/images/onboardingImages/masterAdmin/create-template.png'
+		},
+		{
+			title: 'MasterAdmins.onboardingCreateCaseJourneyTitle',
+			description: 'MasterAdmins.onboardingCreateCaseJourneyDescription',
+			image: '/images/onboardingImages/masterAdmin/create-case-journey.png'
 		}
 	],
 	Admin: [
@@ -54,6 +64,16 @@ export const onboardingData: onboardingDataByRole = {
 			title: 'MasterAdmins.onboardingCreateCustomiedIDTitle',
 			description: 'MasterAdmins.onboardingCreateCustomiedIDDescription',
 			image: '/images/onboardingImages/masterAdmin/create-customized-id.png'
+		},
+		{
+			title: 'MasterAdmins.onboardingCreateTemplateTitle',
+			description: 'MasterAdmins.onboardingCreateTemplateDescription',
+			image: '/images/onboardingImages/masterAdmin/create-template.png'
+		},
+		{
+			title: 'MasterAdmins.onboardingCreateCaseJourneyTitle',
+			description: 'MasterAdmins.onboardingCreateCaseJourneyDescription',
+			image: '/images/onboardingImages/masterAdmin/create-case-journey.png'
 		}
 	],
 	Practitioner: [
@@ -61,6 +81,16 @@ export const onboardingData: onboardingDataByRole = {
 			title: 'MasterAdmins.onboardingCreateCustomiedIDTitle',
 			description: 'MasterAdmins.onboardingCreateCustomiedIDDescription',
 			image: '/images/onboardingImages/masterAdmin/create-customized-id.png'
+		},
+		{
+			title: 'MasterAdmins.onboardingCreateTemplateTitle',
+			description: 'MasterAdmins.onboardingCreateTemplateDescription',
+			image: '/images/onboardingImages/masterAdmin/create-template.png'
+		},
+		{
+			title: 'MasterAdmins.onboardingCreateCaseJourneyTitle',
+			description: 'MasterAdmins.onboardingCreateCaseJourneyDescription',
+			image: '/images/onboardingImages/masterAdmin/create-case-journey.png'
 		}
 	]
 }

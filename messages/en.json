@@ -88,7 +88,8 @@
 		"requiredFieldWarning": "Fields marked with an asterisk (*) indicate their mandatory nature.",
 		"uploadAudio": "Upload audio",
 		"maxPhotoUploadCountinstructions": "Upload max 10 photos",
-		"photoUploadInstructions": "(max size per photo 2 MB, .jpg)",
+		"photoUploadInstructions": "(max size per photo 10MB)",
+		"photoUploadError": "Maximum size for image is 10MB",
 		"audio": "Audio",
 		"clearSection": "Clear selection",
 		"reset": "Reset",
@@ -254,7 +255,11 @@
 		"onboardingSetupAppContentTitle": "Set up the app content",
 		"onboardingSetupAppContentDescription": "Your main role is to populate content for the app, focusing on showcasing the Journeys experience for Barnahus children. The content you add will be previewed in the dashboard before being published for visibility in the app. You can select the language for content creation at the start or access the Languages section to view all available content languages.",
 		"onboardingCreateCustomiedIDTitle": "Create customized ID",
-		"onboardingCreateCustomiedIDDescription": "Creating a customized ID initiates the process of crafting a personalized journey experience. This unique ID is only designated for this purpose and can be shared with the child if they wish to access the customized experience."
+		"onboardingCreateCustomiedIDDescription": "Creating a customized ID initiates the process of crafting a personalized journey experience. This unique ID is only designated for this purpose and can be shared with the child if they wish to access the customized experience.",
+		"onboardingCreateTemplateTitle": "Create Template",
+		"onboardingCreateTemplateDescription": "Creating a template simplifies the process of building a case journey by providing a predefined template. This template can be used as-is or further customized.",
+		"onboardingCreateCaseJourneyTitle": "Create Case Journey",
+		"onboardingCreateCaseJourneyDescription": "Creating a case journey provides a final, presentational dashboard. This can be built from a template, which can be used as-is, further customized, or created entirely from scratch."
 	},
 	"Practitioners": {
 		"add": "Add Practitioner",

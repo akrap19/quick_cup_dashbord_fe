@@ -24,9 +24,12 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const SelectCaseJourneyType = () => {
-	const { setType } = useCaseJourneyStore()
+	const { type, setType } = useCaseJourneyStore()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
+	if (type) {
+		setType()
+	}
 	const options = [
 		{ label: t('CaseJourney.createFromTemplate'), value: CaseJourneyTypeEnum.TEMPLATE },
 		{ label: t('CaseJourney.createCustom'), value: CaseJourneyTypeEnum.CUSTOM }
@@ -52,7 +55,7 @@ export const SelectCaseJourneyType = () => {
 					<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
 						<ManageJourneyIntroWrapper>
 							<Stack gap={6} alignItems="center">
-								<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
+								<Text fontSize="xbig" fontWeight="semibold" textAlign="center" color="neutral.800">
 									{t('CaseJourney.chooseCaseJourneyTypeCreationTitle')}
 								</Text>
 								<Text fontSize="small" color="neutral.800" textAlign="center">

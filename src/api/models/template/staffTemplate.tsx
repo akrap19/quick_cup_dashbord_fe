@@ -3,5 +3,5 @@ export interface StaffTemplate {
 	includeName: string
 	includeDescription: boolean
 	includeImages: boolean
-	includeImage: boolean
+	includeImage?: boolean
 }

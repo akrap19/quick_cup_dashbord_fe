@@ -75,7 +75,12 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		const templateData: Template = { name, abouts, rooms, staff }
+		const templateData: Template = {
+			name,
+			abouts: abouts?.map(({ includeImage, ...rest }) => rest),
+			rooms: rooms?.map(({ includeImage, ...rest }) => rest),
+			staff: staff?.map(({ includeImage, ...rest }) => rest)
+		}
 		const result = await createTemplate(templateData)
 
 		if (result?.message === 'OK') {

@@ -5,4 +5,5 @@ export interface CaseFiles {
 	status: string
 	lastJourneySnapshot: string
 	caseJourneyUpdates: string
+	barnahusLocation: string
 }

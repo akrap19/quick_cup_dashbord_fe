@@ -3,6 +3,6 @@ export interface RoomTemplate {
 	includeAudio: boolean
 	includeDescription: boolean
 	includeImages?: boolean
-	includeImage: boolean
+	includeImage?: boolean
 	orderNumber: number
 }

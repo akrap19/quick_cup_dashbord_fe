@@ -29,13 +29,13 @@ export const BarnahusDetails = ({ barnahus }: Props) => {
 			<Stack gap={4}>
 				<Label>{t('Barnahuses.barnahusName')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{barnahus.name}
+					{barnahus.name ?? t('Barnahuses.barnahusName') + t('General.notDefined')}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.barnahusLocation')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{barnahus.location}
+					{barnahus.location ?? t('Barnahuses.barnahusLocation') + t('General.notDefined')}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
@@ -49,7 +49,7 @@ export const BarnahusDetails = ({ barnahus }: Props) => {
 			<Stack gap={4}>
 				<Label>{t('General.barnahusId')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{barnahus.locationCode}
+					{barnahus.locationCode ?? t('Barnahuses.barnahusId') + t('General.notDefined')}
 				</Text>
 			</Stack>
 		</DetailsWrapper>

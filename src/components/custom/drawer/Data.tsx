@@ -41,6 +41,12 @@ export const drawerItems: Item[] = [
 		]
 	},
 	{
+		label: 'templates',
+		icon: <DocumentDuplicateIcon />,
+		route: ROUTES.TEMPLATES,
+		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.PRACTITIONER]
+	},
+	{
 		label: 'caseFiles',
 		icon: <FileIcon />,
 		route: ROUTES.CASE_FILES,
@@ -50,12 +56,6 @@ export const drawerItems: Item[] = [
 		label: 'caseJourney',
 		icon: <BriefcaseIcon />,
 		route: ROUTES.CASE_JOURNEY,
-		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.PRACTITIONER]
-	},
-	{
-		label: 'templates',
-		icon: <DocumentDuplicateIcon />,
-		route: ROUTES.TEMPLATES,
 		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.PRACTITIONER]
 	},
 	{

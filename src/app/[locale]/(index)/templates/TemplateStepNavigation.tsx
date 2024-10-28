@@ -53,20 +53,21 @@ export const TemplateStepNavigation = ({ templateData }: Props) => {
 	console.log('templateData', templateData)
 	return (
 		<ManageJourneyWrapper>
-			{currentStep === 1 && templateData?.abouts?.length > 0 ? (
-				<EnterTemplateName />
-			) : (
-				<ManageJourneyIntroWrapper>
-					<NoListData
-						title="Templates.noContentPublishedTitle"
-						description="Templates.noContentPublishedDescription"
-						setNavbarItems={false}
-						buttonLabel="ManageContent.add"
-						buttonLink={ROUTES.ADD_CONTENT}
-						distanceFromTop="0px"
-					/>
-				</ManageJourneyIntroWrapper>
-			)}
+			{currentStep === 1 &&
+				(templateData?.abouts?.length > 0 ? (
+					<EnterTemplateName />
+				) : (
+					<ManageJourneyIntroWrapper>
+						<NoListData
+							title="Templates.noContentPublishedTitle"
+							description="Templates.noContentPublishedDescription"
+							setNavbarItems={false}
+							buttonLabel="ManageContent.add"
+							buttonLink={ROUTES.ADD_CONTENT}
+							distanceFromTop="0px"
+						/>
+					</ManageJourneyIntroWrapper>
+				))}
 			{currentStep === 2 && <SelectBarnahusContent abouts={templateData?.abouts} />}
 			{currentStep === 3 && <RearrangeRoom cards={cards} setCards={setCards} />}
 			{currentStep === 4 && <SelectRoomsContent rooms={reorderedRooms} />}

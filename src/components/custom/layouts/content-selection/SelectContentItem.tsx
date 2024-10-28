@@ -21,10 +21,11 @@ interface Props {
 export const SelectContentItem = ({ data, form, index, hideDivider }: Props) => {
 	const t = useTranslations()
 
+	console.log('data', data)
 	return (
 		<Box>
 			<Stack gap={4}>
-				{data?.audioURL && (
+				{data?.audio && (
 					<Box backgroundColor="neutral.100">
 						<Stack gap={4}>
 							<Inline justifyContent="space-between">
@@ -35,7 +36,9 @@ export const SelectContentItem = ({ data, form, index, hideDivider }: Props) => 
 									<Checkbox />
 								</FormControl>
 							</Inline>
-							<AudioUpload initialAudio={{ url: data?.audioURL }} />
+							<AudioUpload
+								initialAudio={{ id: data?.audio?.audioId, url: data?.audio?.audioURL, name: data?.audio?.audioName }}
+							/>
 						</Stack>
 					</Box>
 				)}

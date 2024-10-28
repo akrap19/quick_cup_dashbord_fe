@@ -31,7 +31,7 @@ export const MasterAdminDetails = ({ masterAdmin }: Props) => {
 			<Stack gap={4}>
 				<Label>{t('General.firstName')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{masterAdmin.firstName}
+					{masterAdmin.firstName ?? t('General.firstName') + t('General.notDefined')}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
@@ -45,13 +45,13 @@ export const MasterAdminDetails = ({ masterAdmin }: Props) => {
 			<Stack gap={4}>
 				<Label>{t('General.lastName')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{masterAdmin.lastName}
+					{masterAdmin.lastName ?? t('General.lastName') + t('General.notDefined')}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.email')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{masterAdmin.email}
+					{masterAdmin.email ?? t('General.email') + t('General.notDefined')}
 				</Text>
 			</Stack>
 			<Stack gap={4}>

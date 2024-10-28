@@ -18,7 +18,7 @@ import { LanguageLabel } from './LanguageLabel'
 import { Loader } from '@/components/custom/loader/Loader'
 
 interface Props {
-	content: Content
+	content?: Content
 }
 
 export const PreviewAndPublish = ({ content }: Props) => {

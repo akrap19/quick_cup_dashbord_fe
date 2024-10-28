@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
@@ -15,6 +15,7 @@ import { ManageRoomsContent } from './ManageRoomsContent'
 import { ManageStaffContent } from './ManageStaffContent'
 import { ContentPublished } from '../common/ContentPublished'
 import { PreviewAndPublish } from '../common/PreviewAndPublish'
+import { translateLanguage } from 'api/services/languages'
 
 interface Props {
 	language: Language
@@ -23,9 +24,13 @@ interface Props {
 
 export const ContentStepNavigation = ({ language, languages }: Props) => {
 	const { currentStep } = useStepsStore()
-	const content: any = localStorage.getItem('content')
-	const parsedContent: Content = JSON.parse(content)
+	const [content, setContent] = useState<Content>()
 	const { setLanguage } = useManageContent()
+
+	const translateContent = async () => {
+		const result = await translateLanguage(language.languageId)
+		setContent(result?.data)
+	}
 
 	useSteps({
 		totalSteps: 5,
@@ -34,20 +39,20 @@ export const ContentStepNavigation = ({ language, languages }: Props) => {
 
 	useNavbarItems({
 		title: 'ManageContent.add',
-		backLabel: 'ManageContent.back',
-		location: 'Barnahus Stockholm, Sweden'
+		backLabel: 'ManageContent.back'
 	})
 
 	useEffect(() => {
 		setLanguage({ id: language?.languageId, name: language?.name })
+		translateContent()
 	}, [language])
 
 	return (
 		<ManageJourneyWrapper>
-			{currentStep === 1 && <ManageBarnahusContent abouts={parsedContent?.abouts} />}
-			{currentStep === 2 && <ManageRoomsContent rooms={parsedContent?.rooms} />}
-			{currentStep === 3 && <ManageStaffContent staff={parsedContent?.staff} />}
-			{currentStep === 4 && <PreviewAndPublish content={parsedContent} />}
+			{currentStep === 1 && <ManageBarnahusContent abouts={content?.abouts} />}
+			{currentStep === 2 && <ManageRoomsContent rooms={content?.rooms} />}
+			{currentStep === 3 && <ManageStaffContent staff={content?.staff} />}
+			{currentStep === 4 && <PreviewAndPublish content={content} />}
 			{currentStep === 5 && <ContentPublished languages={languages} />}
 		</ManageJourneyWrapper>
 	)

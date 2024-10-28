@@ -46,27 +46,25 @@ export const EnterTemplateName = () => {
 	return (
 		<FormProvider {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)}>
-				<Box paddingTop={6}>
-					<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
-						<ManageJourneyIntroWrapper>
-							<Stack gap={6} alignItems="center">
-								<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
-									{t('Templates.nameTitle')}
-								</Text>
-								<Text fontSize="small" color="neutral.800" textAlign="center">
-									{t('Templates.nameDescription')}
-								</Text>
-								<Box width="100%" style={{ maxWidth: '20.5rem' }}>
-									<FormControl name="name">
-										<FormControl.Label>
-											<RequiredLabel>{t('Templates.name')}</RequiredLabel>
-										</FormControl.Label>
-										<TextInput />
-									</FormControl>
-								</Box>
-							</Stack>
-						</ManageJourneyIntroWrapper>
-					</Box>
+				<Box paddingX={6}>
+					<ManageJourneyIntroWrapper>
+						<Stack gap={6} alignItems="center">
+							<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
+								{t('Templates.nameTitle')}
+							</Text>
+							<Text fontSize="small" color="neutral.800" textAlign="center">
+								{t('Templates.nameDescription')}
+							</Text>
+							<Box width="100%" style={{ maxWidth: '20.5rem' }}>
+								<FormControl name="name">
+									<FormControl.Label>
+										<RequiredLabel>{t('Templates.name')}</RequiredLabel>
+									</FormControl.Label>
+									<TextInput />
+								</FormControl>
+							</Box>
+						</Stack>
+					</ManageJourneyIntroWrapper>
 				</Box>
 				<Actions />
 			</form>

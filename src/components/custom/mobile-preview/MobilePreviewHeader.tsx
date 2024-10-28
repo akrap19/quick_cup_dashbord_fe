@@ -16,9 +16,15 @@ interface Props {
 export const MobilePreviewHeader = ({ contentTypes, contentType, handleContentType }: Props) => {
 	const { currentStep, setCurrentStep } = useStepsStore()
 
+	const handleSteps = () => {
+		if (currentStep) {
+			setCurrentStep(currentStep - 1)
+		}
+	}
+
 	return (
 		<Inline justifyContent="space-between">
-			<Button type="button" variant="adaptive" onClick={() => setCurrentStep(currentStep - 1)}>
+			<Button type="button" variant="adaptive" onClick={handleSteps}>
 				<Box className={styles.mobilePreviewBackButtonWrapper}>
 					<LeftArrowIcon size="xlarge" color="neutral.900" />
 				</Box>

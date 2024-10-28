@@ -3,16 +3,16 @@
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 
+import { EditButton } from '@/components/custom/button/edit-button'
+import { DetailsWrapper } from '@/components/custom/layouts'
 import { AudioUpload } from '@/components/custom/upload/audio-upload'
 import { Box } from '@/components/layout/box'
-import { Text } from '@/components/typography/text'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
-import { Room, RoomImage } from 'api/models/content/room'
-import { DetailsWrapper } from '@/components/custom/layouts'
+import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { Room, RoomImage } from 'api/models/content/room'
 import { ROUTES } from 'parameters'
-import { EditButton } from '@/components/custom/button/edit-button'
 
 interface Props {
 	room: Room
@@ -26,7 +26,7 @@ export const RoomDetails = ({ room }: Props) => {
 		actionButton: (
 			<EditButton
 				buttonLabel="ManageContent.editRoom"
-				buttonLink={ROUTES.EDIT_ROOM_CONTENT + '/' + room.roomTranslationId}
+				buttonLink={`${ROUTES.EDIT_ROOM_CONTENT}/${room.roomTranslationId}`}
 			/>
 		)
 	})

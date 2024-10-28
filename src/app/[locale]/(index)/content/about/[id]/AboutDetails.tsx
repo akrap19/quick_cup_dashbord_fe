@@ -3,16 +3,16 @@
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 
+import { EditButton } from '@/components/custom/button/edit-button'
+import { DetailsWrapper } from '@/components/custom/layouts'
 import { AudioUpload } from '@/components/custom/upload/audio-upload'
 import { Box } from '@/components/layout/box'
-import { Text } from '@/components/typography/text'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
-import { About, AboutImage } from 'api/models/content/about'
-import { DetailsWrapper } from '@/components/custom/layouts'
+import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { About, AboutImage } from 'api/models/content/about'
 import { ROUTES } from 'parameters'
-import { EditButton } from '@/components/custom/button/edit-button'
 
 interface Props {
 	about: About
@@ -26,7 +26,7 @@ export const AboutDetails = ({ about }: Props) => {
 		actionButton: (
 			<EditButton
 				buttonLabel="ManageContent.editAbout"
-				buttonLink={ROUTES.EDIT_ABOUT_CONTENT + '/' + about.aboutTranslationId}
+				buttonLink={`${ROUTES.EDIT_ABOUT_CONTENT}/${about.aboutTranslationId}`}
 			/>
 		)
 	})

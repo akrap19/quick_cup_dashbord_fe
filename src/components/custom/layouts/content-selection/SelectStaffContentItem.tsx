@@ -8,8 +8,8 @@ import { Divider } from '@/components/layout/divider'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { Staff, StaffImage } from 'api/models/content/staff'
 import { tokens } from '@/style/theme.css'
+import { Staff, StaffImage } from 'api/models/content/staff'
 
 interface Props {
 	data: Staff
@@ -98,7 +98,10 @@ export const SelectStaffContentItem = ({ data, form, index, hideDivider }: Props
 									</Inline>
 									<Box paddingRight={20}>
 										<Text fontSize="small" color="neutral.800">
-											<div dangerouslySetInnerHTML={{ __html: data?.description }} />
+											<div
+												style={{ backgroundColor: tokens.colors['neutral.100'] }}
+												dangerouslySetInnerHTML={{ __html: data?.description }}
+											/>
 										</Text>
 									</Box>
 								</Stack>

@@ -77,9 +77,9 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 		e.preventDefault()
 		const templateData: Template = {
 			name,
-			abouts: abouts?.map(({ includeImage, ...rest }) => rest),
-			rooms: rooms?.map(({ includeImage, ...rest }) => rest),
-			staff: staff?.map(({ includeImage, ...rest }) => rest)
+			abouts: abouts?.map(({ ...rest }) => rest),
+			rooms: rooms?.map(({ ...rest }) => rest),
+			staff: staff?.map(({ ...rest }) => rest)
 		}
 		const result = await createTemplate(templateData)
 

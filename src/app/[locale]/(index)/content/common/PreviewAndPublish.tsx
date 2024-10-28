@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 import { FormEvent } from 'react'
 
 import { Actions } from '@/components/custom/layouts/manage-journey'
+import { Loader } from '@/components/custom/loader/Loader'
 import { MobilePreview } from '@/components/custom/mobile-preview'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
@@ -15,7 +16,6 @@ import { Content } from 'api/models/content/content'
 import { publishLanguage } from 'api/services/languages'
 
 import { LanguageLabel } from './LanguageLabel'
-import { Loader } from '@/components/custom/loader/Loader'
 
 interface Props {
 	content?: Content

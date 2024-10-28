@@ -6,7 +6,6 @@ import { getChildrenByType } from 'react-nanny'
 
 import { AddButton } from '@/components/custom/button/add-button'
 import { Button } from '@/components/inputs/button'
-import { Inline } from '@/components/layout/inline'
 
 import * as styles from './Tabs.css'
 import { TabsProvider, useTabsProvider } from './TabsProvider'

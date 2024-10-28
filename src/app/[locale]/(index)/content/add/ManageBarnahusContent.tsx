@@ -7,6 +7,7 @@ import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { Box } from '@/components/layout/box'
+import { Divider } from '@/components/layout/divider'
 import { Stack } from '@/components/layout/stack'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { Text } from '@/components/typography/text'
@@ -18,7 +19,6 @@ import { requiredString } from 'schemas'
 
 import { SectionItemsFields } from '../common/SectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
-import { Divider } from '@/components/layout/divider'
 
 const formSchema = z.object({
 	items: z.array(

@@ -14,6 +14,7 @@ import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { handleFullName } from '@/utils/handleFullName'
+import { Settings } from 'api/models/settings/settings'
 import { logout } from 'api/services/auth'
 import { deleteOnboarding } from 'api/services/onboarding'
 import { ROUTES } from 'parameters'
@@ -31,10 +32,11 @@ interface Option {
 
 interface Props {
 	session: Session | null
+	settings: Settings
 	seenOnboardingSections: string[]
 }
 
-export const UserDropdown = ({ session, seenOnboardingSections }: Props) => {
+export const UserDropdown = ({ session, settings, seenOnboardingSections }: Props) => {
 	const t = useTranslations()
 	const [isOpen, setIsOpen] = useState(false)
 	const [openOnboarding, setOpenOnboarding] = useState(false)
@@ -62,7 +64,7 @@ export const UserDropdown = ({ session, seenOnboardingSections }: Props) => {
 
 	const options: Option[] = [
 		{
-			label: session?.user?.email
+			label: settings?.email
 		},
 		{
 			label: 'General.profileSettings',
@@ -113,7 +115,7 @@ export const UserDropdown = ({ session, seenOnboardingSections }: Props) => {
 								<Inline gap={2} alignItems="center">
 									<UserIcon size="medium" color="neutral.800" />
 									<Text fontSize="medium" fontWeight="semibold" lineHeight="xlarge" color="neutral.800">
-										{t(handleFullName(session?.user?.firstName, session?.user?.lastName))}
+										{t(handleFullName(settings?.firstName, settings?.lastName))}
 									</Text>
 									<BlockIcon icon={isOpen ? CarretUpIcon : CarretDownIcon} size="medium" color="neutral.800" />
 								</Inline>

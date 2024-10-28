@@ -17,7 +17,7 @@ const HomePage = async () => {
 		case UserRoleEnum.ADMIN:
 			return redirect(ROUTES.PRACTITIONERS)
 		default:
-			redirect(ROUTES.CASE_FILES)
+			redirect(ROUTES.TEMPLATES)
 	}
 
 	return null

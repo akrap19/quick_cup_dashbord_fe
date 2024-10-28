@@ -1,5 +1,6 @@
 'use client'
 
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FormEvent } from 'react'
 
@@ -10,13 +11,14 @@ import { Stack } from '@/components/layout/stack'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { Text } from '@/components/typography/text'
 import { useCaseJourneyStore } from '@/store/case-journey'
+import { useManageContent } from '@/store/manage-content'
 import { useManageContentSelection } from '@/store/manage-content-selection'
 import { useStepsStore } from '@/store/steps'
 import { About } from 'api/models/content/about'
 import { Content } from 'api/models/content/content'
 import { Room } from 'api/models/content/room'
 import { Staff } from 'api/models/content/staff'
-import { createCustomCase } from 'api/services/content'
+import { createCase, createCustomCase } from 'api/services/content'
 import { CaseJourneyTypeEnum } from 'enums/caseJourneyType'
 
 interface Props {
@@ -26,8 +28,10 @@ interface Props {
 export const PreviewAndSave = ({ content }: Props) => {
 	const t = useTranslations()
 	const { name, abouts, rooms, staff } = useManageContentSelection()
-	const { type } = useCaseJourneyStore()
+	const { type, customId } = useCaseJourneyStore()
+	const { language } = useManageContent()
 	const { currentStep, setCurrentStep } = useStepsStore()
+	const searchParams = useSearchParams()
 	const mergedAboutData = content?.abouts
 		?.map(item => {
 			const includeFlag = abouts?.find(flag => flag.aboutId === item.aboutId)
@@ -80,11 +84,13 @@ export const PreviewAndSave = ({ content }: Props) => {
 		let result
 
 		if (type === CaseJourneyTypeEnum.TEMPLATE) {
-			const caseJourneyData = { name, abouts, rooms, staff }
-			// result = await createCase(caseJourneyData)
-			console.log(caseJourneyData)
+			const templateId = searchParams.get('templateId')
+			if (customId && templateId && language) {
+				const caseJourneyData = { caseId: customId, languageId: language?.id, templateId }
+				result = await createCase(caseJourneyData)
+			}
 		} else {
-			const customCaseJourneyData = { name, abouts, rooms, staff }
+			const customCaseJourneyData = { caseId: customId, languageId: language?.id, name, abouts, rooms, staff }
 			result = await createCustomCase(customCaseJourneyData)
 		}
 

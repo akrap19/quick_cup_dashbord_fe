@@ -10,6 +10,7 @@ import { FormControl } from '@/components/inputs/form-control'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
+import { useCaseJourneyStore } from '@/store/case-journey'
 import { useStepsStore } from '@/store/steps'
 import { Base } from 'api/models/common/base'
 
@@ -24,6 +25,7 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const SelectCaseId = ({ caseFiles }: Props) => {
+	const { setCustomId } = useCaseJourneyStore()
 	const { setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 
@@ -33,7 +35,8 @@ export const SelectCaseId = ({ caseFiles }: Props) => {
 		defaultValues: { customId: '' }
 	})
 
-	const onSubmit = async () => {
+	const onSubmit = async (data: Schema) => {
+		setCustomId(data.customId)
 		setCurrentStep(2)
 	}
 

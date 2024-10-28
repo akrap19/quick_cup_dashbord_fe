@@ -7,11 +7,11 @@ import React, { InputHTMLAttributes, useEffect, useRef, useState } from 'react'
 import { UploadIcon } from '@/components/icons/upload-icon'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
+import { ErrorToast } from '@/components/overlay/toast-messages/ErrorToastmessage'
 import { deleteMedia, media } from 'api/services/common'
 
 import * as styles from './PhotoUpload.css'
 import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'
-import { ErrorToast } from '@/components/overlay/toast-messages/ErrorToastmessage'
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
 	initialImagesUrls?: string[]

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
 	RearrangeRoom,
@@ -39,7 +39,6 @@ interface Props {
 const CaseJourneyStepNavigation = ({ caseFiles, languages, content, templates, template }: Props) => {
 	const { currentStep } = useStepsStore()
 	const { type } = useCaseJourneyStore()
-
 	const cardsTransformed: CardBase[] = content?.rooms?.map((room: Room) => {
 		return {
 			id: room.roomId,
@@ -47,7 +46,7 @@ const CaseJourneyStepNavigation = ({ caseFiles, languages, content, templates, t
 			title: room.title
 		}
 	})
-	const [cards, setCards] = useState(cardsTransformed)
+	const [cards, setCards] = useState<CardBase[]>([])
 	const reorderedRooms = cards
 		?.map(shortItem => content?.rooms?.find(longItem => longItem.roomId === shortItem.id))
 		?.filter((item): item is Room => item !== undefined)
@@ -81,10 +80,15 @@ const CaseJourneyStepNavigation = ({ caseFiles, languages, content, templates, t
 		totalSteps,
 		currentStep: 1
 	})
+
 	useNavbarItems({
 		title: 'General.caseJourney',
 		useUserDropdown: true
 	})
+
+	useEffect(() => {
+		setCards(cardsTransformed)
+	}, [])
 
 	return (
 		<ManageJourneyWrapper>

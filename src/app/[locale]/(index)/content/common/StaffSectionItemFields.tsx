@@ -10,7 +10,6 @@ import { TextInput } from '@/components/inputs/text-input'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { tokens } from '@/style/theme.css'
 
 interface Props {
 	initialImagesUrls?: string[]

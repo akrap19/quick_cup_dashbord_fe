@@ -12,6 +12,7 @@ import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
+import { Settings } from 'api/models/settings/settings'
 import { useNavbarItemsStore } from 'store/navbar'
 
 import * as styles from './Navbar.css'
@@ -19,10 +20,11 @@ import { UserDropdown } from '../user-dropdown'
 
 interface Props {
 	session: Session | null
+	settings: Settings
 	seenOnboardingSections: string[]
 }
 
-export const Navbar = ({ session, seenOnboardingSections }: Props) => {
+export const Navbar = ({ session, settings, seenOnboardingSections }: Props) => {
 	const router = useRouter()
 	const t = useTranslations()
 	const { navbarItems, setNavbarIsLoading } = useNavbarItemsStore()
@@ -73,7 +75,7 @@ export const Navbar = ({ session, seenOnboardingSections }: Props) => {
 					)}
 					{navbarItems?.useUserDropdown && (
 						<Box style={{ marginTop: '-0.5rem' }}>
-							<UserDropdown session={session} seenOnboardingSections={seenOnboardingSections} />
+							<UserDropdown session={session} settings={settings} seenOnboardingSections={seenOnboardingSections} />
 						</Box>
 					)}
 				</Inline>

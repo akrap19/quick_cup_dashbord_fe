@@ -8,20 +8,20 @@ import {
 	SelectRoomsContent,
 	SelectStaffContent
 } from '@/components/custom/layouts/content-selection'
+import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
 import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
+import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useSteps } from '@/hooks/use-steps'
 import { useStepsStore } from '@/store/steps'
 import { CardBase } from 'api/models/common/cardBase'
 import { Content } from 'api/models/content/content'
 import { Room } from 'api/models/content/room'
+import { ROUTES } from 'parameters'
 
 import { EnterTemplateName } from './EnterTemplateName'
 import { PreviewAndSave } from './PreviewAndSave'
 import { TemplatePublished } from './TemplatePublished'
-import { NoListData } from '@/components/custom/no-list-data/NoListData'
-import { ROUTES } from 'parameters'
-import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
 
 interface Props {
 	templateData: Content

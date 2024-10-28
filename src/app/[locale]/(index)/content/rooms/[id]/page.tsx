@@ -1,4 +1,5 @@
 import { getRoom } from 'api/services/content/rooms'
+
 import { RoomDetails } from './RoomDetails'
 
 const RoomPage = async ({ params }: { params: { id: string } }) => {

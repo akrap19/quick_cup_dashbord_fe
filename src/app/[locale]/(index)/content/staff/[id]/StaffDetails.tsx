@@ -3,16 +3,15 @@
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 
-import { AudioUpload } from '@/components/custom/upload/audio-upload'
+import { EditButton } from '@/components/custom/button/edit-button'
+import { DetailsWrapper } from '@/components/custom/layouts'
 import { Box } from '@/components/layout/box'
-import { Text } from '@/components/typography/text'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
-import { Staff, StaffImage } from 'api/models/content/staff'
-import { DetailsWrapper } from '@/components/custom/layouts'
+import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { Staff, StaffImage } from 'api/models/content/staff'
 import { ROUTES } from 'parameters'
-import { EditButton } from '@/components/custom/button/edit-button'
 
 interface Props {
 	staff: Staff
@@ -26,7 +25,7 @@ export const StaffDetails = ({ staff }: Props) => {
 		actionButton: (
 			<EditButton
 				buttonLabel="ManageContent.editStaff"
-				buttonLink={ROUTES.EDIT_STAFF_CONTENT + '/' + staff.staffTranslationId}
+				buttonLink={`${ROUTES.EDIT_STAFF_CONTENT}/${staff.staffTranslationId}`}
 			/>
 		)
 	})

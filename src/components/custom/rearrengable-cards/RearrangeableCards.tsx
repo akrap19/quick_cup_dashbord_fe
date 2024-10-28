@@ -3,6 +3,7 @@
 import { CSSProperties, Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { DragDropContext, Draggable, DraggingStyle, DropResult, Droppable, NotDraggingStyle } from 'react-beautiful-dnd'
 
+import { Button } from '@/components/inputs/button'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
@@ -11,7 +12,6 @@ import { CardBase } from 'api/models/common/cardBase'
 import { tokens } from 'style/theme.css'
 
 import { Card } from './Card'
-import { Button } from '@/components/inputs/button'
 
 interface Props {
 	cards: CardBase[]
@@ -55,7 +55,7 @@ export const RearrangeableCards = ({ cards, setCards }: Props) => {
 		if (arr1?.length !== arr2?.length) return true
 
 		if (arr1 && arr2) {
-			for (let i = 0; i < arr1?.length; i++) {
+			for (let i = 0; i < arr1?.length; i + 1) {
 				if (arr1[i] !== arr2[i]) return true
 			}
 		}

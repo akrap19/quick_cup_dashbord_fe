@@ -81,7 +81,7 @@ export const ManageStaffContent = () => {
 
 	const handleLocation = (value: string) => {
 		const current = qs.parse(searchParams.toString())
-		const query = { ...current, ['languageId']: value }
+		const query = { ...current, languageId: value }
 		const url = qs.stringifyUrl(
 			{
 				url: window.location.href,

@@ -34,7 +34,8 @@ export const DataTableBody = <TData, TValue>({ columns, table, contentSection }:
 						{row.getVisibleCells().map((cell: Cell<TData, unknown>) => (
 							<TableCellWithLink
 								key={cell.id}
-								href={`${pathname}/${contentSection ? contentSection + '/' : ''}${row.original?.id}`}>
+								// eslint-disable-next-line sonarjs/no-nested-template-literals
+								href={`${pathname}/${contentSection ? `${contentSection}/` : ''}${row.original?.id}`}>
 								{cell.column.id.includes('status') ? (
 									<Box position="relative">
 										<Badge variant={cell.getValue() as any} />

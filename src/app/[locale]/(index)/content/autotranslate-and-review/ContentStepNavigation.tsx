@@ -9,13 +9,13 @@ import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
 import { Content } from 'api/models/content/content'
 import { Language } from 'api/models/language/language'
+import { translateLanguage } from 'api/services/languages'
 
 import { ManageBarnahusContent } from './ManageBarnahusContent'
 import { ManageRoomsContent } from './ManageRoomsContent'
 import { ManageStaffContent } from './ManageStaffContent'
 import { ContentPublished } from '../common/ContentPublished'
 import { PreviewAndPublish } from '../common/PreviewAndPublish'
-import { translateLanguage } from 'api/services/languages'
 
 interface Props {
 	language: Language

@@ -20,7 +20,7 @@ interface Props {
 const LanguagesPage = async ({ searchParams }: Props) => {
 	const { data } = await getLanguages(searchParams)
 	const isInitialListEmpty = (data?.languages.length === 0 && !searchParams.status) || data === null
-	const transformedLanguageArray = data.languages?.map((language: Language) => {
+	const transformedLanguageArray = data?.languages?.map((language: Language) => {
 		return {
 			...language,
 			id: language.languageId

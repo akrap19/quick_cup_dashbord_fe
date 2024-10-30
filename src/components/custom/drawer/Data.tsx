@@ -36,8 +36,8 @@ export const drawerItems: Item[] = [
 		icon: <ManageIcon />,
 		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN],
 		subItems: [
-			{ label: 'content', icon: <ClipboardListIcon />, route: ROUTES.CONTENT, isSubItem: true },
-			{ label: 'languages', icon: <GlobeIcon />, route: ROUTES.LANGUAGES, isSubItem: true }
+			{ label: 'languages', icon: <GlobeIcon />, route: ROUTES.LANGUAGES, isSubItem: true },
+			{ label: 'content', icon: <ClipboardListIcon />, route: ROUTES.CONTENT, isSubItem: true }
 		]
 	},
 	{

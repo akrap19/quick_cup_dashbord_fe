@@ -10,9 +10,10 @@ import { Actions } from '@/components/custom/layouts/manage-journey'
 import { Box } from '@/components/layout/box'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useStepsStore } from '@/store/steps'
+import { removeHtmlTags } from '@/utils/removeHtmlTags'
+import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Language } from 'api/models/language/language'
 import { createStaff } from 'api/services/content/staff'
-import { requiredString } from 'schemas'
 
 import { StaffSectionItemFields } from '../common/StaffSectionItemFields'
 
@@ -21,9 +22,10 @@ interface Props {
 }
 
 const formSchema = z.object({
-	images: z.array(z.string()).nonempty(),
-	name: requiredString.shape.scheme,
-	description: requiredString.shape.scheme
+	description: z.string().nullable(),
+	name: z.string().nullable(),
+	title: z.string().nullable(),
+	images: z.array(z.string())
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -39,6 +41,7 @@ export const AddStaffForm = ({ language }: Props) => {
 		defaultValues: {
 			images: [],
 			name: '',
+			title: '',
 			description: ''
 		}
 	})
@@ -48,8 +51,9 @@ export const AddStaffForm = ({ language }: Props) => {
 	const onSubmit = async () => {
 		const result = await createStaff({
 			languageId: language?.languageId,
-			name: formData.name,
-			description: formData.description,
+			name: replaceEmptyStringWithNull(formData.name),
+			title: replaceEmptyStringWithNull(formData.title),
+			description: removeHtmlTags(formData.description) ? formData.description : null,
 			images: formData.images
 		})
 

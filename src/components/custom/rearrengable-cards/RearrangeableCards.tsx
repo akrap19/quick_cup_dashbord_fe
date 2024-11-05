@@ -54,7 +54,7 @@ export const RearrangeableCards = ({ cards, setCards }: Props) => {
 	const isArraysEqual = (arr1?: CardBase[], arr2?: CardBase[]): boolean => {
 		if (arr1?.length !== arr2?.length) return true
 
-		if (arr1 && arr2) {
+		if (arr1 && arr2 && arr1?.length > 1) {
 			for (let i = 0; i < arr1?.length; i + 1) {
 				if (arr1[i] !== arr2[i]) return true
 			}

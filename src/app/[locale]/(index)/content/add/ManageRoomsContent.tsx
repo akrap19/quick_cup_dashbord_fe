@@ -12,9 +12,10 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
+import { areAllItemsEmptyInArrayObject } from '@/utils/areAllItemsEmptyInArrayObject'
+import { replaceEmptyStringsWithNull } from '@/utils/replaceEmptyStringsWithNull'
 import { ContentPayload } from 'api/models/content/contentPayload'
 import { createRoomBulk } from 'api/services/content/rooms'
-import { requiredString } from 'schemas'
 
 import { SectionItemsFields } from '../common/SectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
@@ -22,10 +23,10 @@ import { TitleSubsection } from '../common/TitleSubsection'
 const formSchema = z.object({
 	items: z.array(
 		z.object({
-			title: requiredString.shape.scheme,
-			description: requiredString.shape.scheme,
-			audioId: requiredString.shape.scheme,
-			images: z.array(z.string()).nonempty()
+			title: z.string(),
+			description: z.string(),
+			audioId: z.string(),
+			images: z.array(z.string())
 		})
 	)
 })
@@ -34,6 +35,7 @@ type Schema = z.infer<typeof formSchema>
 
 export const ManageRoomsContent = () => {
 	const { currentStep, setCurrentStep } = useStepsStore()
+	const { setIsContentEmpty } = useManageContent()
 	const { language } = useManageContent()
 	const t = useTranslations()
 
@@ -74,21 +76,32 @@ export const ManageRoomsContent = () => {
 		remove(removeIndex)
 	}
 
+	const handleNextStep = () => {
+		if (currentStep) {
+			setCurrentStep(currentStep + 1)
+		}
+	}
+
 	const onSubmit = async () => {
 		const formDataTmp: ContentPayload[] = [...formData.items]
+		const formValuesCheck = areAllItemsEmptyInArrayObject(formDataTmp)
 		formDataTmp.forEach(obj => {
 			// eslint-disable-next-line
 			obj.languageId = language?.id
 		})
 
-		const result = await createRoomBulk(formDataTmp)
+		if (!formValuesCheck) {
+			const result = await createRoomBulk(replaceEmptyStringsWithNull(formDataTmp))
 
-		if (result?.message === 'OK') {
-			SuccessToast(t('ManageContent.roomsContentSccessfullyCreated'))
+			if (result?.message === 'OK') {
+				SuccessToast(t('ManageContent.roomsContentSccessfullyCreated'))
 
-			if (currentStep) {
-				setCurrentStep(currentStep + 1)
+				setIsContentEmpty('rooms', false)
+				handleNextStep()
 			}
+		} else {
+			setIsContentEmpty('rooms', true)
+			handleNextStep()
 		}
 	}
 
@@ -97,20 +110,11 @@ export const ManageRoomsContent = () => {
 			<form onSubmit={form.handleSubmit(onSubmit)}>
 				<Box paddingTop={6}>
 					<Stack gap={6}>
-						<Stack gap={4}>
-							<Box display="flex" justify="center">
-								<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
-									{t('General.rooms')}
-								</Text>
-							</Box>
-							<Box display="flex" justify="center" textAlign="center">
-								<Box style={{ maxWidth: '26rem' }}>
-									<Text fontSize="small" color="neutral.800">
-										{t('ManageContent.roomsDescription')}
-									</Text>
-								</Box>
-							</Box>
-						</Stack>
+						<Box display="flex" justify="center">
+							<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
+								{t('General.rooms')}
+							</Text>
+						</Box>
 						<Box padding={6} borderTop="thin" borderColor="neutral.300">
 							<Stack gap={4}>
 								<TitleSubsection

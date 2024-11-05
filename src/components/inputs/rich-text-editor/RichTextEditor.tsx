@@ -43,8 +43,8 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 	const onChangeWithMaxLengthCheck = (value: string) => {
 		const textWithoutHtmlTags = removeHtmlTags(value)
 
-		if (onChange && maxLength) {
-			if (textWithoutHtmlTags.length <= maxLength) {
+		if (onChange && maxLength && textWithoutHtmlTags) {
+			if (textWithoutHtmlTags?.length <= maxLength) {
 				onChange(value as any)
 			} else {
 				const valueForReplace = textWithoutHtmlTags.slice(500)

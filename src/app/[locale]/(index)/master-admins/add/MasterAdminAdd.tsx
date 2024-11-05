@@ -13,7 +13,7 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { useLoading } from '@/hooks/use-loading'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
-import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
+import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { Base } from 'api/models/common/base'
 import { createMasterAdmin } from 'api/services/masterAdmins'
 import { ROUTES } from 'parameters'
@@ -56,7 +56,7 @@ export const MasterAdminAdd = ({ barnahuses }: Props) => {
 	const onSubmit = async () => {
 		loading.toggleLoading()
 		const data = form.getValues()
-		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
+		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
 		const result = await createMasterAdmin({ ...dataWIhoutEmptyString, barnahusId: dataWIhoutEmptyString.barnahus })
 
 		if (result?.message === 'OK') {

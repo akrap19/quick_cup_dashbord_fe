@@ -29,7 +29,7 @@ const ContentPage = async ({ searchParams }: Props) => {
 	const transformedAboutArray = aboutData?.abouts?.map((about: any) => {
 		return {
 			...about,
-			id: about.aboutTranslationId
+			id: about?.aboutTranslationId
 		}
 	})
 	const { data: roomsData } = await getRooms(searchParams)

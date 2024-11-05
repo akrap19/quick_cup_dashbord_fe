@@ -4,8 +4,10 @@ import { useTranslations } from 'next-intl'
 import { FormEvent } from 'react'
 
 import { Actions } from '@/components/custom/layouts/manage-journey'
+import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
 import { Loader } from '@/components/custom/loader/Loader'
 import { MobilePreview } from '@/components/custom/mobile-preview'
+import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
@@ -24,7 +26,7 @@ interface Props {
 export const PreviewAndPublish = ({ content }: Props) => {
 	const t = useTranslations()
 	const { currentStep, setCurrentStep } = useStepsStore()
-	const { language } = useManageContent()
+	const { language, isAllContentEmpty } = useManageContent()
 
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -65,13 +67,24 @@ export const PreviewAndPublish = ({ content }: Props) => {
 								<LanguageLabel language={language?.name} />
 								<MobilePreview content={content} />
 							</>
+						) : isAllContentEmpty() ? (
+							<ManageJourneyIntroWrapper>
+								<NoListData
+									title="ManageContent.noContentToBePublishedTitle"
+									description="ManageContent.noContentToBePublishedDescription"
+									setNavbarItems={false}
+									buttonLabel="ManageContent.add"
+									onClick={() => setCurrentStep(2)}
+									distanceFromTop="0px"
+								/>
+							</ManageJourneyIntroWrapper>
 						) : (
 							<Loader />
 						)}
 					</Box>
 				</Stack>
 			</Box>
-			<Actions customSubmitLabel="General.publish" />
+			<Actions customSubmitLabel="General.publish" disableSubmit={isAllContentEmpty()} />
 		</form>
 	)
 }

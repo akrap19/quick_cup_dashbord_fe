@@ -346,6 +346,8 @@
 		"addAndReviewNewContentDescription": "Since this language is selected as auto-translate, feel free to enter the content creation flow and review the translated content in order to publish the selected language.",
 		"addAndReviewNewContentButtonLabel": "Review & add Content",
 		"contentNotAddedTitle": "Content not added",
+		"noContentToBePublishedTitle": "No content to publish",
+		"noContentToBePublishedDescription": "There is no content added so there is nothing to publish. If you want to publish go back and create content and then publish it.",
 		"contentNotAddedDescription": "Since this language is not added, feel free to enter the content in order to publish the selected language.",
 		"addAboutDescription": "To add new about, start by adding content in the default language. The system will automatically translate it to other languages. Ensure you review all content before saving and publishing.",
 		"editAboutDescription": "Edit the about in the default language; it will auto-translate to others. Review before saving. Consistently apply edits in default language to maintain mobile app consistency across all languages.",

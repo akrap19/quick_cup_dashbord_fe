@@ -10,9 +10,11 @@ import { Actions } from '@/components/custom/layouts/manage-journey'
 import { Box } from '@/components/layout/box'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useStepsStore } from '@/store/steps'
+import { removeHtmlTags } from '@/utils/removeHtmlTags'
+import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Language } from 'api/models/language/language'
 import { createRoom } from 'api/services/content/rooms'
-import { requiredString } from 'schemas'
+import { ROUTES } from 'parameters'
 
 import { SectionItemFields } from '../common/SectionItemFields'
 
@@ -21,18 +23,18 @@ interface Props {
 }
 
 const formSchema = z.object({
-	title: requiredString.shape.scheme,
-	description: requiredString.shape.scheme,
-	audioId: requiredString.shape.scheme,
-	images: z.array(z.string()).nonempty()
+	title: z.string().nullable(),
+	description: z.string().nullable(),
+	audioId: z.string().nullable(),
+	images: z.array(z.string())
 })
 
 type Schema = z.infer<typeof formSchema>
 
 export const AddRoomForm = ({ language }: Props) => {
 	const t = useTranslations()
-	const { refresh } = useRouter()
-	const { currentStep, setCurrentStep } = useStepsStore()
+	const { push, refresh } = useRouter()
+	const { totalSteps, currentStep, setCurrentStep } = useStepsStore()
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
@@ -50,18 +52,20 @@ export const AddRoomForm = ({ language }: Props) => {
 	const onSubmit = async () => {
 		const result = await createRoom({
 			languageId: language?.languageId,
-			title: formData.title,
-			description: formData.description,
+			title: replaceEmptyStringWithNull(formData.title),
+			description: removeHtmlTags(formData.description) ? formData.description : null,
 			images: formData.images,
-			audioId: formData.audioId
+			audioId: replaceEmptyStringWithNull(formData.audioId)
 		})
 
 		if (result?.message === 'OK') {
 			refresh()
-			SuccessToast(t('ManageContent.roomBarnahusContentSccessfullyCreated'))
+			SuccessToast(t('ManageContent.roomsContentSccessfullyCreated'))
 
-			if (currentStep) {
+			if (currentStep && totalSteps && totalSteps > currentStep) {
 				setCurrentStep(currentStep + 1)
+			} else {
+				push(ROUTES.CONTENT)
 			}
 		}
 	}

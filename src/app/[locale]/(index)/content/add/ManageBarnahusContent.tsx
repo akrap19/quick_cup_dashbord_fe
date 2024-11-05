@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -13,9 +14,10 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
+import { areAllItemsEmptyInArrayObject } from '@/utils/areAllItemsEmptyInArrayObject'
+import { replaceEmptyStringsWithNull } from '@/utils/replaceEmptyStringsWithNull'
 import { ContentPayload } from 'api/models/content/contentPayload'
 import { createAboutBulk } from 'api/services/content/about'
-import { requiredString } from 'schemas'
 
 import { SectionItemsFields } from '../common/SectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
@@ -23,10 +25,10 @@ import { TitleSubsection } from '../common/TitleSubsection'
 const formSchema = z.object({
 	items: z.array(
 		z.object({
-			title: requiredString.shape.scheme,
-			description: requiredString.shape.scheme,
-			audioId: requiredString.shape.scheme,
-			images: z.array(z.string()).nonempty()
+			title: z.string(),
+			description: z.string(),
+			audioId: z.string(),
+			images: z.array(z.string())
 		})
 	)
 })
@@ -35,7 +37,9 @@ type Schema = z.infer<typeof formSchema>
 
 export const ManageBarnahusContent = () => {
 	const { currentStep, setCurrentStep } = useStepsStore()
+	const { setIsContentEmpty } = useManageContent()
 	const { language } = useManageContent()
+	const { refresh } = useRouter()
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
@@ -75,21 +79,33 @@ export const ManageBarnahusContent = () => {
 		remove(removeIndex)
 	}
 
+	const handleNextStep = () => {
+		if (currentStep) {
+			setCurrentStep(currentStep + 1)
+		}
+	}
+
 	const onSubmit = async () => {
 		const formDataTmp: ContentPayload[] = [...formData.items]
+		const formValuesCheck = areAllItemsEmptyInArrayObject(formDataTmp)
 		formDataTmp.forEach(obj => {
 			// eslint-disable-next-line
 			obj.languageId = language?.id
 		})
 
-		const result = await createAboutBulk(formDataTmp)
+		if (!formValuesCheck) {
+			const result = await createAboutBulk(replaceEmptyStringsWithNull(formDataTmp))
 
-		if (result?.message === 'OK') {
-			SuccessToast(t('ManageContent.aboutBarnahusContentSccessfullyCreated'))
+			if (result?.message === 'OK') {
+				SuccessToast(t('ManageContent.aboutBarnahusContentSccessfullyCreated'))
 
-			if (currentStep) {
-				setCurrentStep(currentStep + 1)
+				refresh()
+				setIsContentEmpty('about', false)
+				handleNextStep()
 			}
+		} else {
+			setIsContentEmpty('about', true)
+			handleNextStep()
 		}
 	}
 

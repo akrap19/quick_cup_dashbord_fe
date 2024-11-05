@@ -10,9 +10,11 @@ import { Actions } from '@/components/custom/layouts/manage-journey'
 import { Box } from '@/components/layout/box'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useStepsStore } from '@/store/steps'
+import { removeHtmlTags } from '@/utils/removeHtmlTags'
+import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { About } from 'api/models/content/about'
 import { updateAbout } from 'api/services/content/about'
-import { requiredString } from 'schemas'
+import { ROUTES } from 'parameters'
 
 import { SectionItemFields } from '../../common/SectionItemFields'
 
@@ -21,18 +23,18 @@ interface Props {
 }
 
 const formSchema = z.object({
-	title: requiredString.shape.scheme,
-	description: requiredString.shape.scheme,
-	audioId: requiredString.shape.scheme,
-	images: z.array(z.string()).nonempty()
+	title: z.string().nullable(),
+	description: z.string().nullable(),
+	audioId: z.string().nullable(),
+	images: z.array(z.string())
 })
 
 type Schema = z.infer<typeof formSchema>
 
 export const EditAboutForm = ({ about }: Props) => {
 	const t = useTranslations()
-	const { refresh } = useRouter()
-	const { currentStep, setCurrentStep } = useStepsStore()
+	const { push, refresh } = useRouter()
+	const { totalSteps, currentStep, setCurrentStep } = useStepsStore()
 	const defaultImageIds = about?.aboutImages?.map(aboutImage => aboutImage?.aboutImageId)
 	const defaultImages = about?.aboutImages?.map(aboutImage => aboutImage?.url)
 
@@ -40,10 +42,10 @@ export const EditAboutForm = ({ about }: Props) => {
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: about?.title,
-			description: about?.description,
-			audioId: about?.audio?.id,
-			images: defaultImageIds
+			title: about?.title ?? '',
+			description: about?.description ?? '',
+			audioId: about?.audio?.id ?? '',
+			images: defaultImageIds ?? []
 		}
 	})
 
@@ -52,23 +54,25 @@ export const EditAboutForm = ({ about }: Props) => {
 	const onSubmit = async () => {
 		// its for bug, it doesnt know that image was changed
 		const { images } = form.watch()
-		const deletedImages = defaultImageIds.filter(id => !images.includes(id))
+		const deletedImages = defaultImageIds?.filter(id => !images.includes(id))
 
 		const result = await updateAbout({
-			aboutTranslationId: about.aboutTranslationId,
-			title: formData.title,
-			description: formData.description,
+			aboutTranslationId: about?.aboutTranslationId,
+			title: replaceEmptyStringWithNull(formData.title),
+			description: removeHtmlTags(formData.description) ? formData.description : null,
 			images,
 			deletedImages,
-			audioId: formData.audioId
+			audioId: replaceEmptyStringWithNull(formData.audioId)
 		})
 
 		if (result?.message === 'OK') {
 			refresh()
-			SuccessToast(t('ManageContent.aboutBarnahusContentSccessfullyCreated'))
+			SuccessToast(t('ManageContent.aboutBarnahusContentSccessfullyUpdated'))
 
-			if (currentStep) {
+			if (currentStep && totalSteps && totalSteps > currentStep) {
 				setCurrentStep(currentStep + 1)
+			} else {
+				push(ROUTES.CONTENT)
 			}
 		}
 	}

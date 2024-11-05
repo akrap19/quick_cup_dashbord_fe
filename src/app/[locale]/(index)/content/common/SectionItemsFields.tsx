@@ -3,7 +3,6 @@ import { useTranslations } from 'next-intl'
 import { AudioUpload } from '@/components/custom/upload/audio-upload'
 import { PhotoUpload } from '@/components/custom/upload/photo-upload'
 import { FormControl } from '@/components/inputs/form-control'
-import { RequiredLabel } from '@/components/inputs/required-label'
 import { RichTextEditor } from '@/components/inputs/rich-text-editor'
 import { TextInput } from '@/components/inputs/text-input'
 import { Box } from '@/components/layout/box'
@@ -24,7 +23,7 @@ export const SectionItemsFields = ({ index, form, initialImagesUrls }: Props) =>
 			<Stack gap={6}>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
-						<RequiredLabel>{t('General.title')}</RequiredLabel>
+						{t('General.title')}
 					</Text>
 					<FormControl
 						{...form.register(`items[${index}].title`)}
@@ -37,7 +36,7 @@ export const SectionItemsFields = ({ index, form, initialImagesUrls }: Props) =>
 				</Stack>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
-						<RequiredLabel>{t('General.description')}</RequiredLabel>
+						{t('General.description')}
 					</Text>
 					<FormControl
 						{...form.register(`items[${index}].description`)}
@@ -52,7 +51,7 @@ export const SectionItemsFields = ({ index, form, initialImagesUrls }: Props) =>
 				</Stack>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-						<RequiredLabel>{t('ManageContent.audioTranslation')}</RequiredLabel>
+						{t('ManageContent.audioTranslation')}
 					</Text>
 					<FormControl {...form.register(`items[${index}].audioId`)}>
 						<AudioUpload />
@@ -61,7 +60,7 @@ export const SectionItemsFields = ({ index, form, initialImagesUrls }: Props) =>
 				</Stack>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-						<RequiredLabel>{t('General.photos')}</RequiredLabel>
+						{t('General.photos')}
 					</Text>
 					<FormControl {...form.register(`items[${index}].images`)}>
 						<PhotoUpload initialImagesUrls={initialImagesUrls} />

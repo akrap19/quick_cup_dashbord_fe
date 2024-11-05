@@ -1,9 +1,3 @@
-export const replaceEmptyStringWithNull = (data: any) => {
-	const newData = { ...data }
-	Object.keys(newData).forEach(key => {
-		if (newData[key] === '') {
-			newData[key] = null
-		}
-	})
-	return newData
+export const replaceEmptyStringWithNull = (data: string | null) => {
+	return data === '' ? null : data
 }

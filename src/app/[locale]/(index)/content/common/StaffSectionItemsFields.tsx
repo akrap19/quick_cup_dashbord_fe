@@ -2,7 +2,6 @@ import { useTranslations } from 'next-intl'
 
 import { PhotoUpload } from '@/components/custom/upload/photo-upload'
 import { FormControl } from '@/components/inputs/form-control'
-import { RequiredLabel } from '@/components/inputs/required-label'
 import { RichTextEditor } from '@/components/inputs/rich-text-editor'
 import { TextInput } from '@/components/inputs/text-input'
 import { Box } from '@/components/layout/box'
@@ -25,7 +24,7 @@ export const StaffSectionItemsFields = ({ index, form, initialImagesUrls }: Prop
 				<Box position="relative">
 					<Stack gap={4}>
 						<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-							<RequiredLabel>{t('ManageContent.staffPhoto')}</RequiredLabel>
+							{t('ManageContent.staffPhoto')}
 						</Text>
 						<FormControl {...form.register(`items[${index}].images`)}>
 							<PhotoUpload initialImagesUrls={initialImagesUrls} />
@@ -42,7 +41,7 @@ export const StaffSectionItemsFields = ({ index, form, initialImagesUrls }: Prop
 					}}>
 					<Stack gap={4}>
 						<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-							<RequiredLabel>{t('ManageContent.staffName')}</RequiredLabel>
+							{t('ManageContent.staffName')}
 						</Text>
 						<Box>
 							<FormControl
@@ -57,7 +56,7 @@ export const StaffSectionItemsFields = ({ index, form, initialImagesUrls }: Prop
 					</Stack>
 					<Stack gap={4}>
 						<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-							<RequiredLabel>{t('ManageContent.staffRole')}</RequiredLabel>
+							{t('ManageContent.staffRole')}
 						</Text>
 						<Box>
 							<FormControl
@@ -74,7 +73,7 @@ export const StaffSectionItemsFields = ({ index, form, initialImagesUrls }: Prop
 				<Box paddingTop={4} paddingBottom={8}>
 					<Stack gap={4}>
 						<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-							<RequiredLabel>{t('ManageContent.staffDescription')}</RequiredLabel>
+							{t('ManageContent.staffDescription')}
 						</Text>
 						<FormControl
 							{...form.register(`items[${index}].description`)}

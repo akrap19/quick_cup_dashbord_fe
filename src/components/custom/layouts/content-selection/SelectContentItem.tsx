@@ -21,7 +21,6 @@ interface Props {
 export const SelectContentItem = ({ data, form, index, hideDivider }: Props) => {
 	const t = useTranslations()
 
-	console.log('data', data)
 	return (
 		<Box>
 			<Stack gap={4}>
@@ -37,7 +36,9 @@ export const SelectContentItem = ({ data, form, index, hideDivider }: Props) => 
 								</FormControl>
 							</Inline>
 							<AudioUpload
+								value={data?.audio?.audioId}
 								initialAudio={{ id: data?.audio?.audioId, url: data?.audio?.audioURL, name: data?.audio?.audioName }}
+								disableDelete
 							/>
 						</Stack>
 					</Box>

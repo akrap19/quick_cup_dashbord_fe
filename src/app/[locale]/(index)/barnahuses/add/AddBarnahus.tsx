@@ -12,7 +12,7 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { useLoading } from '@/hooks/use-loading'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
-import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
+import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { Admins } from 'api/models/admin/Admins'
 import { Base } from 'api/models/common/base'
 import { createBarnahus } from 'api/services/barnahuses'
@@ -56,7 +56,7 @@ export const AddBarnahus = ({ locations, masterAdmins }: Props) => {
 	const onSubmit = async () => {
 		loading.toggleLoading()
 		const data = form.getValues()
-		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
+		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
 		const result = await createBarnahus({
 			name: dataWIhoutEmptyString.name,
 			location: dataWIhoutEmptyString.location,

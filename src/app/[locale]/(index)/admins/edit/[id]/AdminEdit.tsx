@@ -7,7 +7,7 @@ import { z } from 'zod'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
-import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
+import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { Admin } from 'api/models/admin/admin'
 import { Barnahus } from 'api/models/barnahuses/barnahus'
 import { updateAdmin } from 'api/services/admins'
@@ -48,7 +48,7 @@ const AdminEdit = ({ admin, barnahus }: Props) => {
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
+		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
 		const result = await updateAdmin({ ...dataWIhoutEmptyString, userId: admin.userId })
 		if (result?.message === 'OK') {
 			localStorage.setItem('editMessage', 'Admins.successfullyEdited')

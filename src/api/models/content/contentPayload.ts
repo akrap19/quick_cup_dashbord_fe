@@ -6,10 +6,10 @@ export interface ContentPayload {
 	staffId?: string
 	staffTranslationId?: string
 	languageId?: string
-	name?: string
-	title?: string
-	description: string
+	name?: string | null
+	title?: string | null
+	description?: string | null
 	images?: string[]
 	deletedImages?: string[]
-	audioId?: string
+	audioId?: string | null
 }

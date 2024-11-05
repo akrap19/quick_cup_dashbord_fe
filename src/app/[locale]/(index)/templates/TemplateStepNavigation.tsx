@@ -50,7 +50,6 @@ export const TemplateStepNavigation = ({ templateData }: Props) => {
 		useUserDropdown: true
 	})
 
-	console.log('templateData', templateData)
 	return (
 		<ManageJourneyWrapper>
 			{currentStep === 1 &&

@@ -26,7 +26,7 @@ export const AboutDetails = ({ about }: Props) => {
 		actionButton: (
 			<EditButton
 				buttonLabel="ManageContent.editAbout"
-				buttonLink={`${ROUTES.EDIT_ABOUT_CONTENT}/${about.aboutTranslationId}`}
+				buttonLink={`${ROUTES.EDIT_ABOUT_CONTENT}/${about?.aboutTranslationId}`}
 			/>
 		)
 	})
@@ -46,7 +46,7 @@ export const AboutDetails = ({ about }: Props) => {
 					<Stack gap={6}>
 						<Stack gap={4}>
 							<Text fontWeight="semibold" lineHeight="xlarge" color="neutral.900" textTransform="uppercase">
-								{about.title}
+								{about?.title}
 							</Text>
 							<Box paddingRight={20}>
 								<Text fontSize="small" color="neutral.800">

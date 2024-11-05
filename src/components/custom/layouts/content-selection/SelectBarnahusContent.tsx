@@ -53,8 +53,10 @@ export const SelectBarnahusContent = ({ abouts }: Props) => {
 		defaultValues
 	})
 
-	const onSubmit = async (data: Schema) => {
-		setAbouts(data?.items)
+	const formData = form?.getValues()
+
+	const onSubmit = async () => {
+		setAbouts(formData?.items)
 		if (currentStep) {
 			setCurrentStep(currentStep + 1)
 		}

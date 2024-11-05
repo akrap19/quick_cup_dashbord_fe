@@ -15,9 +15,10 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
+import { areAllItemsEmptyInArrayObject } from '@/utils/areAllItemsEmptyInArrayObject'
+import { replaceEmptyStringsWithNull } from '@/utils/replaceEmptyStringsWithNull'
 import { ContentPayload } from 'api/models/content/contentPayload'
 import { createStaffBulk } from 'api/services/content/staff'
-import { requiredString } from 'schemas'
 
 import { StaffSectionItemsFields } from '../common/StaffSectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
@@ -25,10 +26,10 @@ import { TitleSubsection } from '../common/TitleSubsection'
 const formSchema = z.object({
 	items: z.array(
 		z.object({
-			images: z.array(z.string()).nonempty(),
-			name: requiredString.shape.scheme,
-			title: requiredString.shape.scheme,
-			description: requiredString.shape.scheme
+			images: z.array(z.string()),
+			name: z.string(),
+			title: z.string(),
+			description: z.string()
 		})
 	)
 })
@@ -37,8 +38,9 @@ type Schema = z.infer<typeof formSchema>
 
 export const ManageStaffContent = () => {
 	const searchParams = useSearchParams()
-	const { replace } = useRouter()
+	const { replace, refresh } = useRouter()
 	const { currentStep, setCurrentStep } = useStepsStore()
+	const { setIsContentEmpty } = useManageContent()
 	const { language } = useManageContent()
 	const t = useTranslations()
 
@@ -93,25 +95,38 @@ export const ManageStaffContent = () => {
 		replace(url)
 	}
 
+	const handleNextStep = () => {
+		if (language?.id) {
+			handleLocation(language?.id)
+		}
+
+		refresh()
+
+		if (currentStep) {
+			setCurrentStep(currentStep + 1)
+		}
+	}
+
 	const onSubmit = async () => {
 		const formDataTmp: ContentPayload[] = [...formData.items]
+		const formValuesCheck = areAllItemsEmptyInArrayObject(formDataTmp)
 		formDataTmp.forEach(obj => {
 			// eslint-disable-next-line
 			obj.languageId = language?.id
 		})
 
-		const result = await createStaffBulk(formDataTmp)
+		if (!formValuesCheck) {
+			const result = await createStaffBulk(replaceEmptyStringsWithNull(formDataTmp))
 
-		if (result?.message === 'OK') {
-			SuccessToast(t('ManageContent.staffContentSccessfullyCreated'))
+			if (result?.message === 'OK') {
+				SuccessToast(t('ManageContent.staffContentSccessfullyCreated'))
 
-			if (language?.id) {
-				handleLocation(language?.id)
+				setIsContentEmpty('staff', false)
+				handleNextStep()
 			}
-
-			if (currentStep) {
-				setCurrentStep(currentStep + 1)
-			}
+		} else {
+			setIsContentEmpty('staff', true)
+			handleNextStep()
 		}
 	}
 

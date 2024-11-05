@@ -58,7 +58,7 @@ export const AudioUpload = ({ initialAudio, disableDelete, ...rest }: Props) => 
 	}
 
 	const handleRemovingAudio = () => {
-		handleInputValue(undefined)
+		handleInputValue('')
 		setAudioFile(undefined)
 		setAudioElement(undefined)
 	}
@@ -90,7 +90,7 @@ export const AudioUpload = ({ initialAudio, disableDelete, ...rest }: Props) => 
 
 	return (
 		<div>
-			{audioFile || initialAudio ? (
+			{audioFile || (initialAudio && rest.value && rest.value !== '') ? (
 				<div className={styles.fileContainer}>
 					<Inline justifyContent="space-between">
 						<Inline alignItems="center" gap={4}>
@@ -109,7 +109,7 @@ export const AudioUpload = ({ initialAudio, disableDelete, ...rest }: Props) => 
 								</label>
 							</div>
 						</Inline>
-						{disableDelete && <IconDeleteButton onDelete={handleDelete} />}{' '}
+						{!disableDelete && <IconDeleteButton onDelete={handleDelete} />}
 					</Inline>
 				</div>
 			) : (

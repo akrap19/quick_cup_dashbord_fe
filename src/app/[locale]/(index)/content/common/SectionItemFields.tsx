@@ -3,7 +3,6 @@ import { useTranslations } from 'next-intl'
 import { AudioUpload } from '@/components/custom/upload/audio-upload'
 import { PhotoUpload } from '@/components/custom/upload/photo-upload'
 import { FormControl } from '@/components/inputs/form-control'
-import { RequiredLabel } from '@/components/inputs/required-label'
 import { RichTextEditor } from '@/components/inputs/rich-text-editor'
 import { TextInput } from '@/components/inputs/text-input'
 import { Box } from '@/components/layout/box'
@@ -24,7 +23,7 @@ export const SectionItemFields = ({ initialAudio, initialImagesUrls }: Props) =>
 			<Stack gap={6}>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
-						<RequiredLabel>{t('General.title')}</RequiredLabel>
+						{t('General.title')}
 					</Text>
 					<FormControl name="title" maxLength="50">
 						<TextInput placeholder={t('ManageContent.generalIntroductionPlaceholderTitle')} />
@@ -34,7 +33,7 @@ export const SectionItemFields = ({ initialAudio, initialImagesUrls }: Props) =>
 				</Stack>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
-						<RequiredLabel>{t('General.description')}</RequiredLabel>
+						{t('General.description')}
 					</Text>
 					<FormControl name="description" maxLength="500">
 						<RichTextEditor placeholder={t('ManageContent.generalIntroductionPlaceholderDescription')} />
@@ -44,7 +43,7 @@ export const SectionItemFields = ({ initialAudio, initialImagesUrls }: Props) =>
 				</Stack>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-						<RequiredLabel>{t('ManageContent.audioTranslation')}</RequiredLabel>
+						{t('ManageContent.audioTranslation')}
 					</Text>
 					<FormControl name="audioId">
 						<AudioUpload initialAudio={initialAudio} />
@@ -53,7 +52,7 @@ export const SectionItemFields = ({ initialAudio, initialImagesUrls }: Props) =>
 				</Stack>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-						<RequiredLabel>{t('General.photos')}</RequiredLabel>
+						{t('General.photos')}
 					</Text>
 					<FormControl name="images">
 						<PhotoUpload initialImagesUrls={initialImagesUrls} />

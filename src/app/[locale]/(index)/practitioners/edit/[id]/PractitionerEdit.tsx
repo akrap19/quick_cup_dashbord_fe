@@ -7,7 +7,7 @@ import { z } from 'zod'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
-import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
+import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { Practitioner } from 'api/models/practitioners/practitioner'
 import { updatePractitioner } from 'api/services/practitioners'
 import { optionalPhoneNumberScheme, requiredString } from 'schemas'
@@ -48,7 +48,7 @@ const PractitionerEdit = ({ practitioner }: Props) => {
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
+		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
 		const result = await updatePractitioner({ ...dataWIhoutEmptyString, userId: practitioner.userId })
 		if (result?.message === 'OK') {
 			localStorage.setItem('editMessage', 'Practitioners.successfullyEdited')

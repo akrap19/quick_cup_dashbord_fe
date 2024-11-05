@@ -13,12 +13,14 @@ import { CancelButton } from '../../button/cancel-button'
 
 interface Props {
 	customSubmitLabel?: string
+	disableSubmit?: boolean
 }
 
-export const Actions = ({ customSubmitLabel }: Props) => {
+export const Actions = ({ customSubmitLabel, disableSubmit }: Props) => {
 	const t = useTranslations()
 	const formContext = useFormContext()
 	const { currentStep, setCurrentStep } = useStepsStore()
+	const submitDisabled = formContext ? !formContext?.formState.isValid : disableSubmit || false
 
 	const handleBack = () => {
 		if (currentStep) {
@@ -29,10 +31,10 @@ export const Actions = ({ customSubmitLabel }: Props) => {
 	return (
 		<Box className={actions}>
 			<Inline gap={4}>
-				<Button variant="secondary" disabled={currentStep === 1 || !currentStep} onClick={handleBack}>
+				<Button type="button" variant="secondary" disabled={currentStep === 1 || !currentStep} onClick={handleBack}>
 					{t('General.back')}
 				</Button>
-				<Button type="submit" variant="primary" disabled={formContext ? !formContext?.formState.isValid : false}>
+				<Button type="submit" variant="primary" disabled={submitDisabled}>
 					{t(customSubmitLabel ?? 'General.next')}
 				</Button>
 			</Inline>

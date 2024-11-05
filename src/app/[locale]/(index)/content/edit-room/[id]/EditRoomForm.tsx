@@ -10,40 +10,42 @@ import { Actions } from '@/components/custom/layouts/manage-journey'
 import { Box } from '@/components/layout/box'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useStepsStore } from '@/store/steps'
+import { removeHtmlTags } from '@/utils/removeHtmlTags'
+import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Room } from 'api/models/content/room'
 import { updateRoom } from 'api/services/content/rooms'
-import { requiredString } from 'schemas'
+import { ROUTES } from 'parameters'
 
-// import { SectionItemFields } from '../../common/SectionItemFields'
+import { SectionItemFields } from '../../common/SectionItemFields'
 
 interface Props {
 	room: Room
 }
 
 const formSchema = z.object({
-	title: requiredString.shape.scheme,
-	description: requiredString.shape.scheme,
-	audioId: requiredString.shape.scheme,
-	images: z.array(z.string()).nonempty()
+	title: z.string().nullable(),
+	description: z.string().nullable(),
+	audioId: z.string().nullable(),
+	images: z.array(z.string())
 })
 
 type Schema = z.infer<typeof formSchema>
 
 export const EditRoomForm = ({ room }: Props) => {
 	const t = useTranslations()
-	const { refresh } = useRouter()
-	const { currentStep, setCurrentStep } = useStepsStore()
+	const { push, refresh } = useRouter()
+	const { totalSteps, currentStep, setCurrentStep } = useStepsStore()
 	const defaultImageIds = room?.roomImages?.map(roomImage => roomImage?.roomImageId)
-	// const defaultImages = room?.roomImages?.map(roomImage => roomImage?.url)
+	const defaultImages = room?.roomImages?.map(roomImage => roomImage?.url)
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: room?.title,
-			description: room?.description,
-			audioId: room?.audio?.id,
-			images: defaultImageIds
+			title: room?.title ?? '',
+			description: room?.description ?? '',
+			audioId: room?.audio?.id ?? '',
+			images: defaultImageIds ?? []
 		}
 	})
 
@@ -52,23 +54,25 @@ export const EditRoomForm = ({ room }: Props) => {
 	const onSubmit = async () => {
 		// its for bug, it doesnt know that image was changed
 		const { images } = form.watch()
-		const deletedImages = defaultImageIds.filter(id => !images.includes(id))
+		const deletedImages = defaultImageIds?.filter(id => !images.includes(id))
 
 		const result = await updateRoom({
-			roomTranslationId: room.roomTranslationId,
-			title: formData.title,
-			description: formData.description,
+			roomTranslationId: room?.roomTranslationId,
+			title: replaceEmptyStringWithNull(formData.title),
+			description: removeHtmlTags(formData.description) ? formData.description : null,
 			images,
 			deletedImages,
-			audioId: formData.audioId
+			audioId: replaceEmptyStringWithNull(formData.audioId)
 		})
 
 		if (result?.message === 'OK') {
 			refresh()
-			SuccessToast(t('ManageContent.roomBarnahusContentSccessfullyCreated'))
+			SuccessToast(t('ManageContent.roomsContentSccessfullyUpdated'))
 
-			if (currentStep) {
+			if (currentStep && totalSteps && totalSteps > currentStep) {
 				setCurrentStep(currentStep + 1)
+			} else {
+				push(ROUTES.CONTENT)
 			}
 		}
 	}
@@ -77,7 +81,7 @@ export const EditRoomForm = ({ room }: Props) => {
 		<Box paddingTop={6}>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					{/* <SectionItemFields initialAudioUrl={room?.audio?.url} initialImagesUrls={defaultImages} /> */}
+					<SectionItemFields initialAudio={room?.audio} initialImagesUrls={defaultImages} />
 					<Actions />
 				</form>
 			</FormProvider>

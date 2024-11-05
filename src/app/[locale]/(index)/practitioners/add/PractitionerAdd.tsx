@@ -12,7 +12,7 @@ import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
-import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
+import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { Barnahus } from 'api/models/barnahuses/barnahus'
 import { createPractitioner } from 'api/services/practitioners'
 import { ROUTES } from 'parameters'
@@ -61,7 +61,7 @@ const PractitionerAdd = ({ barnahus }: Props) => {
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
+		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
 		const result = await createPractitioner(dataWIhoutEmptyString)
 		if (result?.message === 'OK') {
 			SuccessToast(t('Practitioners.successfullyCreated'))

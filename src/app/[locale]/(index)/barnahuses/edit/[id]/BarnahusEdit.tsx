@@ -7,7 +7,7 @@ import { z } from 'zod'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
-import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
+import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { Admins } from 'api/models/admin/Admins'
 import { Barnahus } from 'api/models/barnahuses/barnahus'
 import { Base } from 'api/models/common/base'
@@ -42,7 +42,7 @@ const BarnahusEdit = ({ barnahus, locations, masterAdmins }: Props) => {
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		const dataWIhoutEmptyString = replaceEmptyStringWithNull(data)
+		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
 		const result = await updateBarnahus({
 			barnahusId: barnahus.barnahusId,
 			name: dataWIhoutEmptyString.name,

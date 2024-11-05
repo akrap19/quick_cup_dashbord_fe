@@ -10,9 +10,11 @@ import { Actions } from '@/components/custom/layouts/manage-journey'
 import { Box } from '@/components/layout/box'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useStepsStore } from '@/store/steps'
+import { removeHtmlTags } from '@/utils/removeHtmlTags'
+import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Staff } from 'api/models/content/staff'
 import { updateStaff } from 'api/services/content/staff'
-import { requiredString } from 'schemas'
+import { ROUTES } from 'parameters'
 
 import { StaffSectionItemFields } from '../../common/StaffSectionItemFields'
 
@@ -21,17 +23,18 @@ interface Props {
 }
 
 const formSchema = z.object({
-	name: requiredString.shape.scheme,
-	description: requiredString.shape.scheme,
-	images: z.array(z.string()).nonempty()
+	description: z.string().nullable(),
+	name: z.string().nullable(),
+	title: z.string().nullable(),
+	images: z.array(z.string())
 })
 
 type Schema = z.infer<typeof formSchema>
 
 export const EditStaffForm = ({ staff }: Props) => {
 	const t = useTranslations()
-	const { refresh } = useRouter()
-	const { currentStep, setCurrentStep } = useStepsStore()
+	const { push, refresh } = useRouter()
+	const { totalSteps, currentStep, setCurrentStep } = useStepsStore()
 	const defaultImageIds = staff?.staffImages?.map(staffImage => staffImage?.staffImageId)
 	const defaultImages = staff?.staffImages?.map(staffImage => staffImage?.url)
 
@@ -39,9 +42,10 @@ export const EditStaffForm = ({ staff }: Props) => {
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			name: staff?.name,
-			description: staff?.description,
-			images: defaultImageIds
+			description: staff?.description ?? '',
+			name: staff?.name ?? '',
+			title: staff?.title ?? '',
+			images: defaultImageIds ?? []
 		}
 	})
 
@@ -50,12 +54,13 @@ export const EditStaffForm = ({ staff }: Props) => {
 	const onSubmit = async () => {
 		// its for bug, it doesnt know that image was changed
 		const { images } = form.watch()
-		const deletedImages = defaultImageIds.filter(id => !images.includes(id))
+		const deletedImages = defaultImageIds?.filter(id => !images.includes(id))
 
 		const result = await updateStaff({
-			staffTranslationId: staff.staffTranslationId,
-			name: formData.name,
-			description: formData.description,
+			staffTranslationId: staff?.staffTranslationId,
+			name: replaceEmptyStringWithNull(formData.name),
+			title: replaceEmptyStringWithNull(formData.title),
+			description: removeHtmlTags(formData.description) ? formData.description : null,
 			images: formData.images,
 			deletedImages
 		})
@@ -64,8 +69,10 @@ export const EditStaffForm = ({ staff }: Props) => {
 			refresh()
 			SuccessToast(t('ManageContent.staffBarnahusContentSccessfullyUpdated'))
 
-			if (currentStep) {
+			if (currentStep && totalSteps && totalSteps > currentStep) {
 				setCurrentStep(currentStep + 1)
+			} else {
+				push(ROUTES.CONTENT)
 			}
 		}
 	}

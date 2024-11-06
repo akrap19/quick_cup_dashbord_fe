@@ -1,16 +1,13 @@
 import { format } from 'date-fns'
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { Dispatch, SetStateAction } from 'react'
 
-import { AddButton } from '@/components/custom/button/add-button'
 import { Loader } from '@/components/custom/loader/Loader'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { DataTable } from '@/components/data-display/data-table'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { useManageContent } from '@/store/manage-content'
-import { tokens } from '@/style/theme.css'
 import { Base } from 'api/models/common/base'
 import { Language } from 'api/models/language/language'
 import { ROUTES } from 'parameters'
@@ -35,7 +32,6 @@ export const Content = <TData, TValue>({
 	languageValue,
 	setLanguageValue
 }: Props<TData, TValue>) => {
-	const t = useTranslations()
 	const { push } = useRouter()
 	const { setLanguage } = useManageContent()
 	const contentDataKey = Object.keys(contentSectionData).find(key => key.includes(contentSection))
@@ -57,7 +53,7 @@ export const Content = <TData, TValue>({
 
 	return (
 		<>
-			{contentTableData?.length > 0 && (
+			{/* {contentTableData?.length > 0 && (
 				<Box position="absolute" style={{ marginTop: `-44px`, right: tokens.spacing[16] }}>
 					{currentLanguage?.autoTranslate ? (
 						<AddButton
@@ -68,7 +64,7 @@ export const Content = <TData, TValue>({
 						<AddButton buttonLabel={t('ManageContent.add')} onClick={handleAddContent} />
 					)}
 				</Box>
-			)}
+			)} */}
 			<Box paddingTop={6}>
 				<Stack gap={4}>
 					{contentData && (

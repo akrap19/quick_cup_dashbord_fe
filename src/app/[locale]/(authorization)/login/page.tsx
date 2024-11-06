@@ -23,7 +23,6 @@ import { atoms } from 'style/atoms.css'
 
 const formSchema = z.object({
 	...emailSchema.shape,
-	// password: requiredString.shape.scheme
 	...passwordSchema.shape
 })
 

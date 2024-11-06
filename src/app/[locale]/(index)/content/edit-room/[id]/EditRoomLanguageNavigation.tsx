@@ -29,8 +29,7 @@ export const EditRoomLanguageNavigation = ({ room, languages }: Props) => {
 
 	useNavbarItems({
 		title: 'ManageContent.editRoom',
-		backLabel: 'ManageContent.back',
-		location: 'Barnahus Stockholm, Sweden'
+		backLabel: 'ManageContent.back'
 	})
 
 	useSteps({

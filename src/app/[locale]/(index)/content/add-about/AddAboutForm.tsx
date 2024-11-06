@@ -60,6 +60,7 @@ export const AddAboutForm = ({ language }: Props) => {
 
 		if (result?.message === 'OK') {
 			refresh()
+			form.reset()
 			SuccessToast(t('ManageContent.aboutBarnahusContentSccessfullyCreated'))
 
 			if (currentStep && totalSteps && totalSteps > currentStep) {

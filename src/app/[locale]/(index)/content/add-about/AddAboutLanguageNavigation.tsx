@@ -27,8 +27,7 @@ export const AddAboutLanguageNavigation = ({ languages }: Props) => {
 
 	useNavbarItems({
 		title: 'ManageContent.addAbout',
-		backLabel: 'ManageContent.back',
-		location: 'Barnahus Stockholm, Sweden'
+		backLabel: 'ManageContent.back'
 	})
 
 	useSteps({

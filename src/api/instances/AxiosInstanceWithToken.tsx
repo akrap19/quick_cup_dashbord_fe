@@ -17,7 +17,7 @@ axiosInstanceWithToken.interceptors.response.use(
 		return response
 	},
 	error => {
-		if (error?.response?.status === 401) {
+		if (error?.response?.data?.code === 401001) {
 			ErrorToast(error?.response?.data?.message)
 
 			setTimeout(() => {

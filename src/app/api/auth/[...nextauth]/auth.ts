@@ -1,7 +1,7 @@
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-import { login, register, resetPassword } from 'api/services/auth'
+import { login, refresh, register, resetPassword } from 'api/services/auth'
 import { ROUTES } from 'parameters'
 
 import { refreshAccessToken } from './refreshAccessToken'
@@ -73,27 +73,44 @@ export const authOptions: NextAuthOptions = {
 					refreshToken
 				}
 			}
+		}),
+		CredentialsProvider({
+			id: 'refresh-token',
+			type: 'credentials',
+			credentials: {},
+			async authorize(credentials: any) {
+				const response = await refresh(credentials.refreshToken)
+
+				const { user, accessToken, accessTokenExpiresAt, refreshToken } = response.data
+
+				return {
+					...user,
+					accessToken,
+					accessTokenExpiresAt,
+					refreshToken
+				}
+			}
 		})
 	],
 	callbacks: {
 		async jwt({ token, user }) {
-			const updatedToken = { ...token }
+			const currentToken = { ...token }
 
 			if (user) {
-				updatedToken.accessToken = user.accessToken
-				updatedToken.accessTokenExpiresAt = user.accessTokenExpiresAt
-				updatedToken.refreshToken = user.refreshToken
-				updatedToken.user = user as any
+				currentToken.accessToken = user.accessToken
+				currentToken.accessTokenExpiresAt = user.accessTokenExpiresAt
+				currentToken.refreshToken = user.refreshToken
+				currentToken.user = user as any
 			}
 
-			const dateFromString = new Date(updatedToken.accessTokenExpiresAt)
+			const dateFromString = new Date(currentToken.accessTokenExpiresAt)
 			const currentDate = new Date()
 
 			if (currentDate < dateFromString) {
-				return updatedToken
+				return currentToken
 			}
 
-			return refreshAccessToken(updatedToken)
+			return refreshAccessToken(currentToken)
 		},
 		async session({ session, token }) {
 			const updatedSession = { ...session }

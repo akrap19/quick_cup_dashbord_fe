@@ -5,4 +5,5 @@ export interface Language {
 	status?: string
 	autoTranslate: boolean
 	translateable: boolean
+	isDefault: boolean
 }

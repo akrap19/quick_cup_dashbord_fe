@@ -29,7 +29,6 @@ export const CaseFilesDetails = ({ caseFiles }: Props) => {
 		actionButton: <EditButton buttonLabel="CaseFiles.edit" buttonLink={ROUTES.EDIT_CASE_FILES + caseFiles?.caseId} />
 	})
 
-	console.log('caseFiles', caseFiles)
 	return (
 		<Box width="100%">
 			<DetailsWrapper>

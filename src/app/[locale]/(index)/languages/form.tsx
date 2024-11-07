@@ -20,10 +20,11 @@ import { BaseCode } from 'api/models/common/baseCode'
 
 interface Props {
 	languages: BaseCode[]
+	gotDefaultLanguage: boolean
 	cancelDialog?: OpenedProps
 }
 
-const LanguageForm = ({ languages, cancelDialog }: Props) => {
+const LanguageForm = ({ languages, gotDefaultLanguage, cancelDialog }: Props) => {
 	const t = useTranslations()
 	const transformedLanguagesArray = languages?.map(location => {
 		return {

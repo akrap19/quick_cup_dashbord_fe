@@ -17,7 +17,7 @@ export const login = async (requestData: Login) => {
 	return data
 }
 
-export const refresh = async (refreshToken: string) => {
+export const refresh = async (refreshToken: string | null) => {
 	instance.defaults.headers['refresh-token'] = refreshToken
 
 	const { data } = await instance.post(`/auth/refresh`)

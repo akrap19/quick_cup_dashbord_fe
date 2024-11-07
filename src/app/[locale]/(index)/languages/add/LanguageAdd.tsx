@@ -27,9 +27,10 @@ type Schema = z.infer<typeof formSchema>
 
 interface Props {
 	languages: BaseCode[]
+	gotDefaultLanguage: boolean
 }
 
-const LanguageAdd = ({ languages }: Props) => {
+const LanguageAdd = ({ languages, gotDefaultLanguage }: Props) => {
 	const t = useTranslations()
 	const { push, refresh } = useRouter()
 	const cancelDialog = useOpened()
@@ -56,7 +57,7 @@ const LanguageAdd = ({ languages }: Props) => {
 			<FormWrapper>
 				<FormProvider {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
-						<LanguageForm languages={languages} cancelDialog={cancelDialog} />
+						<LanguageForm languages={languages} gotDefaultLanguage={gotDefaultLanguage} cancelDialog={cancelDialog} />
 					</form>
 				</FormProvider>
 			</FormWrapper>

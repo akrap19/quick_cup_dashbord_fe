@@ -25,9 +25,10 @@ type Schema = z.infer<typeof formSchema>
 interface Props {
 	language: Language
 	languages: BaseCode[]
+	gotDefaultLanguage: boolean
 }
 
-const LanguageEdit = ({ language, languages }: Props) => {
+const LanguageEdit = ({ language, languages, gotDefaultLanguage }: Props) => {
 	const { back, refresh } = useRouter()
 	useNavbarItems({ title: 'Languages.edit', backLabel: 'Languages.back' })
 
@@ -57,7 +58,7 @@ const LanguageEdit = ({ language, languages }: Props) => {
 		<FormWrapper>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<LanguageForm languages={languages} />
+					<LanguageForm languages={languages} gotDefaultLanguage={gotDefaultLanguage} />
 				</form>
 			</FormProvider>
 		</FormWrapper>

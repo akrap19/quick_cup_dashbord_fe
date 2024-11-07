@@ -33,6 +33,7 @@ const LanguageForm = ({ languages, gotDefaultLanguage, cancelDialog }: Props) =>
 		}
 	})
 
+	console.log('gotDefaultLanguage', gotDefaultLanguage)
 	return (
 		<FormItems openCancelDialog={cancelDialog?.toggleOpened}>
 			<Columns>

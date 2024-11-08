@@ -146,7 +146,7 @@
 		"successfullBulkDelete": "Languages successfully deleted!",
 		"noListDataDescription": "In this section, Admins can input the languages for which they will supply content for the app. ",
 		"statusInfoText": "The status of the new language will consistently remain Inactive until it is employed in the content creation process. This status will automatically shift to an active state once the content in that language is published.",
-		"autoTranslateInfoText": "Auto-translation is operative exclusively when the content has been published in the default language. This is owing to the fact that the translation process occurs from the default language to the selected language.",
+		"autoTranslateInfoText": "Auto-translation is operative exclusively when the content has been published in the default language and if it is not default language in question. This is owing to the fact that the translation process occurs from the default language to the selected language.",
 		"deleteLanguageDescription": "If you are certain if you want to delete language please press delete. But be aware that all content contected to that language <important>will be deleted!</important>",
 		"successfullyCreated": "Language successfully created!",
 		"cancelAdd": "Cancel adding language?"

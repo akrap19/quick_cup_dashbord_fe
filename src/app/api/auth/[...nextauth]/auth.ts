@@ -116,6 +116,7 @@ export const authOptions: NextAuthOptions = {
 			const updatedSession = { ...session }
 
 			updatedSession.accessToken = token.accessToken
+			updatedSession.accessTokenExpiresAt = token.accessTokenExpiresAt
 			updatedSession.refreshToken = token.refreshToken
 			updatedSession.user = token.user
 

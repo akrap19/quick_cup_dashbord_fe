@@ -14,22 +14,24 @@ interface Props {
 	value?: any
 	checked?: boolean
 	indeterminate?: boolean
+	disabled?: boolean
 	onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
-export const Checkbox = ({ name, label, value, checked, indeterminate, onChange }: Props) => {
-	const isChecked = checked || value
+export const Checkbox = ({ name, label, value, checked, indeterminate, disabled, onChange }: Props) => {
+	const isChecked = disabled ? !disabled : checked || value
 	const color = isChecked ? tokens.colors['primary.500'] : tokens.colors['shades.00']
 
 	return (
 		<label className={label && styles.checkboxWrapper}>
-			<span className={styles.checkboxField}>
+			<span className={styles.checkboxField} style={{ cursor: disabled ? 'default' : 'pointer' }}>
 				<input
 					type="checkbox"
 					name={name}
 					value={value}
 					checked={isChecked}
 					onChange={onChange}
+					disabled={disabled}
 					className={styles.hiddenCheckbox}
 				/>
 				<div className={styles.checkboxDecorator} style={{ color }} />

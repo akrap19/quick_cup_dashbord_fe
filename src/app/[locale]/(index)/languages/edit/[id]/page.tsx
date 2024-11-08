@@ -1,5 +1,6 @@
 import { Language } from 'api/models/language/language'
 import { getLanguage, getLanguages, getLanguageSupported } from 'api/services/languages'
+import { LanguageStatusEnum } from 'enums/languageStatusEnum'
 
 import LanguageEdit from './LanguageEdit'
 
@@ -14,7 +15,12 @@ const LanguageEditPage = async ({ searchParams, params }: Props) => {
 	const { data } = await getLanguage(params.id)
 	const languageSupported = await getLanguageSupported(searchParams)
 	const { data: languagesData } = await getLanguages(searchParams)
-	const gotDefaultLanguage = languagesData?.languages?.some((language: Language) => language.isDefault) ?? false
+	const gotDefaultLanguage =
+		(languagesData?.languages?.some(
+			(language: Language) => language.isDefault && language.status === LanguageStatusEnum.PUBLISHED
+		) &&
+			!data?.language?.isDefault) ??
+		false
 
 	return (
 		<LanguageEdit

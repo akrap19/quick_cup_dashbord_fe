@@ -12,6 +12,38 @@ export const setToken = (token?: string, barnahusId?: string) => {
 	axiosInstanceWithToken.defaults.headers['X-Barnahus-Id'] = barnahusId ?? ''
 }
 
+axiosInstanceWithToken.interceptors.request.use(async request => {
+	const session = await getSession()
+	const expirationDate = new Date(session?.accessTokenExpiresAt as any)
+	const currentDate = new Date()
+	const oneMinuteBeforeExpiration = new Date(expirationDate.getTime() - 180000)
+
+	console.log('Matijaaaaa ---- interceptor', oneMinuteBeforeExpiration)
+	console.log('Matijaaaaa ---- interceptor', currentDate)
+	if (currentDate >= oneMinuteBeforeExpiration) {
+		const result = await signIn('refresh-token', {
+			...session,
+			redirect: false
+		})
+
+		if (result?.status === 200) {
+			const newSession = await getSession()
+			setToken(newSession?.accessToken, newSession?.user?.barnahusRoles[0]?.barnahusId)
+
+			request.headers.common['Authorization'] = `Bearer ${newSession?.accessToken}`
+			request.headers['X-Barnahus-Id'] = newSession?.user?.barnahusRoles[0]?.barnahusId
+			axiosInstanceWithToken(request)
+		} else {
+			ErrorToast('Session expired. Redirecting to login...')
+			setTimeout(() => {
+				window.location.href = ROUTES.LOGIN
+			}, 1500)
+		}
+	}
+
+	return request
+})
+
 axiosInstanceWithToken.interceptors.response.use(
 	response => response,
 	async error => {

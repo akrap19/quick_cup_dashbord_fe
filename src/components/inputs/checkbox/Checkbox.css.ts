@@ -20,8 +20,7 @@ export const hiddenCheckbox = style({
 })
 
 export const checkboxField = style({
-	position: 'relative',
-	cursor: 'pointer'
+	position: 'relative'
 })
 
 export const checkboxDecorator = style({

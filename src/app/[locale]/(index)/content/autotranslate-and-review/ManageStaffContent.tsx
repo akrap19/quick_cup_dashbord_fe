@@ -10,7 +10,6 @@ import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
 import { Staff } from 'api/models/content/staff'
-import { requiredString } from 'schemas'
 
 import { LanguageLabel } from '../common/LanguageLabel'
 import { StaffSectionItemsFields } from '../common/StaffSectionItemsFields'
@@ -22,9 +21,10 @@ interface Props {
 const formSchema = z.object({
 	items: z.array(
 		z.object({
-			images: z.array(z.string()).nonempty(),
-			name: requiredString.shape.scheme,
-			description: requiredString.shape.scheme
+			description: z.string().nullable(),
+			name: z.string().nullable(),
+			title: z.string().nullable(),
+			images: z.array(z.string())
 		})
 	)
 })
@@ -42,9 +42,10 @@ export const ManageStaffContent = ({ staff }: Props) => {
 		defaultValues: {
 			items: staff?.map(item => {
 				return {
-					images: item?.staffImages?.map(image => image?.staffImageId),
-					name: item?.name,
-					description: item?.description
+					images: item?.staffImages?.map(image => image?.staffImageId) ?? [],
+					name: item?.name ?? '',
+					title: item?.title ?? '',
+					description: item?.description ?? ''
 				}
 			})
 		}

@@ -16,6 +16,7 @@ import { ManageRoomsContent } from './ManageRoomsContent'
 import { ManageStaffContent } from './ManageStaffContent'
 import { ContentPublished } from '../common/ContentPublished'
 import { PreviewAndPublish } from '../common/PreviewAndPublish'
+import { Loader } from '@/components/custom/loader/Loader'
 
 interface Props {
 	language: Language
@@ -44,16 +45,24 @@ export const ContentStepNavigation = ({ language, languages }: Props) => {
 
 	useEffect(() => {
 		setLanguage({ id: language?.languageId, name: language?.name })
-		translateContent()
+		if (language) {
+			translateContent()
+		}
 	}, [language])
 
 	return (
-		<ManageJourneyWrapper>
-			{currentStep === 1 && <ManageBarnahusContent abouts={content?.abouts} />}
-			{currentStep === 2 && <ManageRoomsContent rooms={content?.rooms} />}
-			{currentStep === 3 && <ManageStaffContent staff={content?.staff} />}
-			{currentStep === 4 && <PreviewAndPublish content={content} />}
-			{currentStep === 5 && <ContentPublished languages={languages} />}
-		</ManageJourneyWrapper>
+		<>
+			{!content ? (
+				<Loader />
+			) : (
+				<ManageJourneyWrapper>
+					{currentStep === 1 && <ManageBarnahusContent abouts={content?.abouts} />}
+					{currentStep === 2 && <ManageRoomsContent rooms={content?.rooms} />}
+					{currentStep === 3 && <ManageStaffContent staff={content?.staff} />}
+					{currentStep === 4 && <PreviewAndPublish content={content} />}
+					{currentStep === 5 && <ContentPublished languages={languages} />}
+				</ManageJourneyWrapper>
+			)}
+		</>
 	)
 }

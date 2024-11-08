@@ -10,7 +10,6 @@ import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
 import { Room } from 'api/models/content/room'
-import { requiredString } from 'schemas'
 
 import { LanguageLabel } from '../common/LanguageLabel'
 import { SectionItemsFields } from '../common/SectionItemsFields'
@@ -22,10 +21,10 @@ interface Props {
 const formSchema = z.object({
 	items: z.array(
 		z.object({
-			title: requiredString.shape.scheme,
-			description: requiredString.shape.scheme,
-			audioId: requiredString.shape.scheme,
-			images: z.array(z.string()).nonempty()
+			title: z.string(),
+			description: z.string(),
+			audioId: z.string(),
+			images: z.array(z.string())
 		})
 	)
 })
@@ -43,10 +42,10 @@ export const ManageRoomsContent = ({ rooms }: Props) => {
 		defaultValues: {
 			items: rooms?.map(room => {
 				return {
-					title: room?.title,
-					description: room?.description,
-					audioId: '',
-					images: room?.roomImages?.map(image => image?.roomImageId)
+					title: room?.title ?? '',
+					description: room?.description ?? '',
+					audioId: room?.audio?.audioId ?? '',
+					images: room?.roomImages?.map(image => image?.roomImageId) ?? []
 				}
 			})
 		}
@@ -86,6 +85,11 @@ export const ManageRoomsContent = ({ rooms }: Props) => {
 											<SectionItemsFields
 												index={index}
 												form={form}
+												initialAudio={{
+													id: rooms[index]?.audio?.audioId ?? '',
+													name: rooms[index]?.audio?.audioName ?? '',
+													url: rooms[index]?.audio?.audioURL ?? ''
+												}}
 												initialImagesUrls={rooms[index]?.roomImages?.map(image => image.url)}
 											/>
 										)}

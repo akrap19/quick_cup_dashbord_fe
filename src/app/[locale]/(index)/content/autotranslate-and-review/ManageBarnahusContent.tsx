@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
@@ -12,10 +13,14 @@ import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
 import { About } from 'api/models/content/about'
-import { requiredString } from 'schemas'
+import { createAboutBulk } from 'api/services/content/about'
 
 import { LanguageLabel } from '../common/LanguageLabel'
 import { SectionItemsFields } from '../common/SectionItemsFields'
+import { ContentPayload } from 'api/models/content/contentPayload'
+import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
+import { areAllItemsEmptyInArrayObject } from '@/utils/areAllItemsEmptyInArrayObject'
+import { replaceEmptyStringsWithNull } from '@/utils/replaceEmptyStringsWithNull'
 
 interface Props {
 	abouts?: About[]
@@ -24,10 +29,11 @@ interface Props {
 const formSchema = z.object({
 	items: z.array(
 		z.object({
-			title: requiredString.shape.scheme,
-			description: requiredString.shape.scheme,
-			audioId: requiredString.shape.scheme,
-			images: z.array(z.string()).nonempty()
+			aboutId: z.string(),
+			title: z.string(),
+			description: z.string(),
+			audioId: z.string(),
+			images: z.array(z.string())
 		})
 	)
 })
@@ -36,8 +42,11 @@ type Schema = z.infer<typeof formSchema>
 
 export const ManageBarnahusContent = ({ abouts }: Props) => {
 	const { currentStep, setCurrentStep } = useStepsStore()
-	const t = useTranslations()
+	const { setIsContentEmpty } = useManageContent()
 	const { language } = useManageContent()
+	const { refresh } = useRouter()
+	const t = useTranslations()
+	console.log('abouts', abouts)
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
@@ -45,10 +54,11 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 		defaultValues: {
 			items: abouts?.map(about => {
 				return {
-					title: about?.title,
-					description: about?.description,
-					audioId: '',
-					images: about?.aboutImages?.map(image => image?.aboutImageId)
+					aboutId: about?.aboutId ?? '',
+					title: about?.title ?? '',
+					description: about?.description ?? '',
+					audioId: about?.audio?.audioId ?? '',
+					images: about?.aboutImages?.map(image => image?.aboutImageId) ?? []
 				}
 			})
 		}
@@ -61,10 +71,33 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 		name: 'items'
 	})
 
-	const onSubmit = async () => {
-		console.log('data', formData)
+	const handleNextStep = () => {
 		if (currentStep) {
 			setCurrentStep(currentStep + 1)
+		}
+	}
+
+	const onSubmit = async () => {
+		const formDataTmp: ContentPayload[] = [...formData.items]
+		const formValuesCheck = areAllItemsEmptyInArrayObject(formDataTmp)
+		formDataTmp.forEach(obj => {
+			// eslint-disable-next-line
+			obj.languageId = language?.id
+		})
+
+		if (!formValuesCheck) {
+			const result = await createAboutBulk(replaceEmptyStringsWithNull(formDataTmp))
+
+			if (result?.message === 'OK') {
+				SuccessToast(t('ManageContent.aboutBarnahusContentSccessfullyCreated'))
+
+				refresh()
+				setIsContentEmpty('about', false)
+				handleNextStep()
+			}
+		} else {
+			setIsContentEmpty('about', true)
+			handleNextStep()
 		}
 	}
 
@@ -88,6 +121,11 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 												<SectionItemsFields
 													index={index}
 													form={form}
+													initialAudio={{
+														id: abouts[index]?.audio?.audioId ?? '',
+														name: abouts[index]?.audio?.audioName ?? '',
+														url: abouts[index]?.audio?.audioURL ?? ''
+													}}
 													initialImagesUrls={abouts[index]?.aboutImages?.map(image => image.url)}
 												/>
 											)}

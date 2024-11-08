@@ -52,6 +52,7 @@ export const ContentPublished = ({ languages }: Props) => {
 		router.push(`${ROUTES.AUTOTRANSLATE_AND_REVIEW}?languageId=${formData?.language}`)
 	}
 
+	console.log('language', languages)
 	return (
 		<FormProvider {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)}>

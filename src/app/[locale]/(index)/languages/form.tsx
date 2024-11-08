@@ -33,7 +33,6 @@ const LanguageForm = ({ languages, gotDefaultLanguage, cancelDialog }: Props) =>
 		}
 	})
 
-	console.log('gotDefaultLanguage', gotDefaultLanguage)
 	return (
 		<FormItems openCancelDialog={cancelDialog?.toggleOpened}>
 			<Columns>
@@ -61,7 +60,7 @@ const LanguageForm = ({ languages, gotDefaultLanguage, cancelDialog }: Props) =>
 							<Inline gap={2} alignItems="center">
 								<Box>
 									<FormControl name="autoTranslate">
-										<Checkbox />
+										<Checkbox disabled={!gotDefaultLanguage} />
 									</FormControl>
 								</Box>
 								<Text color="neutral.900" fontWeight="semibold" fontSize="small">

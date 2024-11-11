@@ -7,7 +7,7 @@ import { CaseFilesAdd } from './CaseFilesAdd'
 const CaseFilesAddPage = async () => {
 	const session = await getServerSession(authOptions)
 
-	return <CaseFilesAdd userId={session?.user?.id} barnahus={session?.user.barnahusRoles[0]} />
+	return <CaseFilesAdd userId={session?.user?.userId} barnahus={session?.user.barnahusRoles[0]} />
 }
 
 export default CaseFilesAddPage

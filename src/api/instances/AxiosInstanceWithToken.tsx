@@ -18,7 +18,7 @@ axiosInstanceWithToken.interceptors.request.use(async request => {
 	const currentDate = new Date()
 	const oneMinuteBeforeExpiration = new Date(expirationDate.getTime() - 180000)
 
-	if (currentDate >= oneMinuteBeforeExpiration) {
+	if (currentDate > oneMinuteBeforeExpiration) {
 		const result = await signIn('refresh-token', {
 			...session,
 			redirect: false

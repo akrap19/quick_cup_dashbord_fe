@@ -20,7 +20,7 @@ import { requiredString } from 'schemas'
 import CaseFilesForm from '../form'
 
 const formSchema = z.object({
-	status: requiredString.shape.scheme,
+	canAddNotes: z.boolean(),
 	customId: requiredString.shape.scheme,
 	barnahus: z.string().optional()
 })
@@ -41,7 +41,7 @@ export const CaseFilesAdd = ({ userId, barnahus }: Props) => {
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { status: '', customId: '', barnahus: barnahus?.location }
+		defaultValues: { canAddNotes: false, customId: '', barnahus: barnahus?.location }
 	})
 
 	const handleDialog = () => {
@@ -50,7 +50,10 @@ export const CaseFilesAdd = ({ userId, barnahus }: Props) => {
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		const result = await createCaseFile({ userId: userId ?? '', status: data.status, customId: data.customId })
+		const result = await createCaseFile({
+			canAddNotes: data.canAddNotes,
+			customId: data.customId
+		})
 		if (result?.message === 'OK') {
 			SuccessToast(t('CaseFiles.successfullyCreated'))
 			push(ROUTES.CASE_FILES)

@@ -4,11 +4,15 @@ import { useTranslations } from 'next-intl'
 
 import { InputWithInfo } from '@/components/custom/inputs/input-with-info/InputWithInfo'
 import { FormItems } from '@/components/custom/layouts/add-form'
-import { SearchDropdown } from '@/components/custom/search-dropdown'
+import { Box } from '@/components/layout/box'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
 import { TextInput } from '@/components/inputs/text-input'
 import { OpenedProps } from '@/hooks/use-toggle'
+import { Checkbox } from '@/components/inputs/checkbox'
+import { Inline } from '@/components/layout/inline'
+import { Text } from '@/components/typography/text'
+import { InputInfo } from '@/components/inputs/input-info'
 
 interface Props {
 	cancelDialog?: OpenedProps
@@ -16,12 +20,12 @@ interface Props {
 
 const CaseFilesForm = ({ cancelDialog }: Props) => {
 	const t = useTranslations()
-	const options = [
-		{ id: 'Open', name: t('General.open') },
-		{ id: 'InProgress', name: t('General.inProgress') },
-		{ id: 'Closed', name: t('General.closed') },
-		{ id: 'Other', name: t('General.other') }
-	]
+	// const options = [
+	// 	{ id: 'Open', name: t('General.open') },
+	// 	{ id: 'InProgress', name: t('General.inProgress') },
+	// 	{ id: 'Closed', name: t('General.closed') },
+	// 	{ id: 'Other', name: t('General.other') }
+	// ]
 
 	return (
 		<FormItems openCancelDialog={cancelDialog?.toggleOpened}>
@@ -34,13 +38,6 @@ const CaseFilesForm = ({ cancelDialog }: Props) => {
 					<FormControl.Message />
 				</FormControl>
 			</InputWithInfo>
-			<FormControl name="status">
-				<FormControl.Label>
-					<RequiredLabel>{t('General.status')}</RequiredLabel>
-				</FormControl.Label>
-				<SearchDropdown placeholder="General.status" options={options} />
-				<FormControl.Message />
-			</FormControl>
 			<InputWithInfo infoText="CaseFiles.barnahusInfoText">
 				<FormControl name="barnahus">
 					<FormControl.Label>
@@ -50,6 +47,21 @@ const CaseFilesForm = ({ cancelDialog }: Props) => {
 					<FormControl.Message />
 				</FormControl>
 			</InputWithInfo>
+			<Inline gap={5} alignItems="center">
+				<Inline gap={2} alignItems="center">
+					<Box>
+						<FormControl name="canAddNotes">
+							<Checkbox />
+						</FormControl>
+					</Box>
+					<Text color="neutral.900" fontWeight="semibold" fontSize="small">
+						{t('General.notes')}
+					</Text>
+				</Inline>
+				<Inline alignItems="center">
+					<InputInfo infoText="CaseFiles.notesInfoText" />
+				</Inline>
+			</Inline>
 		</FormItems>
 	)
 }

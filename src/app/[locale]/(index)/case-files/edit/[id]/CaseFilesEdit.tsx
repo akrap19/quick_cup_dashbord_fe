@@ -16,7 +16,7 @@ import { requiredString } from 'schemas'
 import CaseFileForm from '../../form'
 
 const formSchema = z.object({
-	status: requiredString.shape.scheme,
+	canAddNotes: z.boolean(),
 	customId: requiredString.shape.scheme,
 	barnahus: z.string().optional()
 })
@@ -35,12 +35,13 @@ const CaseFileEdit = ({ caseFile }: Props) => {
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { customId: caseFile.customId, status: caseFile.status, barnahus: caseFile.barnahus }
+		defaultValues: { customId: caseFile.customId, canAddNotes: caseFile.canAddNotes, barnahus: caseFile.barnahus }
 	})
 
 	const onSubmit = async () => {
 		const data = form.getValues()
 		const result = await updateCaseFile({ ...data, caseId: caseFile.caseId })
+
 		if (result?.message === 'OK') {
 			SuccessToast(t('CaseFiles.successfullyEdited'))
 			back()

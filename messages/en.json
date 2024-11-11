@@ -93,6 +93,7 @@
 		"audio": "Audio",
 		"clearSection": "Clear selection",
 		"reset": "Reset",
+		"notes": "Notes",
 		"goToDashboard": "Go to dashboard",
 		"emailSuccessfullyChanged": "Email successfully changed",
 		"emailSuccessfullyChangedDescription": "To continue working please go to the dashboard.",
@@ -339,7 +340,7 @@
 		"generalIntroductionPlaceholderTitle": "Write the title of this section...",
 		"generalIntroductionDescription": "Description",
 		"generalIntroductionPlaceholderDescription": "Write some general intro text about your Barnahus...",
-		"deleteContentDescription": "If you are certain if you want to delete content please press delete.",
+		"deleteContentDescription": "If you are certain if you want to delete content please press delete. But be aware that you are going to <important>delete content in all languages.</important>",
 		"successfullyDeleted": "Content successfully deleted!",
 		"successfullBulkDelete": "Contents successfully deleted!",
 		"addAndReviewNewContentTitle": "Review & add new content",
@@ -377,7 +378,8 @@
 		"addCaserDescription": "When adding a new case, you can utilize the created case to design a customized journey specifically tailored to it.",
 		"cancelAdd": "Cancel adding case?",
 		"successfullyDeleted": "Case successfully deleted!",
-		"successfullBulkDelete": "Case successfully deleted!"
+		"successfullBulkDelete": "Case successfully deleted!",
+		"notesInfoText": "Enabling notes gives user of app to enter notes about journey."
 	},
 	"CaseJourney": {
 		"selectCustomIdTitle": "Select Custom ID to start",

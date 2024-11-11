@@ -8,16 +8,7 @@ export const columns: Array<ColumnDef<CaseFiles>> = [
 		header: 'CaseFiles.customId'
 	},
 	{
-		accessorKey: 'status',
-		header: 'General.status'
-	},
-
-	{
-		accessorKey: 'lastJourneySnapshot',
-		header: 'General.lastJourneySnapshot'
-	},
-	{
-		accessorKey: 'caseJourneyUpdates',
-		header: 'General.caseJourneyUpdates'
+		accessorKey: 'canAddNotes',
+		header: 'General.canAddNotes'
 	}
 ]

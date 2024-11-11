@@ -33,7 +33,8 @@ const formSchema = z.object({
 			title: z.string(),
 			description: z.string(),
 			audioId: z.string(),
-			images: z.array(z.string())
+			images: z.array(z.string()),
+			deletedImages: z.array(z.string())
 		})
 	)
 })
@@ -42,11 +43,9 @@ type Schema = z.infer<typeof formSchema>
 
 export const ManageBarnahusContent = ({ abouts }: Props) => {
 	const { currentStep, setCurrentStep } = useStepsStore()
-	const { setIsContentEmpty } = useManageContent()
-	const { language } = useManageContent()
+	const { language, setIsContentEmpty } = useManageContent()
 	const { refresh } = useRouter()
 	const t = useTranslations()
-	console.log('abouts', abouts)
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
@@ -58,7 +57,8 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 					title: about?.title ?? '',
 					description: about?.description ?? '',
 					audioId: about?.audio?.audioId ?? '',
-					images: about?.aboutImages?.map(image => image?.aboutImageId) ?? []
+					images: about?.aboutImages?.map(image => image?.aboutImageId) ?? [],
+					deletedImages: []
 				}
 			})
 		}
@@ -77,12 +77,35 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 		}
 	}
 
+	const handleAboutImagesId = (aboutId?: string, imagesIds?: string[]) => {
+		const aboutImagesIds = abouts
+			?.find(about => about?.aboutId === aboutId)
+			?.aboutImages?.map(image => image?.aboutImageId)
+		const newImagesIds = imagesIds?.filter(id => !aboutImagesIds?.includes(id))
+
+		return newImagesIds
+	}
+
+	const handleDeletedAboutImagesId = (aboutId?: string, imagesIds?: string[]) => {
+		const aboutImagesIds = abouts
+			?.find(about => about?.aboutId === aboutId)
+			?.aboutImages?.map(image => image?.aboutImageId)
+
+		const deletedImagesIds = aboutImagesIds?.filter(id => !imagesIds?.includes(id))
+
+		return deletedImagesIds
+	}
+
 	const onSubmit = async () => {
 		const formDataTmp: ContentPayload[] = [...formData.items]
 		const formValuesCheck = areAllItemsEmptyInArrayObject(formDataTmp)
 		formDataTmp.forEach(obj => {
 			// eslint-disable-next-line
 			obj.languageId = language?.id
+			// eslint-disable-next-line
+			obj.deletedImages = handleDeletedAboutImagesId(obj.aboutId, obj.images)
+			// eslint-disable-next-line
+			obj.images = handleAboutImagesId(obj.aboutId, obj.images)
 		})
 
 		if (!formValuesCheck) {

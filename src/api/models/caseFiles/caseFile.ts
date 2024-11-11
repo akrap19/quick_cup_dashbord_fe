@@ -5,4 +5,5 @@ export interface CaseFile {
 	barnahus: string
 	updatedAt: string
 	lastJourneySnapshot: string
+	canAddNotes: boolean
 }

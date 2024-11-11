@@ -32,13 +32,15 @@ export const ContentPublished = ({ languages }: Props) => {
 	const router = useRouter()
 
 	const transformedLanguageArray = languages
-		?.filter((language: Language) => language?.autoTranslate)
-		.map((language: Language) => {
-			return {
-				id: language.languageId,
-				name: language.name
-			}
-		})
+		? languages
+				?.filter((language: Language) => language?.autoTranslate)
+				.map((language: Language) => {
+					return {
+						id: language.languageId,
+						name: language.name
+					}
+				})
+		: []
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',

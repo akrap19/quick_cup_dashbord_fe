@@ -16,6 +16,7 @@ import { Text } from '@/components/typography/text'
 import { useManageContentSelection } from '@/store/manage-content-selection'
 import { useStepsStore } from '@/store/steps'
 import { requiredString } from 'schemas'
+import { useEffect } from 'react'
 
 const formSchema = z.object({
 	name: requiredString.shape.scheme
@@ -34,10 +35,16 @@ export const EnterTemplateName = () => {
 		defaultValues: { name: '' }
 	})
 
-	const formData = form?.getValues()
+	const { name } = form.watch()
+
+	useEffect(() => {
+		if (name !== '') {
+			form.trigger('name')
+		}
+	}, [name])
 
 	const onSubmit = async () => {
-		setName(formData?.name)
+		setName(name)
 		if (currentStep) {
 			setCurrentStep(currentStep + 1)
 		}

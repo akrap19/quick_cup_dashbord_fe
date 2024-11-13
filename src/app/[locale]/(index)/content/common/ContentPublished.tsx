@@ -30,7 +30,6 @@ type Schema = z.infer<typeof formSchema>
 export const ContentPublished = ({ languages }: Props) => {
 	const t = useTranslations()
 	const router = useRouter()
-
 	const transformedLanguageArray = languages
 		? languages
 				?.filter((language: Language) => language?.autoTranslate)
@@ -54,7 +53,6 @@ export const ContentPublished = ({ languages }: Props) => {
 		router.push(`${ROUTES.AUTOTRANSLATE_AND_REVIEW}?languageId=${formData?.language}`)
 	}
 
-	console.log('language', languages)
 	return (
 		<FormProvider {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)}>

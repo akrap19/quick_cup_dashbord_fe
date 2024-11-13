@@ -11,6 +11,7 @@ import { Language } from 'api/models/language/language'
 
 import { SectionItemFields } from '../common/SectionItemFields'
 import { useManageContentAdd } from '@/store/manage-content-add'
+import { translateLanguageContent } from 'api/services/languages'
 
 interface Props {
 	language: Language
@@ -28,55 +29,71 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const AddAboutForm = ({ language, languages }: Props) => {
-	const { abouts } = useManageContentAdd()
-	const { currentStep } = useStepsStore()
+	const { abouts, setAbouts } = useManageContentAdd()
+	const { currentStep, totalSteps, setCurrentStep } = useStepsStore()
 	const showInitalContent = abouts && currentStep && currentStep > 1
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: showInitalContent ? abouts[currentStep]?.title : '',
-			description: showInitalContent ? abouts[currentStep]?.description : '',
-			audioId: showInitalContent ? abouts[currentStep]?.audio?.audioId : '',
-			images: showInitalContent ? abouts[currentStep]?.images : [],
+			title: showInitalContent ? abouts[currentStep - 1]?.title : '',
+			description: showInitalContent ? abouts[currentStep - 1]?.description : '',
+			audioId: showInitalContent ? abouts[currentStep - 1]?.audio?.audioId : '',
+			images: showInitalContent ? abouts[currentStep - 1]?.images : [],
 			deletedImages: []
 		}
 	})
 
-	// const formData = form?.getValues()
+	const formData = form?.getValues()
 
-	const onSubmit = async () => {
-		// const { audioId, images } = form.watch()
-		// if (!showInitalContent && currentStep) {
-		// 	const aboutForSave = { ...formData, audioId, images, languageId: language?.languageId }
-		// 	setAbouts(aboutForSave)
-		// 	const aboutForTranslate = { content: formData?.title, languageId: languages[currentStep]?.languageId }
-		// 	// const result = await translateLanguageContent(aboutForTranslate)
-		// 	// console.log('aboutForSave', languages)
-		// 	// setAbouts(aboutForSave)
-		// }
-		// const result = await createAbout({
-		// 	languageId: language?.languageId,
-		// 	title: replaceEmptyStringWithNull(formData.title),
-		// 	description: removeHtmlTags(formData.description) ? formData.description : null,
-		// 	images: formData.images,
-		// 	audioId: replaceEmptyStringWithNull(formData.audioId)
-		// })
-		// if (result?.message === 'OK') {
-		// 	refresh()
-		// 	form.reset()
-		// 	SuccessToast(t('ManageContent.aboutBarnahusContentSccessfullyCreated'))
-		// 	if (currentStep && totalSteps && totalSteps > currentStep) {
-		// 		setCurrentStep(currentStep + 1)
-		// 	} else {
-		// 		push(ROUTES.CONTENT)
-		// 	}
-		// }
+	type FormDataKeys = 'title' | 'description'
+
+	const translate = async (key: FormDataKeys) => {
+		if (
+			((formData && formData[key] && formData[key] !== '') ||
+				(abouts && abouts[0] && abouts[0][key] && abouts[0][key] !== '')) &&
+			currentStep
+		) {
+			const forTranslate = {
+				content: currentStep === 1 ? formData[key] : abouts ? abouts[0][key] : null,
+				languageId: languages[currentStep]?.languageId
+			}
+			const translatedData = await translateLanguageContent(forTranslate)
+			const translation = translatedData?.data?.translation
+
+			form.setValue(key, translation)
+
+			return translation
+		}
+
+		return null
 	}
 
-	console.log('language', language)
-	console.log('languages', languages)
+	const onSubmit = async () => {
+		const { audioId, images } = form.watch()
+
+		if (currentStep && totalSteps) {
+			if (!showInitalContent) {
+				const aboutForSave = { ...formData, audioId, images, languageId: language?.languageId }
+				setAbouts(aboutForSave)
+			}
+
+			if (currentStep < languages?.length) {
+				const aboutForSave = {
+					title: await translate('title'),
+					description: await translate('description'),
+					audioId,
+					images,
+					languageId: language?.languageId
+				}
+				setAbouts(aboutForSave)
+			}
+
+			setCurrentStep(currentStep + 1)
+		}
+	}
+
 	return (
 		<Box paddingTop={6}>
 			<FormProvider {...form}>

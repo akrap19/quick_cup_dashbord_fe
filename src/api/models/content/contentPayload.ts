@@ -1,3 +1,5 @@
+import { Audio } from '../common/audio'
+
 export interface ContentPayload {
 	aboutId?: string
 	aboutTranslationId?: string
@@ -12,4 +14,5 @@ export interface ContentPayload {
 	images?: string[]
 	deletedImages?: string[]
 	audioId?: string | null
+	audio?: Audio
 }

@@ -9,6 +9,6 @@ export const columns: Array<ColumnDef<CaseFiles>> = [
 	},
 	{
 		accessorKey: 'canAddNotes',
-		header: 'General.canAddNotes'
+		header: 'General.notes'
 	}
 ]

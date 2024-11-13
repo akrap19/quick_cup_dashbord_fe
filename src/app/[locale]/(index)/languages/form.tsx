@@ -60,7 +60,7 @@ const LanguageForm = ({ languages, gotDefaultLanguage, cancelDialog }: Props) =>
 							<Inline gap={2} alignItems="center">
 								<Box>
 									<FormControl name="autoTranslate">
-										<Checkbox disabled={!gotDefaultLanguage} />
+										<Checkbox disabled={true} checked={gotDefaultLanguage} />
 									</FormControl>
 								</Box>
 								<Text color="neutral.900" fontWeight="semibold" fontSize="small">

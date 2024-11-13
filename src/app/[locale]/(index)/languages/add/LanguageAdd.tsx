@@ -39,7 +39,7 @@ const LanguageAdd = ({ languages, gotDefaultLanguage }: Props) => {
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
-		defaultValues: { language: '', autoTranslate: true }
+		defaultValues: { language: '', autoTranslate: gotDefaultLanguage }
 	})
 
 	const onSubmit = async (data: Schema) => {

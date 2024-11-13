@@ -69,7 +69,7 @@ export const AddAboutLanguageNavigation = ({ languages }: Props) => {
 									))}
 									{languages.map((language: Language) => (
 										<Tabs.Panel value={language.name}>
-											<AddAboutForm language={language} />
+											<AddAboutForm language={language} languages={languages} />
 										</Tabs.Panel>
 									))}
 								</Tabs>

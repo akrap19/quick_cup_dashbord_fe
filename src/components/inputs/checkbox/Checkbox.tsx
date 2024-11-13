@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const Checkbox = ({ name, label, value, checked, indeterminate, disabled, onChange }: Props) => {
-	const isChecked = disabled ? !disabled : checked || value
+	const isChecked = checked ? checked : disabled ? !disabled : value
 	const color = isChecked ? tokens.colors['primary.500'] : tokens.colors['shades.00']
 
 	return (

@@ -1,5 +1,6 @@
 import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
 import { fetchWithToken } from 'api/instances/FetchWithToken'
+import { ContentPayload } from 'api/models/content/contentPayload'
 import { LanguagePayload } from 'api/models/language/languagePayload'
 
 interface Query {
@@ -73,6 +74,12 @@ export const publishLanguage = async (languageId: string) => {
 
 export const translateLanguage = async (languageId?: string) => {
 	const response = await axiosInstanceWithToken.post(`/language/translate`, { languageId })
+
+	return response?.data
+}
+
+export const translateLanguageContent = async (content?: ContentPayload) => {
+	const response = await axiosInstanceWithToken.post(`/language/translate/content`, { ...content })
 
 	return response?.data
 }

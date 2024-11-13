@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const Radio = ({ label, value, name, checked, onChange }: Props) => {
-	const color = checked ? tokens.colors['primary.500'] : tokens.colors['neutral.500']
+	const borderColor = checked ? tokens.colors['primary.500'] : tokens.colors['neutral.500']
 
 	return (
 		<label className={styles.radioWrapper}>
@@ -28,7 +28,7 @@ export const Radio = ({ label, value, name, checked, onChange }: Props) => {
 					onChange={onChange}
 					className={styles.hiddenRadio}
 				/>
-				<div className={styles.radioDecorator} style={{ color }} />
+				<div className={styles.radioDecorator} style={{ borderColor }} />
 				{checked && <div className={styles.checked} />}
 			</span>
 			<Text as="span" color={checked ? 'primary.500' : 'neutral.500'} fontWeight="semibold" lineHeight="small">

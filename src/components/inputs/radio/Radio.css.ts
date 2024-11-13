@@ -24,17 +24,15 @@ export const radioField = style({
 })
 
 export const radioDecorator = style({
-	borderColor: 'neutral.500',
-	borderWidth: '2px',
+	border: tokens.borders.border.thick,
 	borderRadius: tokens.borders.radius.full,
-	borderStyle: 'solid',
 	width: '1.5rem',
 	height: '1.5rem',
 
 	// When Radio selected by "Tab" key
 	selectors: {
 		[`${hiddenRadio}:focus-visible + &`]: {
-			outline: `2px solid ${tokens.colors['primary.300']}`
+			borderColor: tokens.colors['primary.500']
 		}
 	}
 })

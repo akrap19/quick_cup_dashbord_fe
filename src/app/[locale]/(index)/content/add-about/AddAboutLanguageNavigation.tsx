@@ -79,7 +79,7 @@ export const AddAboutLanguageNavigation = ({ languages }: Props) => {
 							</Stack>
 						</Box>
 					)}
-					{currentStep === languages?.length + 1 && <PreviewAndPublish />}
+					{currentStep === languages?.length + 1 && <PreviewAndPublish languages={languages} />}
 				</ManageJourneyWrapper>
 			)}
 		</Box>

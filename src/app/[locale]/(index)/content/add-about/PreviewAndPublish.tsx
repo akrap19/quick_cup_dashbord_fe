@@ -14,16 +14,18 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
-import { Content } from 'api/models/content/content'
 import { publishLanguage } from 'api/services/languages'
+import { Language } from 'api/models/language/language'
+import { useManageContentAdd } from '@/store/manage-content-add'
 // import { LanguageLabel } from '../common/LanguageLabel'
 
 interface Props {
-	content?: Content
+	languages: Language[]
 }
 
-export const PreviewAndPublish = ({ content }: Props) => {
+export const PreviewAndPublish = ({ languages }: Props) => {
 	const t = useTranslations()
+	const { abouts } = useManageContentAdd()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const { language, isAllContentEmpty } = useManageContent()
 

@@ -16,7 +16,7 @@ import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
 import { publishLanguage } from 'api/services/languages'
 import { Language } from 'api/models/language/language'
-import { useManageContentAdd } from '@/store/manage-content-add'
+// import { useManageContentAdd } from '@/store/manage-content-add'
 // import { LanguageLabel } from '../common/LanguageLabel'
 
 interface Props {
@@ -25,7 +25,7 @@ interface Props {
 
 export const PreviewAndPublish = ({ languages }: Props) => {
 	const t = useTranslations()
-	const { abouts } = useManageContentAdd()
+	// const { abouts } = useManageContentAdd()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const { language, isAllContentEmpty } = useManageContent()
 

@@ -43,7 +43,7 @@ export const PreviewAndSave = ({ content }: Props) => {
 						audio: includeFlag?.includeAudio ? item.audio : undefined,
 						description: includeFlag?.includeDescription ? item.description : '',
 						aboutImages: includeFlag?.includeImage ? item.aboutImages : []
-				  }
+					}
 		})
 		.filter(item => item !== null)
 	const mergedRoomData = content?.rooms
@@ -57,7 +57,7 @@ export const PreviewAndSave = ({ content }: Props) => {
 						audio: includeFlag?.includeAudio ? item.audio : undefined,
 						description: includeFlag?.includeDescription ? item.description : '',
 						roomImages: includeFlag?.includeImage ? item.roomImages : []
-				  }
+					}
 		})
 		.filter(item => item !== null)
 	const mergedStaffData = content?.staff
@@ -70,7 +70,7 @@ export const PreviewAndSave = ({ content }: Props) => {
 						...item,
 						description: includeFlag?.includeDescription ? item.description : '',
 						staffImages: includeFlag?.includeImage ? item.staffImages : []
-				  }
+					}
 		})
 		.filter(item => item !== null)
 	const mergedContentData: Content = {
@@ -90,12 +90,19 @@ export const PreviewAndSave = ({ content }: Props) => {
 				result = await createCase(caseJourneyData)
 			}
 		} else {
-			const customCaseJourneyData = { caseId: customId, languageId: language?.id, name, abouts, rooms, staff }
+			const customCaseJourneyData = {
+				caseId: customId,
+				languageId: language?.id,
+				name,
+				abouts: abouts?.map(({ includeImage, ...rest }) => rest),
+				rooms: rooms?.map(({ includeImage, ...rest }) => rest),
+				staff: staff?.map(({ includeImage, ...rest }) => rest)
+			}
 			result = await createCustomCase(customCaseJourneyData)
 		}
 
 		if (result?.message === 'OK') {
-			SuccessToast(t('Templates.roomsContentSccessfullyCreated'))
+			SuccessToast(t('Templates.templateSccessfullyCreated'))
 
 			if (currentStep) {
 				setCurrentStep(currentStep + 1)

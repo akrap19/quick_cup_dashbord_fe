@@ -3,5 +3,5 @@ export interface AboutTemplate {
 	includeAudio: boolean
 	includeDescription: boolean
 	includeImage?: boolean
-	includeImages: boolean
+	includeImages?: boolean
 }

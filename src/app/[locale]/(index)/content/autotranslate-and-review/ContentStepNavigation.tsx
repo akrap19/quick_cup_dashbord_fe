@@ -60,7 +60,7 @@ export const ContentStepNavigation = ({ language, languages }: Props) => {
 					{currentStep === 2 && <ManageRoomsContent rooms={content?.rooms} />}
 					{currentStep === 3 && <ManageStaffContent staff={content?.staff} />}
 					{currentStep === 4 && <PreviewAndPublish content={content} />}
-					{currentStep === 5 && <ContentPublished languages={languages} />}
+					{currentStep === 5 && <ContentPublished languages={languages} setContent={setContent} />}
 				</ManageJourneyWrapper>
 			)}
 		</>

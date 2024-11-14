@@ -31,16 +31,15 @@ type Schema = z.infer<typeof formSchema>
 export const AddAboutForm = ({ language, languages }: Props) => {
 	const { abouts, setAbouts } = useManageContentAdd()
 	const { currentStep, totalSteps, setCurrentStep } = useStepsStore()
-	const showInitalContent = abouts && currentStep && currentStep > 1
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: showInitalContent ? abouts[currentStep - 1]?.title : '',
-			description: showInitalContent ? abouts[currentStep - 1]?.description : '',
-			audioId: showInitalContent ? abouts[currentStep - 1]?.audio?.audioId : '',
-			images: showInitalContent ? abouts[currentStep - 1]?.images : [],
+			title: '',
+			description: '',
+			audioId: '',
+			images: [],
 			deletedImages: []
 		}
 	})
@@ -72,9 +71,10 @@ export const AddAboutForm = ({ language, languages }: Props) => {
 
 	const onSubmit = async () => {
 		const { audioId, images } = form.watch()
+		const isInitalContent = abouts && currentStep && currentStep === 1
 
 		if (currentStep && totalSteps) {
-			if (!showInitalContent) {
+			if (isInitalContent) {
 				const aboutForSave = { ...formData, audioId, images, languageId: language?.languageId }
 				setAbouts(aboutForSave)
 			}

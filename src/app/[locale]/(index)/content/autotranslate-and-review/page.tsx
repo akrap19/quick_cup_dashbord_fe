@@ -14,7 +14,7 @@ const AutotranslateAndReviewPage = async ({ searchParams }: Props) => {
 	const { data: languageData } = await getLanguage(searchParams.languageId)
 	const { data: languagesData } = await getLanguageSearch(searchParams, LanguageStatusEnum.DRAFT)
 
-	return <ContentStepNavigation language={languageData?.language} languages={languagesData} />
+	return <ContentStepNavigation language={languageData?.language} languages={languagesData?.languages} />
 }
 
 export default AutotranslateAndReviewPage

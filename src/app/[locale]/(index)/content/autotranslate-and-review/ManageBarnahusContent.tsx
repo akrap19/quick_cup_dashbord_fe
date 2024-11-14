@@ -64,13 +64,6 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 		}
 	})
 
-	const formData = form?.getValues()
-
-	const { fields } = useFieldArray({
-		control: form.control,
-		name: 'items'
-	})
-
 	const handleNextStep = () => {
 		if (currentStep) {
 			setCurrentStep(currentStep + 1)
@@ -97,7 +90,7 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 	}
 
 	const onSubmit = async () => {
-		const formDataTmp: ContentPayload[] = [...formData.items]
+		const formDataTmp: ContentPayload[] = [...getValues('items')]
 		const formValuesCheck = areAllItemsEmptyInArrayObject(formDataTmp)
 		formDataTmp.forEach(obj => {
 			// eslint-disable-next-line
@@ -124,9 +117,16 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 		}
 	}
 
+	const { getValues, control, handleSubmit } = form
+
+	const { fields } = useFieldArray({
+		control,
+		name: 'items'
+	})
+
 	return (
 		<FormProvider {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)}>
+			<form onSubmit={handleSubmit(onSubmit)}>
 				<Box paddingTop={6}>
 					<Stack gap={7}>
 						<Box display="flex" justify="center">
@@ -156,7 +156,6 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 									))}
 								</Stack>
 							</Box>
-							{/* <WorkingHours /> */}
 						</Box>
 					</Stack>
 				</Box>

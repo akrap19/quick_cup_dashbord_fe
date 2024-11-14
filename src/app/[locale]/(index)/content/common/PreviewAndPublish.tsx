@@ -18,6 +18,7 @@ import { Content } from 'api/models/content/content'
 import { publishLanguage } from 'api/services/languages'
 
 import { LanguageLabel } from './LanguageLabel'
+import { useRouter } from 'next/navigation'
 
 interface Props {
 	content?: Content
@@ -25,6 +26,7 @@ interface Props {
 
 export const PreviewAndPublish = ({ content }: Props) => {
 	const t = useTranslations()
+	const { refresh } = useRouter()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const { language, isAllContentEmpty } = useManageContent()
 
@@ -36,6 +38,7 @@ export const PreviewAndPublish = ({ content }: Props) => {
 			if (result?.message === 'OK') {
 				SuccessToast(t('ManageContent.contentSuccessfullyPublished'))
 
+				refresh()
 				if (currentStep) {
 					setCurrentStep(currentStep + 1)
 				}

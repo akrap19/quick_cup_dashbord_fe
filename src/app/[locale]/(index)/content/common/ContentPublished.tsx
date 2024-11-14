@@ -16,9 +16,13 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { Language } from 'api/models/language/language'
 import { ROUTES } from 'parameters'
+import { useStepsStore } from '@/store/steps'
+import { Dispatch, SetStateAction } from 'react'
+import { Content } from 'api/models/content/content'
 
 interface Props {
 	languages: Language[]
+	setContent?: Dispatch<SetStateAction<Content | undefined>>
 }
 
 const formSchema = z.object({
@@ -27,9 +31,10 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-export const ContentPublished = ({ languages }: Props) => {
+export const ContentPublished = ({ languages, setContent }: Props) => {
 	const t = useTranslations()
 	const router = useRouter()
+	const { setCurrentStep } = useStepsStore()
 	const transformedLanguageArray = languages
 		? languages
 				?.filter((language: Language) => language?.autoTranslate)
@@ -50,6 +55,10 @@ export const ContentPublished = ({ languages }: Props) => {
 	const formData = form?.getValues()
 
 	const onSubmit = async () => {
+		setCurrentStep(1)
+		if (setContent) {
+			setContent(undefined)
+		}
 		router.push(`${ROUTES.AUTOTRANSLATE_AND_REVIEW}?languageId=${formData?.language}`)
 	}
 

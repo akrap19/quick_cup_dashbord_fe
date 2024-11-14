@@ -37,7 +37,7 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 						audio: includeFlag?.includeAudio ? item.audio : undefined,
 						description: includeFlag?.includeDescription ? item.description : '',
 						aboutImages: includeFlag?.includeImage ? item.aboutImages : []
-				  }
+					}
 		})
 		.filter(item => item !== null)
 	const mergedRoomData = templateData?.rooms
@@ -51,7 +51,7 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 						audio: includeFlag?.includeAudio ? item.audio : undefined,
 						description: includeFlag?.includeDescription ? item.description : '',
 						roomImages: includeFlag?.includeImage ? item.roomImages : []
-				  }
+					}
 		})
 		.filter(item => item !== null)
 	const mergedStaffData = templateData?.staff
@@ -64,7 +64,7 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 						...item,
 						description: includeFlag?.includeDescription ? item.description : '',
 						staffImages: includeFlag?.includeImage ? item.staffImages : []
-				  }
+					}
 		})
 		.filter(item => item !== null)
 	const mergedContentData: Content = {
@@ -77,9 +77,9 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 		e.preventDefault()
 		const templateData: Template = {
 			name,
-			abouts: abouts?.map(({ ...rest }) => rest),
-			rooms: rooms?.map(({ ...rest }) => rest),
-			staff: staff?.map(({ ...rest }) => rest)
+			abouts: abouts?.map(({ includeImage, ...rest }) => rest),
+			rooms: rooms?.map(({ includeImage, ...rest }) => rest),
+			staff: staff?.map(({ includeImage, ...rest }) => rest)
 		}
 		const result = await createTemplate(templateData)
 

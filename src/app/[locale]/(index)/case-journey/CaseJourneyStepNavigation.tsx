@@ -46,7 +46,7 @@ const CaseJourneyStepNavigation = ({ caseFiles, languages, content, templates, t
 			title: room.title
 		}
 	})
-	const [cards, setCards] = useState<CardBase[]>([])
+	const [cards, setCards] = useState<CardBase[]>(cardsTransformed)
 	const reorderedRooms = cards
 		?.map(shortItem => content?.rooms?.find(longItem => longItem.roomId === shortItem.id))
 		?.filter((item): item is Room => item !== undefined)
@@ -87,8 +87,16 @@ const CaseJourneyStepNavigation = ({ caseFiles, languages, content, templates, t
 	})
 
 	useEffect(() => {
-		setCards(cardsTransformed)
-	}, [])
+		if (JSON.stringify(cardsTransformed) !== JSON.stringify(cards)) {
+			setCards(cardsTransformed)
+		}
+	}, [cardsTransformed])
+
+	useEffect(() => {
+		if (JSON.stringify(cardsTemplateTransformed) !== JSON.stringify(cardsTemplate)) {
+			setCardsTemplate(cardsTemplateTransformed)
+		}
+	}, [cardsTemplateTransformed])
 
 	return (
 		<ManageJourneyWrapper>

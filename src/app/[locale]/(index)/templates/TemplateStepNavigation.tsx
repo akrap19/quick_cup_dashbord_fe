@@ -29,13 +29,15 @@ interface Props {
 
 export const TemplateStepNavigation = ({ templateData }: Props) => {
 	const { currentStep } = useStepsStore()
-	const cardsTransformed: CardBase[] = templateData?.rooms?.map((room: Room) => {
-		return {
-			id: room.roomId,
-			order: room.orderNumber,
-			title: room.title
-		}
-	})
+	const cardsTransformed: CardBase[] = templateData?.rooms
+		? templateData?.rooms?.map((room: Room) => {
+				return {
+					id: room.roomId,
+					order: room.orderNumber,
+					title: room.title
+				}
+			})
+		: []
 	const [cards, setCards] = useState(cardsTransformed)
 	const reorderedRooms = cards
 		?.map(shortItem => templateData?.rooms?.find(longItem => longItem.roomId === shortItem.id))
@@ -53,7 +55,7 @@ export const TemplateStepNavigation = ({ templateData }: Props) => {
 	return (
 		<ManageJourneyWrapper>
 			{currentStep === 1 &&
-				(templateData?.abouts?.length > 0 ? (
+				(templateData?.abouts && templateData?.abouts?.length > 0 ? (
 					<EnterTemplateName />
 				) : (
 					<ManageJourneyIntroWrapper>

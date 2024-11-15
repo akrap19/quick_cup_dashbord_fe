@@ -17,9 +17,10 @@ import { iconContainer } from '../../button/icon-delete-button/IconDeleteButton.
 type Props = InputHTMLAttributes<HTMLInputElement> & {
 	initialAudio?: Audio
 	disableDelete?: boolean
+	onAudioChange?: (audioUrl: string) => void
 }
 
-export const AudioUpload = ({ initialAudio, disableDelete, ...rest }: Props) => {
+export const AudioUpload = ({ initialAudio, disableDelete, onAudioChange, ...rest }: Props) => {
 	const [isAudioPlaying, setIsAudioPlaying] = useState(false)
 	const [audioFile, setAudioFile] = useState<File>()
 	const [audioElement, setAudioElement] = useState<HTMLAudioElement>()
@@ -27,7 +28,8 @@ export const AudioUpload = ({ initialAudio, disableDelete, ...rest }: Props) => 
 
 	const handleFileChange = async (event: any) => {
 		const file = event.target.files[0]
-		const audio = new window.Audio(URL.createObjectURL(file))
+		const audioUrl = URL.createObjectURL(file)
+		const audio = new window.Audio(audioUrl)
 		audio.loop = true
 		const result = await media('Audio', file)
 
@@ -35,13 +37,16 @@ export const AudioUpload = ({ initialAudio, disableDelete, ...rest }: Props) => 
 			handleInputValue(result.data.mediaId)
 			setAudioFile(file)
 			setAudioElement(audio)
+			if (onAudioChange) {
+				onAudioChange(audioUrl)
+			}
 		}
 	}
 
 	const handleDelete = async () => {
 		if (isAudioPlaying) {
 			audioElement?.pause()
-			setIsAudioPlaying(!isAudioPlaying)
+			setIsAudioPlaying(false)
 		}
 
 		if (rest && rest.value) {
@@ -61,6 +66,9 @@ export const AudioUpload = ({ initialAudio, disableDelete, ...rest }: Props) => 
 		handleInputValue('')
 		setAudioFile(undefined)
 		setAudioElement(undefined)
+		if (onAudioChange) {
+			onAudioChange('')
+		}
 	}
 
 	const playAudioFile = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -85,6 +93,9 @@ export const AudioUpload = ({ initialAudio, disableDelete, ...rest }: Props) => 
 			const audio = new window.Audio(initialAudio?.url)
 			audio.loop = true
 			setAudioElement(audio)
+			if (onAudioChange) {
+				onAudioChange(initialAudio?.url)
+			}
 		}
 	}, [])
 

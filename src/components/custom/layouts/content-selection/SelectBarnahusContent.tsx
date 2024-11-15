@@ -16,7 +16,7 @@ import { About } from 'api/models/content/about'
 import { SelectContentItem } from './SelectContentItem'
 
 interface Props {
-	abouts: About[]
+	abouts?: About[]
 }
 
 const formSchema = z.object({

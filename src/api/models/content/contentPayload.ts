@@ -7,7 +7,7 @@ export interface ContentPayload {
 	roomTranslationId?: string
 	staffId?: string
 	staffTranslationId?: string
-	languageId?: string
+	languageId?: string | null
 	name?: string | null
 	title?: string | null
 	description?: string | null

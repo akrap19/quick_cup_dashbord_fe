@@ -16,6 +16,7 @@ import { Language } from 'api/models/language/language'
 
 import { AddAboutForm } from './AddAboutForm'
 import { PreviewAndPublish } from './PreviewAndPublish'
+import { ContentPublished } from './ContentSaved'
 
 interface Props {
 	languages: Language[]
@@ -32,7 +33,7 @@ export const AddAboutLanguageNavigation = ({ languages }: Props) => {
 	})
 
 	useSteps({
-		totalSteps: languages?.length + 1,
+		totalSteps: languages?.length + 2,
 		currentStep: 1
 	})
 
@@ -71,7 +72,7 @@ export const AddAboutLanguageNavigation = ({ languages }: Props) => {
 										))}
 										{languages.map((language: Language) => (
 											<Tabs.Panel value={language.name}>
-												<AddAboutForm language={language} languages={languages} />
+												<AddAboutForm languages={languages} />
 											</Tabs.Panel>
 										))}
 									</Tabs>
@@ -80,6 +81,7 @@ export const AddAboutLanguageNavigation = ({ languages }: Props) => {
 						</Box>
 					)}
 					{currentStep === languages?.length + 1 && <PreviewAndPublish languages={languages} />}
+					{currentStep === languages?.length + 2 && <ContentPublished />}
 				</ManageJourneyWrapper>
 			)}
 		</Box>

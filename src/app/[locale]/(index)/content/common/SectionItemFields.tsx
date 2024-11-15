@@ -13,9 +13,11 @@ import { Audio } from 'api/models/common/audio'
 interface Props {
 	initialAudio?: Audio
 	initialImagesUrls?: string[]
+	onPhotosChange?: (photos: string[]) => void
+	onAudioChange?: (audioUrl: string) => void
 }
 
-export const SectionItemFields = ({ initialAudio, initialImagesUrls }: Props) => {
+export const SectionItemFields = ({ initialAudio, initialImagesUrls, onPhotosChange, onAudioChange }: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -46,7 +48,7 @@ export const SectionItemFields = ({ initialAudio, initialImagesUrls }: Props) =>
 						{t('ManageContent.audioTranslation')}
 					</Text>
 					<FormControl name="audioId">
-						<AudioUpload initialAudio={initialAudio} />
+						<AudioUpload initialAudio={initialAudio} onAudioChange={onAudioChange} />
 						<FormControl.Message />
 					</FormControl>
 				</Stack>
@@ -55,7 +57,7 @@ export const SectionItemFields = ({ initialAudio, initialImagesUrls }: Props) =>
 						{t('General.photos')}
 					</Text>
 					<FormControl name="images">
-						<PhotoUpload initialImagesUrls={initialImagesUrls} />
+						<PhotoUpload initialImagesUrls={initialImagesUrls} onPhotosChange={onPhotosChange} />
 						<FormControl.Message />
 					</FormControl>
 				</Stack>

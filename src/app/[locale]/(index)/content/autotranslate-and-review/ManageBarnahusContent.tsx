@@ -84,7 +84,7 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 			?.find(about => about?.aboutId === aboutId)
 			?.aboutImages?.map(image => image?.aboutImageId)
 
-		const deletedImagesIds = aboutImagesIds?.filter(id => !imagesIds?.includes(id))
+		const deletedImagesIds = aboutImagesIds?.filter(id => !imagesIds?.includes(id ?? ''))
 
 		return deletedImagesIds
 	}
@@ -96,7 +96,7 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 			// eslint-disable-next-line
 			obj.languageId = language?.id
 			// eslint-disable-next-line
-			obj.deletedImages = handleDeletedAboutImagesId(obj.aboutId, obj.images)
+			obj.deletedImages = handleDeletedAboutImagesId(obj.aboutId, obj.images) as any
 			// eslint-disable-next-line
 			obj.images = handleAboutImagesId(obj.aboutId, obj.images)
 		})

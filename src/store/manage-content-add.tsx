@@ -8,6 +8,10 @@ type ManageContentAdd = {
 	setRooms: (room: ContentPayload) => void
 	staff?: ContentPayload[]
 	setStaff: (staff: ContentPayload) => void
+	imagesToDisplay?: string[]
+	setImagesToDisplay: (imagesToDisplay: string[]) => void
+	audioToDisplay?: string[]
+	setAudioToDisplay: (audioToDisplay: string) => void
 }
 
 export const useManageContentAdd = create<ManageContentAdd>(set => ({
@@ -16,5 +20,10 @@ export const useManageContentAdd = create<ManageContentAdd>(set => ({
 	rooms: [],
 	setRooms: room => set(state => ({ rooms: [...(state.rooms || []), room] })),
 	staff: [],
-	setStaff: staff => set(state => ({ staff: [...(state.staff || []), staff] }))
+	setStaff: staff => set(state => ({ staff: [...(state.staff || []), staff] })),
+	imagesToDisplay: [],
+	setImagesToDisplay: imagesToDisplay => set(() => ({ imagesToDisplay })),
+	audioToDisplay: [],
+	setAudioToDisplay: audioToDisplay =>
+		set(state => ({ audioToDisplay: [...(state.audioToDisplay || []), audioToDisplay] }))
 }))

@@ -12,9 +12,9 @@ import { Language } from 'api/models/language/language'
 import { SectionItemFields } from '../common/SectionItemFields'
 import { useManageContentAdd } from '@/store/manage-content-add'
 import { translateLanguageContent } from 'api/services/languages'
+import { useState } from 'react'
 
 interface Props {
-	language: Language
 	languages: Language[]
 }
 
@@ -28,8 +28,9 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-export const AddAboutForm = ({ language, languages }: Props) => {
-	const { abouts, setAbouts } = useManageContentAdd()
+export const AddAboutForm = ({ languages }: Props) => {
+	const { abouts, setAbouts, setImagesToDisplay, setAudioToDisplay } = useManageContentAdd()
+	const [istranslating, setIsTranslating] = useState(false)
 	const { currentStep, totalSteps, setCurrentStep } = useStepsStore()
 
 	const form = useForm<Schema>({
@@ -71,12 +72,16 @@ export const AddAboutForm = ({ language, languages }: Props) => {
 
 	const onSubmit = async () => {
 		const { audioId, images } = form.watch()
+		setIsTranslating(true)
 		const isInitalContent = abouts && currentStep && currentStep === 1
 
 		if (currentStep && totalSteps) {
 			if (isInitalContent) {
-				const aboutForSave = { ...formData, audioId, images, languageId: language?.languageId }
+				const aboutForSave = { ...formData, audioId, images, languageId: languages[0]?.languageId }
 				setAbouts(aboutForSave)
+				if (audioId === null) {
+					setAudioToDisplay('')
+				}
 			}
 
 			if (currentStep < languages?.length) {
@@ -85,21 +90,30 @@ export const AddAboutForm = ({ language, languages }: Props) => {
 					description: await translate('description'),
 					audioId,
 					images,
-					languageId: language?.languageId
+					languageId: languages[currentStep]?.languageId
 				}
 				setAbouts(aboutForSave)
 			}
 
+			setIsTranslating(false)
 			setCurrentStep(currentStep + 1)
 		}
+	}
+
+	const onPhotosChange = (photos: string[]) => {
+		setImagesToDisplay(photos)
+	}
+
+	const onAudioChange = (audioUrl: string) => {
+		setAudioToDisplay(audioUrl)
 	}
 
 	return (
 		<Box paddingTop={6}>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<SectionItemFields />
-					<Actions />
+					<SectionItemFields onPhotosChange={onPhotosChange} onAudioChange={onAudioChange} />
+					<Actions disableSubmit={istranslating} />
 				</form>
 			</FormProvider>
 		</Box>

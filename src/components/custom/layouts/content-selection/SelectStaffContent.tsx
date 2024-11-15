@@ -17,7 +17,7 @@ import { requiredString } from 'schemas'
 import { SelectStaffContentItem } from './SelectStaffContentItem'
 
 interface Props {
-	staffs: Staff[]
+	staffs?: Staff[]
 }
 
 const formSchema = z.object({
@@ -39,13 +39,15 @@ export const SelectStaffContent = ({ staffs }: Props) => {
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 	const defaultValues = {
-		items: staffs.map((staff: Staff) => ({
-			staffId: staff.staffId,
-			includeName: false,
-			includeDescription: false,
-			includeImage: false,
-			includeImages: false
-		}))
+		items: staffs
+			? staffs.map((staff: Staff) => ({
+					staffId: staff.staffId,
+					includeName: false,
+					includeDescription: false,
+					includeImage: false,
+					includeImages: false
+				}))
+			: []
 	}
 
 	const form = useForm<Schema>({

@@ -39,25 +39,29 @@ interface Props {
 const CaseJourneyStepNavigation = ({ caseFiles, languages, content, templates, template }: Props) => {
 	const { currentStep } = useStepsStore()
 	const { type } = useCaseJourneyStore()
-	const cardsTransformed: CardBase[] = content?.rooms?.map((room: Room) => {
-		return {
-			id: room.roomId,
-			order: room.orderNumber,
-			title: room.title
-		}
-	})
+	const cardsTransformed: CardBase[] = content?.rooms
+		? content?.rooms?.map((room: Room) => {
+				return {
+					id: room.roomId,
+					order: room.orderNumber,
+					title: room.title
+				}
+			})
+		: []
 	const [cards, setCards] = useState<CardBase[]>(cardsTransformed)
 	const reorderedRooms = cards
 		?.map(shortItem => content?.rooms?.find(longItem => longItem.roomId === shortItem.id))
 		?.filter((item): item is Room => item !== undefined)
 
-	const cardsTemplateTransformed: CardBase[] = template?.rooms?.map((room: Room) => {
-		return {
-			id: room.roomId,
-			order: room.orderNumber,
-			title: room.title
-		}
-	})
+	const cardsTemplateTransformed: CardBase[] = template?.rooms
+		? template?.rooms?.map((room: Room) => {
+				return {
+					id: room.roomId,
+					order: room.orderNumber,
+					title: room.title
+				}
+			})
+		: []
 	const [cardsTemplate, setCardsTemplate] = useState(cardsTemplateTransformed)
 	const reorderedTemplateRooms = cards
 		?.map(shortItem => template?.rooms?.find(longItem => longItem.roomId === shortItem.id))

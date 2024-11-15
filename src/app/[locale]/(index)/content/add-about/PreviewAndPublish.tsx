@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { FormEvent } from 'react'
+import { FormEvent, useState } from 'react'
 
 import { Actions } from '@/components/custom/layouts/manage-journey'
 // import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
@@ -14,8 +14,16 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
-import { publishLanguage } from 'api/services/languages'
 import { Language } from 'api/models/language/language'
+import { useManageContentAdd } from '@/store/manage-content-add'
+import { Loader } from '@/components/custom/loader/Loader'
+import { MobilePreview } from '@/components/custom/mobile-preview'
+import { SearchDropdown } from '@/components/custom/search-dropdown'
+import { Base } from 'api/models/common/base'
+import { tokens } from '@/style/theme.css'
+import { createAboutFull } from 'api/services/content/about'
+import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
+import { ContentPayload } from 'api/models/content/contentPayload'
 // import { useManageContentAdd } from '@/store/manage-content-add'
 // import { LanguageLabel } from '../common/LanguageLabel'
 
@@ -25,18 +33,46 @@ interface Props {
 
 export const PreviewAndPublish = ({ languages }: Props) => {
 	const t = useTranslations()
-	// const { abouts } = useManageContentAdd()
+	const { abouts, imagesToDisplay, audioToDisplay, setAbouts } = useManageContentAdd()
 	const { currentStep, setCurrentStep } = useStepsStore()
-	const { language, isAllContentEmpty } = useManageContent()
+	const { isAllContentEmpty } = useManageContent()
+	const transformedLanguageArray: Base[] = languages?.map((language: Language) => {
+		return {
+			id: language.languageId,
+			name: language.name
+		}
+	})
+	const [currentLanguage, setCurrentLanguage] = useState<Base>(transformedLanguageArray[0])
+	const aboutToShow = abouts?.map((about: any) => ({
+		languageId: about.languageId,
+		title: about.title,
+		description: about.description,
+		audioURL: audioToDisplay ? audioToDisplay[0] : [],
+		aboutImages: imagesToDisplay?.map(imageUrl => ({
+			url: imageUrl
+		}))
+	}))
 
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		if (language) {
-			const result = await publishLanguage(language?.id)
+
+		if (abouts) {
+			const transformedData = {
+				translations: abouts?.map(about => ({
+					languageId: replaceEmptyStringWithNull(about.languageId),
+					title: replaceEmptyStringWithNull(about.title),
+					description: replaceEmptyStringWithNull(about.description),
+					audioId: replaceEmptyStringWithNull(about.audioId)
+				})),
+				images: abouts[abouts?.length - 1]?.images || [],
+				deletedImages: abouts[0]?.deletedImages || []
+			}
+
+			const result = await createAboutFull(transformedData)
 
 			if (result?.message === 'OK') {
+				setAbouts({} as ContentPayload)
 				SuccessToast(t('ManageContent.contentSuccessfullyPublished'))
-
 				if (currentStep) {
 					setCurrentStep(currentStep + 1)
 				}
@@ -62,27 +98,39 @@ export const PreviewAndPublish = ({ languages }: Props) => {
 							</Box>
 						</Box>
 					</Stack>
-					{/* <Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
-						{content ? (
+					<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
+						{abouts && abouts[0] ? (
 							<>
-								<LanguageLabel language={language?.name} />
-								<MobilePreview content={content} />
-							</>
-						) : isAllContentEmpty() ? (
-							<ManageJourneyIntroWrapper>
-								<NoListData
-									title="ManageContent.noContentToBePublishedTitle"
-									description="ManageContent.noContentToBePublishedDescription"
-									setNavbarItems={false}
-									buttonLabel="ManageContent.add"
-									onClick={() => setCurrentStep(2)}
-									distanceFromTop="0px"
+								<Box style={{ right: tokens.spacing[5], width: '280px' }} position="absolute">
+									<SearchDropdown
+										name="language"
+										placeholder="General.language"
+										value={currentLanguage.id}
+										options={transformedLanguageArray}
+										isFilter
+										setValue={setCurrentLanguage}
+									/>
+								</Box>
+								<MobilePreview
+									content={{ abouts: aboutToShow?.filter(about => about.languageId === currentLanguage.id) as any[] }}
+									defaultContentType={'abouts'}
 								/>
-							</ManageJourneyIntroWrapper>
+							</>
 						) : (
+							// ) : isAllContentEmpty() ? (
+							// 	<ManageJourneyIntroWrapper>
+							// 		<NoListData
+							// 			title="ManageContent.noContentToBePublishedTitle"
+							// 			description="ManageContent.noContentToBePublishedDescription"
+							// 			setNavbarItems={false}
+							// 			buttonLabel="ManageContent.add"
+							// 			onClick={() => setCurrentStep(1)}
+							// 			distanceFromTop="0px"
+							// 		/>
+							// 	</ManageJourneyIntroWrapper>
 							<Loader />
 						)}
-					</Box> */}
+					</Box>
 				</Stack>
 			</Box>
 			<Actions customSubmitLabel="General.publish" disableSubmit={isAllContentEmpty()} />

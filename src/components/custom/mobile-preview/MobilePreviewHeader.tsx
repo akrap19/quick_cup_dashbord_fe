@@ -24,7 +24,7 @@ export const MobilePreviewHeader = ({ contentTypes, contentType, handleContentTy
 
 	return (
 		<Inline justifyContent="space-between">
-			<Button type="button" variant="adaptive" onClick={handleSteps}>
+			<Button disabled={true} type="button" variant="adaptive" onClick={handleSteps}>
 				<Box className={styles.mobilePreviewBackButtonWrapper}>
 					<LeftArrowIcon size="xlarge" color="neutral.900" />
 				</Box>

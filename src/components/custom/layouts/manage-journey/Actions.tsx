@@ -19,7 +19,7 @@ export const Actions = ({ customSubmitLabel, disableSubmit }: Props) => {
 	const t = useTranslations()
 	const formContext = useFormContext()
 	// const { currentStep, setCurrentStep } = useStepsStore()
-	const submitDisabled = formContext ? !formContext?.formState.isValid : disableSubmit || false
+	const submitDisabled = disableSubmit ? disableSubmit : formContext ? !formContext?.formState.isValid : false
 
 	// const handleBack = () => {
 	// 	if (currentStep) {

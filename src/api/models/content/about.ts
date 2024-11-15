@@ -1,8 +1,8 @@
 import { Audio } from '../common/audio'
 
 export interface AboutImage {
-	aboutImageId: string
-	mediaId: string
+	aboutImageId?: string
+	mediaId?: string
 	url: string
 }
 

@@ -15,9 +15,10 @@ import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButt
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
 	initialImagesUrls?: string[]
+	onPhotosChange?: (photos: string[]) => void
 }
 
-export const PhotoUpload = ({ initialImagesUrls, ...rest }: Props) => {
+export const PhotoUpload = ({ initialImagesUrls, onPhotosChange, ...rest }: Props) => {
 	const t = useTranslations()
 	const [photos, setPhotos] = useState<string[]>([])
 	const [mediaId, setMediaId] = useState<string[]>([])
@@ -54,7 +55,10 @@ export const PhotoUpload = ({ initialImagesUrls, ...rest }: Props) => {
 				setMediaId(newUploadedMediaId)
 				handleInputValue(newUploadedMediaId)
 
-				// Reset the input value to allow the same file to be uploaded again
+				if (onPhotosChange) {
+					onPhotosChange(newPhotosForUpload)
+				}
+
 				if (fileInputRef.current) {
 					fileInputRef.current.value = ''
 				}
@@ -99,6 +103,11 @@ export const PhotoUpload = ({ initialImagesUrls, ...rest }: Props) => {
 		setPhotos(updatedPhotos)
 		setMediaId(updatedMediaIds)
 		handleInputValue(updatedMediaIds)
+
+		// **Notify parent component about the updated photos**
+		if (onPhotosChange) {
+			onPhotosChange(updatedPhotos)
+		}
 	}
 
 	const handleInputValue = (value: any) => {

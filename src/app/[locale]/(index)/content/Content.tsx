@@ -10,6 +10,7 @@ import { Stack } from '@/components/layout/stack'
 import { useManageContent } from '@/store/manage-content'
 import { Base } from 'api/models/common/base'
 import { Language } from 'api/models/language/language'
+import { LanguageStatusEnum } from 'enums/languageStatusEnum'
 import { ROUTES } from 'parameters'
 
 import { ManageContentColumn, columns } from './columns'
@@ -43,6 +44,9 @@ export const Content = <TData, TValue>({
 			updated: format(item.updated, 'dd.MM.yyyy HH:mm')
 		}
 	})
+	const gotDefaultLanguage =
+		languages?.some((language: Language) => language.isDefault && language.status === LanguageStatusEnum.PUBLISHED) ??
+		false
 
 	const handleAddContent = () => {
 		if (currentLanguage) {
@@ -51,36 +55,33 @@ export const Content = <TData, TValue>({
 		}
 	}
 
+	const handleAddContentInDefaultLanguage = () => {
+		const defaultLanguage = languages?.find(language => language.isDefault)
+
+		if (defaultLanguage) {
+			setLanguage({ id: defaultLanguage?.languageId, name: defaultLanguage?.name })
+			push(ROUTES.ADD_CONTENT)
+		}
+	}
+
 	return (
-		<>
-			{/* {contentTableData?.length > 0 && (
-				<Box position="absolute" style={{ marginTop: `-44px`, right: tokens.spacing[16] }}>
-					{currentLanguage?.autoTranslate ? (
-						<AddButton
-							buttonLabel={t('ManageContent.addAndReviewNewContentButtonLabel')}
-							buttonLink={`${ROUTES.AUTOTRANSLATE_AND_REVIEW}?languageId=${currentLanguage?.languageId}`}
-						/>
-					) : (
-						<AddButton buttonLabel={t('ManageContent.add')} onClick={handleAddContent} />
-					)}
-				</Box>
-			)} */}
-			<Box paddingTop={6}>
-				<Stack gap={4}>
-					{contentData && (
-						<Inputs
-							data={contentTableData}
-							languages={languages}
-							buttonLabel={contentData?.buttonLabel}
-							buttonLink={contentData?.buttonLink}
-							languageValue={languageValue}
-							setLanguageValue={setLanguageValue}
-						/>
-					)}
-					{contentTableData ? (
-						contentTableData?.length > 0 ? (
-							<DataTable columns={columns} data={contentTableDataWithFormatedDate} contentSection={contentSection} />
-						) : currentLanguage?.autoTranslate ? (
+		<Box paddingTop={6}>
+			<Stack gap={4}>
+				{contentData && (
+					<Inputs
+						data={contentTableData}
+						languages={languages}
+						buttonLabel={contentData?.buttonLabel}
+						buttonLink={contentData?.buttonLink}
+						languageValue={languageValue}
+						setLanguageValue={setLanguageValue}
+					/>
+				)}
+				{contentTableData ? (
+					contentTableData?.length > 0 ? (
+						<DataTable columns={columns} data={contentTableDataWithFormatedDate} contentSection={contentSection} />
+					) : currentLanguage?.autoTranslate ? (
+						gotDefaultLanguage ? (
 							<NoListData
 								navbarTitle="General.content"
 								title="ManageContent.addAndReviewNewContentTitle"
@@ -93,19 +94,29 @@ export const Content = <TData, TValue>({
 						) : (
 							<NoListData
 								navbarTitle="General.content"
-								title="ManageContent.contentNotAddedTitle"
-								description="ManageContent.contentNotAddedDescription"
+								title="ManageContent.contentNotAddedInDefaultLanguageTitle"
+								description="ManageContent.contentNotAddedInDefaultLanguageDescription"
 								buttonLabel="ManageContent.add"
-								onClick={handleAddContent}
+								onClick={handleAddContentInDefaultLanguage}
 								distanceFromTop="8vh"
 								setNavbarItems={false}
 							/>
 						)
 					) : (
-						<Loader />
-					)}
-				</Stack>
-			</Box>
-		</>
+						<NoListData
+							navbarTitle="General.content"
+							title="ManageContent.contentNotAddedTitle"
+							description="ManageContent.contentNotAddedDescription"
+							buttonLabel="ManageContent.add"
+							onClick={handleAddContent}
+							distanceFromTop="8vh"
+							setNavbarItems={false}
+						/>
+					)
+				) : (
+					<Loader />
+				)}
+			</Stack>
+		</Box>
 	)
 }

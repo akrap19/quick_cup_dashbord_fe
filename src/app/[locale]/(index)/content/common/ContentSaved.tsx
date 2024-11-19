@@ -10,7 +10,11 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
 
-export const ContentPublished = () => {
+interface Props {
+	section: string
+}
+
+export const ContentSaved = ({ section }: Props) => {
 	const t = useTranslations()
 	const router = useRouter()
 	const { setCurrentStep } = useStepsStore()
@@ -21,15 +25,15 @@ export const ContentPublished = () => {
 				<ManageJourneyIntroWrapper>
 					<Stack gap={6} alignItems="center">
 						<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
-							{t('ManageContent.aboutPublishedTitle')}
+							{t('ManageContent.publishedTitle', { section: section })}
 						</Text>
 						<Text fontSize="small" color="neutral.800" textAlign="center">
-							{t('ManageContent.aboutPublishedDescription')}
+							{t('ManageContent.publishedDescription', { section: section })}
 						</Text>
 						<Box width="100%" style={{ maxWidth: '20.5rem' }}>
 							<Stack gap={6}>
 								<Button type="submit" onClick={() => setCurrentStep(1)}>
-									{t('ManageContent.addAnotherAbout')}
+									{t('ManageContent.addAnother', { section: section })}
 								</Button>
 								<Button onClick={() => router.back()} variant="secondary">
 									{t('ManageContent.backToContentPage')}

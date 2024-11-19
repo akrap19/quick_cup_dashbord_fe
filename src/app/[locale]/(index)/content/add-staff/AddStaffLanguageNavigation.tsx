@@ -15,6 +15,8 @@ import { useStepsStore } from '@/store/steps'
 import { Language } from 'api/models/language/language'
 
 import { AddStaffForm } from './AddStaffForm'
+import { ContentSaved } from '../common/ContentSaved'
+import { PreviewAndPublish } from './PreviewAndPublish'
 
 interface Props {
 	languages: Language[]
@@ -31,7 +33,7 @@ export const AddStaffLanguageNavigation = ({ languages }: Props) => {
 	})
 
 	useSteps({
-		totalSteps: languages.length,
+		totalSteps: languages.length + 2,
 		currentStep: 1
 	})
 
@@ -41,41 +43,45 @@ export const AddStaffLanguageNavigation = ({ languages }: Props) => {
 				<Loader />
 			) : (
 				<ManageJourneyWrapper>
-					<Box paddingTop={6}>
-						<Stack gap={6}>
-							<Stack gap={4}>
-								<Box display="flex" justify="center">
-									<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
-										{t('ManageContent.addStaff')}
-									</Text>
-								</Box>
-								<Box display="flex" justify="center" textAlign="center">
-									<Box style={{ maxWidth: '33rem' }}>
-										<Text fontSize="small" color="neutral.800">
-											{t('ManageContent.addStaffDescription')}
+					{currentStep && currentStep <= languages?.length && (
+						<Box paddingTop={6}>
+							<Stack gap={6}>
+								<Stack gap={4}>
+									<Box display="flex" justify="center">
+										<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
+											{t('ManageContent.addStaff')}
 										</Text>
 									</Box>
+									<Box display="flex" justify="center" textAlign="center">
+										<Box style={{ maxWidth: '33rem' }}>
+											<Text fontSize="small" color="neutral.800">
+												{t('ManageContent.addStaffDescription')}
+											</Text>
+										</Box>
+									</Box>
+								</Stack>
+								<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
+									<Tabs size="large" variant="span">
+										{languages.map((language: Language, index: number) => (
+											<Tabs.Tab
+												value={language.name}
+												defaultTab={index === 0}
+												currentlyActiveTab={index + 1 === currentStep}>
+												{language.name + (language.autoTranslate ? ` (${t('ManageContent.autoTranslate')})` : '')}
+											</Tabs.Tab>
+										))}
+										{languages.map((language: Language) => (
+											<Tabs.Panel value={language.name}>
+												<AddStaffForm languages={languages} />
+											</Tabs.Panel>
+										))}
+									</Tabs>
 								</Box>
 							</Stack>
-							<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
-								<Tabs size="large" variant="span">
-									{languages.map((language: Language, index: number) => (
-										<Tabs.Tab
-											value={language.name}
-											defaultTab={index === 0}
-											currentlyActiveTab={index + 1 === currentStep}>
-											{language.name + (language.autoTranslate ? ` (${t('ManageContent.autoTranslate')})` : '')}
-										</Tabs.Tab>
-									))}
-									{languages.map((language: Language) => (
-										<Tabs.Panel value={language.name}>
-											<AddStaffForm language={language} />
-										</Tabs.Panel>
-									))}
-								</Tabs>
-							</Box>
-						</Stack>
-					</Box>
+						</Box>
+					)}
+					{currentStep === languages?.length + 1 && <PreviewAndPublish languages={languages} />}
+					{currentStep === languages?.length + 2 && <ContentSaved section="staff" />}
 				</ManageJourneyWrapper>
 			)}
 		</Box>

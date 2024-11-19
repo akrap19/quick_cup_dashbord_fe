@@ -12,9 +12,9 @@ import { Language } from 'api/models/language/language'
 import { SectionItemFields } from '../common/SectionItemFields'
 import { translateLanguageContent } from 'api/services/languages'
 import { useManageContentAdd } from '@/store/manage-content-add'
+import { useState } from 'react'
 
 interface Props {
-	language: Language
 	languages: Language[]
 }
 
@@ -28,8 +28,9 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-export const AddRoomForm = ({ language, languages }: Props) => {
-	const { rooms, setRooms } = useManageContentAdd()
+export const AddRoomForm = ({ languages }: Props) => {
+	const { rooms, setRooms, setImagesToDisplay, setAudioToDisplay } = useManageContentAdd()
+	const [istranslating, setIsTranslating] = useState(false)
 	const { totalSteps, currentStep, setCurrentStep } = useStepsStore()
 
 	const form = useForm<Schema>({
@@ -39,7 +40,8 @@ export const AddRoomForm = ({ language, languages }: Props) => {
 			title: '',
 			description: '',
 			audioId: '',
-			images: []
+			images: [],
+			deletedImages: []
 		}
 	})
 
@@ -65,16 +67,17 @@ export const AddRoomForm = ({ language, languages }: Props) => {
 			return translation
 		}
 
-		return null
+		return ''
 	}
 
 	const onSubmit = async () => {
 		const { audioId, images } = form.watch()
+		setIsTranslating(true)
 		const isInitalContent = rooms && currentStep && currentStep === 1
 
 		if (currentStep && totalSteps) {
 			if (isInitalContent) {
-				const aboutForSave = { ...formData, audioId, images, languageId: language?.languageId }
+				const aboutForSave = { ...formData, audioId, images, languageId: languages[0]?.languageId }
 				setRooms(aboutForSave)
 			}
 
@@ -84,21 +87,30 @@ export const AddRoomForm = ({ language, languages }: Props) => {
 					description: await translate('description'),
 					audioId,
 					images,
-					languageId: language?.languageId
+					languageId: languages[currentStep]?.languageId
 				}
 				setRooms(aboutForSave)
 			}
 
+			setIsTranslating(false)
 			setCurrentStep(currentStep + 1)
 		}
+	}
+
+	const onPhotosChange = (photos: string[]) => {
+		setImagesToDisplay(photos)
+	}
+
+	const onAudioChange = (audioUrl: string) => {
+		setAudioToDisplay(audioUrl)
 	}
 
 	return (
 		<Box paddingTop={6}>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<SectionItemFields />
-					<Actions />
+					<SectionItemFields includePhotoInfo={true} onPhotosChange={onPhotosChange} onAudioChange={onAudioChange} />
+					<Actions disableSubmit={istranslating} />
 				</form>
 			</FormProvider>
 		</Box>

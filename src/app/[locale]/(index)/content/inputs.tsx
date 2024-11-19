@@ -122,7 +122,9 @@ export const Inputs = ({ data, languages, buttonLabel, buttonLink, languageValue
 							alwaysShowSearch
 						/>
 					</Box>
-					<AddButton size="medium" variant="secondary" buttonLabel={t(buttonLabel)} buttonLink={buttonLink} />
+					{data?.length > 0 && (
+						<AddButton size="medium" variant="secondary" buttonLabel={t(buttonLabel)} buttonLink={buttonLink} />
+					)}
 				</Inline>
 			) : (
 				<DataTableActions size="medium" onEdit={handleEdit} onDelete={() => confirmDialog.toggleOpened()} />

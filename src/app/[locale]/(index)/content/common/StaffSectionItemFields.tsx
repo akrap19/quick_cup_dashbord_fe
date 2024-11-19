@@ -10,12 +10,16 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { tokens } from '@/style/theme.css'
+import { Inline } from '@/components/layout/inline'
+import { InputInfo } from '@/components/inputs/input-info'
 
 interface Props {
 	initialImagesUrls?: string[]
+	includePhotoInfo?: boolean
+	onPhotosChange?: (photos: string[]) => void
 }
 
-export const StaffSectionItemFields = ({ initialImagesUrls }: Props) => {
+export const StaffSectionItemFields = ({ initialImagesUrls, includePhotoInfo, onPhotosChange }: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -23,11 +27,14 @@ export const StaffSectionItemFields = ({ initialImagesUrls }: Props) => {
 			<Stack gap={6}>
 				<Box position="relative">
 					<Stack gap={4}>
-						<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-							{t('ManageContent.staffPhoto')}
-						</Text>
+						<Inline gap={4} alignItems="center">
+							<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
+								{t('ManageContent.staffPhoto')}
+							</Text>
+							{includePhotoInfo && <InputInfo infoText={'ManageContent.addPhotoInfo'} />}
+						</Inline>
 						<FormControl name="images">
-							<PhotoUpload initialImagesUrls={initialImagesUrls} />
+							<PhotoUpload initialImagesUrls={initialImagesUrls} onPhotosChange={onPhotosChange} />
 							<FormControl.Message />
 						</FormControl>
 					</Stack>

@@ -16,7 +16,7 @@ import { Language } from 'api/models/language/language'
 
 import { AddAboutForm } from './AddAboutForm'
 import { PreviewAndPublish } from './PreviewAndPublish'
-import { ContentPublished } from './ContentSaved'
+import { ContentSaved } from '../common/ContentSaved'
 
 interface Props {
 	languages: Language[]
@@ -81,7 +81,7 @@ export const AddAboutLanguageNavigation = ({ languages }: Props) => {
 						</Box>
 					)}
 					{currentStep === languages?.length + 1 && <PreviewAndPublish languages={languages} />}
-					{currentStep === languages?.length + 2 && <ContentPublished />}
+					{currentStep === languages?.length + 2 && <ContentSaved section="about" />}
 				</ManageJourneyWrapper>
 			)}
 		</Box>

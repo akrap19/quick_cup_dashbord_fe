@@ -20,9 +20,10 @@ type Props = {
 	description: string
 	buttonLabel: string
 	buttonLink?: string
-	onClick?: MouseEventHandler<HTMLButtonElement>
 	distanceFromTop?: string
 	setNavbarItems?: boolean
+	disableButton?: boolean
+	onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
 export const NoListData = ({
@@ -31,9 +32,10 @@ export const NoListData = ({
 	description,
 	buttonLabel,
 	buttonLink,
-	onClick,
 	distanceFromTop,
-	setNavbarItems = true
+	setNavbarItems = true,
+	disableButton,
+	onClick
 }: Props) => {
 	const t = useTranslations()
 	const { navbarIsLoading } = useNavbarItemsStore()

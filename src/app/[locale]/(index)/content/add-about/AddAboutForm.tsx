@@ -67,7 +67,7 @@ export const AddAboutForm = ({ languages }: Props) => {
 			return translation
 		}
 
-		return null
+		return ''
 	}
 
 	const onSubmit = async () => {
@@ -112,7 +112,7 @@ export const AddAboutForm = ({ languages }: Props) => {
 		<Box paddingTop={6}>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<SectionItemFields onPhotosChange={onPhotosChange} onAudioChange={onAudioChange} />
+					<SectionItemFields includePhotoInfo={true} onPhotosChange={onPhotosChange} onAudioChange={onAudioChange} />
 					<Actions disableSubmit={istranslating} />
 				</form>
 			</FormProvider>

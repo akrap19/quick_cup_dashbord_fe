@@ -15,6 +15,8 @@ import { useStepsStore } from '@/store/steps'
 import { Language } from 'api/models/language/language'
 
 import { AddRoomForm } from './AddRoomForm'
+import { PreviewAndPublish } from './PreviewAndPublish'
+import { ContentSaved } from '../common/ContentSaved'
 
 interface Props {
 	languages: Language[]
@@ -31,7 +33,7 @@ export const AddRoomLanguageNavigation = ({ languages }: Props) => {
 	})
 
 	useSteps({
-		totalSteps: languages.length + 1,
+		totalSteps: languages.length + 2,
 		currentStep: 1
 	})
 
@@ -70,7 +72,7 @@ export const AddRoomLanguageNavigation = ({ languages }: Props) => {
 										))}
 										{languages.map((language: Language) => (
 											<Tabs.Panel value={language.name}>
-												<AddRoomForm language={language} languages={languages} />
+												<AddRoomForm languages={languages} />
 											</Tabs.Panel>
 										))}
 									</Tabs>
@@ -78,7 +80,8 @@ export const AddRoomLanguageNavigation = ({ languages }: Props) => {
 							</Stack>
 						</Box>
 					)}
-					{currentStep === languages?.length + 1 && <>Kraj........</>}
+					{currentStep === languages?.length + 1 && <PreviewAndPublish languages={languages} />}
+					{currentStep === languages?.length + 2 && <ContentSaved section="room" />}
 				</ManageJourneyWrapper>
 			)}
 		</Box>

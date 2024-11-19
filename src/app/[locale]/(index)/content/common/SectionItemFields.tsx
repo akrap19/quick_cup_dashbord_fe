@@ -9,15 +9,24 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { Audio } from 'api/models/common/audio'
+import { Inline } from '@/components/layout/inline'
+import { InputInfo } from '@/components/inputs/input-info'
 
 interface Props {
 	initialAudio?: Audio
 	initialImagesUrls?: string[]
+	includePhotoInfo?: boolean
 	onPhotosChange?: (photos: string[]) => void
 	onAudioChange?: (audioUrl: string) => void
 }
 
-export const SectionItemFields = ({ initialAudio, initialImagesUrls, onPhotosChange, onAudioChange }: Props) => {
+export const SectionItemFields = ({
+	initialAudio,
+	initialImagesUrls,
+	includePhotoInfo,
+	onPhotosChange,
+	onAudioChange
+}: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -53,9 +62,12 @@ export const SectionItemFields = ({ initialAudio, initialImagesUrls, onPhotosCha
 					</FormControl>
 				</Stack>
 				<Stack gap={4}>
-					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
-						{t('General.photos')}
-					</Text>
+					<Inline gap={4} alignItems="center">
+						<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
+							{t('General.photos')}
+						</Text>
+						{includePhotoInfo && <InputInfo infoText={'ManageContent.addPhotoInfo'} />}
+					</Inline>
 					<FormControl name="images">
 						<PhotoUpload initialImagesUrls={initialImagesUrls} onPhotosChange={onPhotosChange} />
 						<FormControl.Message />

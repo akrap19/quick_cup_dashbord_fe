@@ -1,5 +1,6 @@
 import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
 import { fetchWithToken } from 'api/instances/FetchWithToken'
+import { ContentFullPayload } from 'api/models/content/contentFullPayload'
 import { ContentPayload } from 'api/models/content/contentPayload'
 
 interface Query {
@@ -28,6 +29,12 @@ export const createStaffBulk = async (staff: ContentPayload[]) => {
 	const response = await axiosInstanceWithToken.post(`/staff/translation/bulk`, {
 		translations: staff
 	})
+
+	return response?.data
+}
+
+export const createStaffFull = async (staff: ContentFullPayload) => {
+	const response = await axiosInstanceWithToken.post(`/staff/translation/full`, staff)
 
 	return response?.data
 }

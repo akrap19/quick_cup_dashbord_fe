@@ -6,4 +6,5 @@ export interface Language {
 	autoTranslate: boolean
 	translateable: boolean
 	isDefault: boolean
+	hasCases: boolean
 }

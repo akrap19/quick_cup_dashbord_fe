@@ -19,6 +19,10 @@ export const badge = recipe({
 				color: tokens.colors['success.700'],
 				background: tokens.colors['success.100']
 			},
+			default: {
+				color: tokens.colors['neutral.700'],
+				background: tokens.colors['neutral.100']
+			},
 			draft: {
 				color: tokens.colors['warning.700'],
 				background: tokens.colors['warning.100']

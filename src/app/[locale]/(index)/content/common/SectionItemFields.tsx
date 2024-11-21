@@ -33,7 +33,7 @@ export const SectionItemFields = ({
 		<Box paddingRight={16}>
 			<Stack gap={6}>
 				<Stack gap={4}>
-					<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
+					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
 						{t('General.title')}
 					</Text>
 					<FormControl name="title" maxLength="50">
@@ -43,7 +43,7 @@ export const SectionItemFields = ({
 					</FormControl>
 				</Stack>
 				<Stack gap={4}>
-					<Text fontSize="medium" fontWeight="semibold" color="neutral.900">
+					<Text fontSize="medium" fontWeight="semibold" color="neutral.900" textTransform="uppercase">
 						{t('General.description')}
 					</Text>
 					<FormControl name="description" maxLength="500">

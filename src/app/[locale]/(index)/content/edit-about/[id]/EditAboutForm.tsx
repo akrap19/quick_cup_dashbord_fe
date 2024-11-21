@@ -55,12 +55,14 @@ export const EditAboutForm = ({ about }: Props) => {
 		// its for bug, it doesnt know that image was changed
 		const { images } = form.watch()
 		const deletedImages = defaultImageIds?.filter(id => !images.includes(id ?? ''))
+		const aboutImageMediaIds = about.aboutImages.map(image => image.aboutImageId)
+		const filteredAboutImageMediaIds = images.filter(id => !aboutImageMediaIds.includes(id))
 
 		const result = await updateAbout({
 			aboutTranslationId: about?.aboutTranslationId,
 			title: replaceEmptyStringWithNull(formData.title),
 			description: removeHtmlTags(formData.description) ? formData.description : null,
-			images,
+			images: filteredAboutImageMediaIds,
 			deletedImages: deletedImages as any,
 			audioId: replaceEmptyStringWithNull(formData.audioId)
 		})

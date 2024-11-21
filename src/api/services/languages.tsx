@@ -72,6 +72,12 @@ export const publishLanguage = async (languageId: string) => {
 	return response?.data
 }
 
+export const makeLanguageDefault = async (languageId: string) => {
+	const response = await axiosInstanceWithToken.put(`/language/default`, { languageId })
+
+	return response?.data
+}
+
 export const translateLanguage = async (languageId?: string) => {
 	const response = await axiosInstanceWithToken.post(`/language/translate`, { languageId })
 

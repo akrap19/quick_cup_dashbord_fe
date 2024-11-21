@@ -15,9 +15,10 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { useOpened } from '@/hooks/use-toggle'
 import { useTableStore } from '@/store/table'
 import { Language } from 'api/models/language/language'
-import { deleteLanguage, deleteLanguages } from 'api/services/languages'
+import { deleteLanguage, deleteLanguages, makeLanguageDefault } from 'api/services/languages'
 import { LanguageStatusEnum } from 'enums/languageStatusEnum'
 import { ROUTES } from 'parameters/routes'
+import { useEffect, useState } from 'react'
 
 interface Props {
 	data: Language[]
@@ -29,6 +30,10 @@ export const Inputs = ({ data }: Props) => {
 	const confirmDialog = useOpened()
 	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
 	const { push, replace, refresh } = useRouter()
+	const [disableDelete, setDisableDelete] = useState(false)
+	const [displayDeleteInfo, setDisplayDeleteInfo] = useState(false)
+	const [canLanguageBeDefault, setCanLanguageBeDefault] = useState(false)
+	const indexes = Object.keys(checkedItems)
 	const statusOptions = [
 		{ value: '', label: 'General.allStatuses' },
 		{ value: LanguageStatusEnum.DRAFT, label: 'General.draft' },
@@ -60,11 +65,15 @@ export const Inputs = ({ data }: Props) => {
 	}
 
 	const handleDelete = async () => {
-		const indexes = Object.keys(checkedItems)
-		const ids = indexes.map(index => {
-			const numericIndex = parseInt(index, 10)
-			return data[numericIndex].languageId ?? ''
-		})
+		const ids = indexes
+			.filter(index => {
+				const numericIndex = parseInt(index, 10)
+				return !(data[numericIndex]?.isDefault || data[numericIndex]?.hasCases)
+			})
+			.map(index => {
+				const numericIndex = parseInt(index, 10)
+				return data[numericIndex].languageId ?? ''
+			})
 
 		const isDeleteBulk = ids.length > 1
 		const result = await (isDeleteBulk ? deleteLanguages(ids) : deleteLanguage(ids[0]))
@@ -76,6 +85,39 @@ export const Inputs = ({ data }: Props) => {
 			refresh()
 		}
 	}
+
+	const handleMakeItDefault = async () => {
+		const result = await makeLanguageDefault(data[parseInt(indexes[0], 10)].languageId)
+
+		if (result?.message === 'OK') {
+			SuccessToast(t('Languages.defaultLanguageSuccessfullyChanged'))
+
+			refresh()
+		}
+	}
+
+	const areActionsPossible = () => {
+		const ids = indexes.map(index => {
+			const numericIndex = parseInt(index, 10)
+			return data[numericIndex]?.isDefault || data[numericIndex]?.hasCases
+		})
+
+		const allTrue = ids.every(Boolean)
+
+		const anyTrue = ids.some(Boolean)
+
+		if (indexes.length > 0) {
+			const firstLanguage = data[parseInt(indexes[0], 10)]
+			setCanLanguageBeDefault(firstLanguage?.status === LanguageStatusEnum.PUBLISHED && !firstLanguage?.isDefault)
+		}
+
+		setDisableDelete(allTrue)
+		setDisplayDeleteInfo(anyTrue)
+	}
+
+	useEffect(() => {
+		areActionsPossible()
+	}, [checkedItems])
 
 	return (
 		<div>
@@ -92,7 +134,13 @@ export const Inputs = ({ data }: Props) => {
 					<AddButton buttonLabel={t('Languages.add')} buttonLink={ROUTES.ADD_LANGUAGES} />
 				</Inline>
 			) : (
-				<DataTableActions onEdit={handleEdit} onDelete={() => confirmDialog.toggleOpened()} />
+				<DataTableActions
+					disableDelete={disableDelete}
+					displayDeleteInfo={displayDeleteInfo}
+					onEdit={handleEdit}
+					onMakeItDefault={canLanguageBeDefault ? handleMakeItDefault : undefined}
+					onDelete={() => confirmDialog.toggleOpened()}
+				/>
 			)}
 			<ConfirmActionDialog
 				title="Languages.delete"

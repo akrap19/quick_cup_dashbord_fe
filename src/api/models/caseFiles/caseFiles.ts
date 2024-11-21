@@ -6,4 +6,5 @@ export interface CaseFiles {
 	lastJourneySnapshot: string
 	caseJourneyUpdates: string
 	barnahusLocation: string
+	canAddNotes: boolean
 }

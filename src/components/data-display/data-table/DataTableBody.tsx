@@ -9,14 +9,16 @@ import { Checkbox } from '@/components/inputs/checkbox'
 import { Box } from '@/components/layout/box'
 
 import { TableBody, TableCell, TableCellWithLink, TableRow } from '../table'
+import { Inline } from '@/components/layout/inline'
 
 interface Props<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
 	table: Table<TData>
 	contentSection?: string
+	data: any
 }
 
-export const DataTableBody = <TData, TValue>({ columns, table, contentSection }: Props<TData, TValue>) => {
+export const DataTableBody = <TData, TValue>({ columns, table, contentSection, data }: Props<TData, TValue>) => {
 	const pathname = usePathname()
 
 	return (
@@ -41,7 +43,13 @@ export const DataTableBody = <TData, TValue>({ columns, table, contentSection }:
 										<Badge variant={cell.getValue() as any} />
 									</Box>
 								) : (
-									flexRender(cell.column.columnDef.cell, cell.getContext())
+									<Inline alignItems="center" justifyContent="space-between">
+										{flexRender(cell.column.columnDef.cell, cell.getContext())}
+										{cell.column.id.includes('name') &&
+											data?.find((item: any) => item.name === cell.getValue())?.isDefault && (
+												<Badge variant={'default'} />
+											)}
+									</Inline>
 								)}
 							</TableCellWithLink>
 						))}

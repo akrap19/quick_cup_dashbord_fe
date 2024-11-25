@@ -134,7 +134,7 @@
 	},
 	"Languages": {
 		"en": "English",
-		"se": "Swedish",
+		"sv": "Swedish",
 		"delete": "Delete Languages",
 		"edit": "Edit Languages",
 		"add": "Add Language",

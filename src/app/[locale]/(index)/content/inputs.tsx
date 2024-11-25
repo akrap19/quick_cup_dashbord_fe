@@ -66,7 +66,7 @@ export const Inputs = ({ data, languages, buttonLabel, buttonLink, languageValue
 	}
 
 	const handleEdit = () => {
-		const index = Object.keys(checkedItems)
+		const index = Object.keys(checkedItems || {})
 		const numericIndex = parseInt(index[0], 10)
 
 		if (data[numericIndex].staffTranslationId) {
@@ -80,7 +80,7 @@ export const Inputs = ({ data, languages, buttonLabel, buttonLink, languageValue
 
 	const handleDelete = async () => {
 		let result
-		const indexes = Object.keys(checkedItems)
+		const indexes = Object.keys(checkedItems || {})
 		const ids = indexes.map(index => {
 			const numericIndex = parseInt(index, 10)
 			return dataWithTransformedId[numericIndex].id

@@ -21,7 +21,7 @@ export const drawer = style({
 
 export const drawerItem = style({
 	...drawerItemTemp,
-	padding: `${tokens.spacing[3]} ${tokens.spacing[6]}`
+	padding: `${tokens.spacing[3]} ${tokens.spacing[4]} ${tokens.spacing[3]} ${tokens.spacing[6]}`
 })
 
 export const drawerSubItem = style({

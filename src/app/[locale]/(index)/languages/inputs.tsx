@@ -33,7 +33,7 @@ export const Inputs = ({ data }: Props) => {
 	const [disableDelete, setDisableDelete] = useState(false)
 	const [displayDeleteInfo, setDisplayDeleteInfo] = useState(false)
 	const [canLanguageBeDefault, setCanLanguageBeDefault] = useState(false)
-	const indexes = Object.keys(checkedItems)
+	const indexes = Object.keys(checkedItems || {})
 	const statusOptions = [
 		{ value: '', label: 'General.allStatuses' },
 		{ value: LanguageStatusEnum.DRAFT, label: 'General.draft' },
@@ -58,7 +58,7 @@ export const Inputs = ({ data }: Props) => {
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)
 
 	const handleEdit = () => {
-		const index = Object.keys(checkedItems)
+		const index = Object.keys(checkedItems || {})
 		const numericIndex = parseInt(index[0], 10)
 
 		push(ROUTES.EDIT_LANGUAGES + data[numericIndex].languageId)

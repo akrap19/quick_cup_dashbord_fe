@@ -34,7 +34,7 @@ export const Inputs = ({ data, locations }: Props) => {
 		'MasterAdmin.deleteMasterAdminDescription'
 	)
 	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
-	const indexes = checkedItems ? Object?.keys(checkedItems) : []
+	const indexes = checkedItems ? Object.keys(checkedItems || {}) : []
 
 	const { push, replace, refresh } = useRouter()
 	const formattedLocations = locations?.map(location => ({
@@ -64,7 +64,7 @@ export const Inputs = ({ data, locations }: Props) => {
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)
 
 	const handleEdit = () => {
-		const index = Object?.keys(checkedItems)
+		const index = Object.keys(checkedItems || {})
 		const numericIndex = parseInt(index[0], 10)
 
 		push(ROUTES.EDIT_MASTER_ADMINS + data[numericIndex].userId)

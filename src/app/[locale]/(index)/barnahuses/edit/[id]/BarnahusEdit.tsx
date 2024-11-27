@@ -49,6 +49,7 @@ const BarnahusEdit = ({ barnahus, locations, masterAdmins }: Props) => {
 			location: dataWIhoutEmptyString.location,
 			adminId: barnahus.adminId ?? undefined
 		})
+
 		if (result?.message === 'OK') {
 			localStorage.setItem('editMessage', 'Barnahuses.successfullyEdited')
 			refresh()

@@ -324,6 +324,7 @@
 		"addAboutInfoText": "Lägg till fler avsnitt om det behövs, senare kan du ta bort dem om du inte behöver dem.",
 		"autoTranslate": "auto-översätt",
 		"addRoom": "Lägg till rum",
+		"addRooms": "Lägg till rum",
 		"removeRoom": "Ta bort rum",
 		"editRoom": "Ändra rum",
 		"addRoomInfoText": "Lägg till fler rum om det behövs, senare kan du ta bort dem om du inte behöver dem.",
@@ -359,6 +360,7 @@
 		"addAboutDescription": "För att lägga till nytt om, börja med att lägga till innehåll på standardspråket. Systemet kommer automatiskt att översätta det till andra språk. Se till att du granskar allt innehåll innan du sparar och publicerar.",
 		"editAboutDescription": "Redigera om på standardspråket; det kommer att auto-översätta till andra. Granska innan du sparar. Använd konsekvent redigeringar på standardspråk för att bibehålla enhetlighet i mobilappen på alla språk.",
 		"addRoomDescription": "För att lägga till ett nytt rum, börja med att lägga till innehåll på standardspråket. Systemet kommer automatiskt att översätta det till andra språk. Se till att du granskar allt innehåll innan du sparar och publicerar.",
+		"addRoomsDescription": "För att lägga till ett nytt rum, börja med att lägga till innehåll på standardspråket. Systemet kommer automatiskt att översätta det till andra språk. Se till att du granskar allt innehåll innan du sparar och publicerar.",
 		"editRoomDescription": "Redigera rummet på standardspråket, så översätts det automatiskt till andra språk. Kolla igenom innan du sparar. Gör alltid ändringar på standardspråket för att hålla mobilappen konsekvent på alla språk.",
 		"addStaffDescription": "För att lägga till ny personal, börja med att skriva innehållet på standardspråket. Systemet översätter det automatiskt till andra språk. Kom ihåg att kolla igenom allt innan du sparar och publicerar.",
 		"editStaffDescription": "Redigera personalen på standardspråket; det kommer att auto-översätta till andra. Granska innan du sparar. Använd konsekvent redigeringar på standardspråk för att bibehålla enhetlighet i mobilappen på alla språk."

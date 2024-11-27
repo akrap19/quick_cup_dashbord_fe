@@ -324,6 +324,7 @@
 		"addAboutInfoText": "Add more sections if need to, later you can remove them if you don't need them.",
 		"autoTranslate": "auto-translate",
 		"addRoom": "Add Room",
+		"addRooms": "Add Room",
 		"removeRoom": "Remove Room",
 		"editRoom": "Edit Room",
 		"addRoomInfoText": "Add more rooms if need to, later you can remove them if you don't need them.",
@@ -361,6 +362,7 @@
 		"addAboutDescription": "To add new about, start by adding content in the default language. The system will automatically translate it to other languages. Ensure you review all content before saving and publishing.",
 		"editAboutDescription": "Edit the about in the default language; it will auto-translate to others. Review before saving. Consistently apply edits in default language to maintain mobile app consistency across all languages.",
 		"addRoomDescription": "To add new room, start by adding content in the default language. The system will automatically translate it to other languages. Ensure you review all content before saving and publishing.",
+		"addRoomsDescription": "To add new room, start by adding content in the default language. The system will automatically translate it to other languages. Ensure you review all content before saving and publishing.",
 		"editRoomDescription": "When you edit the room in the default language. it will automatically translate into other languages. Review the translation before saving. Always make edits in the default language to ensure consistency across all languages.",
 		"addStaffDescription": "To add new staff, add content in the default language. The system will automatically translate it to other languages. Review all the content before saving and publishing.",
 		"editStaffDescription": "Edit the staff in the default language; it will auto-translate to others. Review before saving. Consistently apply edits in default language to maintain mobile app consistency across all languages."

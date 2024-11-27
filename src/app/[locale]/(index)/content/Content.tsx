@@ -1,21 +1,17 @@
 import { format } from 'date-fns'
-import { useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction } from 'react'
 
 import { Loader } from '@/components/custom/loader/Loader'
-import { NoListData } from '@/components/custom/no-list-data/NoListData'
 import { DataTable } from '@/components/data-display/data-table'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
-import { useManageContent } from '@/store/manage-content'
 import { Base } from 'api/models/common/base'
 import { Language } from 'api/models/language/language'
-import { LanguageStatusEnum } from 'enums/languageStatusEnum'
-import { ROUTES } from 'parameters'
 
 import { ManageContentColumn, columns } from './columns'
 import { contentSectionData } from './data'
 import { Inputs } from './inputs'
+import { ContentNoListData } from './ContentNoListData'
 
 // eslint-disable-next-line
 interface Props<TData, TValue> {
@@ -23,6 +19,7 @@ interface Props<TData, TValue> {
 	contentTableData: ManageContentColumn[]
 	languages: Language[]
 	languageValue: Base
+	doesLanguageHasContent: boolean
 	setLanguageValue: Dispatch<SetStateAction<Base>>
 }
 
@@ -31,38 +28,17 @@ export const Content = <TData, TValue>({
 	contentTableData,
 	languages,
 	languageValue,
+	doesLanguageHasContent,
 	setLanguageValue
 }: Props<TData, TValue>) => {
-	const { push } = useRouter()
-	const { setLanguage } = useManageContent()
 	const contentDataKey = Object.keys(contentSectionData).find(key => key.includes(contentSection))
 	const contentData = contentDataKey && contentSectionData[contentDataKey as keyof typeof contentSectionData]
-	const currentLanguage = languages?.find(language => language.languageId === languageValue.id)
 	const contentTableDataWithFormatedDate = contentTableData?.map(item => {
 		return {
 			...item,
 			updated: format(item.updated, 'dd.MM.yyyy HH:mm')
 		}
 	})
-	const gotDefaultLanguage =
-		languages?.some((language: Language) => language.isDefault && language.status === LanguageStatusEnum.PUBLISHED) ??
-		false
-
-	const handleAddContent = () => {
-		if (currentLanguage) {
-			setLanguage({ id: currentLanguage?.languageId, name: currentLanguage?.name })
-			push(ROUTES.ADD_CONTENT)
-		}
-	}
-
-	const handleAddContentInDefaultLanguage = () => {
-		const defaultLanguage = languages?.find(language => language.isDefault)
-
-		if (defaultLanguage) {
-			setLanguage({ id: defaultLanguage?.languageId, name: defaultLanguage?.name })
-			push(ROUTES.ADD_CONTENT)
-		}
-	}
 
 	return (
 		<Box paddingTop={6}>
@@ -80,37 +56,12 @@ export const Content = <TData, TValue>({
 				{contentTableData ? (
 					contentTableData?.length > 0 ? (
 						<DataTable columns={columns} data={contentTableDataWithFormatedDate} contentSection={contentSection} />
-					) : currentLanguage?.autoTranslate ? (
-						gotDefaultLanguage ? (
-							<NoListData
-								navbarTitle="General.content"
-								title="ManageContent.addAndReviewNewContentTitle"
-								description="ManageContent.addAndReviewNewContentDescription"
-								buttonLabel="ManageContent.addAndReviewNewContentButtonLabel"
-								buttonLink={`${ROUTES.AUTOTRANSLATE_AND_REVIEW}?languageId=${currentLanguage?.languageId}`}
-								distanceFromTop="8vh"
-								setNavbarItems={false}
-							/>
-						) : (
-							<NoListData
-								navbarTitle="General.content"
-								title="ManageContent.contentNotAddedInDefaultLanguageTitle"
-								description="ManageContent.contentNotAddedInDefaultLanguageDescription"
-								buttonLabel="ManageContent.add"
-								onClick={handleAddContentInDefaultLanguage}
-								distanceFromTop="8vh"
-								setNavbarItems={false}
-							/>
-						)
 					) : (
-						<NoListData
-							navbarTitle="General.content"
-							title="ManageContent.contentNotAddedTitle"
-							description="ManageContent.contentNotAddedDescription"
-							buttonLabel="ManageContent.add"
-							onClick={handleAddContent}
-							distanceFromTop="8vh"
-							setNavbarItems={false}
+						<ContentNoListData
+							contentSection={contentSection}
+							languages={languages}
+							languageValue={languageValue}
+							doesLanguageHasContent={doesLanguageHasContent}
 						/>
 					)
 				) : (

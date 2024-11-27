@@ -50,6 +50,7 @@ export const Inputs = ({ data }: Props) => {
 		const numericIndex = parseInt(index[0], 10)
 
 		push(ROUTES.EDIT_CASE_FILES + data[numericIndex].caseId)
+		refresh()
 	}
 
 	const handleDelete = async () => {

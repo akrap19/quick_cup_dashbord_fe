@@ -29,6 +29,7 @@ export const ContentTabs = <TData, TValue>({ aboutData, roomsData, staffData, la
 	const searchParams = useSearchParams()
 	const languageId = searchParams.get('languageId')
 	const currentLanguage = languages?.find((language: any) => language.languageId === languageId)
+	const doesLanguageHasContent = aboutData?.length > 0 || roomsData?.length > 0 || staffData?.length > 0
 	const languageBase: Base = {
 		id: currentLanguage ? currentLanguage.languageId : languages[0]?.languageId,
 		name: currentLanguage ? currentLanguage.name : languages[0]?.name
@@ -55,6 +56,7 @@ export const ContentTabs = <TData, TValue>({ aboutData, roomsData, staffData, la
 							contentTableData={aboutData}
 							languages={languages}
 							languageValue={languageValue}
+							doesLanguageHasContent={doesLanguageHasContent}
 							setLanguageValue={setLanguageValue}
 						/>
 					</Tabs.Panel>
@@ -64,6 +66,7 @@ export const ContentTabs = <TData, TValue>({ aboutData, roomsData, staffData, la
 							contentTableData={roomsData}
 							languages={languages}
 							languageValue={languageValue}
+							doesLanguageHasContent={doesLanguageHasContent}
 							setLanguageValue={setLanguageValue}
 						/>
 					</Tabs.Panel>
@@ -73,6 +76,7 @@ export const ContentTabs = <TData, TValue>({ aboutData, roomsData, staffData, la
 							contentTableData={staffData}
 							languages={languages}
 							languageValue={languageValue}
+							doesLanguageHasContent={doesLanguageHasContent}
 							setLanguageValue={setLanguageValue}
 						/>
 					</Tabs.Panel>

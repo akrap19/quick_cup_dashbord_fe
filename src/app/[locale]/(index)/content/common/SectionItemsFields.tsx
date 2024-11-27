@@ -21,7 +21,7 @@ export const SectionItemsFields = ({ index, form, initialAudio, initialImagesUrl
 	const t = useTranslations()
 
 	return (
-		<Box paddingRight={16} paddingBottom={6}>
+		<Box paddingRight={16}>
 			<Stack gap={6}>
 				<Stack gap={4}>
 					<Text fontSize="medium" fontWeight="semibold" color="neutral.900">

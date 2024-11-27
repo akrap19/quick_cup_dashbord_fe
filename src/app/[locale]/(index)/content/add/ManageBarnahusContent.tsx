@@ -119,7 +119,7 @@ export const ManageBarnahusContent = () => {
 								{t('General.aboutBarnahus')}
 							</Text>
 						</Box>
-						<Box paddingY={4} paddingX={5} borderTop="thin" borderColor="neutral.300">
+						<Box padding={6} borderTop="thin" borderColor="neutral.300">
 							<Box>
 								<Stack gap={4}>
 									<TitleSubsection

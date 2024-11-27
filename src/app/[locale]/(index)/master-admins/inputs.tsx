@@ -68,6 +68,7 @@ export const Inputs = ({ data, locations }: Props) => {
 		const numericIndex = parseInt(index[0], 10)
 
 		push(ROUTES.EDIT_MASTER_ADMINS + data[numericIndex].userId)
+		refresh()
 	}
 
 	const handleDelete = async () => {

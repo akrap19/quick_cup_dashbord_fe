@@ -84,7 +84,7 @@ export const SelectStaffContentItem = ({ data, form, index, hideDivider }: Props
 					</div>
 				)}
 				{data?.description?.length > 0 && (
-					<Box paddingBottom={8}>
+					<Box>
 						<Stack gap={6}>
 							<Box backgroundColor="neutral.100">
 								<Stack gap={4}>
@@ -110,7 +110,11 @@ export const SelectStaffContentItem = ({ data, form, index, hideDivider }: Props
 					</Box>
 				)}
 			</Stack>
-			{!hideDivider && <Divider />}
+			{!hideDivider && (
+				<Box paddingTop={8}>
+					<Divider />
+				</Box>
+			)}
 		</Box>
 	)
 }

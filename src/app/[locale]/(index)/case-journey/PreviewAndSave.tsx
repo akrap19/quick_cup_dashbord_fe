@@ -102,7 +102,7 @@ export const PreviewAndSave = ({ content }: Props) => {
 		}
 
 		if (result?.message === 'OK') {
-			SuccessToast(t('Templates.templateSccessfullyCreated'))
+			SuccessToast(t('CaseJourney.caseJourneySccessfullyCreated'))
 
 			if (currentStep) {
 				setCurrentStep(currentStep + 1)

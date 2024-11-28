@@ -22,7 +22,7 @@ interface Props {
 	placeholder: string
 	name?: string
 	alwaysShowSearch?: boolean
-	setValue?: Dispatch<SetStateAction<Base>>
+	setValue?: Dispatch<SetStateAction<any>>
 }
 
 export const SearchDropdownDrawer = ({ name, options, placeholder, alwaysShowSearch, setValue }: Props) => {
@@ -38,8 +38,8 @@ export const SearchDropdownDrawer = ({ name, options, placeholder, alwaysShowSea
 		options?.length === 0 && !alwaysShowSearch
 			? 'General.noResoultMessage'
 			: searchParamsValuelength && searchParamsValuelength > 2
-			  ? 'General.noResoultMessage'
-			  : 'General.searchMinInstructions'
+				? 'General.noResoultMessage'
+				: 'General.searchMinInstructions'
 
 	const handleFilterChange = (filter: string, value: string) => {
 		const query = { ...currentSearchParamas, [filter]: value }

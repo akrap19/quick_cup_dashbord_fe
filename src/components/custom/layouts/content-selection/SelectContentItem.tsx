@@ -43,7 +43,7 @@ export const SelectContentItem = ({ data, form, index, hideDivider }: Props) => 
 						</Stack>
 					</Box>
 				)}
-				<Box paddingBottom={8}>
+				<Box>
 					<Stack gap={6}>
 						{data?.description && (
 							<Box backgroundColor="neutral.100">
@@ -85,7 +85,7 @@ export const SelectContentItem = ({ data, form, index, hideDivider }: Props) => 
 														alt="uploadedPhoto"
 														style={{ objectFit: 'cover' }}
 													/>
-											  ))
+												))
 											: data?.roomImages?.map((image: AboutImage) => (
 													<Image
 														src={image?.url}
@@ -94,7 +94,7 @@ export const SelectContentItem = ({ data, form, index, hideDivider }: Props) => 
 														alt="uploadedPhoto"
 														style={{ objectFit: 'cover' }}
 													/>
-											  ))}
+												))}
 									</Inline>
 								</Stack>
 							</Box>
@@ -102,7 +102,11 @@ export const SelectContentItem = ({ data, form, index, hideDivider }: Props) => 
 					</Stack>
 				</Box>
 			</Stack>
-			{!hideDivider && <Divider />}
+			{!hideDivider && (
+				<Box paddingTop={8}>
+					<Divider />
+				</Box>
+			)}
 		</Box>
 	)
 }

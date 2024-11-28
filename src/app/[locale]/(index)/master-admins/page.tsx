@@ -13,6 +13,7 @@ interface Props {
 	searchParams: {
 		search: string
 		location: string
+		locationSearch: string
 		page: number
 		limit: number
 	}
@@ -32,6 +33,9 @@ const MasterAdminsPage = async ({ searchParams }: Props) => {
 			locations
 		}
 	})
+	const filteredBarnahusLocations = searchParams?.locationSearch
+		? barnahusLocations?.data?.locations?.filter((location: any) => location?.includes(searchParams?.locationSearch))
+		: barnahusLocations?.data?.locations
 
 	return isInitialListEmpty ? (
 		<NoListData
@@ -43,7 +47,7 @@ const MasterAdminsPage = async ({ searchParams }: Props) => {
 		/>
 	) : (
 		<ListWrapper title="General.masterAdmins">
-			<Inputs data={masterAdminsData?.users} locations={barnahusLocations?.data?.locations} />
+			<Inputs data={masterAdminsData?.users} locations={filteredBarnahusLocations} />
 			<DataTable
 				columns={columns}
 				data={replaceNullInListWithDash(transformedMasterAdminArray)}

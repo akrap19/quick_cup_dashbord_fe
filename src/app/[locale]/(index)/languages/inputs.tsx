@@ -7,7 +7,6 @@ import { useDebounce } from 'rooks'
 
 import { AddButton } from '@/components/custom/button/add-button'
 import { DataTableActions } from '@/components/data-display/data-table/DataTableActions'
-import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
@@ -19,6 +18,8 @@ import { deleteLanguage, deleteLanguages, makeLanguageDefault } from 'api/servic
 import { LanguageStatusEnum } from 'enums/languageStatusEnum'
 import { ROUTES } from 'parameters/routes'
 import { useEffect, useState } from 'react'
+import { SearchDropdown } from '@/components/custom/search-dropdown'
+import { Base } from 'api/models/common/base'
 
 interface Props {
 	data: Language[]
@@ -27,6 +28,7 @@ interface Props {
 export const Inputs = ({ data }: Props) => {
 	const t = useTranslations()
 	const searchParams = useSearchParams()
+	const status = searchParams.get('status')
 	const confirmDialog = useOpened()
 	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
 	const { push, replace, refresh } = useRouter()
@@ -35,10 +37,10 @@ export const Inputs = ({ data }: Props) => {
 	const [canLanguageBeDefault, setCanLanguageBeDefault] = useState(false)
 	const indexes = Object.keys(checkedItems || {})
 	const statusOptions = [
-		{ value: '', label: 'General.allStatuses' },
-		{ value: LanguageStatusEnum.DRAFT, label: 'General.draft' },
-		{ value: LanguageStatusEnum.PUBLISHED, label: 'General.published' },
-		{ value: LanguageStatusEnum.HIDDEN, label: 'General.hidden' }
+		{ id: '', name: t('General.allStatuses') },
+		{ id: LanguageStatusEnum.DRAFT, name: t('General.draft') },
+		{ id: LanguageStatusEnum.PUBLISHED, name: t('General.published') },
+		{ id: LanguageStatusEnum.HIDDEN, name: t('General.hidden') }
 	]
 
 	const handleFilterChange = (filter: string, value: string) => {
@@ -124,12 +126,14 @@ export const Inputs = ({ data }: Props) => {
 		<div>
 			{checkedItemsLength === 0 ? (
 				<Inline justifyContent="space-between" alignItems="center">
-					<Box width="100%" style={{ maxWidth: '15.25rem' }}>
-						<Select
+					<Box position="relative" style={{ width: '300px' }}>
+						<SearchDropdown
 							name="status"
-							sizes="large"
+							placeholder="General.status"
+							value={status}
 							options={statusOptions}
-							onChange={({ target: { name, value } }) => debouncedFilterChange(name, value)}
+							isFilter
+							setValue={(value: Base) => debouncedFilterChange('status', value?.id)}
 						/>
 					</Box>
 					<AddButton buttonLabel={t('Languages.add')} buttonLink={ROUTES.ADD_LANGUAGES} />

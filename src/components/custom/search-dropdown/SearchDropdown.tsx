@@ -23,10 +23,10 @@ interface Props {
 	placeholder: string
 	name?: string
 	hasSuccess?: boolean
-	value?: string
+	value?: string | null
 	alwaysShowSearch?: boolean
 	isFilter?: boolean
-	setValue?: Dispatch<SetStateAction<Base>>
+	setValue?: Dispatch<SetStateAction<any>>
 }
 
 export const SearchDropdown = ({
@@ -41,18 +41,13 @@ export const SearchDropdown = ({
 }: Props) => {
 	const t = useTranslations()
 	const [isOpen, setIsOpen] = useState(false)
-	const [nonFilteredOptions, setNonFilteredOptions] = useState<Base[]>([])
 	const ref = useRef<HTMLDivElement>(null)
+	const [choosenValue, setChoosenValue] = useState<Base>()
 	const presentationalLabelVariant = isFilter ? 'filterLabel' : value ? 'formLabel' : 'placeholder'
 
 	const handleDropDownOpening = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault()
 		setIsOpen(!isOpen)
-	}
-
-	const handleValueLabel = (id: string) => {
-		const selectedOption = nonFilteredOptions?.find(option => option.id === id)
-		return selectedOption?.name ?? id
 	}
 
 	const handleClickOutside = (event: MouseEvent) => {
@@ -61,11 +56,20 @@ export const SearchDropdown = ({
 		}
 	}
 
+	const handleValueLabel = (id: string) => {
+		const selectedOption = options?.find((option: Base) => option.id === id)
+
+		setChoosenValue(selectedOption)
+	}
+
 	useEffect(() => {
-		if (options?.length > nonFilteredOptions?.length) {
-			setNonFilteredOptions(options)
+		if (value) {
+			handleValueLabel(value)
 		}
-	}, [options])
+		if (value === null) {
+			setChoosenValue(undefined)
+		}
+	}, [value])
 
 	useEffect(() => {
 		document.addEventListener('mousedown', handleClickOutside)
@@ -89,7 +93,7 @@ export const SearchDropdown = ({
 					<Button size="auto" variant="adaptive" onClick={handleDropDownOpening}>
 						<Box className={clsx(input, !isFilter && hasSuccess && inputHasSuccess, endIconSpacing)}>
 							<Text className={DropdownPresentationlabel({ variant: presentationalLabelVariant })}>
-								{value ? handleValueLabel(value) : `${t('General.select')} ${t(placeholder)}`}
+								{choosenValue?.name ?? `${t('General.select')} ${t(placeholder)}`}
 							</Text>
 						</Box>
 					</Button>

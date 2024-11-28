@@ -9,7 +9,6 @@ import { useDebounce } from 'rooks'
 import { AddButton } from '@/components/custom/button/add-button'
 import { SearchInput } from '@/components/custom/inputs/search-input'
 import { DataTableActions } from '@/components/data-display/data-table/DataTableActions'
-import { Select } from '@/components/inputs/select'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
@@ -19,6 +18,8 @@ import { useTableStore } from '@/store/table'
 import { Admins } from 'api/models/admin/Admins'
 import { deleteMasterAdmin, deleteMasterAdmins } from 'api/services/masterAdmins'
 import { ROUTES } from 'parameters'
+import { Base } from 'api/models/common/base'
+import { SearchDropdown } from '@/components/custom/search-dropdown'
 
 interface Props {
 	data: Admins[]
@@ -28,6 +29,7 @@ interface Props {
 export const Inputs = ({ data, locations }: Props) => {
 	const t = useTranslations()
 	const searchParams = useSearchParams()
+	const location = searchParams.get('location')
 	const confirmDialog = useOpened()
 	const [itemsForDelete, setItemsForDelete] = useState<string[]>([])
 	const [confirmDialogDescription, setItemsForDeleteDescription] = useState<string>(
@@ -37,13 +39,13 @@ export const Inputs = ({ data, locations }: Props) => {
 	const indexes = checkedItems ? Object.keys(checkedItems || {}) : []
 
 	const { push, replace, refresh } = useRouter()
-	const formattedLocations = locations?.map(location => ({
-		value: location,
-		label: location
+	const transformedLocations = locations?.map(location => ({
+		id: location,
+		name: location
 	}))
-	formattedLocations?.unshift({
-		value: '',
-		label: t('MasterAdmins.locationFilterPlaceholder')
+	transformedLocations?.unshift({
+		id: '',
+		name: t('General.allLocations')
 	})
 
 	const handleFilterChange = (filter: string, value: string) => {
@@ -111,12 +113,15 @@ export const Inputs = ({ data, locations }: Props) => {
 			{checkedItemsLength === 0 ? (
 				<Inline justifyContent="space-between" alignItems="center">
 					<Inline gap={4} alignItems="center">
-						<Box style={{ width: '244px' }}>
-							<Select
-								name="location"
-								sizes="large"
-								options={formattedLocations}
-								onChange={({ target: { name, value } }) => debouncedFilterChange(name, value)}
+						<Box position="relative" style={{ width: '300px' }}>
+							<SearchDropdown
+								name="locationSearch"
+								placeholder="General.location"
+								value={location}
+								options={transformedLocations}
+								isFilter
+								setValue={(value: Base) => debouncedFilterChange('location', value?.id)}
+								alwaysShowSearch
 							/>
 						</Box>
 						<Box style={{ width: '320px' }}>

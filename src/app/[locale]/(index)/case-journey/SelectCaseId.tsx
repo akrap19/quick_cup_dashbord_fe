@@ -25,9 +25,13 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const SelectCaseId = ({ caseFiles }: Props) => {
-	const { setCustomId } = useCaseJourneyStore()
+	const { type, setType, setCustomId } = useCaseJourneyStore()
 	const { setCurrentStep } = useStepsStore()
 	const t = useTranslations()
+
+	if (type) {
+		setType()
+	}
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',

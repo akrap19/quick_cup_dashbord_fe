@@ -20,14 +20,16 @@ export const hiddenCheckbox = style({
 })
 
 export const checkboxField = style({
-	position: 'relative'
+	position: 'relative',
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center'
 })
 
 export const checkboxDecorator = style({
+	border: tokens.borders.border.thin,
 	borderColor: tokens.colors['neutral.300'],
-	borderWidth: '1px',
 	borderRadius: tokens.borders.radius.xsmall,
-	borderStyle: 'solid',
 	width: '1.5rem',
 	height: '1.5rem',
 	backgroundColor: 'currentcolor',
@@ -35,7 +37,7 @@ export const checkboxDecorator = style({
 	// When Radio selected by "Tab" key
 	selectors: {
 		[`${hiddenCheckbox}:focus-visible + &`]: {
-			outline: `2px solid ${tokens.colors['primary.300']}`
+			borderColor: tokens.colors['primary.500']
 		}
 	}
 })

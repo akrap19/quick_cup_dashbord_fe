@@ -444,10 +444,15 @@
 		"verificationSuccessfullySent": "Verification successfully sent!"
 	},
 	"Templates": {
+		"add": "Add Template",
+		"delete": "Delete Templates",
+		"back": "Back to Templates",
 		"name": "Template name",
 		"nameTitle": "Please enter template name",
 		"nameDescription": "To easily recognize the template, please choose a name that is most suitable and descriptive for the template you are going to create.",
 		"selectTemplate": "Select template",
+		"searchTemplate": "Search templates",
+		"noListDataTitle": "Add Templates",
 		"selectTemplateTitle": "Select template to start",
 		"selectTemplateDescription": "To create case from template, please choose or search for the desired template that suits your case best and modify it by your needs.",
 		"previewAndSaveContent": "Preview & save content",
@@ -458,6 +463,10 @@
 		"createAnotherTemplate": "Create another template",
 		"goToCaseJourney": "Go to Case Journey",
 		"noContentPublishedTitle": "Content was not published",
-		"noContentPublishedDescription": "To create templates, you need existing content about your Barnahus. Since there's no content yet, you cannot create a template. Please add some content,  or ask an Admin to add some content, and then return to this tab to create templates."
+		"noContentPublishedDescription": "To create templates, you need existing content about your Barnahus. Since there's no content yet, you cannot create a template. Please add some content,  or ask an Admin to add some content, and then return to this tab to create templates.",
+		"noListDataDescription": "To be able to create case journeys with ease whenever there is a need for it, you must first create a template. Start creating your first template by pressing the button below.",
+		"deleteTemplateDescription": "If you are certain if you want to delete template please press delete.",
+		"successfullyDeleted": "Template successfully deleted!",
+		"successfullBulkDelete": "Templates successfully deleted!"
 	}
 }

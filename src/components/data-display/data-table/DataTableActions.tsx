@@ -15,7 +15,7 @@ import { StarsIcon } from '@/components/icons/stars-icon'
 type DataTableActionsProps = {
 	disableDelete?: boolean
 	displayDeleteInfo?: boolean
-	onEdit: () => void
+	onEdit?: () => void
 	onMakeItDefault?: () => void
 	onDelete: () => void
 }
@@ -46,7 +46,7 @@ export const DataTableActions = ({
 				</Button>
 			</Inline>
 			<Inline gap={4} alignItems="center">
-				{checkedItemsLength === 1 && (
+				{onEdit && checkedItemsLength === 1 && (
 					<Button size={size} variant="secondary" onClick={() => onEdit()}>
 						<PencilIcon size="medium" color="neutral.700" />
 						{t('General.edit')}

@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import { OpenedProps } from '@/hooks/use-toggle'
 
 export interface NavbarItems {
-	title: string
+	title?: string
 	backLabel?: string
 	cancelDialog?: OpenedProps
 	useUserDropdown?: boolean

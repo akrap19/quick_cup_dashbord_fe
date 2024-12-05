@@ -42,7 +42,7 @@ export const UserDropdown = ({ session, settings, seenOnboardingSections }: Prop
 	const [isOpen, setIsOpen] = useState(false)
 	const [openOnboarding, setOpenOnboarding] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
-	const { push, replace } = useRouter()
+	const { push, replace, refresh } = useRouter()
 	const userRole = session?.user?.roles[0]?.name
 	const isEnglish = pathname.includes('en')
 
@@ -69,6 +69,7 @@ export const UserDropdown = ({ session, settings, seenOnboardingSections }: Prop
 		const newLocale = isEnglish ? 'sv' : 'en'
 		pathSegments[1] = newLocale
 		push(pathSegments.join('/'))
+		refresh()
 	}
 
 	const options: Option[] = [

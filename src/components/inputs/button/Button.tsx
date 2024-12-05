@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable react/button-has-type */
 import clsx from 'clsx'
+import Link from 'next/link'
 import { AnchorHTMLAttributes, ButtonHTMLAttributes, MouseEventHandler, ReactNode } from 'react'
 
 import { ButtonVariants, button } from './Button.css'
@@ -22,7 +23,7 @@ type Props = (AnchorProps | ButtonProps) & ButtonVariants & RequiredProps
 export const Button = ({ variant = 'primary', size = 'large', href, className, ...rest }: Props) => {
 	if (href) {
 		return (
-			<a
+			<Link
 				href={href}
 				className={clsx(button({ variant, size }), className)}
 				style={{ textDecoration: 'none' }}

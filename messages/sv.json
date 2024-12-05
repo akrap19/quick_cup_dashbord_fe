@@ -441,10 +441,15 @@
 		"verificationSuccessfullySent": "Verifieringen har skickats!"
 	},
 	"Templates": {
+		"add": "Lägg till mall",
+		"delete": "Radera mallar",
+		"back": "Tillbaka till mallar",
 		"name": "Mallnamn",
 		"nameTitle": "Vänligen ange mallens namn",
 		"nameDescription": "För att enkelt känna igen mallen, välj ett namn som är mest lämpligt och beskrivande för mallen du ska skapa.",
 		"selectTemplate": "Välj mall",
+		"searchTemplate": "Sök mallar",
+		"noListDataTitle": "Lägg till mallar",
 		"selectTemplateTitle": "Välj mall för att starta",
 		"selectTemplateDescription": "För att skapa case från mall, välj eller sök efter den mall som passar ditt fall bäst och modifiera den efter dina behov.",
 		"previewAndSaveContent": "Förhandsgranska och spara innehåll",
@@ -455,6 +460,10 @@
 		"createAnotherTemplate": "Skapa en annan mall",
 		"goToCaseJourney": "Gå till Fallresa",
 		"noContentPublishedTitle": "Innehållet publicerades inte",
-		"noContentPublishedDescription": "För att skapa mallar behöver du befintligt innehåll om ditt Barnahus. Eftersom det inte finns något innehåll ännu kan du inte skapa en mall. Vänligen lägg till något innehåll, eller be en administratör att lägga till innehåll, och återvänd sedan till denna flik för att skapa mallar."
+		"noContentPublishedDescription": "För att skapa mallar behöver du befintligt innehåll om ditt Barnahus. Eftersom det inte finns något innehåll än kan du inte skapa en mall. Lägg till lite innehåll eller be en administratör att lägga till innehåll och återvänd sedan till den här fliken för att skapa mallar.",
+		"noListDataDescription": "För att enkelt kunna skapa caseflöden vid behov måste du först skapa en mall. Börja skapa din första mall genom att trycka på knappen nedan.",
+		"deleteTemplateDescription": "Om du är säker på att du vill radera mallen, vänligen tryck på radera.",
+		"successfullyDeleted": "Mallen har raderats!",
+		"successfullBulkDelete": "Mallar har raderats!"
 	}
 }

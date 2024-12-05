@@ -13,14 +13,15 @@ import { Inline } from '@/components/layout/inline'
 import { Item } from './Data'
 import { drawerItem, drawerItemSelected, drawerSubItem } from './Drawer.css'
 import { Text } from '../../typography/text'
+import { Dispatch, SetStateAction } from 'react'
 
 interface Props {
 	item: Item
 	isOpen: boolean
-	handleOpen: (route?: string) => void
+	setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export const DrawerItem = ({ item, isOpen, handleOpen }: Props) => {
+export const DrawerItem = ({ item, isOpen, setIsOpen }: Props) => {
 	const pathname = usePathname()
 	const t = useTranslations()
 
@@ -34,8 +35,22 @@ export const DrawerItem = ({ item, isOpen, handleOpen }: Props) => {
 		})
 	}
 
-	return (
-		<Button variant="adaptive" size="auto" onClick={() => handleOpen(item.route)}>
+	return item?.route ? (
+		<Button variant="adaptive" size="auto" href={item.route}>
+			<Box
+				className={clsx(item.isSubItem ? drawerSubItem : drawerItem, handleRoute(item) && drawerItemSelected)}
+				style={{ cursor: item.route && pathname.includes(item.route) ? 'default' : 'inherit' }}>
+				<Inline gap={4} alignItems="center">
+					{item.icon}
+					<Text fontSize="big" fontWeight="semibold" lineHeight="xlarge">
+						{t(`General.${item.label}`)}
+					</Text>
+					{item?.subItems && (isOpen ? <CarretDownIcon /> : <CarretUpIcon />)}
+				</Inline>
+			</Box>
+		</Button>
+	) : (
+		<Button variant="adaptive" size="auto" onClick={() => setIsOpen(!isOpen)}>
 			<Box
 				className={clsx(item.isSubItem ? drawerSubItem : drawerItem, handleRoute(item) && drawerItemSelected)}
 				style={{ cursor: item.route && pathname.includes(item.route) ? 'default' : 'inherit' }}>

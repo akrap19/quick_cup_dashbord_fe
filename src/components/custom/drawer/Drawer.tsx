@@ -1,6 +1,5 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { Box } from '@/components/layout/box'
@@ -17,17 +16,7 @@ interface Props {
 
 export const Drawer = ({ role }: Props) => {
 	const [isOpen, setIsOpen] = useState(false)
-	const pathname = usePathname()
-	const { push } = useRouter()
 	const filtredDrawerItems: Item[] = drawerItems.filter((item: Item) => item.usedByRoles?.includes(role))
-
-	const handleOpen = (route?: string) => {
-		if (route && !pathname.includes(route)) {
-			push(route)
-		} else if (!route) {
-			setIsOpen(!isOpen)
-		}
-	}
 
 	return (
 		<Box className={drawer}>
@@ -38,11 +27,11 @@ export const Drawer = ({ role }: Props) => {
 				<Stack gap={4}>
 					{filtredDrawerItems.map(item => (
 						<>
-							<DrawerItem item={item} isOpen={isOpen} handleOpen={handleOpen} />
+							<DrawerItem item={item} isOpen={isOpen} setIsOpen={setIsOpen} />
 							{item?.subItems &&
 								isOpen &&
 								item?.subItems.map((subItem: Item) => (
-									<DrawerItem item={subItem} isOpen={isOpen} handleOpen={handleOpen} />
+									<DrawerItem item={subItem} isOpen={isOpen} setIsOpen={setIsOpen} />
 								))}
 						</>
 					))}

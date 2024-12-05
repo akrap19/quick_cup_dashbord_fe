@@ -48,8 +48,8 @@ export const TemplateStepNavigation = ({ templateData }: Props) => {
 		currentStep: 1
 	})
 	useNavbarItems({
-		title: 'General.templates',
-		useUserDropdown: true
+		title: 'Templates.add',
+		backLabel: 'Templates.back'
 	})
 
 	return (

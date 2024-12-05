@@ -33,5 +33,6 @@ export const ROUTES = {
 	EDIT_CASE_FILES: '/case-files/edit/',
 	CASE_JOURNEY: '/case-journey',
 	TEMPLATES: '/templates',
+	ADD_TEMPLATES: '/templates/add',
 	SETTINGS: '/settings'
 }

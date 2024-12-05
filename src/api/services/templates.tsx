@@ -17,7 +17,7 @@ export const createTemplate = async (templateData: Template) => {
 export const getTemplates = (query: Query) => {
 	const queryParams = {
 		page: query.page ?? 1,
-		limit: query.limit ?? 100
+		limit: query.limit ?? 10
 	}
 
 	return fetchWithToken(`template`, queryParams)
@@ -35,4 +35,18 @@ export const getTemplatesSearch = (query: Query) => {
 
 export const getTemplate = (templateId?: string) => {
 	return fetchWithToken(`template/${templateId}`)
+}
+
+export const deleteTemplate = async (templateId: string) => {
+	const response = await axiosInstanceWithToken.delete(`/template`, {
+		data: { templateId }
+	})
+
+	return response?.data
+}
+
+export const deleteTemplates = async (templateIds: string[]) => {
+	const response = await axiosInstanceWithToken.delete(`/template/bulk`, { data: { templateIds } })
+
+	return response?.data
 }

@@ -59,13 +59,18 @@
 	color: #ec7b35;
 }
 
-.ql-snow.ql-toolbar button svg:focus {
-	outline: unset !important;
-	color: #ec7b35 !important;
-	stroke: #ec7b35 !important;
+.ql-snow .ql-stroke:active {
+	stroke: #ec7b35;
 }
 
-.ql-snow.ql-toolbar button:focus {
+.ql-snow.ql-toolbar button:focus,
+.ql-snow.ql-toolbar button:focus-visible {
+	outline: unset;
+	color: #ec7b35;
+	stroke: #ec7b35;
+}
+
+.ql-snow.ql-toolbar button svg:focus {
 	outline: unset !important;
 	color: #ec7b35 !important;
 	stroke: #ec7b35 !important;

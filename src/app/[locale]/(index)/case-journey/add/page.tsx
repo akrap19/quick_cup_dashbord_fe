@@ -21,7 +21,7 @@ interface Props {
 	}
 }
 
-const CaseJourneyPage = async ({ searchParams }: Props) => {
+const CaseJourneyAddPage = async ({ searchParams }: Props) => {
 	const { data: languageData } = await getLanguageSearch(searchParams, LanguageStatusEnum.PUBLISHED)
 	const data = await getContent(searchParams)
 	// const { data: contentData } = await getContent(searchParams)
@@ -137,4 +137,4 @@ const CaseJourneyPage = async ({ searchParams }: Props) => {
 	)
 }
 
-export default CaseJourneyPage
+export default CaseJourneyAddPage

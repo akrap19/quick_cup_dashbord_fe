@@ -14,44 +14,33 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useCaseJourneyStore } from '@/store/case-journey'
 import { useStepsStore } from '@/store/steps'
-import { CaseJourneyTypeEnum } from 'enums/caseJourneyType'
 import { requiredString } from 'schemas'
-import { useEffect } from 'react'
 
 const formSchema = z.object({
-	caseJourneyType: requiredString.shape.scheme
+	enebleNotes: requiredString.shape.scheme
 })
 
 type Schema = z.infer<typeof formSchema>
 
-export const SelectTemplateType = () => {
-	const { type, setType } = useCaseJourneyStore()
+export const EnebleNotes = () => {
+	const { setEnebleNotes } = useCaseJourneyStore()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
-	if (type !== CaseJourneyTypeEnum.TEMPLATE) {
-		setType(CaseJourneyTypeEnum.TEMPLATE)
-	}
 	const options = [
-		{ label: t('CaseJourney.useReadyMadeTemplate'), value: CaseJourneyTypeEnum.TEMPLATE },
-		{ label: t('CaseJourney.customizeTemplate'), value: CaseJourneyTypeEnum.CUSTOM_TEMPLATE }
+		{ label: t('CaseJourney.enableNotes'), value: 'true' },
+		{ label: t('CaseJourney.disableNotes'), value: 'false' }
 	]
 
 	const form = useForm<Schema>({
-		mode: 'onBlur',
+		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: {}
 	})
 
-	const { caseJourneyType } = form.watch()
-
-	useEffect(() => {
-		if (caseJourneyType !== '') {
-			form.trigger('caseJourneyType')
-		}
-	}, [caseJourneyType])
+	const data = form.getValues()
 
 	const onSubmit = async () => {
-		setType(caseJourneyType as CaseJourneyTypeEnum)
+		setEnebleNotes(Boolean(data?.enebleNotes))
 		if (currentStep) {
 			setCurrentStep(currentStep + 1)
 		}
@@ -61,17 +50,17 @@ export const SelectTemplateType = () => {
 		<FormProvider {...form}>
 			<form style={{ width: '100%' }} onSubmit={form.handleSubmit(onSubmit)}>
 				<Box paddingTop={6}>
-					<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
+					<Box paddingX={6} paddingTop={6}>
 						<ManageJourneyIntroWrapper>
 							<Stack gap={6} alignItems="center">
-								<Text fontSize="xbig" fontWeight="semibold" color="neutral.800" textAlign="center">
-									{t('CaseJourney.chooseCreateFromTemplateTypeTitle')}
+								<Text fontSize="xbig" fontWeight="semibold" textAlign="center" color="neutral.800">
+									{t('CaseJourney.enableNotesTitle')}
 								</Text>
 								<Text fontSize="small" color="neutral.800" textAlign="center">
-									{t('CaseJourney.chooseCreateFromTemplateTypeDescription')}
+									{t('CaseJourney.enableNotesDescription')}
 								</Text>
 								<Box width="100%">
-									<FormControl name="caseJourneyType">
+									<FormControl name="enebleNotes">
 										<RadioGroup options={options} />
 									</FormControl>
 								</Box>

@@ -38,11 +38,11 @@ export const onboardingData: onboardingDataByRole = {
 			description: 'MasterAdmins.onboardingCreateTemplateDescription',
 			image: '/images/onboardingImages/masterAdmin/create-template.png'
 		},
-		{
-			title: 'MasterAdmins.onboardingCreateCustomiedIDTitle',
-			description: 'MasterAdmins.onboardingCreateCustomiedIDDescription',
-			image: '/images/onboardingImages/masterAdmin/create-customized-id.png'
-		},
+		// {
+		// 	title: 'MasterAdmins.onboardingCreateCustomiedIDTitle',
+		// 	description: 'MasterAdmins.onboardingCreateCustomiedIDDescription',
+		// 	image: '/images/onboardingImages/masterAdmin/create-customized-id.png'
+		// },
 		{
 			title: 'MasterAdmins.onboardingCreateCaseJourneyTitle',
 			description: 'MasterAdmins.onboardingCreateCaseJourneyDescription',
@@ -65,11 +65,11 @@ export const onboardingData: onboardingDataByRole = {
 			description: 'MasterAdmins.onboardingCreateTemplateDescription',
 			image: '/images/onboardingImages/admin/create-template.png'
 		},
-		{
-			title: 'MasterAdmins.onboardingCreateCustomiedIDTitle',
-			description: 'MasterAdmins.onboardingCreateCustomiedIDDescription',
-			image: '/images/onboardingImages/admin/create-customized-id.png'
-		},
+		// {
+		// 	title: 'MasterAdmins.onboardingCreateCustomiedIDTitle',
+		// 	description: 'MasterAdmins.onboardingCreateCustomiedIDDescription',
+		// 	image: '/images/onboardingImages/admin/create-customized-id.png'
+		// },
 		{
 			title: 'MasterAdmins.onboardingCreateCaseJourneyTitle',
 			description: 'MasterAdmins.onboardingCreateCaseJourneyDescription',
@@ -82,11 +82,11 @@ export const onboardingData: onboardingDataByRole = {
 			description: 'MasterAdmins.onboardingCreateTemplateDescription',
 			image: '/images/onboardingImages/practitioner/create-template.png'
 		},
-		{
-			title: 'MasterAdmins.onboardingCreateCustomiedIDTitle',
-			description: 'MasterAdmins.onboardingCreateCustomiedIDDescription',
-			image: '/images/onboardingImages/practitioner/create-customized-id.png'
-		},
+		// {
+		// 	title: 'MasterAdmins.onboardingCreateCustomiedIDTitle',
+		// 	description: 'MasterAdmins.onboardingCreateCustomiedIDDescription',
+		// 	image: '/images/onboardingImages/practitioner/create-customized-id.png'
+		// },
 		{
 			title: 'MasterAdmins.onboardingCreateCaseJourneyTitle',
 			description: 'MasterAdmins.onboardingCreateCaseJourneyDescription',

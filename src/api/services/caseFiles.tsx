@@ -56,3 +56,9 @@ export const getCaseFilesSearch = (query: Query) => {
 
 	return fetchWithToken(`case/search`, queryParams)
 }
+
+export const caseAvailable = async (customId: string) => {
+	const response = await axiosInstanceWithToken.post(`/case/available`, { customId })
+
+	return response?.data
+}

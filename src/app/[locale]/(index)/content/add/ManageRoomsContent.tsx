@@ -68,6 +68,7 @@ export const ManageRoomsContent = () => {
 			audioId: '',
 			images: [] as any
 		})
+		SuccessToast(t('General.sectionAddedBelow'))
 	}
 
 	const handleRemoveSection = () => {
@@ -118,8 +119,6 @@ export const ManageRoomsContent = () => {
 						<Box padding={6} borderTop="thin" borderColor="neutral.300">
 							<Stack gap={4}>
 								<TitleSubsection
-									addButtonLabel="ManageContent.addRoom"
-									removeButtonLabel="ManageContent.removeRoom"
 									infoText="ManageContent.addRoomInfoText"
 									showRemoveButton={formData?.items?.length > 1}
 									handleAddSection={handleAddSection}

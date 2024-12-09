@@ -3,7 +3,6 @@
 import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 
-import { InputWithInfo } from '@/components/custom/inputs/input-with-info/InputWithInfo'
 import { FormItems } from '@/components/custom/layouts/add-form'
 import { SearchDropdown } from '@/components/custom/search-dropdown'
 import { FormControl } from '@/components/inputs/form-control'
@@ -41,15 +40,13 @@ const PractitionerForm = ({ isEdit, cancelDialog }: Props) => {
 				<TextInput disabled={isEdit} type="email" placeholder={t('General.emailPlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
-			<InputWithInfo infoText="General.barnahusInfoText">
-				<FormControl name="barnahus">
-					<FormControl.Label>
-						<RequiredLabel>{t('General.barnahus')}</RequiredLabel>
-					</FormControl.Label>
-					<TextInput disabled placeholder={t('General.barnahusPlaceholder')} />
-					<FormControl.Message />
-				</FormControl>
-			</InputWithInfo>
+			<FormControl name="barnahus">
+				<FormControl.Label>
+					<RequiredLabel>{t('General.barnahus')}</RequiredLabel>
+				</FormControl.Label>
+				<TextInput disabled placeholder={t('General.barnahusPlaceholder')} />
+				<FormControl.Message />
+			</FormControl>
 			<FormControl name="firstName">
 				<FormControl.Label>
 					<RequiredLabel>{t('General.firstName')}</RequiredLabel>

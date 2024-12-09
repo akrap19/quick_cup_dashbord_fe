@@ -5,18 +5,16 @@ import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey/Actions'
 import { ManageJourneyIntroWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyIntroWrapper'
-import { SearchDropdown } from '@/components/custom/search-dropdown'
+
 import { FormControl } from '@/components/inputs/form-control'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useCaseJourneyStore } from '@/store/case-journey'
 import { useStepsStore } from '@/store/steps'
-import { Base } from 'api/models/common/base'
-
-interface Props {
-	caseFiles: Base[]
-}
+import { TextInput } from '@/components/inputs/text-input'
+import { caseAvailable } from 'api/services/caseFiles'
+import { useEffect } from 'react'
 
 const formSchema = z.object({
 	customId: z.string().min(1, { message: 'ValidationMeseges.required' })
@@ -24,7 +22,7 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-export const SelectCaseId = ({ caseFiles }: Props) => {
+export const SelectCaseId = () => {
 	const { type, setType, setCustomId } = useCaseJourneyStore()
 	const { setCurrentStep } = useStepsStore()
 	const t = useTranslations()
@@ -34,15 +32,28 @@ export const SelectCaseId = ({ caseFiles }: Props) => {
 	}
 
 	const form = useForm<Schema>({
-		mode: 'onBlur',
+		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: { customId: '' }
 	})
 
-	const onSubmit = async (data: Schema) => {
-		setCustomId(data.customId)
+	const { customId } = form.watch()
+
+	const checkCustomIdAvailabilty = async () => {
+		const isCustomIdAvalible = await caseAvailable(customId)
+		console.log('isCustomIdAvalible', isCustomIdAvalible)
+	}
+
+	const onSubmit = async () => {
+		setCustomId(customId)
 		setCurrentStep(2)
 	}
+
+	useEffect(() => {
+		if (customId !== '') {
+			checkCustomIdAvailabilty()
+		}
+	}, [customId])
 
 	return (
 		<FormProvider {...form}>
@@ -57,7 +68,7 @@ export const SelectCaseId = ({ caseFiles }: Props) => {
 						</Text>
 						<Box width="100%">
 							<FormControl name="customId">
-								<SearchDropdown placeholder="CaseFiles.customId" options={caseFiles} isFilter />
+								<TextInput placeholder={t('General.caseIdPlaceholder')} />
 							</FormControl>
 						</Box>
 					</Stack>

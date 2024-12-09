@@ -73,6 +73,7 @@ export const ManageStaffContent = () => {
 			title: '',
 			description: ''
 		})
+		SuccessToast(t('General.sectionAddedBelow'))
 	}
 
 	const handleRemoveSection = () => {
@@ -143,8 +144,6 @@ export const ManageStaffContent = () => {
 						<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
 							<Stack gap={4}>
 								<TitleSubsection
-									addButtonLabel="ManageContent.addStaff"
-									removeButtonLabel="ManageContent.removeStaff"
 									infoText="ManageContent.addStaffInfoText"
 									showRemoveButton={formData?.items?.length > 1}
 									handleAddSection={handleAddSection}

@@ -5,6 +5,9 @@ import { CustomCase } from 'api/models/content/customCase'
 
 interface Query {
 	languageId?: string
+	page?: number
+	limit?: number
+	search?: string
 }
 
 export const getContent = (query: Query) => {
@@ -29,4 +32,18 @@ export const createCustomCase = async (customCase: CustomCase) => {
 	const response = await axiosInstanceWithToken.post(`/content/case/custom`, customCase)
 
 	return response?.data
+}
+
+export const getCases = (query: Query) => {
+	const queryParams = {
+		page: query.page ?? 1,
+		limit: query.limit ?? 10,
+		search: query.search
+	}
+
+	return fetchWithToken(`/content/case`, queryParams)
+}
+
+export const getCase = (id: string) => {
+	return fetchWithToken(`/content/case/${id}`)
 }

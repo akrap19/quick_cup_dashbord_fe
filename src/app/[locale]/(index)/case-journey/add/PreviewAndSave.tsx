@@ -20,6 +20,7 @@ import { Room } from 'api/models/content/room'
 import { Staff } from 'api/models/content/staff'
 import { createCase, createCustomCase } from 'api/services/content'
 import { CaseJourneyTypeEnum } from 'enums/caseJourneyType'
+import { createCaseFile } from 'api/services/caseFiles'
 
 interface Props {
 	content: Content
@@ -28,7 +29,7 @@ interface Props {
 export const PreviewAndSave = ({ content }: Props) => {
 	const t = useTranslations()
 	const { name, abouts, rooms, staff } = useManageContentSelection()
-	const { type, customId } = useCaseJourneyStore()
+	const { type, customId, enebleNotes } = useCaseJourneyStore()
 	const { language } = useManageContent()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const searchParams = useSearchParams()
@@ -81,31 +82,40 @@ export const PreviewAndSave = ({ content }: Props) => {
 
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		let result
 
-		if (type === CaseJourneyTypeEnum.TEMPLATE) {
-			const templateId = searchParams.get('templateId')
-			if (customId && templateId && language) {
-				const caseJourneyData = { caseId: customId, languageId: language?.id, templateId }
-				result = await createCase(caseJourneyData)
+		const caseFileResult = await createCaseFile({
+			canAddNotes: enebleNotes,
+			customId
+		})
+
+		if (caseFileResult?.message === 'OK') {
+			const caseId = caseFileResult?.data?.caseId
+			let result
+
+			if (type === CaseJourneyTypeEnum.TEMPLATE) {
+				const templateId = searchParams.get('templateId')
+				if (templateId && language) {
+					const caseJourneyData = { caseId, languageId: language?.id, templateId }
+					result = await createCase(caseJourneyData)
+				}
+			} else {
+				const customCaseJourneyData = {
+					caseId,
+					languageId: language?.id,
+					name,
+					abouts: abouts?.map(({ includeImage, ...rest }) => rest),
+					rooms: rooms?.map(({ includeImage, ...rest }) => rest),
+					staff: staff?.map(({ includeImage, ...rest }) => rest)
+				}
+				result = await createCustomCase(customCaseJourneyData)
 			}
-		} else {
-			const customCaseJourneyData = {
-				caseId: customId,
-				languageId: language?.id,
-				name,
-				abouts: abouts?.map(({ includeImage, ...rest }) => rest),
-				rooms: rooms?.map(({ includeImage, ...rest }) => rest),
-				staff: staff?.map(({ includeImage, ...rest }) => rest)
-			}
-			result = await createCustomCase(customCaseJourneyData)
-		}
 
-		if (result?.message === 'OK') {
-			SuccessToast(t('CaseJourney.caseJourneySccessfullyCreated'))
+			if (result?.message === 'OK') {
+				SuccessToast(t('CaseJourney.caseJourneySccessfullyCreated'))
 
-			if (currentStep) {
-				setCurrentStep(currentStep + 1)
+				if (currentStep) {
+					setCurrentStep(currentStep + 1)
+				}
 			}
 		}
 	}

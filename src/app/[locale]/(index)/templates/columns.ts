@@ -5,5 +5,5 @@ import { Admins } from 'api/models/admin/Admins'
 export const columns: Array<ColumnDef<Admins>> = [
 	{ accessorKey: 'name', header: 'General.template' },
 	{ accessorKey: 'status', header: 'General.status' },
-	{ accessorKey: 'updated', header: 'General.updated' }
+	{ accessorKey: 'updated', header: 'General.created' }
 ]

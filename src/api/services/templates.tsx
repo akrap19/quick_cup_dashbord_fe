@@ -17,7 +17,8 @@ export const createTemplate = async (templateData: Template) => {
 export const getTemplates = (query: Query) => {
 	const queryParams = {
 		page: query.page ?? 1,
-		limit: query.limit ?? 10
+		limit: query.limit ?? 10,
+		search: query.search
 	}
 
 	return fetchWithToken(`template`, queryParams)

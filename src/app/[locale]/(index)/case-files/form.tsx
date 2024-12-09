@@ -38,15 +38,13 @@ const CaseFilesForm = ({ cancelDialog }: Props) => {
 					<FormControl.Message />
 				</FormControl>
 			</InputWithInfo>
-			<InputWithInfo infoText="CaseFiles.barnahusInfoText">
-				<FormControl name="barnahus">
-					<FormControl.Label>
-						<RequiredLabel>{t('General.barnahus')}</RequiredLabel>
-					</FormControl.Label>
-					<TextInput disabled placeholder={t('General.barnahusPlaceholder')} />
-					<FormControl.Message />
-				</FormControl>
-			</InputWithInfo>
+			<FormControl name="barnahus">
+				<FormControl.Label>
+					<RequiredLabel>{t('General.barnahus')}</RequiredLabel>
+				</FormControl.Label>
+				<TextInput disabled placeholder={t('General.barnahusPlaceholder')} />
+				<FormControl.Message />
+			</FormControl>
 			<Inline gap={5} alignItems="center">
 				<Inline gap={2} alignItems="center">
 					<Box>

@@ -1,12 +1,9 @@
-import { CaseFileSearch } from 'api/models/caseFiles/caseFileSearch'
 import { Content } from 'api/models/content/content'
 import { Template } from 'api/models/template/template'
 import { Templates } from 'api/models/template/templates'
-import { getCaseFilesSearch } from 'api/services/caseFiles'
 import { getContent } from 'api/services/content'
 import { getLanguageSearch } from 'api/services/languages'
 import { getTemplate, getTemplatesSearch } from 'api/services/templates'
-import { CaseFileEnum } from 'enums/caseFileEnum'
 import { LanguageStatusEnum } from 'enums/languageStatusEnum'
 
 import CaseJourneyStepNavigation from './CaseJourneyStepNavigation'
@@ -24,18 +21,6 @@ interface Props {
 const CaseJourneyAddPage = async ({ searchParams }: Props) => {
 	const { data: languageData } = await getLanguageSearch(searchParams, LanguageStatusEnum.PUBLISHED)
 	const data = await getContent(searchParams)
-	// const { data: contentData } = await getContent(searchParams)
-
-	const { data: caseFilesSearchData } = await getCaseFilesSearch({
-		search: searchParams.customId,
-		status: CaseFileEnum.OPEN
-	})
-	const transformedCaseFilesSearchData = caseFilesSearchData?.map((caseFile: CaseFileSearch) => {
-		return {
-			id: caseFile.caseId,
-			name: caseFile.customId
-		}
-	})
 
 	const { data: templateSearchData } = await getTemplatesSearch({
 		search: searchParams.template
@@ -98,7 +83,6 @@ const CaseJourneyAddPage = async ({ searchParams }: Props) => {
 				return a.orderNumber - b.orderNumber
 			})
 
-		// Filter and map 'staff'
 		const filteredStaff = template?.staff
 			?.map(templateStaff => {
 				const staff = data?.staff?.find(s => s.staffId === templateStaff.staffId)
@@ -128,7 +112,6 @@ const CaseJourneyAddPage = async ({ searchParams }: Props) => {
 
 	return (
 		<CaseJourneyStepNavigation
-			caseFiles={transformedCaseFilesSearchData}
 			languages={languageData?.languages}
 			content={data.data}
 			templates={transformedTemplateSearchData}

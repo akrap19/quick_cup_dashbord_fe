@@ -2,7 +2,6 @@
 
 import { useTranslations } from 'next-intl'
 
-import { InputWithInfo } from '@/components/custom/inputs/input-with-info/InputWithInfo'
 import { FormItems } from '@/components/custom/layouts/add-form'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
@@ -26,13 +25,11 @@ const AdminForm = ({ isEdit, cancelDialog }: Props) => {
 				<TextInput disabled={isEdit} type="email" placeholder={t('General.emailPlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
-			<InputWithInfo infoText="General.barnahusInfoText">
-				<FormControl name="barnahus">
-					<FormControl.Label>{t('General.barnahus')}</FormControl.Label>
-					<TextInput placeholder={t('General.barnahusPlaceholder')} disabled />
-					<FormControl.Message />
-				</FormControl>
-			</InputWithInfo>
+			<FormControl name="barnahus">
+				<FormControl.Label>{t('General.barnahus')}</FormControl.Label>
+				<TextInput placeholder={t('General.barnahusPlaceholder')} disabled />
+				<FormControl.Message />
+			</FormControl>
 			<FormControl name="firstName">
 				<FormControl.Label>
 					<RequiredLabel>{t('General.firstName')}</RequiredLabel>

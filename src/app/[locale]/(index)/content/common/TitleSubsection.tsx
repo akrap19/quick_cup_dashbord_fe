@@ -10,22 +10,13 @@ import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 
 interface Props {
-	addButtonLabel: string
-	removeButtonLabel: string
 	infoText?: string
 	showRemoveButton?: boolean
 	handleAddSection?: MouseEventHandler<HTMLButtonElement>
 	handleRemoveSection?: MouseEventHandler<HTMLButtonElement>
 }
 
-export const TitleSubsection = ({
-	addButtonLabel,
-	removeButtonLabel,
-	infoText,
-	showRemoveButton,
-	handleAddSection,
-	handleRemoveSection
-}: Props) => {
+export const TitleSubsection = ({ infoText, showRemoveButton, handleAddSection, handleRemoveSection }: Props) => {
 	const t = useTranslations()
 	const { language } = useManageContent()
 
@@ -36,11 +27,16 @@ export const TitleSubsection = ({
 					type="button"
 					size="small2"
 					variant="secondary"
-					buttonLabel={addButtonLabel}
+					buttonLabel="General.addNewSection"
 					onClick={handleAddSection}
 				/>
 				{showRemoveButton && (
-					<RemoveButton type="button" size="small2" buttonLabel={removeButtonLabel} onClick={handleRemoveSection} />
+					<RemoveButton
+						type="button"
+						size="small2"
+						buttonLabel="General.removeLastSection"
+						onClick={handleRemoveSection}
+					/>
 				)}
 				{infoText && <InputInfo infoText={t(infoText)} />}
 			</Inline>

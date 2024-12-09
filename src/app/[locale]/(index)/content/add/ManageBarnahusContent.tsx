@@ -21,6 +21,7 @@ import { createAboutBulk } from 'api/services/content/about'
 
 import { SectionItemsFields } from '../common/SectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
+import { ErrorToast } from '@/components/overlay/toast-messages/ErrorToastmessage'
 
 const formSchema = z.object({
 	items: z.array(
@@ -71,12 +72,14 @@ export const ManageBarnahusContent = () => {
 			audioId: '',
 			images: [] as any
 		})
+		SuccessToast(t('General.sectionAddedBelow'))
 	}
 
 	const handleRemoveSection = () => {
 		// eslint-disable-next-line
 		const removeIndex = formData?.items?.length - 1
 		remove(removeIndex)
+		ErrorToast(t('General.lastSectionRemoved'))
 	}
 
 	const handleNextStep = () => {
@@ -123,8 +126,6 @@ export const ManageBarnahusContent = () => {
 							<Box>
 								<Stack gap={4}>
 									<TitleSubsection
-										addButtonLabel="ManageContent.addAbout"
-										removeButtonLabel="ManageContent.removeAbout"
 										infoText="ManageContent.addAboutInfoText"
 										showRemoveButton={formData?.items?.length > 1}
 										handleAddSection={handleAddSection}

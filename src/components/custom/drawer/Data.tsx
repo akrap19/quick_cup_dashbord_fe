@@ -2,7 +2,6 @@
 import BriefcaseIcon from '@/components/icons/block-icon/assets/briefcase-icon.svg'
 import ClipboardListIcon from '@/components/icons/block-icon/assets/clipboard-list-icon.svg'
 import DocumentDuplicateIcon from '@/components/icons/block-icon/assets/document-duplicate-icon.svg'
-import FileIcon from '@/components/icons/block-icon/assets/file-icon.svg'
 import GearIcon from '@/components/icons/block-icon/assets/gear-icon.svg'
 import GlobeIcon from '@/components/icons/block-icon/assets/globe-icon.svg'
 import GroupsIcon from '@/components/icons/block-icon/assets/groups-icon.svg'
@@ -46,12 +45,12 @@ export const drawerItems: Item[] = [
 		route: ROUTES.TEMPLATES,
 		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.PRACTITIONER]
 	},
-	{
-		label: 'caseFiles',
-		icon: <FileIcon />,
-		route: ROUTES.CASE_FILES,
-		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.PRACTITIONER]
-	},
+	// {
+	// 	label: 'caseFiles',
+	// 	icon: <FileIcon />,
+	// 	route: ROUTES.CASE_FILES,
+	// 	usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.PRACTITIONER]
+	// },
 	{
 		label: 'caseJourney',
 		icon: <BriefcaseIcon />,

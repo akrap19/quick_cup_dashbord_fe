@@ -80,9 +80,7 @@ const LoginPage = () => {
 									<TextInput placeholder={t('General.emailPlaceholder')} />
 									<FormControl.Message />
 								</FormControl>
-								<FormControl
-									name="password"
-									successMessageString={form.formState.isValid ? 'Authorization.allGood' : undefined}>
+								<FormControl name="password">
 									<FormControl.Label>
 										<RequiredLabel>{t('Authorization.password')}</RequiredLabel>
 									</FormControl.Label>

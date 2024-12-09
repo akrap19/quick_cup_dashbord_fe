@@ -16,7 +16,6 @@ import { useCaseJourneyStore } from '@/store/case-journey'
 import { useStepsStore } from '@/store/steps'
 import { CaseJourneyTypeEnum } from 'enums/caseJourneyType'
 import { requiredString } from 'schemas'
-import { useEffect } from 'react'
 
 const formSchema = z.object({
 	caseJourneyType: requiredString.shape.scheme
@@ -37,18 +36,12 @@ export const SelectCaseJourneyType = () => {
 	]
 
 	const form = useForm<Schema>({
-		mode: 'onBlur',
+		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: {}
 	})
 
 	const { caseJourneyType } = form.watch()
-
-	useEffect(() => {
-		if (caseJourneyType !== '') {
-			form.trigger('caseJourneyType')
-		}
-	}, [caseJourneyType])
 
 	const onSubmit = async () => {
 		setType(caseJourneyType as CaseJourneyTypeEnum)

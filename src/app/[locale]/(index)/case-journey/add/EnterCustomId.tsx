@@ -14,15 +14,27 @@ import { useCaseJourneyStore } from '@/store/case-journey'
 import { useStepsStore } from '@/store/steps'
 import { TextInput } from '@/components/inputs/text-input'
 import { caseAvailable } from 'api/services/caseFiles'
-import { useEffect } from 'react'
 
-const formSchema = z.object({
-	customId: z.string().min(1, { message: 'ValidationMeseges.required' })
-})
+const formSchema = z
+	.object({
+		customId: z.string().min(1, { message: 'ValidationMeseges.required' })
+	})
+	.refine(
+		async data => {
+			if (data.customId !== '') {
+				const response = await caseAvailable(data.customId)
+				return response?.data?.available
+			}
+		},
+		{
+			message: 'CaseJourney.customIdUnavailable',
+			path: ['customId']
+		}
+	)
 
 type Schema = z.infer<typeof formSchema>
 
-export const SelectCaseId = () => {
+export const EnterCustomId = () => {
 	const { type, setType, setCustomId } = useCaseJourneyStore()
 	const { setCurrentStep } = useStepsStore()
 	const t = useTranslations()
@@ -39,21 +51,10 @@ export const SelectCaseId = () => {
 
 	const { customId } = form.watch()
 
-	const checkCustomIdAvailabilty = async () => {
-		const isCustomIdAvalible = await caseAvailable(customId)
-		console.log('isCustomIdAvalible', isCustomIdAvalible)
-	}
-
 	const onSubmit = async () => {
 		setCustomId(customId)
 		setCurrentStep(2)
 	}
-
-	useEffect(() => {
-		if (customId !== '') {
-			checkCustomIdAvailabilty()
-		}
-	}, [customId])
 
 	return (
 		<FormProvider {...form}>
@@ -69,6 +70,7 @@ export const SelectCaseId = () => {
 						<Box width="100%">
 							<FormControl name="customId">
 								<TextInput placeholder={t('General.caseIdPlaceholder')} />
+								<FormControl.Message />
 							</FormControl>
 						</Box>
 					</Stack>

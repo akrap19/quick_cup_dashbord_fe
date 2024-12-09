@@ -22,7 +22,7 @@ import { CaseJourneyTypeEnum } from 'enums/caseJourneyType'
 
 import { CaseJourneyPublished } from './CaseJourneyPublished'
 import { PreviewAndSave } from './PreviewAndSave'
-import { SelectCaseId } from './SelectCaseId'
+import { EnterCustomId } from './EnterCustomId'
 import { SelectCaseJourneyType } from './SelectCaseJourneyType'
 import { SelectTemplate } from './SelectTemplate'
 import { SelectTemplateType } from './SelectTemplateType'
@@ -104,7 +104,7 @@ const CaseJourneyStepNavigation = ({ languages, content, templates, template }: 
 
 	return (
 		<ManageJourneyWrapper>
-			{currentStep === 1 && <SelectCaseId />}
+			{currentStep === 1 && <EnterCustomId />}
 			{currentStep === 2 && <EnebleNotes />}
 			{currentStep === 3 && <SelectLanguage languages={languages} />}
 			{currentStep === 4 && <SelectCaseJourneyType />}

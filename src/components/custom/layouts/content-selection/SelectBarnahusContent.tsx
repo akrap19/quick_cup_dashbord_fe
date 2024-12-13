@@ -62,7 +62,6 @@ export const SelectBarnahusContent = ({ abouts }: Props) => {
 		}
 	}
 
-	console.log('formData', formData)
 	return (
 		<FormProvider {...form}>
 			<form style={{ width: '100%' }} onSubmit={form.handleSubmit(onSubmit)}>

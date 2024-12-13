@@ -3,9 +3,7 @@
 import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useSteps } from '@/hooks/use-steps'
-import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
-import { Content } from 'api/models/content/content'
 import { Language } from 'api/models/language/language'
 
 import { ManageBarnahusContent } from './ManageBarnahusContent'
@@ -14,24 +12,29 @@ import { ManageStaffContent } from './ManageStaffContent'
 import { SelectLanguage } from './SelectLanguage'
 import { ContentPublished } from '../common/ContentPublished'
 import { PreviewAndPublish } from '../common/PreviewAndPublish'
+import { useEffect } from 'react'
+import { useManageContent } from '@/store/manage-content'
 
 interface Props {
 	languages: Language[]
-	content: Content
 }
 
-export const ContentStepNavigation = ({ languages, content }: Props) => {
+export const ContentStepNavigation = ({ languages }: Props) => {
 	const { currentStep } = useStepsStore()
-	const { language } = useManageContent()
+	const { clearAll } = useManageContent()
 
 	useSteps({
 		totalSteps: 6,
-		currentStep: language ? 2 : 1
+		currentStep: 1
 	})
 	useNavbarItems({
 		title: 'ManageContent.add',
 		backLabel: 'ManageContent.back'
 	})
+
+	useEffect(() => {
+		clearAll()
+	}, [])
 
 	return (
 		<ManageJourneyWrapper>
@@ -39,7 +42,7 @@ export const ContentStepNavigation = ({ languages, content }: Props) => {
 			{currentStep === 2 && <ManageBarnahusContent />}
 			{currentStep === 3 && <ManageRoomsContent />}
 			{currentStep === 4 && <ManageStaffContent />}
-			{currentStep === 5 && <PreviewAndPublish content={content} />}
+			{currentStep === 5 && <PreviewAndPublish />}
 			{currentStep === 6 && <ContentPublished languages={languages} />}
 		</ManageJourneyWrapper>
 	)

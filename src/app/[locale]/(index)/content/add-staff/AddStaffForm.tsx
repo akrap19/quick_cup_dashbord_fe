@@ -12,7 +12,8 @@ import { Language } from 'api/models/language/language'
 import { StaffSectionItemFields } from '../common/StaffSectionItemFields'
 import { translateLanguageContent } from 'api/services/languages'
 import { useManageContentAdd } from '@/store/manage-content-add'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { ContentPayload } from 'api/models/content/contentPayload'
 
 interface Props {
 	languages: Language[]
@@ -29,7 +30,7 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const AddStaffForm = ({ languages }: Props) => {
-	const { staff, setStaff, setImagesToDisplay } = useManageContentAdd()
+	const { staff, imagesToDisplay, setStaff, setImagesToDisplay, removeStaffByLanguageId } = useManageContentAdd()
 	const [istranslating, setIsTranslating] = useState(false)
 	const { totalSteps, currentStep, setCurrentStep } = useStepsStore()
 
@@ -50,13 +51,17 @@ export const AddStaffForm = ({ languages }: Props) => {
 	type FormDataKeys = 'title' | 'description' | 'name'
 
 	const translate = async (key: FormDataKeys) => {
+		const staffItem = staff?.reduceRight<ContentPayload | null>((found, staff) => {
+			return found || (staff?.languageId === languages[0]?.languageId ? staff : null)
+		}, null)
+
 		if (
 			((formData && formData[key] && formData[key] !== '') ||
-				(staff && staff[0] && staff[0][key] && staff[0][key] !== '')) &&
+				(staff && staffItem && staffItem[key] && staffItem[key] !== '')) &&
 			currentStep
 		) {
 			const forTranslate = {
-				content: currentStep === 1 ? formData[key] : staff ? staff[0][key] : null,
+				content: currentStep === 1 ? formData[key] : staff && staffItem ? staffItem[key] : null,
 				languageId: languages[currentStep]?.languageId
 			}
 			const translatedData = await translateLanguageContent(forTranslate)
@@ -78,6 +83,7 @@ export const AddStaffForm = ({ languages }: Props) => {
 		if (currentStep && totalSteps) {
 			if (isInitalContent) {
 				const aboutForSave = { ...formData, images, languageId: languages[0]?.languageId }
+				removeStaffByLanguageId(languages[0]?.languageId)
 				setStaff(aboutForSave)
 			}
 
@@ -89,6 +95,7 @@ export const AddStaffForm = ({ languages }: Props) => {
 					images,
 					languageId: languages[currentStep]?.languageId
 				}
+				removeStaffByLanguageId(languages[currentStep]?.languageId)
 				setStaff(aboutForSave)
 			}
 
@@ -101,12 +108,43 @@ export const AddStaffForm = ({ languages }: Props) => {
 		setImagesToDisplay(photos)
 	}
 
+	const handleResetForm = (indexOffset: number) => {
+		if (currentStep && staff && staff[currentStep - indexOffset]) {
+			const staffItem = staff?.reduceRight<ContentPayload | null>((found, staff) => {
+				return found || (staff?.languageId === languages[currentStep - indexOffset]?.languageId ? staff : null)
+			}, null)
+
+			form.reset({
+				title: staffItem?.title ?? '',
+				description: staffItem?.description ?? '',
+				name: staffItem?.name ?? '',
+				images: staffItem?.images ?? [],
+				deletedImages: staffItem?.deletedImages ?? []
+			})
+		}
+	}
+
+	const handleBack = () => {
+		if (currentStep) {
+			handleResetForm(2)
+			setCurrentStep(currentStep - 1)
+		}
+	}
+
+	useEffect(() => {
+		handleResetForm(1)
+	}, [])
+
 	return (
 		<Box paddingTop={6}>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<StaffSectionItemFields includePhotoInfo={true} onPhotosChange={onPhotosChange} />
-					<Actions disableSubmit={istranslating} />
+					<StaffSectionItemFields
+						includePhotoInfo={true}
+						initialImagesUrls={imagesToDisplay}
+						onPhotosChange={onPhotosChange}
+					/>
+					<Actions disableSubmit={istranslating} customHandleBack={handleBack} />
 				</form>
 			</FormProvider>
 		</Box>

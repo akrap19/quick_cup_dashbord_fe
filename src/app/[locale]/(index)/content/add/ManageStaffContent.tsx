@@ -18,10 +18,10 @@ import { useStepsStore } from '@/store/steps'
 import { areAllItemsEmptyInArrayObject } from '@/utils/areAllItemsEmptyInArrayObject'
 import { replaceEmptyStringsWithNull } from '@/utils/replaceEmptyStringsWithNull'
 import { ContentPayload } from 'api/models/content/contentPayload'
-import { createStaffBulk } from 'api/services/content/staff'
 
 import { StaffSectionItemsFields } from '../common/StaffSectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
+import { ErrorToast } from '@/components/overlay/toast-messages/ErrorToastmessage'
 
 const formSchema = z.object({
 	items: z.array(
@@ -37,25 +37,42 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const ManageStaffContent = () => {
+	const key = 'staff'
 	const searchParams = useSearchParams()
 	const { replace, refresh } = useRouter()
 	const { currentStep, setCurrentStep } = useStepsStore()
-	const { setIsContentEmpty } = useManageContent()
-	const { language } = useManageContent()
+	const {
+		language,
+		contentPayload,
+		imagesToDisplay,
+		setIsContentEmpty,
+		setContentPayload,
+		removeLastContentPayload,
+		setImagesToDisplay
+	} = useManageContent()
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			items: [
-				{
-					images: [],
-					name: '',
-					title: '',
-					description: ''
-				}
-			]
+			items: contentPayload?.staff
+				? contentPayload?.staff?.map(staff => {
+						return {
+							title: staff?.title ?? '',
+							name: staff?.name ?? '',
+							description: staff?.description ?? '',
+							images: staff?.images ?? []
+						}
+					})
+				: [
+						{
+							images: [],
+							name: '',
+							title: '',
+							description: ''
+						}
+					]
 		}
 	})
 
@@ -80,6 +97,8 @@ export const ManageStaffContent = () => {
 		// eslint-disable-next-line
 		const removeIndex = formData?.items?.length - 1
 		remove(removeIndex)
+		removeLastContentPayload(key)
+		ErrorToast(t('General.lastSectionRemoved'))
 	}
 
 	const handleLocation = (value: string) => {
@@ -117,18 +136,16 @@ export const ManageStaffContent = () => {
 		})
 
 		if (!formValuesCheck) {
-			const result = await createStaffBulk(replaceEmptyStringsWithNull(formDataTmp))
-
-			if (result?.message === 'OK') {
-				SuccessToast(t('ManageContent.staffContentSccessfullyCreated'))
-
-				setIsContentEmpty('staff', false)
-				handleNextStep()
-			}
+			setContentPayload(key, replaceEmptyStringsWithNull(formDataTmp))
+			setIsContentEmpty(key, false)
 		} else {
-			setIsContentEmpty('staff', true)
-			handleNextStep()
+			setIsContentEmpty(key, true)
 		}
+		handleNextStep()
+	}
+
+	const onPhotosChange = (id: string, images: string[]) => {
+		setImagesToDisplay(id + key, images)
 	}
 
 	return (
@@ -156,7 +173,14 @@ export const ManageStaffContent = () => {
 												<Divider />
 											</Box>
 										)}
-										<StaffSectionItemsFields index={index} form={form} />
+										<StaffSectionItemsFields
+											index={index}
+											form={form}
+											initialImagesUrls={
+												imagesToDisplay?.find(images => images?.id === `items[${index}].images` + key)?.images
+											}
+											onPhotosChange={onPhotosChange}
+										/>
 									</div>
 								))}
 							</Stack>

@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
@@ -13,14 +12,14 @@ import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
 import { About } from 'api/models/content/about'
-import { createAboutBulk } from 'api/services/content/about'
 
 import { LanguageLabel } from '../common/LanguageLabel'
 import { SectionItemsFields } from '../common/SectionItemsFields'
 import { ContentPayload } from 'api/models/content/contentPayload'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { areAllItemsEmptyInArrayObject } from '@/utils/areAllItemsEmptyInArrayObject'
 import { replaceEmptyStringsWithNull } from '@/utils/replaceEmptyStringsWithNull'
+import { Audio } from 'api/models/common/audio'
+import { Divider } from '@/components/layout/divider'
 
 interface Props {
 	abouts?: About[]
@@ -42,25 +41,45 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const ManageBarnahusContent = ({ abouts }: Props) => {
+	const key = 'about'
 	const { currentStep, setCurrentStep } = useStepsStore()
-	const { language, setIsContentEmpty } = useManageContent()
-	const { refresh } = useRouter()
+	const {
+		language,
+		contentPayload,
+		audioToDisplay,
+		imagesToDisplay,
+		setIsContentEmpty,
+		setContentPayload,
+		setImagesToDisplay,
+		setAudioToDisplay
+	} = useManageContent()
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			items: abouts?.map(about => {
-				return {
-					aboutId: about?.aboutId ?? '',
-					title: about?.title ?? '',
-					description: about?.description ?? '',
-					audioId: about?.audio?.audioId ?? '',
-					images: about?.aboutImages?.map(image => image?.aboutImageId) ?? [],
-					deletedImages: []
-				}
-			})
+			items: contentPayload?.about
+				? contentPayload?.about?.map((about, index) => {
+						return {
+							aboutId: (abouts && abouts[index]?.aboutId) ?? '',
+							title: about?.title ?? '',
+							description: about?.description ?? '',
+							audioId: about?.audioId ?? '',
+							images: about?.images ?? [],
+							deletedImages: about?.deletedImages ?? []
+						}
+					})
+				: abouts?.map(about => {
+						return {
+							aboutId: about?.aboutId ?? '',
+							title: about?.title ?? '',
+							description: about?.description ?? '',
+							audioId: about?.audio?.audioId ?? '',
+							images: about?.aboutImages?.map(image => image?.aboutImageId) ?? [],
+							deletedImages: []
+						}
+					})
 		}
 	})
 
@@ -102,19 +121,12 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 		})
 
 		if (!formValuesCheck) {
-			const result = await createAboutBulk(replaceEmptyStringsWithNull(formDataTmp))
-
-			if (result?.message === 'OK') {
-				SuccessToast(t('ManageContent.aboutBarnahusContentSccessfullyCreated'))
-
-				refresh()
-				setIsContentEmpty('about', false)
-				handleNextStep()
-			}
+			setContentPayload(key, replaceEmptyStringsWithNull(formDataTmp))
+			setIsContentEmpty(key, false)
 		} else {
-			setIsContentEmpty('about', true)
-			handleNextStep()
+			setIsContentEmpty(key, true)
 		}
+		handleNextStep()
 	}
 
 	const { getValues, control, handleSubmit } = form
@@ -124,11 +136,19 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 		name: 'items'
 	})
 
+	const onPhotosChange = (id: string, images: string[]) => {
+		setImagesToDisplay(id + key, images)
+	}
+
+	const onAudioChange = (id: string, audio: Audio) => {
+		setAudioToDisplay(id + key, audio)
+	}
+
 	return (
 		<FormProvider {...form}>
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<Box paddingTop={6}>
-					<Stack gap={7}>
+					<Stack gap={6}>
 						<Box display="flex" justify="center">
 							<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
 								{t('General.aboutBarnahus')}
@@ -144,13 +164,25 @@ export const ManageBarnahusContent = ({ abouts }: Props) => {
 												<SectionItemsFields
 													index={index}
 													form={form}
-													initialAudio={{
-														id: abouts[index]?.audio?.audioId ?? '',
-														name: abouts[index]?.audio?.audioName ?? '',
-														url: abouts[index]?.audio?.audioURL ?? ''
-													}}
-													initialImagesUrls={abouts[index]?.aboutImages?.map(image => image.url)}
+													initialAudio={
+														audioToDisplay?.find(audio => audio?.id === `items[${index}].audioId` + key)?.audio ?? {
+															id: abouts[index]?.audio?.audioId ?? '',
+															name: abouts[index]?.audio?.audioName ?? '',
+															url: abouts[index]?.audio?.audioURL ?? ''
+														}
+													}
+													initialImagesUrls={
+														imagesToDisplay?.find(images => images?.id === `items[${index}].images` + key)?.images ??
+														abouts[index]?.aboutImages?.map(image => image.url)
+													}
+													onAudioChangeFull={onAudioChange}
+													onPhotosChange={onPhotosChange}
 												/>
+											)}
+											{index + 1 !== fields?.length && (
+												<Box paddingTop={8}>
+													<Divider />
+												</Box>
 											)}
 										</div>
 									))}

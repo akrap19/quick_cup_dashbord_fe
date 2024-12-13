@@ -15,10 +15,12 @@ import { useStepsStore } from '@/store/steps'
 import { areAllItemsEmptyInArrayObject } from '@/utils/areAllItemsEmptyInArrayObject'
 import { replaceEmptyStringsWithNull } from '@/utils/replaceEmptyStringsWithNull'
 import { ContentPayload } from 'api/models/content/contentPayload'
-import { createRoomBulk } from 'api/services/content/rooms'
 
 import { SectionItemsFields } from '../common/SectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
+import { ErrorToast } from '@/components/overlay/toast-messages/ErrorToastmessage'
+import { Audio } from 'api/models/common/audio'
+import { Divider } from '@/components/layout/divider'
 
 const formSchema = z.object({
 	items: z.array(
@@ -34,23 +36,42 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const ManageRoomsContent = () => {
+	const key = 'rooms'
 	const { currentStep, setCurrentStep } = useStepsStore()
-	const { setIsContentEmpty } = useManageContent()
-	const { language } = useManageContent()
+	const {
+		language,
+		contentPayload,
+		audioToDisplay,
+		imagesToDisplay,
+		setIsContentEmpty,
+		setContentPayload,
+		removeLastContentPayload,
+		setImagesToDisplay,
+		setAudioToDisplay
+	} = useManageContent()
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			items: [
-				{
-					title: '',
-					description: '',
-					audioId: '',
-					images: []
-				}
-			]
+			items: contentPayload?.rooms
+				? contentPayload?.rooms?.map(room => {
+						return {
+							title: room?.title ?? '',
+							description: room?.description ?? '',
+							audioId: room?.audioId ?? '',
+							images: room?.images ?? []
+						}
+					})
+				: [
+						{
+							title: '',
+							description: '',
+							audioId: '',
+							images: []
+						}
+					]
 		}
 	})
 
@@ -75,6 +96,8 @@ export const ManageRoomsContent = () => {
 		// eslint-disable-next-line
 		const removeIndex = formData?.items?.length - 1
 		remove(removeIndex)
+		removeLastContentPayload(key)
+		ErrorToast(t('General.lastSectionRemoved'))
 	}
 
 	const handleNextStep = () => {
@@ -92,18 +115,21 @@ export const ManageRoomsContent = () => {
 		})
 
 		if (!formValuesCheck) {
-			const result = await createRoomBulk(replaceEmptyStringsWithNull(formDataTmp))
-
-			if (result?.message === 'OK') {
-				SuccessToast(t('ManageContent.roomsContentSccessfullyCreated'))
-
-				setIsContentEmpty('rooms', false)
-				handleNextStep()
-			}
+			setContentPayload(key, replaceEmptyStringsWithNull(formDataTmp))
+			setIsContentEmpty(key, false)
 		} else {
-			setIsContentEmpty('rooms', true)
-			handleNextStep()
+			setIsContentEmpty(key, true)
 		}
+
+		handleNextStep()
+	}
+
+	const onPhotosChange = (id: string, images: string[]) => {
+		setImagesToDisplay(id + key, images)
+	}
+
+	const onAudioChange = (id: string, audio: Audio) => {
+		setAudioToDisplay(id + key, audio)
 	}
 
 	return (
@@ -126,7 +152,21 @@ export const ManageRoomsContent = () => {
 								/>
 								{fields.map((field, index) => (
 									<div key={field.id}>
-										<SectionItemsFields index={index} form={form} />
+										<SectionItemsFields
+											index={index}
+											form={form}
+											initialAudio={audioToDisplay?.find(audio => audio?.id === `items[${index}].audioId` + key)?.audio}
+											initialImagesUrls={
+												imagesToDisplay?.find(images => images?.id === `items[${index}].images` + key)?.images
+											}
+											onAudioChangeFull={onAudioChange}
+											onPhotosChange={onPhotosChange}
+										/>
+										{index + 1 !== fields?.length && (
+											<Box paddingTop={8}>
+												<Divider />
+											</Box>
+										)}
 									</div>
 								))}
 							</Stack>

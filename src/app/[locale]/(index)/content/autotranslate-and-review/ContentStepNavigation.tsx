@@ -26,7 +26,7 @@ interface Props {
 export const ContentStepNavigation = ({ language, languages }: Props) => {
 	const { currentStep } = useStepsStore()
 	const [content, setContent] = useState<Content>()
-	const { setLanguage } = useManageContent()
+	const { setLanguage, clearAll } = useManageContent()
 
 	const translateContent = async () => {
 		const result = await translateLanguage(language.languageId)
@@ -50,6 +50,10 @@ export const ContentStepNavigation = ({ language, languages }: Props) => {
 		}
 	}, [language])
 
+	useEffect(() => {
+		clearAll()
+	}, [])
+
 	return (
 		<>
 			{!content ? (
@@ -59,7 +63,7 @@ export const ContentStepNavigation = ({ language, languages }: Props) => {
 					{currentStep === 1 && <ManageBarnahusContent abouts={content?.abouts} />}
 					{currentStep === 2 && <ManageRoomsContent rooms={content?.rooms} />}
 					{currentStep === 3 && <ManageStaffContent staff={content?.staff} />}
-					{currentStep === 4 && <PreviewAndPublish content={content} />}
+					{currentStep === 4 && <PreviewAndPublish />}
 					{currentStep === 5 && <ContentPublished languages={languages} setContent={setContent} />}
 				</ManageJourneyWrapper>
 			)}

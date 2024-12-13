@@ -13,12 +13,10 @@ import { Staff } from 'api/models/content/staff'
 
 import { LanguageLabel } from '../common/LanguageLabel'
 import { StaffSectionItemsFields } from '../common/StaffSectionItemsFields'
-import { useRouter } from 'next/navigation'
 import { ContentPayload } from 'api/models/content/contentPayload'
 import { areAllItemsEmptyInArrayObject } from '@/utils/areAllItemsEmptyInArrayObject'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { replaceEmptyStringsWithNull } from '@/utils/replaceEmptyStringsWithNull'
-import { createStaffBulk } from 'api/services/content/staff'
+import { Divider } from '@/components/layout/divider'
 
 interface Props {
 	staff?: Staff[]
@@ -40,25 +38,37 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const ManageStaffContent = ({ staff }: Props) => {
+	const key = 'staff'
 	const { currentStep, setCurrentStep } = useStepsStore()
-	const { language, setIsContentEmpty } = useManageContent()
-	const { refresh } = useRouter()
+	const { language, contentPayload, imagesToDisplay, setIsContentEmpty, setContentPayload, setImagesToDisplay } =
+		useManageContent()
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			items: staff?.map(item => {
-				return {
-					staffId: item?.staffId ?? '',
-					name: item?.name ?? '',
-					title: item?.title ?? '',
-					description: item?.description ?? '',
-					images: item?.staffImages?.map(image => image?.staffImageId) ?? [],
-					deletedImages: []
-				}
-			})
+			items: contentPayload?.staff
+				? contentPayload?.staff?.map((staffItem, index) => {
+						return {
+							staffId: (staff && staff[index]?.staffId) ?? '',
+							title: staffItem?.title ?? '',
+							name: staffItem?.name ?? '',
+							description: staffItem?.description ?? '',
+							images: staffItem?.images ?? [],
+							deletedImages: staffItem?.deletedImages ?? []
+						}
+					})
+				: staff?.map(item => {
+						return {
+							staffId: item?.staffId ?? '',
+							name: item?.name ?? '',
+							title: item?.title ?? '',
+							description: item?.description ?? '',
+							images: item?.staffImages?.map(image => image?.staffImageId) ?? [],
+							deletedImages: []
+						}
+					})
 		}
 	})
 	const formData = form?.getValues()
@@ -106,19 +116,17 @@ export const ManageStaffContent = ({ staff }: Props) => {
 		})
 
 		if (!formValuesCheck) {
-			const result = await createStaffBulk(replaceEmptyStringsWithNull(formDataTmp))
-
-			if (result?.message === 'OK') {
-				SuccessToast(t('ManageContent.staffContentSccessfullyCreated'))
-
-				refresh()
-				setIsContentEmpty('staffs', false)
-				handleNextStep()
-			}
+			setContentPayload(key, replaceEmptyStringsWithNull(formDataTmp))
+			setIsContentEmpty(key, false)
 		} else {
-			setIsContentEmpty('staffs', true)
-			handleNextStep()
+			setIsContentEmpty(key, true)
 		}
+
+		handleNextStep()
+	}
+
+	const onPhotosChange = (id: string, images: string[]) => {
+		setImagesToDisplay(id + key, images)
 	}
 
 	return (
@@ -136,11 +144,20 @@ export const ManageStaffContent = ({ staff }: Props) => {
 								<LanguageLabel language={language?.name} />
 								{fields.map((field, index) => (
 									<div key={field.id}>
+										{index > 0 && (
+											<Box paddingBottom={6}>
+												<Divider />
+											</Box>
+										)}
 										{staff && (
 											<StaffSectionItemsFields
 												index={index}
 												form={form}
-												initialImagesUrls={staff[index]?.staffImages?.map(image => image.url)}
+												initialImagesUrls={
+													imagesToDisplay?.find(images => images?.id === `items[${index}].images` + key)?.images ??
+													staff[index]?.staffImages?.map(image => image.url)
+												}
+												onPhotosChange={onPhotosChange}
 											/>
 										)}
 									</div>

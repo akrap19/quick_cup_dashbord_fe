@@ -17,6 +17,8 @@ import { Language } from 'api/models/language/language'
 import { AddStaffForm } from './AddStaffForm'
 import { ContentSaved } from '../common/ContentSaved'
 import { PreviewAndPublish } from './PreviewAndPublish'
+import { useManageContentAdd } from '@/store/manage-content-add'
+import { useEffect } from 'react'
 
 interface Props {
 	languages: Language[]
@@ -26,6 +28,7 @@ export const AddStaffLanguageNavigation = ({ languages }: Props) => {
 	const t = useTranslations()
 	const { navbarIsLoading } = useNavbarItemsStore()
 	const { currentStep } = useStepsStore()
+	const { clearAll } = useManageContentAdd()
 
 	useNavbarItems({
 		title: 'ManageContent.addStaff',
@@ -36,6 +39,10 @@ export const AddStaffLanguageNavigation = ({ languages }: Props) => {
 		totalSteps: languages.length + 2,
 		currentStep: 1
 	})
+
+	useEffect(() => {
+		clearAll()
+	}, [])
 
 	return (
 		<Box width="100%">

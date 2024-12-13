@@ -48,7 +48,7 @@ const ContentPage = async ({ searchParams }: Props) => {
 	})
 	const doesContentHasData =
 		barnahusTranslations?.aboutData?.pagination?.count > 0 ||
-		barnahusTranslations?.roomsData?.pagination?.count > 0 ||
+		barnahusTranslations?.roomData?.pagination?.count > 0 ||
 		barnahusTranslations?.staffData?.pagination?.count > 0
 
 	return !doesContentHasData ? (

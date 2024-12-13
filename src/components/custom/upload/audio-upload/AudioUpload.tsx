@@ -18,9 +18,10 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
 	initialAudio?: Audio
 	disableDelete?: boolean
 	onAudioChange?: (audioUrl: string) => void
+	onAudioChangeFull?: (audio: Audio | undefined) => void
 }
 
-export const AudioUpload = ({ initialAudio, disableDelete, onAudioChange, ...rest }: Props) => {
+export const AudioUpload = ({ initialAudio, disableDelete, onAudioChange, onAudioChangeFull, ...rest }: Props) => {
 	const [isAudioPlaying, setIsAudioPlaying] = useState(false)
 	const [audioFile, setAudioFile] = useState<File>()
 	const [audioElement, setAudioElement] = useState<HTMLAudioElement>()
@@ -39,6 +40,9 @@ export const AudioUpload = ({ initialAudio, disableDelete, onAudioChange, ...res
 			setAudioElement(audio)
 			if (onAudioChange) {
 				onAudioChange(audioUrl)
+			}
+			if (onAudioChangeFull) {
+				onAudioChangeFull({ id: result.data.mediaId, name: file?.name, url: audioUrl })
 			}
 		}
 	}
@@ -69,6 +73,9 @@ export const AudioUpload = ({ initialAudio, disableDelete, onAudioChange, ...res
 		if (onAudioChange) {
 			onAudioChange('')
 		}
+		if (onAudioChangeFull) {
+			onAudioChangeFull(undefined)
+		}
 	}
 
 	const playAudioFile = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -89,12 +96,21 @@ export const AudioUpload = ({ initialAudio, disableDelete, onAudioChange, ...res
 	}
 
 	useEffect(() => {
+		if (onAudioChangeFull && rest?.value !== initialAudio?.id) {
+			setAudioFile(initialAudio ? (initialAudio as any) : undefined)
+		}
+	}, [initialAudio])
+
+	useEffect(() => {
 		if (initialAudio?.url) {
 			const audio = new window.Audio(initialAudio?.url)
 			audio.loop = true
 			setAudioElement(audio)
 			if (onAudioChange) {
 				onAudioChange(initialAudio?.url)
+			}
+			if (onAudioChangeFull) {
+				onAudioChangeFull(initialAudio)
 			}
 		}
 	}, [])

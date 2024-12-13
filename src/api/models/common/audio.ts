@@ -1,8 +1,8 @@
 export interface Audio {
-	id: string
+	id?: string
 	audioId?: string
-	name: string
+	name?: string
 	audioName?: string
-	url: string
+	url?: string
 	audioURL?: string
 }

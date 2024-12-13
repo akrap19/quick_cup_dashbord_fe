@@ -13,9 +13,10 @@ interface Props {
 	form: any
 	index: number
 	initialImagesUrls?: string[]
+	onPhotosChange: (id: string, photos: string[]) => void
 }
 
-export const StaffSectionItemsFields = ({ index, form, initialImagesUrls }: Props) => {
+export const StaffSectionItemsFields = ({ index, form, initialImagesUrls, onPhotosChange }: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -27,7 +28,10 @@ export const StaffSectionItemsFields = ({ index, form, initialImagesUrls }: Prop
 							{t('ManageContent.staffPhoto')}
 						</Text>
 						<FormControl {...form.register(`items[${index}].images`)}>
-							<PhotoUpload initialImagesUrls={initialImagesUrls} />
+							<PhotoUpload
+								initialImagesUrls={initialImagesUrls}
+								onPhotosChange={images => onPhotosChange(`items[${index}].images`, images)}
+							/>
 							<FormControl.Message />
 						</FormControl>
 					</Stack>

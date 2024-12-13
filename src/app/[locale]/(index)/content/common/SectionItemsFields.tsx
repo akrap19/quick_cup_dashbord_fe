@@ -15,9 +15,18 @@ interface Props {
 	index: number
 	initialAudio?: Audio
 	initialImagesUrls?: string[]
+	onPhotosChange: (id: string, photos: string[]) => void
+	onAudioChangeFull: (id: string, audio: Audio) => void
 }
 
-export const SectionItemsFields = ({ index, form, initialAudio, initialImagesUrls }: Props) => {
+export const SectionItemsFields = ({
+	index,
+	form,
+	initialAudio,
+	initialImagesUrls,
+	onPhotosChange,
+	onAudioChangeFull
+}: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -56,7 +65,10 @@ export const SectionItemsFields = ({ index, form, initialAudio, initialImagesUrl
 						{t('ManageContent.audioTranslation')}
 					</Text>
 					<FormControl {...form.register(`items[${index}].audioId`)}>
-						<AudioUpload initialAudio={initialAudio} />
+						<AudioUpload
+							initialAudio={initialAudio}
+							onAudioChangeFull={audio => onAudioChangeFull(`items[${index}].audioId`, audio as any)}
+						/>
 						<FormControl.Message />
 					</FormControl>
 				</Stack>
@@ -65,7 +77,10 @@ export const SectionItemsFields = ({ index, form, initialAudio, initialImagesUrl
 						{t('General.photos')}
 					</Text>
 					<FormControl {...form.register(`items[${index}].images`)}>
-						<PhotoUpload initialImagesUrls={initialImagesUrls} />
+						<PhotoUpload
+							initialImagesUrls={initialImagesUrls}
+							onPhotosChange={images => onPhotosChange(`items[${index}].images`, images)}
+						/>
 						<FormControl.Message />
 					</FormControl>
 				</Stack>

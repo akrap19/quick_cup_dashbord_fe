@@ -17,7 +17,7 @@ interface Props {
 	initialImagesUrls?: string[]
 	includePhotoInfo?: boolean
 	onPhotosChange?: (photos: string[]) => void
-	onAudioChange?: (audioUrl: string) => void
+	onAudioChangeFull?: (audio: Audio | undefined) => void
 }
 
 export const SectionItemFields = ({
@@ -25,7 +25,7 @@ export const SectionItemFields = ({
 	initialImagesUrls,
 	includePhotoInfo,
 	onPhotosChange,
-	onAudioChange
+	onAudioChangeFull
 }: Props) => {
 	const t = useTranslations()
 
@@ -57,7 +57,7 @@ export const SectionItemFields = ({
 						{t('ManageContent.audioTranslation')}
 					</Text>
 					<FormControl name="audioId">
-						<AudioUpload initialAudio={initialAudio} onAudioChange={onAudioChange} />
+						<AudioUpload initialAudio={initialAudio} onAudioChangeFull={onAudioChangeFull} />
 						<FormControl.Message />
 					</FormControl>
 				</Stack>

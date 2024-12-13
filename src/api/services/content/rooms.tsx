@@ -25,7 +25,7 @@ export const createRoom = async (room: ContentPayload) => {
 	return response?.data
 }
 
-export const createRoomBulk = async (room: ContentPayload[]) => {
+export const createRoomBulk = async (room?: ContentPayload[]) => {
 	const response = await axiosInstanceWithToken.post(`/room/translation/bulk`, { translations: room })
 
 	return response?.data

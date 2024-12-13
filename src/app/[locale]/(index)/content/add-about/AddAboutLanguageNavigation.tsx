@@ -17,6 +17,8 @@ import { Language } from 'api/models/language/language'
 import { AddAboutForm } from './AddAboutForm'
 import { PreviewAndPublish } from './PreviewAndPublish'
 import { ContentSaved } from '../common/ContentSaved'
+import { useManageContentAdd } from '@/store/manage-content-add'
+import { useEffect } from 'react'
 
 interface Props {
 	languages: Language[]
@@ -26,6 +28,7 @@ export const AddAboutLanguageNavigation = ({ languages }: Props) => {
 	const t = useTranslations()
 	const { navbarIsLoading } = useNavbarItemsStore()
 	const { currentStep } = useStepsStore()
+	const { clearAll } = useManageContentAdd()
 
 	useNavbarItems({
 		title: 'ManageContent.addAbout',
@@ -36,6 +39,10 @@ export const AddAboutLanguageNavigation = ({ languages }: Props) => {
 		totalSteps: languages?.length + 2,
 		currentStep: 1
 	})
+
+	useEffect(() => {
+		clearAll()
+	}, [])
 
 	return (
 		<Box width="100%">

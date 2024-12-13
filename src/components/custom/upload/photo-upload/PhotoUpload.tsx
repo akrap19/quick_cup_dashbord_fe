@@ -123,6 +123,9 @@ export const PhotoUpload = ({ initialImagesUrls, onPhotosChange, ...rest }: Prop
 		if (rest.value) {
 			setMediaId(rest.value as string[])
 		}
+		if (onPhotosChange && initialImagesUrls) {
+			onPhotosChange(initialImagesUrls)
+		}
 	}, [])
 
 	return (

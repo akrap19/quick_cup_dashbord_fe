@@ -47,7 +47,7 @@ export const PreviewAndPublish = ({ languages }: Props) => {
 		languageId: about.languageId,
 		title: about.title,
 		description: about.description,
-		audioURL: audioToDisplay ? audioToDisplay[0] : [],
+		audioURL: audioToDisplay ? audioToDisplay[0]?.audio?.url : [],
 		aboutImages: imagesToDisplay?.map(imageUrl => ({
 			url: imageUrl
 		}))

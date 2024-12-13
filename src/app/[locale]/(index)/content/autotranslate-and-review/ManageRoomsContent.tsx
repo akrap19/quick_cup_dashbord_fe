@@ -15,10 +15,9 @@ import { LanguageLabel } from '../common/LanguageLabel'
 import { SectionItemsFields } from '../common/SectionItemsFields'
 import { ContentPayload } from 'api/models/content/contentPayload'
 import { areAllItemsEmptyInArrayObject } from '@/utils/areAllItemsEmptyInArrayObject'
-import { useRouter } from 'next/navigation'
 import { replaceEmptyStringsWithNull } from '@/utils/replaceEmptyStringsWithNull'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
-import { createRoomBulk } from 'api/services/content/rooms'
+import { Audio } from 'api/models/common/audio'
+import { Divider } from '@/components/layout/divider'
 
 interface Props {
 	rooms?: Room[]
@@ -40,25 +39,45 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const ManageRoomsContent = ({ rooms }: Props) => {
+	const key = 'rooms'
 	const { currentStep, setCurrentStep } = useStepsStore()
-	const { language, setIsContentEmpty } = useManageContent()
-	const { refresh } = useRouter()
+	const {
+		language,
+		contentPayload,
+		audioToDisplay,
+		imagesToDisplay,
+		setIsContentEmpty,
+		setContentPayload,
+		setImagesToDisplay,
+		setAudioToDisplay
+	} = useManageContent()
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			items: rooms?.map(room => {
-				return {
-					roomId: room?.roomId ?? '',
-					title: room?.title ?? '',
-					description: room?.description ?? '',
-					audioId: room?.audio?.audioId ?? '',
-					images: room?.roomImages?.map(image => image?.roomImageId) ?? [],
-					deletedImages: []
-				}
-			})
+			items: contentPayload?.rooms
+				? contentPayload?.rooms?.map((room, index) => {
+						return {
+							roomId: (rooms && rooms[index]?.roomId) ?? '',
+							title: room?.title ?? '',
+							description: room?.description ?? '',
+							audioId: room?.audioId ?? '',
+							images: room?.images ?? [],
+							deletedImages: room?.deletedImages ?? []
+						}
+					})
+				: rooms?.map(room => {
+						return {
+							roomId: room?.roomId ?? '',
+							title: room?.title ?? '',
+							description: room?.description ?? '',
+							audioId: room?.audio?.audioId ?? '',
+							images: room?.roomImages?.map(image => image?.roomImageId) ?? [],
+							deletedImages: []
+						}
+					})
 		}
 	})
 	const formData = form?.getValues()
@@ -102,19 +121,21 @@ export const ManageRoomsContent = ({ rooms }: Props) => {
 		})
 
 		if (!formValuesCheck) {
-			const result = await createRoomBulk(replaceEmptyStringsWithNull(formDataTmp))
-
-			if (result?.message === 'OK') {
-				SuccessToast(t('ManageContent.roomsContentSccessfullyCreated'))
-
-				refresh()
-				setIsContentEmpty('rooms', false)
-				handleNextStep()
-			}
+			setContentPayload(key, replaceEmptyStringsWithNull(formDataTmp))
+			setIsContentEmpty(key, false)
 		} else {
-			setIsContentEmpty('rooms', true)
-			handleNextStep()
+			setIsContentEmpty(key, true)
 		}
+
+		handleNextStep()
+	}
+
+	const onPhotosChange = (id: string, images: string[]) => {
+		setImagesToDisplay(id + key, images)
+	}
+
+	const onAudioChange = (id: string, audio: Audio) => {
+		setAudioToDisplay(id + key, audio)
 	}
 
 	return (
@@ -138,13 +159,25 @@ export const ManageRoomsContent = ({ rooms }: Props) => {
 											<SectionItemsFields
 												index={index}
 												form={form}
-												initialAudio={{
-													id: rooms[index]?.audio?.audioId ?? '',
-													name: rooms[index]?.audio?.audioName ?? '',
-													url: rooms[index]?.audio?.audioURL ?? ''
-												}}
-												initialImagesUrls={rooms[index]?.roomImages?.map(image => image.url)}
+												initialAudio={
+													audioToDisplay?.find(audio => audio?.id === `items[${index}].audioId` + key)?.audio ?? {
+														id: rooms[index]?.audio?.audioId ?? '',
+														name: rooms[index]?.audio?.audioName ?? '',
+														url: rooms[index]?.audio?.audioURL ?? ''
+													}
+												}
+												initialImagesUrls={
+													imagesToDisplay?.find(images => images?.id === `items[${index}].images` + key)?.images ??
+													rooms[index]?.roomImages?.map(image => image.url)
+												}
+												onAudioChangeFull={onAudioChange}
+												onPhotosChange={onPhotosChange}
 											/>
+										)}
+										{index + 1 !== fields?.length && (
+											<Box paddingTop={8}>
+												<Divider />
+											</Box>
 										)}
 									</div>
 								))}

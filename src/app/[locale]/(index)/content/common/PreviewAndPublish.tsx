@@ -14,24 +14,97 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
-import { Content } from 'api/models/content/content'
 import { publishLanguage } from 'api/services/languages'
 
 import { LanguageLabel } from './LanguageLabel'
 import { useRouter } from 'next/navigation'
+import { createAboutBulk } from 'api/services/content/about'
+import { createRoomBulk } from 'api/services/content/rooms'
+import { createStaffBulk } from 'api/services/content/staff'
+import { Content } from 'api/models/content/content'
+import { ContentPayload } from 'api/models/content/contentPayload'
+import { Audio } from 'api/models/common/audio'
 
-interface Props {
-	content?: Content
-}
-
-export const PreviewAndPublish = ({ content }: Props) => {
+export const PreviewAndPublish = () => {
 	const t = useTranslations()
 	const { refresh } = useRouter()
 	const { currentStep, setCurrentStep } = useStepsStore()
-	const { language, isAllContentEmpty } = useManageContent()
+	const { language, contentPayload, imagesToDisplay, audioToDisplay, isContentEmpty, isAllContentEmpty } =
+		useManageContent()
+
+	const transformContent = (
+		contentPayload: {
+			about?: ContentPayload[]
+			rooms?: ContentPayload[]
+			staff?: ContentPayload[]
+		},
+		imagesToDisplay: { id: string; images: string[] }[],
+		audioToDisplay: { id: string; audio: Audio }[]
+	) => {
+		const extractIndex = (id: string): number => {
+			const match = id.match(/items\[(\d+)\]/)
+			return match ? parseInt(match[1], 10) : -1
+		}
+
+		const groupMediaById = <T extends { id: string }>(
+			mediaArray: T[],
+			key: 'audio' | 'images'
+		): Record<string, T[]> => {
+			return mediaArray.reduce(
+				(acc, item) => {
+					const [type] = item.id.split('.')
+					if (!acc[type]) {
+						acc[type] = []
+					}
+					acc[type].push(item)
+					acc[type].sort((a, b) => extractIndex(a.id) - extractIndex(b.id))
+					return acc
+				},
+				{} as Record<string, T[]>
+			)
+		}
+
+		const groupedImages = groupMediaById(imagesToDisplay, 'images')
+		const groupedAudio = groupMediaById(audioToDisplay, 'audio')
+
+		const mapContent = (contentArray: ContentPayload[] | undefined, type: 'about' | 'rooms' | 'staff') => {
+			if (!contentArray) return undefined
+
+			return contentArray.map((item, index) => ({
+				...item,
+				aboutImages: groupedImages[`items[${index}]`]
+					?.find(image => image?.id?.includes(type))
+					?.images?.map(image => ({ url: image })),
+				roomImages: groupedImages[`items[${index}]`]
+					?.find(image => image?.id?.includes(type))
+					?.images?.map(image => ({ url: image })),
+				staffImages: groupedImages[`items[${index}]`]
+					?.find(image => image?.id?.includes(type))
+					?.images?.map(image => ({ url: image })),
+				audioURL: groupedAudio[`items[${index}]`]?.find(audio => audio?.id?.includes(type))?.audio?.url
+			}))
+		}
+
+		return {
+			abouts: mapContent(contentPayload.about, 'about'),
+			rooms: mapContent(contentPayload.rooms, 'rooms'),
+			staff: mapContent(contentPayload.staff, 'staff')
+		}
+	}
 
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
+
+		if (!isContentEmpty.about) {
+			await createAboutBulk(contentPayload?.about)
+		}
+		if (!isContentEmpty.rooms) {
+			await createRoomBulk(contentPayload?.rooms)
+		}
+		if (!isContentEmpty.staff) {
+			await createStaffBulk(contentPayload?.staff)
+		}
+
 		if (language) {
 			const result = await publishLanguage(language?.id)
 
@@ -65,10 +138,12 @@ export const PreviewAndPublish = ({ content }: Props) => {
 						</Box>
 					</Stack>
 					<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
-						{content ? (
+						{contentPayload ? (
 							<>
 								<LanguageLabel language={language?.name} />
-								<MobilePreview content={content} />
+								<MobilePreview
+									content={transformContent(contentPayload ?? {}, imagesToDisplay, audioToDisplay) as Content}
+								/>
 							</>
 						) : isAllContentEmpty() ? (
 							<ManageJourneyIntroWrapper>

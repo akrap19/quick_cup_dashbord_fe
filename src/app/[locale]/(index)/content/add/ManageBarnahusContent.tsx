@@ -1,7 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -15,13 +14,13 @@ import { Text } from '@/components/typography/text'
 import { useManageContent } from '@/store/manage-content'
 import { useStepsStore } from '@/store/steps'
 import { areAllItemsEmptyInArrayObject } from '@/utils/areAllItemsEmptyInArrayObject'
-import { replaceEmptyStringsWithNull } from '@/utils/replaceEmptyStringsWithNull'
 import { ContentPayload } from 'api/models/content/contentPayload'
-import { createAboutBulk } from 'api/services/content/about'
 
 import { SectionItemsFields } from '../common/SectionItemsFields'
 import { TitleSubsection } from '../common/TitleSubsection'
 import { ErrorToast } from '@/components/overlay/toast-messages/ErrorToastmessage'
+import { replaceEmptyStringsWithNull } from '@/utils/replaceEmptyStringsWithNull'
+import { Audio } from 'api/models/common/audio'
 
 const formSchema = z.object({
 	items: z.array(
@@ -37,24 +36,42 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const ManageBarnahusContent = () => {
+	const key = 'about'
 	const { currentStep, setCurrentStep } = useStepsStore()
-	const { setIsContentEmpty } = useManageContent()
-	const { language } = useManageContent()
-	const { refresh } = useRouter()
+	const {
+		language,
+		contentPayload,
+		audioToDisplay,
+		imagesToDisplay,
+		setIsContentEmpty,
+		setContentPayload,
+		removeLastContentPayload,
+		setImagesToDisplay,
+		setAudioToDisplay
+	} = useManageContent()
 	const t = useTranslations()
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			items: [
-				{
-					title: '',
-					description: '',
-					audioId: '',
-					images: []
-				}
-			]
+			items: contentPayload?.about
+				? contentPayload?.about?.map(about => {
+						return {
+							title: about?.title ?? '',
+							description: about?.description ?? '',
+							audioId: about?.audioId ?? '',
+							images: about?.images ?? []
+						}
+					})
+				: [
+						{
+							title: '',
+							description: '',
+							audioId: '',
+							images: []
+						}
+					]
 		}
 	})
 
@@ -79,6 +96,7 @@ export const ManageBarnahusContent = () => {
 		// eslint-disable-next-line
 		const removeIndex = formData?.items?.length - 1
 		remove(removeIndex)
+		removeLastContentPayload(key)
 		ErrorToast(t('General.lastSectionRemoved'))
 	}
 
@@ -97,26 +115,27 @@ export const ManageBarnahusContent = () => {
 		})
 
 		if (!formValuesCheck) {
-			const result = await createAboutBulk(replaceEmptyStringsWithNull(formDataTmp))
-
-			if (result?.message === 'OK') {
-				SuccessToast(t('ManageContent.aboutBarnahusContentSccessfullyCreated'))
-
-				refresh()
-				setIsContentEmpty('about', false)
-				handleNextStep()
-			}
+			setContentPayload(key, replaceEmptyStringsWithNull(formDataTmp))
+			setIsContentEmpty(key, false)
 		} else {
-			setIsContentEmpty('about', true)
-			handleNextStep()
+			setIsContentEmpty(key, true)
 		}
+		handleNextStep()
+	}
+
+	const onPhotosChange = (id: string, images: string[]) => {
+		setImagesToDisplay(id + key, images)
+	}
+
+	const onAudioChange = (id: string, audio: Audio) => {
+		setAudioToDisplay(id + key, audio)
 	}
 
 	return (
 		<FormProvider {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)}>
 				<Box paddingTop={6}>
-					<Stack gap={7}>
+					<Stack gap={6}>
 						<Box display="flex" justify="center">
 							<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
 								{t('General.aboutBarnahus')}
@@ -133,8 +152,23 @@ export const ManageBarnahusContent = () => {
 									/>
 									{fields?.map((field, index) => (
 										<div key={field.id}>
-											<SectionItemsFields index={index} form={form} />
-											{index + 1 !== fields?.length && <Divider />}
+											<SectionItemsFields
+												index={index}
+												form={form}
+												initialAudio={
+													audioToDisplay?.find(audio => audio?.id === `items[${index}].audioId` + key)?.audio
+												}
+												initialImagesUrls={
+													imagesToDisplay?.find(images => images?.id === `items[${index}].images` + key)?.images
+												}
+												onAudioChangeFull={onAudioChange}
+												onPhotosChange={onPhotosChange}
+											/>
+											{index + 1 !== fields?.length && (
+												<Box paddingTop={8}>
+													<Divider />
+												</Box>
+											)}
 										</div>
 									))}
 								</Stack>

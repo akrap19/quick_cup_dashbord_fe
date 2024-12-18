@@ -51,3 +51,9 @@ export const deleteTemplates = async (templateIds: string[]) => {
 
 	return response?.data
 }
+
+export const templateAvailable = async (name: string) => {
+	const response = await axiosInstanceWithToken.post(`/template/available`, { name })
+
+	return response?.data
+}

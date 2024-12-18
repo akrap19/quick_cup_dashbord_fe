@@ -47,6 +47,7 @@ export const RearrangeableCards = ({ cards, setCards }: Props) => {
 
 	const handleRemoveItem = (id: string) => {
 		const newCards = cards?.filter(card => card.id !== id)
+		console.log('Matija newCards', newCards)
 
 		setCards(newCards)
 	}

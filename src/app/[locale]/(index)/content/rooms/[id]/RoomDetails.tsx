@@ -13,6 +13,7 @@ import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { Room, RoomImage } from 'api/models/content/room'
 import { ROUTES } from 'parameters'
+import { removeHtmlTags } from '@/utils/removeHtmlTags'
 
 interface Props {
 	room: Room
@@ -21,7 +22,7 @@ interface Props {
 export const RoomDetails = ({ room }: Props) => {
 	const t = useTranslations()
 	useNavbarItems({
-		title: room?.title,
+		title: room?.title ?? t('General.title') + t('General.notDefined'),
 		backLabel: 'ManageContent.back',
 		actionButton: (
 			<EditButton
@@ -34,23 +35,31 @@ export const RoomDetails = ({ room }: Props) => {
 	return (
 		<DetailsWrapper>
 			<Stack gap={4}>
-				{room?.audio && (
-					<Stack gap={4}>
-						<Text fontWeight="semibold" lineHeight="xlarge" color="neutral.900" textTransform="uppercase">
-							{t('General.audio')}
+				<Stack gap={4}>
+					<Text fontWeight="semibold" lineHeight="xlarge" color="neutral.900" textTransform="uppercase">
+						{t('General.audio')}
+					</Text>
+					{room?.audio ? (
+						<AudioUpload value="audio" initialAudio={room?.audio} disableDelete />
+					) : (
+						<Text fontSize="small" color="neutral.800">
+							{t('General.audio') + t('General.notDefined')}
 						</Text>
-						<AudioUpload initialAudio={room?.audio} />
-					</Stack>
-				)}
+					)}
+				</Stack>
 				<Box paddingBottom={8}>
 					<Stack gap={6}>
 						<Stack gap={4}>
 							<Text fontWeight="semibold" lineHeight="xlarge" color="neutral.900" textTransform="uppercase">
-								{room.title}
+								{room?.title ?? t('General.title') + t('General.notDefined')}
 							</Text>
 							<Box paddingRight={20}>
 								<Text fontSize="small" color="neutral.800">
-									<div dangerouslySetInnerHTML={{ __html: room?.description }} />
+									{removeHtmlTags(room?.description) ? (
+										<div dangerouslySetInnerHTML={{ __html: room?.description }} />
+									) : (
+										t('General.description') + t('General.notDefined')
+									)}
 								</Text>
 							</Box>
 						</Stack>
@@ -59,9 +68,21 @@ export const RoomDetails = ({ room }: Props) => {
 								{t('General.photos')}
 							</Text>
 							<Inline gap={6}>
-								{room?.roomImages?.map((image: RoomImage) => (
-									<Image src={image?.url} width={212} height={212} alt="uploadedPhoto" style={{ objectFit: 'cover' }} />
-								))}
+								{room?.roomImages?.length > 0 ? (
+									room?.roomImages?.map((image: RoomImage) => (
+										<Image
+											src={image?.url}
+											width={212}
+											height={212}
+											alt="uploadedPhoto"
+											style={{ objectFit: 'cover' }}
+										/>
+									))
+								) : (
+									<Text fontSize="small" color="neutral.800">
+										{t('General.photos') + t('General.notDefined')}
+									</Text>
+								)}
 							</Inline>
 						</Stack>
 					</Stack>

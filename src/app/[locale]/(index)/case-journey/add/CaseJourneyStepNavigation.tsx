@@ -94,13 +94,11 @@ const CaseJourneyStepNavigation = ({ languages, content, templates, template }: 
 		if (JSON.stringify(cardsTransformed) !== JSON.stringify(cards)) {
 			setCards(cardsTransformed)
 		}
-	}, [cardsTransformed])
 
-	useEffect(() => {
 		if (JSON.stringify(cardsTemplateTransformed) !== JSON.stringify(cardsTemplate)) {
 			setCardsTemplate(cardsTemplateTransformed)
 		}
-	}, [cardsTemplateTransformed])
+	}, [])
 
 	return (
 		<ManageJourneyWrapper>
@@ -109,7 +107,7 @@ const CaseJourneyStepNavigation = ({ languages, content, templates, template }: 
 			{currentStep === 3 && <SelectLanguage languages={languages} />}
 			{currentStep === 4 && <SelectCaseJourneyType />}
 
-			{/* Custom Case Journey */}
+			{/* Custom Custom Journey */}
 			{currentStep === 5 && type === CaseJourneyTypeEnum.CUSTOM && <SelectBarnahusContent abouts={content?.abouts} />}
 			{currentStep === 6 && type === CaseJourneyTypeEnum.CUSTOM && <RearrangeRoom cards={cards} setCards={setCards} />}
 			{currentStep === 7 && type === CaseJourneyTypeEnum.CUSTOM && <SelectRoomsContent rooms={reorderedRooms} />}

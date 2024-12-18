@@ -17,10 +17,24 @@ import { useManageContentSelection } from '@/store/manage-content-selection'
 import { useStepsStore } from '@/store/steps'
 import { requiredString } from 'schemas'
 import { useEffect } from 'react'
+import { templateAvailable } from 'api/services/templates'
 
-const formSchema = z.object({
-	name: requiredString.shape.scheme
-})
+const formSchema = z
+	.object({
+		name: requiredString.shape.scheme
+	})
+	.refine(
+		async data => {
+			if (data.name !== '') {
+				const response = await templateAvailable(data.name)
+				return response?.data?.available
+			}
+		},
+		{
+			message: 'Templates.nameUnavailable',
+			path: ['name']
+		}
+	)
 
 type Schema = z.infer<typeof formSchema>
 
@@ -68,6 +82,7 @@ export const EnterTemplateName = () => {
 										<RequiredLabel>{t('Templates.name')}</RequiredLabel>
 									</FormControl.Label>
 									<TextInput />
+									<FormControl.Message />
 								</FormControl>
 							</Box>
 						</Stack>

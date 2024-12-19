@@ -1,5 +1,5 @@
 import { getAbout } from 'api/services/content/about'
-import { getLanguageSearch } from 'api/services/languages'
+import { getLanguage, getLanguageSearch } from 'api/services/languages'
 
 import { EditAboutLanguageNavigation } from './EditAboutLanguageNavigation'
 
@@ -10,10 +10,17 @@ interface Props {
 }
 
 const EditAboutPage = async ({ params }: Props) => {
-	const { data } = await getLanguageSearch()
 	const { data: aboutData } = await getAbout(params.id)
+	const { data: languagesData } = await getLanguageSearch()
+	const { data: languageData } = await getLanguage(aboutData?.aboutTranslation?.languageId)
 
-	return <EditAboutLanguageNavigation languages={data?.languages} about={aboutData?.aboutTranslation} />
+	return (
+		<EditAboutLanguageNavigation
+			about={aboutData?.aboutTranslation}
+			language={languageData?.language}
+			languages={languagesData?.languages}
+		/>
+	)
 }
 
 export default EditAboutPage

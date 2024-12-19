@@ -1,25 +1,24 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey'
 import { Box } from '@/components/layout/box'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useStepsStore } from '@/store/steps'
 import { removeHtmlTags } from '@/utils/removeHtmlTags'
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Staff } from 'api/models/content/staff'
-import { updateStaff } from 'api/services/content/staff'
-import { ROUTES } from 'parameters'
 
 import { StaffSectionItemFields } from '../../common/StaffSectionItemFields'
+import { LanguageLabel } from '../../common/LanguageLabel'
+import { Language } from 'api/models/language/language'
+import { useManageContentAdd } from '@/store/manage-content-add'
 
 interface Props {
-	staff: Staff
+	staffItem: Staff
+	language: Language
 }
 
 const formSchema = z.object({
@@ -31,22 +30,28 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-export const EditStaffForm = ({ staff }: Props) => {
-	const t = useTranslations()
-	const { push, refresh } = useRouter()
-	const { totalSteps, currentStep, setCurrentStep } = useStepsStore()
-	const defaultImageIds = staff?.staffImages?.map(staffImage => staffImage?.staffImageId)
-	const defaultImages = staff?.staffImages?.map(staffImage => staffImage?.url)
+export const EditStaffForm = ({ staffItem, language }: Props) => {
+	const { setCurrentStep } = useStepsStore()
+	const { staff, imagesToDisplay, setStaff, setImagesToDisplay, removeAboutsByTranslationId } = useManageContentAdd()
+	const defaultImageIds = staffItem?.staffImages?.map(staffImage => staffImage?.staffImageId)
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
-		defaultValues: {
-			description: staff?.description ?? '',
-			name: staff?.name ?? '',
-			title: staff?.title ?? '',
-			images: defaultImageIds ?? []
-		}
+		defaultValues:
+			staff && staff[0]
+				? {
+						title: staff[0]?.title ?? '',
+						description: staff[0]?.description ?? '',
+						name: staff[0]?.name ?? '',
+						images: staff[0]?.images ?? []
+					}
+				: {
+						description: staffItem?.description ?? '',
+						name: staffItem?.name ?? '',
+						title: staffItem?.title ?? '',
+						images: defaultImageIds ?? []
+					}
 	})
 
 	const formData = form?.getValues()
@@ -56,32 +61,30 @@ export const EditStaffForm = ({ staff }: Props) => {
 		const { images } = form.watch()
 		const deletedImages = defaultImageIds?.filter(id => !images.includes(id))
 
-		const result = await updateStaff({
-			staffTranslationId: staff?.staffTranslationId,
+		const aboutForEdit = {
+			staffTranslationId: staffItem?.staffTranslationId,
 			name: replaceEmptyStringWithNull(formData.name),
 			title: replaceEmptyStringWithNull(formData.title),
 			description: removeHtmlTags(formData.description) ? formData.description : null,
 			images: formData.images,
 			deletedImages
-		})
-
-		if (result?.message === 'OK') {
-			refresh()
-			SuccessToast(t('ManageContent.staffBarnahusContentSccessfullyUpdated'))
-
-			if (currentStep && totalSteps && totalSteps > currentStep) {
-				setCurrentStep(currentStep + 1)
-			} else {
-				push(ROUTES.CONTENT)
-			}
 		}
+
+		removeAboutsByTranslationId(staffItem?.staffTranslationId)
+		setStaff(aboutForEdit)
+		setCurrentStep(2)
+	}
+
+	const onPhotosChange = (photos: string[]) => {
+		setImagesToDisplay(photos)
 	}
 
 	return (
 		<Box paddingTop={6}>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<StaffSectionItemFields initialImagesUrls={defaultImages} />
+					<LanguageLabel language={language?.name} />
+					<StaffSectionItemFields initialImagesUrls={imagesToDisplay} onPhotosChange={onPhotosChange} />
 					<Actions />
 				</form>
 			</FormProvider>

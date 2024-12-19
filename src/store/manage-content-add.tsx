@@ -6,12 +6,15 @@ type ManageContentAdd = {
 	abouts?: ContentPayload[]
 	setAbouts: (about: ContentPayload) => void
 	removeAboutsByLanguageId: (languageId: string) => void
+	removeAboutsByTranslationId: (aboutTranslationId: string) => void
 	rooms?: ContentPayload[]
 	setRooms: (room: ContentPayload) => void
 	removeRoomsByLanguageId: (languageId: string) => void
+	removeRoomsByTranslationId: (roomTranslationId: string) => void
 	staff?: ContentPayload[]
 	setStaff: (staff: ContentPayload) => void
 	removeStaffByLanguageId: (languageId: string) => void
+	removeStaffByTranslationId: (staffTranslationId: string) => void
 	imagesToDisplay?: string[]
 	setImagesToDisplay: (imagesToDisplay: string[]) => void
 	audioToDisplay: { languageId: string; audio: Audio | undefined }[]
@@ -27,17 +30,29 @@ export const useManageContentAdd = create<ManageContentAdd>(set => ({
 		set(state => ({
 			abouts: state.abouts?.filter(about => about.languageId !== languageId) || []
 		})),
+	removeAboutsByTranslationId: (aboutTranslationId: string) =>
+		set(state => ({
+			abouts: state.abouts?.filter(about => about.aboutTranslationId !== aboutTranslationId) || []
+		})),
 	rooms: [],
 	setRooms: room => set(state => ({ rooms: [...(state.rooms || []), room] })),
 	removeRoomsByLanguageId: (languageId: string) =>
 		set(state => ({
 			rooms: state.rooms?.filter(room => room.languageId !== languageId) || []
 		})),
+	removeRoomsByTranslationId: (roomTranslationId: string) =>
+		set(state => ({
+			rooms: state.rooms?.filter(room => room.roomTranslationId !== roomTranslationId) || []
+		})),
 	staff: [],
 	setStaff: staff => set(state => ({ staff: [...(state.staff || []), staff] })),
 	removeStaffByLanguageId: (languageId: string) =>
 		set(state => ({
 			staff: state.staff?.filter(staff => staff.languageId !== languageId) || []
+		})),
+	removeStaffByTranslationId: (staffTranslationId: string) =>
+		set(state => ({
+			staff: state.staff?.filter(staff => staff.staffTranslationId !== staffTranslationId) || []
 		})),
 	imagesToDisplay: [],
 	setImagesToDisplay: imagesToDisplay => set(() => ({ imagesToDisplay })),

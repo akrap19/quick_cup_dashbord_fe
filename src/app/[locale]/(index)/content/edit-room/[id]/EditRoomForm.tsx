@@ -8,18 +8,20 @@ import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey'
 import { Box } from '@/components/layout/box'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useStepsStore } from '@/store/steps'
 import { removeHtmlTags } from '@/utils/removeHtmlTags'
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { Room } from 'api/models/content/room'
-import { updateRoom } from 'api/services/content/rooms'
-import { ROUTES } from 'parameters'
 
 import { SectionItemFields } from '../../common/SectionItemFields'
+import { Language } from 'api/models/language/language'
+import { useManageContentAdd } from '@/store/manage-content-add'
+import { LanguageLabel } from '../../common/LanguageLabel'
+import { Audio } from 'api/models/common/audio'
 
 interface Props {
 	room: Room
+	language: Language
 }
 
 const formSchema = z.object({
@@ -31,22 +33,37 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-export const EditRoomForm = ({ room }: Props) => {
-	const t = useTranslations()
-	const { push, refresh } = useRouter()
-	const { totalSteps, currentStep, setCurrentStep } = useStepsStore()
+export const EditRoomForm = ({ room, language }: Props) => {
+	const { currentStep, setCurrentStep } = useStepsStore()
+	const {
+		rooms,
+		imagesToDisplay,
+		audioToDisplay,
+		setRooms,
+		setImagesToDisplay,
+		setAudioToDisplay,
+		removeaudioByLanguageId,
+		removeAboutsByTranslationId
+	} = useManageContentAdd()
 	const defaultImageIds = room?.roomImages?.map(roomImage => roomImage?.roomImageId)
-	const defaultImages = room?.roomImages?.map(roomImage => roomImage?.url)
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
-		defaultValues: {
-			title: room?.title ?? '',
-			description: room?.description ?? '',
-			audioId: room?.audio?.id ?? '',
-			images: defaultImageIds ?? []
-		}
+		defaultValues:
+			rooms && rooms[0]
+				? {
+						title: rooms[0]?.title ?? '',
+						description: rooms[0]?.description ?? '',
+						audioId: rooms[0]?.audioId ?? '',
+						images: rooms[0]?.images ?? []
+					}
+				: {
+						title: room?.title ?? '',
+						description: room?.description ?? '',
+						audioId: room?.audio?.id ?? '',
+						images: defaultImageIds ?? []
+					}
 	})
 
 	const formData = form?.getValues()
@@ -56,23 +73,29 @@ export const EditRoomForm = ({ room }: Props) => {
 		const { images } = form.watch()
 		const deletedImages = defaultImageIds?.filter(id => !images.includes(id))
 
-		const result = await updateRoom({
+		const roomForEdit = {
 			roomTranslationId: room?.roomTranslationId,
 			title: replaceEmptyStringWithNull(formData.title),
 			description: removeHtmlTags(formData.description) ? formData.description : null,
 			images,
 			deletedImages,
 			audioId: replaceEmptyStringWithNull(formData.audioId)
-		})
+		}
 
-		if (result?.message === 'OK') {
-			refresh()
-			SuccessToast(t('ManageContent.roomsContentSccessfullyUpdated'))
+		removeAboutsByTranslationId(room?.roomTranslationId)
+		setRooms(roomForEdit)
+		setCurrentStep(2)
+	}
 
-			if (currentStep && totalSteps && totalSteps > currentStep) {
-				setCurrentStep(currentStep + 1)
-			} else {
-				push(ROUTES.CONTENT)
+	const onPhotosChange = (photos: string[]) => {
+		setImagesToDisplay(photos)
+	}
+
+	const onAudioChange = (audio: Audio | undefined) => {
+		if (currentStep) {
+			removeaudioByLanguageId(language?.languageId)
+			if (audio) {
+				setAudioToDisplay(language?.languageId, audio)
 			}
 		}
 	}
@@ -81,7 +104,13 @@ export const EditRoomForm = ({ room }: Props) => {
 		<Box paddingTop={6}>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<SectionItemFields initialAudio={room?.audio} initialImagesUrls={defaultImages} />
+					<LanguageLabel language={language?.name} />
+					<SectionItemFields
+						initialAudio={audioToDisplay[0]?.audio}
+						onAudioChangeFull={onAudioChange}
+						initialImagesUrls={imagesToDisplay}
+						onPhotosChange={onPhotosChange}
+					/>
 					<Actions />
 				</form>
 			</FormProvider>

@@ -1,25 +1,25 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Actions } from '@/components/custom/layouts/manage-journey'
 import { Box } from '@/components/layout/box'
-import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useStepsStore } from '@/store/steps'
 import { removeHtmlTags } from '@/utils/removeHtmlTags'
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull'
 import { About } from 'api/models/content/about'
-import { updateAbout } from 'api/services/content/about'
-import { ROUTES } from 'parameters'
 
 import { SectionItemFields } from '../../common/SectionItemFields'
+import { LanguageLabel } from '../../common/LanguageLabel'
+import { Language } from 'api/models/language/language'
+import { useManageContentAdd } from '@/store/manage-content-add'
+import { Audio } from 'api/models/common/audio'
 
 interface Props {
 	about: About
+	language: Language
 }
 
 const formSchema = z.object({
@@ -31,22 +31,37 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-export const EditAboutForm = ({ about }: Props) => {
-	const t = useTranslations()
-	const { push, refresh } = useRouter()
-	const { totalSteps, currentStep, setCurrentStep } = useStepsStore()
+export const EditAboutForm = ({ about, language }: Props) => {
+	const { currentStep, setCurrentStep } = useStepsStore()
+	const {
+		abouts,
+		imagesToDisplay,
+		audioToDisplay,
+		setAbouts,
+		setImagesToDisplay,
+		setAudioToDisplay,
+		removeaudioByLanguageId,
+		removeAboutsByTranslationId
+	} = useManageContentAdd()
 	const defaultImageIds = about?.aboutImages?.map(aboutImage => aboutImage?.aboutImageId)
-	const defaultImages = about?.aboutImages?.map(aboutImage => aboutImage?.url)
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',
 		resolver: zodResolver(formSchema),
-		defaultValues: {
-			title: about?.title ?? '',
-			description: about?.description ?? '',
-			audioId: about?.audio?.id ?? '',
-			images: defaultImageIds ?? []
-		}
+		defaultValues:
+			abouts && abouts[0]
+				? {
+						title: abouts[0]?.title ?? '',
+						description: abouts[0]?.description ?? '',
+						audioId: abouts[0]?.audioId ?? '',
+						images: abouts[0]?.images ?? []
+					}
+				: {
+						title: about?.title ?? '',
+						description: about?.description ?? '',
+						audioId: about?.audio?.id ?? '',
+						images: defaultImageIds ?? []
+					}
 	})
 
 	const formData = form?.getValues()
@@ -58,23 +73,29 @@ export const EditAboutForm = ({ about }: Props) => {
 		const aboutImageMediaIds = about.aboutImages.map(image => image.aboutImageId)
 		const filteredAboutImageMediaIds = images.filter(id => !aboutImageMediaIds.includes(id))
 
-		const result = await updateAbout({
+		const aboutForEdit = {
 			aboutTranslationId: about?.aboutTranslationId,
 			title: replaceEmptyStringWithNull(formData.title),
 			description: removeHtmlTags(formData.description) ? formData.description : null,
 			images: filteredAboutImageMediaIds,
 			deletedImages: deletedImages as any,
 			audioId: replaceEmptyStringWithNull(formData.audioId)
-		})
+		}
 
-		if (result?.message === 'OK') {
-			refresh()
-			SuccessToast(t('ManageContent.aboutBarnahusContentSccessfullyUpdated'))
+		removeAboutsByTranslationId(about?.aboutTranslationId)
+		setAbouts(aboutForEdit)
+		setCurrentStep(2)
+	}
 
-			if (currentStep && totalSteps && totalSteps > currentStep) {
-				setCurrentStep(currentStep + 1)
-			} else {
-				push(ROUTES.CONTENT)
+	const onPhotosChange = (photos: string[]) => {
+		setImagesToDisplay(photos)
+	}
+
+	const onAudioChange = (audio: Audio | undefined) => {
+		if (currentStep) {
+			removeaudioByLanguageId(language?.languageId)
+			if (audio) {
+				setAudioToDisplay(language?.languageId, audio)
 			}
 		}
 	}
@@ -83,7 +104,13 @@ export const EditAboutForm = ({ about }: Props) => {
 		<Box paddingTop={6}>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<SectionItemFields initialAudio={about?.audio} initialImagesUrls={defaultImages} />
+					<LanguageLabel language={language?.name} />
+					<SectionItemFields
+						initialAudio={audioToDisplay[0]?.audio}
+						onAudioChangeFull={onAudioChange}
+						initialImagesUrls={imagesToDisplay}
+						onPhotosChange={onPhotosChange}
+					/>
 					<Actions />
 				</form>
 			</FormProvider>

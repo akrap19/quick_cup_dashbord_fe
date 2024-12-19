@@ -1,5 +1,7 @@
+'use client'
+
 import { format } from 'date-fns'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 
 import { Loader } from '@/components/custom/loader/Loader'
 import { DataTable } from '@/components/data-display/data-table'
@@ -12,6 +14,7 @@ import { ManageContentColumn, columns } from './columns'
 import { contentSectionData } from './data'
 import { Inputs } from './inputs'
 import { ContentNoListData } from './ContentNoListData'
+import { useTableStore } from '@/store/table'
 
 // eslint-disable-next-line
 interface Props<TData, TValue> {
@@ -31,6 +34,7 @@ export const Content = <TData, TValue>({
 	doesLanguageHasContent,
 	setLanguageValue
 }: Props<TData, TValue>) => {
+	const { clearCheckedItems } = useTableStore()
 	const contentDataKey = Object.keys(contentSectionData).find(key => key.includes(contentSection))
 	const contentData = contentDataKey && contentSectionData[contentDataKey as keyof typeof contentSectionData]
 	const contentTableDataWithFormatedDate = contentTableData?.map(item => {
@@ -39,6 +43,10 @@ export const Content = <TData, TValue>({
 			updated: format(item.updated, 'dd.MM.yyyy HH:mm')
 		}
 	})
+
+	useEffect(() => {
+		clearCheckedItems()
+	}, [])
 
 	return (
 		<Box paddingTop={6}>

@@ -1,5 +1,5 @@
 import { getStaff } from 'api/services/content/staff'
-import { getLanguageSearch } from 'api/services/languages'
+import { getLanguage, getLanguageSearch } from 'api/services/languages'
 
 import { EditStaffLanguageNavigation } from './EditStaffLanguageNavigation'
 
@@ -10,10 +10,17 @@ interface Props {
 }
 
 const EditStaffPage = async ({ params }: Props) => {
-	const { data } = await getLanguageSearch()
 	const { data: staffData } = await getStaff(params.id)
+	const { data: languagesData } = await getLanguageSearch()
+	const { data: languageData } = await getLanguage(staffData?.staffTranslation?.languageId)
 
-	return <EditStaffLanguageNavigation languages={data?.languages} staff={staffData?.staffTranslation} />
+	return (
+		<EditStaffLanguageNavigation
+			staff={staffData?.staffTranslation}
+			language={languageData?.language}
+			languages={languagesData?.languages}
+		/>
+	)
 }
 
 export default EditStaffPage

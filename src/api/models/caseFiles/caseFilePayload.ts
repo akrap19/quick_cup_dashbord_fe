@@ -3,4 +3,5 @@ export interface CaseFilePayload {
 	userId?: string
 	canAddNotes?: boolean
 	customId?: string
+	password?: string
 }

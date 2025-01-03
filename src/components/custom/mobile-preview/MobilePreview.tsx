@@ -9,6 +9,9 @@ import * as styles from './MobilePreview.css'
 import { MobilePreviewContent } from './MobilePreviewContent'
 import { MobilePreviewFooter } from './MobilePreviewFooter'
 import { MobilePreviewHeader } from './MobilePreviewHeader'
+import { About } from 'api/models/content/about'
+import { Room } from 'api/models/content/room'
+import { Staff } from 'api/models/content/staff'
 
 interface Props {
 	content: Content
@@ -19,7 +22,10 @@ export const MobilePreview = ({ content, defaultContentType }: Props) => {
 	const [contentType, setContentType] = useState(defaultContentType ?? 'abouts')
 	const [currentImage, setCurrentImage] = useState(0)
 	const [currentContentPage, setCurrentContentPage] = useState(0)
-	const currentContent = content && content[contentType as keyof Content]?.[currentContentPage]
+	// @ts-ignore
+	const currentContent = (content as About[] | Room[] | Staff[] | undefined)?.[contentType as keyof Content]?.[
+		currentContentPage as unknown as keyof About | keyof Room | keyof Staff
+	]
 	const contentTypes = defaultContentType ? [defaultContentType] : ['abouts', 'rooms', 'staff']
 
 	const handleContentType = (contentType: string) => {
@@ -54,6 +60,7 @@ export const MobilePreview = ({ content, defaultContentType }: Props) => {
 								setCurrentImage={setCurrentImage}
 							/>
 							<MobilePreviewFooter
+								// @ts-ignore
 								totalContentPages={content ? (content[contentType as keyof Content]?.length ?? 0) : 0}
 								currentContentPage={currentContentPage}
 								handleContentPage={handleContentPage}

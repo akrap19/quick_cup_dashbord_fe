@@ -21,7 +21,6 @@ interface Props {
 const CaseJourneyAddPage = async ({ searchParams }: Props) => {
 	const { data: languageData } = await getLanguageSearch(searchParams, LanguageStatusEnum.PUBLISHED)
 	const data = await getContent(searchParams)
-
 	const { data: templateSearchData } = await getTemplatesSearch({
 		search: searchParams.template
 	})
@@ -103,6 +102,7 @@ const CaseJourneyAddPage = async ({ searchParams }: Props) => {
 			})
 			.filter(Boolean)
 		return {
+			isGeneral: template?.isGeneral,
 			abouts: filteredAbouts,
 			rooms: filteredRooms,
 			staff: filteredStaff

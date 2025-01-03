@@ -416,6 +416,9 @@
 		"ObservationRoom": "Observation room",
 		"TherapyRoom": "Therapy room",
 		"MedicalRoom": "Medical room",
+		"noContentTitle": "No content",
+		"noContentDescription": "There is no content in this section to pick from",
+		"noRoomsToRearenge": "No rooms to rearenge",
 		"enableNotesTitle": "Enable notes",
 		"enableNotesDescription": "Turning on notes allows the child to add comments about their journey.. If you want to disable them later, you can do that as well.",
 		"enableNotes": "Enable notes",
@@ -424,6 +427,8 @@
 		"noListDataTitle": "Add Case Journeys",
 		"customIdUnavailable": "Custom ID unavailable",
 		"selectBarnahusContentTitle": "Select Barnahus content",
+		"setCasePasswordTitle": "Set Case password",
+		"setCasePasswordDescription": "A password is set so the journey will be protected and private, ensuring it is maximally personalized for the user.",
 		"selectBarnahusContentDescription": "Pick the content you want for the customised journey.",
 		"selectRoomsContentTitle": "Select Rooms content",
 		"selectRoomsContentDescription": "Pick the content you want for the customised journey.",
@@ -472,6 +477,9 @@
 		"delete": "Delete Templates",
 		"back": "Back to Templates",
 		"name": "Template name",
+		"isGeneral": "Template is General",
+		"isNotGeneral": "Template is not General",
+		"isGeneralTitle": "Is template General?",
 		"nameTitle": "Please enter template name",
 		"nameDescription": "To easily recognize the template, please choose a name that is most suitable and descriptive for the template you are going to create.",
 		"selectTemplate": "Select template",
@@ -492,6 +500,7 @@
 		"noListDataDescription": "To be able to create case journeys with ease whenever there is a need for it, you must first create a template. Start creating your first template by pressing the button below.",
 		"deleteTemplateDescription": "If you are certain if you want to delete template please press delete.",
 		"successfullyDeleted": "Template successfully deleted!",
-		"successfullBulkDelete": "Templates successfully deleted!"
+		"successfullBulkDelete": "Templates successfully deleted!",
+		"isGeneralDescription": "If the template is general, it will be open for all to see. If it is not, it will be for a specific user and password protected."
 	}
 }

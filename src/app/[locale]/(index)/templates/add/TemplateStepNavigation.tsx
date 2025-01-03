@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
 	RearrangeRoom,
@@ -22,6 +22,8 @@ import { ROUTES } from 'parameters'
 import { EnterTemplateName } from './EnterTemplateName'
 import { PreviewAndSave } from './PreviewAndSave'
 import { TemplatePublished } from './TemplatePublished'
+import { IsTemplateGeneral } from './IsTemplateGeneral'
+import { useManageContentSelection } from '@/store/manage-content-selection'
 
 interface Props {
 	templateData: Content
@@ -29,6 +31,7 @@ interface Props {
 
 export const TemplateStepNavigation = ({ templateData }: Props) => {
 	const { currentStep } = useStepsStore()
+	const { resetContent } = useManageContentSelection()
 	const cardsTransformed: CardBase[] = templateData?.rooms
 		? templateData?.rooms?.map((room: Room) => {
 				return {
@@ -41,16 +44,21 @@ export const TemplateStepNavigation = ({ templateData }: Props) => {
 	const [cards, setCards] = useState(cardsTransformed)
 	const reorderedRooms = cards
 		?.map(shortItem => templateData?.rooms?.find(longItem => longItem.roomId === shortItem.id))
-		?.filter((item): item is Room => item !== undefined) // Type guard to ensure only Room elements
+		?.filter((item): item is Room => item !== undefined)
 
 	useSteps({
-		totalSteps: 7,
+		totalSteps: 8,
 		currentStep: 1
 	})
+
 	useNavbarItems({
 		title: 'Templates.add',
 		backLabel: 'Templates.back'
 	})
+
+	useEffect(() => {
+		resetContent()
+	}, [])
 
 	return (
 		<ManageJourneyWrapper>
@@ -69,12 +77,13 @@ export const TemplateStepNavigation = ({ templateData }: Props) => {
 						/>
 					</ManageJourneyIntroWrapper>
 				))}
-			{currentStep === 2 && <SelectBarnahusContent abouts={templateData?.abouts} />}
-			{currentStep === 3 && <RearrangeRoom cards={cards} setCards={setCards} />}
-			{currentStep === 4 && <SelectRoomsContent rooms={reorderedRooms} />}
-			{currentStep === 5 && <SelectStaffContent staffs={templateData?.staff} />}
-			{currentStep === 6 && <PreviewAndSave templateData={templateData} />}
-			{currentStep === 7 && <TemplatePublished />}
+			{currentStep === 2 && <IsTemplateGeneral />}
+			{currentStep === 3 && <SelectBarnahusContent defaultAbouts={templateData?.abouts} />}
+			{currentStep === 4 && <RearrangeRoom initialCards={cardsTransformed} cards={cards} setCards={setCards} />}
+			{currentStep === 5 && <SelectRoomsContent defaultRooms={reorderedRooms} />}
+			{currentStep === 6 && <SelectStaffContent staffs={templateData?.staff} />}
+			{currentStep === 7 && <PreviewAndSave templateData={templateData} />}
+			{currentStep === 8 && <TemplatePublished />}
 		</ManageJourneyWrapper>
 	)
 }

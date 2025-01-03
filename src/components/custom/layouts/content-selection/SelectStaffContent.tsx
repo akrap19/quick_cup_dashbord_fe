@@ -15,6 +15,8 @@ import { Staff } from 'api/models/content/staff'
 import { requiredString } from 'schemas'
 
 import { SelectStaffContentItem } from './SelectStaffContentItem'
+import { StaffTemplate } from 'api/models/template/staffTemplate'
+import { Heading } from '@/components/typography/heading'
 
 interface Props {
 	staffs?: Staff[]
@@ -35,19 +37,27 @@ const formSchema = z.object({
 type Schema = z.infer<typeof formSchema>
 
 export const SelectStaffContent = ({ staffs }: Props) => {
-	const { setStaff } = useManageContentSelection()
+	const { staff, setStaff } = useManageContentSelection()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 	const defaultValues = {
-		items: staffs
-			? staffs.map((staff: Staff) => ({
-					staffId: staff.staffId,
-					includeName: false,
-					includeDescription: false,
-					includeImage: false,
-					includeImages: false
+		items: staff
+			? staff?.map((staffTemplate: StaffTemplate) => ({
+					staffId: staffTemplate?.staffId,
+					includeName: staffTemplate?.includeName,
+					includeDescription: staffTemplate?.includeDescription,
+					includeImage: staffTemplate?.includeImage,
+					includeImages: staffTemplate?.includeImages
 				}))
-			: []
+			: staffs
+				? staffs.map((staff: Staff) => ({
+						staffId: staff.staffId,
+						includeName: false,
+						includeDescription: false,
+						includeImage: false,
+						includeImages: false
+					}))
+				: []
 	}
 
 	const form = useForm<Schema>({
@@ -83,9 +93,22 @@ export const SelectStaffContent = ({ staffs }: Props) => {
 				</Box>
 				<Box padding={6} borderTop="thin" borderColor="neutral.300">
 					<Stack gap={6}>
-						{staffs?.map((staff: Staff, i: number) => (
-							<SelectStaffContentItem data={staff} form={form} index={i} hideDivider={staffs?.length === i + 1} />
-						))}
+						{staffs && staffs?.length > 0 ? (
+							staffs?.map((staff: Staff, i: number) => (
+								<SelectStaffContentItem data={staff} form={form} index={i} hideDivider={staffs?.length === i + 1} />
+							))
+						) : (
+							<Box width="100%" display="flex" justify="center" style={{ height: '400px' }}>
+								<Stack gap={4} justifyContent="center" alignItems="center">
+									<Heading color="neutral.800" variant="h2" lineHeight="medium">
+										{t('CaseJourney.noContentTitle')}
+									</Heading>
+									<Text color="neutral.800" lineHeight="xlarge" textAlign="center">
+										{t('CaseJourney.noContentDescription')}
+									</Text>
+								</Stack>
+							</Box>
+						)}
 					</Stack>
 				</Box>
 				<Actions />

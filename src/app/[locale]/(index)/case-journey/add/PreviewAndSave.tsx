@@ -28,8 +28,8 @@ interface Props {
 
 export const PreviewAndSave = ({ content }: Props) => {
 	const t = useTranslations()
-	const { name, abouts, rooms, staff } = useManageContentSelection()
-	const { type, customId, enebleNotes } = useCaseJourneyStore()
+	const { abouts, rooms, staff, resetContent } = useManageContentSelection()
+	const { type, customId, password, enebleNotes } = useCaseJourneyStore()
 	const { language } = useManageContent()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const searchParams = useSearchParams()
@@ -37,13 +37,13 @@ export const PreviewAndSave = ({ content }: Props) => {
 		?.map(item => {
 			const includeFlag = abouts?.find(flag => flag.aboutId === item.aboutId)
 
-			return !includeFlag?.includeAudio && !includeFlag?.includeDescription && !includeFlag?.includeImage
+			return !includeFlag?.includeAudio && !includeFlag?.includeDescription && !includeFlag?.includeImages
 				? null
 				: {
 						...item,
 						audio: includeFlag?.includeAudio ? item.audio : undefined,
 						description: includeFlag?.includeDescription ? item.description : '',
-						aboutImages: includeFlag?.includeImage ? item.aboutImages : []
+						aboutImages: includeFlag?.includeImages ? item.aboutImages : []
 					}
 		})
 		.filter(item => item !== null)
@@ -51,13 +51,13 @@ export const PreviewAndSave = ({ content }: Props) => {
 		?.map(item => {
 			const includeFlag = rooms?.find(flag => flag.roomId === item.roomId)
 
-			return !includeFlag?.includeAudio && !includeFlag?.includeDescription && !includeFlag?.includeImage
+			return !includeFlag?.includeAudio && !includeFlag?.includeDescription && !includeFlag?.includeImages
 				? null
 				: {
 						...item,
 						audio: includeFlag?.includeAudio ? item.audio : undefined,
 						description: includeFlag?.includeDescription ? item.description : '',
-						roomImages: includeFlag?.includeImage ? item.roomImages : []
+						roomImages: includeFlag?.includeImages ? item.roomImages : []
 					}
 		})
 		.filter(item => item !== null)
@@ -65,12 +65,12 @@ export const PreviewAndSave = ({ content }: Props) => {
 		?.map(item => {
 			const includeFlag = staff?.find(flag => flag.staffId === item.staffId)
 
-			return !includeFlag?.includeDescription && !includeFlag?.includeImage
+			return !includeFlag?.includeDescription && !includeFlag?.includeImages
 				? null
 				: {
 						...item,
 						description: includeFlag?.includeDescription ? item.description : '',
-						staffImages: includeFlag?.includeImage ? item.staffImages : []
+						staffImages: includeFlag?.includeImages ? item.staffImages : []
 					}
 		})
 		.filter(item => item !== null)
@@ -85,7 +85,8 @@ export const PreviewAndSave = ({ content }: Props) => {
 
 		const caseFileResult = await createCaseFile({
 			canAddNotes: enebleNotes,
-			customId
+			customId,
+			password
 		})
 
 		if (caseFileResult?.message === 'OK') {
@@ -102,16 +103,17 @@ export const PreviewAndSave = ({ content }: Props) => {
 				const customCaseJourneyData = {
 					caseId,
 					languageId: language?.id,
-					name,
 					abouts: abouts?.map(({ includeImage, ...rest }) => rest),
 					rooms: rooms?.map(({ includeImage, ...rest }) => rest),
 					staff: staff?.map(({ includeImage, ...rest }) => rest)
 				}
+
 				result = await createCustomCase(customCaseJourneyData)
 			}
 
 			if (result?.message === 'OK') {
 				SuccessToast(t('CaseJourney.caseJourneySccessfullyCreated'))
+				resetContent()
 
 				if (currentStep) {
 					setCurrentStep(currentStep + 1)

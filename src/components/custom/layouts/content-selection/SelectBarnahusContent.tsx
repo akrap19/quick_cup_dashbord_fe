@@ -14,9 +14,11 @@ import { useStepsStore } from '@/store/steps'
 import { About } from 'api/models/content/about'
 
 import { SelectContentItem } from './SelectContentItem'
+import { AboutTemplate } from 'api/models/template/aboutTemplate'
+import { Heading } from '@/components/typography/heading'
 
 interface Props {
-	abouts?: About[]
+	defaultAbouts?: About[]
 }
 
 const formSchema = z.object({
@@ -33,18 +35,26 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-export const SelectBarnahusContent = ({ abouts }: Props) => {
-	const { setAbouts } = useManageContentSelection()
+export const SelectBarnahusContent = ({ defaultAbouts }: Props) => {
+	const { abouts, setAbouts } = useManageContentSelection()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 	const defaultValues = {
-		items: abouts?.map((about: About) => ({
-			aboutId: about.aboutId,
-			includeAudio: false,
-			includeDescription: false,
-			includeImage: false,
-			includeImages: false
-		}))
+		items: abouts
+			? abouts?.map((aboutTemplate: AboutTemplate) => ({
+					aboutId: aboutTemplate?.aboutId,
+					includeAudio: aboutTemplate?.includeAudio,
+					includeDescription: aboutTemplate?.includeDescription,
+					includeImage: aboutTemplate?.includeImage,
+					includeImages: aboutTemplate?.includeImages
+				}))
+			: defaultAbouts?.map((about: About) => ({
+					aboutId: about.aboutId,
+					includeAudio: false,
+					includeDescription: false,
+					includeImage: false,
+					includeImages: false
+				}))
 	}
 
 	const form = useForm<Schema>({
@@ -82,9 +92,22 @@ export const SelectBarnahusContent = ({ abouts }: Props) => {
 				</Box>
 				<Box padding={6} borderTop="thin" borderColor="neutral.300">
 					<Stack gap={6}>
-						{abouts?.map((about: About, i: number) => (
-							<SelectContentItem data={about} form={form} index={i} hideDivider={abouts?.length === i + 1} />
-						))}
+						{defaultAbouts && defaultAbouts?.length > 0 ? (
+							defaultAbouts?.map((about: About, i: number) => (
+								<SelectContentItem data={about} form={form} index={i} hideDivider={defaultAbouts?.length === i + 1} />
+							))
+						) : (
+							<Box width="100%" display="flex" justify="center" style={{ height: '400px' }}>
+								<Stack gap={4} justifyContent="center" alignItems="center">
+									<Heading color="neutral.800" variant="h2" lineHeight="medium">
+										{t('CaseJourney.noContentTitle')}
+									</Heading>
+									<Text color="neutral.800" lineHeight="xlarge" textAlign="center">
+										{t('CaseJourney.noContentDescription')}
+									</Text>
+								</Stack>
+							</Box>
+						)}
 					</Stack>
 					{/* <Box backgroundColor="neutral.100">
 							<Stack gap={4}>

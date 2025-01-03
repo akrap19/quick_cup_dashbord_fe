@@ -15,9 +15,11 @@ import { Room } from 'api/models/content/room'
 import { requiredString } from 'schemas'
 
 import { SelectContentItem } from './SelectContentItem'
+import { RoomTemplate } from 'api/models/template/roomTemplate'
+import { Heading } from '@/components/typography/heading'
 
 interface Props {
-	rooms: Room[]
+	defaultRooms: Room[]
 }
 
 const formSchema = z.object({
@@ -35,19 +37,28 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-export const SelectRoomsContent = ({ rooms }: Props) => {
-	const { setRooms } = useManageContentSelection()
+export const SelectRoomsContent = ({ defaultRooms }: Props) => {
+	const { rooms, setRooms } = useManageContentSelection()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 	const defaultValues = {
-		items: rooms.map((room: Room, i: number) => ({
-			roomId: room.roomId,
-			includeAudio: false,
-			includeDescription: false,
-			includeImage: false,
-			includeImages: false,
-			orderNumber: i + 1
-		}))
+		items: rooms
+			? rooms?.map((RoomTemplate: RoomTemplate, i: number) => ({
+					roomId: RoomTemplate?.roomId,
+					includeAudio: RoomTemplate?.includeAudio,
+					includeDescription: RoomTemplate?.includeDescription,
+					includeImage: RoomTemplate?.includeImage,
+					includeImages: RoomTemplate?.includeImages,
+					orderNumber: i + 1
+				}))
+			: defaultRooms.map((room: Room, i: number) => ({
+					roomId: room.roomId,
+					includeAudio: false,
+					includeDescription: false,
+					includeImage: false,
+					includeImages: false,
+					orderNumber: i + 1
+				}))
 	}
 
 	const form = useForm<Schema>({
@@ -83,9 +94,22 @@ export const SelectRoomsContent = ({ rooms }: Props) => {
 				</Box>
 				<Box padding={6} borderTop="thin" borderColor="neutral.300">
 					<Stack gap={6}>
-						{rooms?.map((room: Room, i: number) => (
-							<SelectContentItem data={room} form={form} index={i} hideDivider={rooms?.length === i + 1} />
-						))}
+						{defaultRooms && defaultRooms?.length > 0 ? (
+							defaultRooms?.map((room: Room, i: number) => (
+								<SelectContentItem data={room} form={form} index={i} hideDivider={defaultRooms?.length === i + 1} />
+							))
+						) : (
+							<Box width="100%" display="flex" justify="center" style={{ height: '400px' }}>
+								<Stack gap={4} justifyContent="center" alignItems="center">
+									<Heading color="neutral.800" variant="h2" lineHeight="medium">
+										{t('CaseJourney.noContentTitle')}
+									</Heading>
+									<Text color="neutral.800" lineHeight="xlarge" textAlign="center">
+										{t('CaseJourney.noContentDescription')}
+									</Text>
+								</Stack>
+							</Box>
+						)}
 					</Stack>
 				</Box>
 				<Actions />

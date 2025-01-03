@@ -1,6 +1,6 @@
 'use client'
 
-import { CSSProperties, Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { CSSProperties, Dispatch, SetStateAction } from 'react'
 import { DragDropContext, Draggable, DraggingStyle, DropResult, Droppable, NotDraggingStyle } from 'react-beautiful-dnd'
 
 import { Button } from '@/components/inputs/button'
@@ -14,6 +14,7 @@ import { tokens } from 'style/theme.css'
 import { Card } from './Card'
 
 interface Props {
+	initialCards: CardBase[]
 	cards: CardBase[]
 	setCards: Dispatch<SetStateAction<CardBase[]>>
 }
@@ -26,8 +27,7 @@ const reorder = (list: any, startIndex: number, endIndex: number): any => {
 	return result
 }
 
-export const RearrangeableCards = ({ cards, setCards }: Props) => {
-	const [initialCards, setInitialCards] = useState<CardBase[]>()
+export const RearrangeableCards = ({ initialCards, cards, setCards }: Props) => {
 	const getItemStyle = (draggableStyle: DraggingStyle | NotDraggingStyle | any | undefined): CSSProperties => ({
 		userSelect: 'none',
 		padding: tokens.spacing[2],
@@ -47,7 +47,6 @@ export const RearrangeableCards = ({ cards, setCards }: Props) => {
 
 	const handleRemoveItem = (id: string) => {
 		const newCards = cards?.filter(card => card.id !== id)
-		console.log('Matija newCards', newCards)
 
 		setCards(newCards)
 	}
@@ -57,7 +56,7 @@ export const RearrangeableCards = ({ cards, setCards }: Props) => {
 
 		if (arr1 && arr2 && arr1.length > 1 && arr2.length > 1) {
 			for (let i = 0; i < arr1.length; i++) {
-				if (arr1[i] !== arr2[i]) return true
+				if (arr1[i]?.id !== arr2[i]?.id) return true
 			}
 		}
 
@@ -69,12 +68,6 @@ export const RearrangeableCards = ({ cards, setCards }: Props) => {
 			setCards(initialCards)
 		}
 	}
-
-	useEffect(() => {
-		if (cards) {
-			setInitialCards(cards)
-		}
-	}, [])
 
 	return (
 		<Box

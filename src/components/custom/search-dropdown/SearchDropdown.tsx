@@ -93,7 +93,7 @@ export const SearchDropdown = ({
 					<Button size="auto" variant="adaptive" onClick={handleDropDownOpening}>
 						<Box className={clsx(input, !isFilter && hasSuccess && inputHasSuccess, endIconSpacing)}>
 							<Text className={DropdownPresentationlabel({ variant: presentationalLabelVariant })}>
-								{choosenValue?.name ?? `${t('General.select')} ${t(placeholder)}`}
+								{choosenValue?.name ?? value ?? `${t('General.select')} ${t(placeholder)}`}
 							</Text>
 						</Box>
 					</Button>

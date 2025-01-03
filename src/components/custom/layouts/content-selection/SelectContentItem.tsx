@@ -71,7 +71,7 @@ export const SelectContentItem = ({ data, form, index, hideDivider }: Props) => 
 										<Text fontWeight="semibold" lineHeight="xlarge" color="neutral.900" textTransform="uppercase">
 											{t('General.photos')}
 										</Text>
-										<FormControl {...form.register(`items[${index}].includeImage`)}>
+										<FormControl {...form.register(`items[${index}].includeImages`)}>
 											<Checkbox />
 										</FormControl>
 									</Inline>

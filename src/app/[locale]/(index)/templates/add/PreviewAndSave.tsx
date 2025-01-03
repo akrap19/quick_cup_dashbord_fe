@@ -24,7 +24,7 @@ interface Props {
 
 export const PreviewAndSave = ({ templateData }: Props) => {
 	const t = useTranslations()
-	const { name, abouts, rooms, staff } = useManageContentSelection()
+	const { name, abouts, rooms, staff, isGeneral, resetContent } = useManageContentSelection()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const mergedAboutData = templateData?.abouts
 		?.map(item => {
@@ -75,8 +75,10 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
+
 		const templateData: Template = {
 			name,
+			isGeneral: isGeneral === 'true',
 			abouts: abouts?.map(({ includeImage, ...rest }) => rest),
 			rooms: rooms?.map(({ includeImage, ...rest }) => rest),
 			staff: staff?.map(({ includeImage, ...rest }) => rest)
@@ -85,6 +87,7 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 
 		if (result?.message === 'OK') {
 			SuccessToast(t('Templates.templateSccessfullyCreated'))
+			resetContent()
 
 			if (currentStep) {
 				setCurrentStep(currentStep + 1)

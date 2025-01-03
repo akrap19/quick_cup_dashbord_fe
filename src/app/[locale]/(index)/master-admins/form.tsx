@@ -11,11 +11,11 @@ import { OpenedProps } from '@/hooks/use-toggle'
 import { Base } from 'api/models/common/base'
 
 interface Props {
-	cancelDialog?: OpenedProps
 	barnahuses: Base[]
+	cancelDialog?: OpenedProps
 }
 
-const MasterAdminForm = ({ cancelDialog, barnahuses }: Props) => {
+const MasterAdminForm = ({ barnahuses, cancelDialog }: Props) => {
 	const t = useTranslations()
 
 	return (

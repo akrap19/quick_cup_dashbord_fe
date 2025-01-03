@@ -58,7 +58,9 @@ export const SelectTemplate = ({ templates }: Props) => {
 		handleTemplate(data.template)
 
 		if (currentStep) {
-			setCurrentStep(currentStep + 1)
+			setTimeout(() => {
+				setCurrentStep(currentStep + 1)
+			}, 650)
 		}
 	}
 

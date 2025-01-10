@@ -22,10 +22,9 @@ import { PreviewAndPublish } from './PreviewAndPublish'
 interface Props {
 	room: Room
 	language: Language
-	languages: Language[]
 }
 
-export const EditRoomLanguageNavigation = ({ room, language, languages }: Props) => {
+export const EditRoomLanguageNavigation = ({ room, language }: Props) => {
 	const t = useTranslations()
 	const { navbarIsLoading } = useNavbarItemsStore()
 	const { currentStep } = useStepsStore()

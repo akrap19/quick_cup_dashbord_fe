@@ -54,7 +54,7 @@ export const PreviewAndPublish = ({ language }: Props) => {
 
 			if (result?.message === 'OK') {
 				refresh()
-				SuccessToast(t('ManageContent.roomBarnahusContentSccessfullyUpdated'))
+				SuccessToast(t('ManageContent.roomsContentSccessfullyUpdated'))
 
 				push(ROUTES.CONTENT)
 			}

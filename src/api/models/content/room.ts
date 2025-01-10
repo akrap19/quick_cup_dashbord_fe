@@ -2,6 +2,7 @@ import { Audio } from '../common/audio'
 
 export interface RoomImage {
 	roomImageId: string
+	mediaId: string
 	url: string
 }
 

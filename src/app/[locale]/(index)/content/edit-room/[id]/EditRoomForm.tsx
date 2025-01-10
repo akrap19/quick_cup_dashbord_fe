@@ -43,7 +43,7 @@ export const EditRoomForm = ({ room, language }: Props) => {
 		removeaudioByLanguageId,
 		removeAboutsByTranslationId
 	} = useManageContentAdd()
-	const defaultImageIds = room?.roomImages?.map(roomImage => roomImage?.roomImageId)
+	const defaultImageIds = room?.roomImages?.map(roomImage => roomImage?.mediaId)
 
 	const form = useForm<Schema>({
 		mode: 'onBlur',

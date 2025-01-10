@@ -70,12 +70,13 @@ export const EditRoomForm = ({ room, language }: Props) => {
 		// its for bug, it doesnt know that image was changed
 		const { images } = form.watch()
 		const deletedImages = defaultImageIds?.filter(id => !images.includes(id))
+		const uniqueImages = images?.filter(item => !defaultImageIds?.includes(item))
 
 		const roomForEdit = {
 			roomTranslationId: room?.roomTranslationId,
 			title: replaceEmptyStringWithNull(formData.title),
 			description: removeHtmlTags(formData.description) ? formData.description : null,
-			images,
+			images: uniqueImages,
 			deletedImages,
 			audioId: replaceEmptyStringWithNull(formData.audioId)
 		}

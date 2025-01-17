@@ -170,7 +170,7 @@
 	"Authorization": {
 		"password": "Password",
 		"passwordPlaceholder": "Enter password",
-		"passwordInstructions": "Min 8 characters, 1 number and 1 symbol",
+		"passwordInstructions": "Min 8 and max 24 characters, 1 number and 1 symbol",
 		"confirmPassword": "Confirm password",
 		"confirmPasswordSuccess": "Passwords are matching.",
 		"newPassword": "New password",

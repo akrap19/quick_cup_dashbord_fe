@@ -33,10 +33,11 @@ export const SetCasePassword = () => {
 		defaultValues: {}
 	})
 
-	const data = form.getValues()
+	const { password } = form.watch()
 
 	const onSubmit = async () => {
-		setPassword(data?.password)
+		setPassword(password)
+
 		if (currentStep) {
 			setCurrentStep(currentStep + 1)
 		}

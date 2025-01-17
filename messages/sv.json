@@ -170,7 +170,7 @@
 	"Authorization": {
 		"password": "Lösenord",
 		"passwordPlaceholder": "Ange lösenord",
-		"passwordInstructions": "Minst 8 tecken, 1 siffra och 1 symbol",
+		"passwordInstructions": "Minst 8 och högst 24 tecken, 1 siffra och 1 symbol",
 		"confirmPassword": "Bekräfta lösenord",
 		"confirmPasswordSuccess": "Lösenorden matchar.",
 		"newPassword": "Nytt lösenord",

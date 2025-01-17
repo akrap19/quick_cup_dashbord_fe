@@ -8,7 +8,7 @@ export const passwordSchema = z.object({
 	password: z
 		.string()
 		.min(1, { message: 'ValidationMeseges.required' })
-		.regex(/^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/, {
+		.regex(/^(?=.*[0-9])(?=.*[^A-Za-z0-9])[A-Za-z0-9\S]{8,24}$/, {
 			message: 'ValidationMeseges.password'
 		})
 })

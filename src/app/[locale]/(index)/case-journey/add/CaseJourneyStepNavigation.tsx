@@ -13,7 +13,6 @@ import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useSteps } from '@/hooks/use-steps'
 import { useCaseJourneyStore } from '@/store/case-journey'
 import { useStepsStore } from '@/store/steps'
-import { Base } from 'api/models/common/base'
 import { CardBase } from 'api/models/common/cardBase'
 import { Content } from 'api/models/content/content'
 import { Room } from 'api/models/content/room'
@@ -31,11 +30,12 @@ import { EnebleNotes } from './EnebleNotes'
 import { SetCasePassword } from './SetCasePassword'
 import { useManageContentSelection } from '@/store/manage-content-selection'
 import { useSearchParams } from 'next/navigation'
+import { Templates } from 'api/models/template/templates'
 
 interface Props {
 	languages: Language[]
 	content: Content
-	templates: Base[]
+	templates: Templates[]
 	template: Content
 }
 

@@ -15,11 +15,11 @@ import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
-import { Base } from 'api/models/common/base'
 import { requiredString } from 'schemas'
+import { Templates } from 'api/models/template/templates'
 
 interface Props {
-	templates: Base[]
+	templates: Templates[]
 }
 
 const formSchema = z.object({
@@ -34,6 +34,12 @@ export const SelectTemplate = ({ templates }: Props) => {
 	const { replace } = useRouter()
 	const searchParams = useSearchParams()
 	const currentSearchParamas = qs.parse(searchParams.toString())
+	const transformedTemplateSearchData = templates?.map((template: Templates) => {
+		return {
+			id: template.templateId,
+			name: template?.isGeneral ? template.name + ` (${t('Templates.generalTemplate')})` : template.name
+		}
+	})
 
 	const handleTemplate = (value: string) => {
 		const query = { ...currentSearchParamas, templateId: value }
@@ -77,7 +83,12 @@ export const SelectTemplate = ({ templates }: Props) => {
 						</Text>
 						<Box width="100%">
 							<FormControl name="template">
-								<SearchDropdown placeholder="General.template" options={templates} alwaysShowSearch isFilter />
+								<SearchDropdown
+									placeholder="General.template"
+									options={transformedTemplateSearchData}
+									alwaysShowSearch
+									isFilter
+								/>
 							</FormControl>
 						</Box>
 					</Stack>

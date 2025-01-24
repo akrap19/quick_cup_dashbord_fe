@@ -480,6 +480,7 @@
 		"isGeneral": "Template is General",
 		"isNotGeneral": "Template is not General",
 		"isGeneralTitle": "Is template General?",
+		"generalTemplate": "General template",
 		"nameTitle": "Please enter template name",
 		"nameDescription": "To easily recognize the template, please choose a name that is most suitable and descriptive for the template you are going to create.",
 		"selectTemplate": "Select template",

@@ -3,4 +3,5 @@ export interface Templates {
 	name: string
 	status: string
 	updated: string
+	isGeneral: boolean
 }

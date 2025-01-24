@@ -1,6 +1,5 @@
 import { Content } from 'api/models/content/content'
 import { Template } from 'api/models/template/template'
-import { Templates } from 'api/models/template/templates'
 import { getContent } from 'api/services/content'
 import { getLanguageSearch } from 'api/services/languages'
 import { getTemplate, getTemplatesSearch } from 'api/services/templates'
@@ -23,12 +22,6 @@ const CaseJourneyAddPage = async ({ searchParams }: Props) => {
 	const data = await getContent(searchParams)
 	const { data: templateSearchData } = await getTemplatesSearch({
 		search: searchParams.template
-	})
-	const transformedTemplateSearchData = templateSearchData?.templates?.map((template: Templates) => {
-		return {
-			id: template.templateId,
-			name: template.name
-		}
 	})
 
 	const { data: templateData } = await getTemplate(searchParams.templateId)
@@ -114,7 +107,7 @@ const CaseJourneyAddPage = async ({ searchParams }: Props) => {
 		<CaseJourneyStepNavigation
 			languages={languageData?.languages}
 			content={data.data}
-			templates={transformedTemplateSearchData}
+			templates={templateSearchData?.templates}
 			template={template as any}
 		/>
 	)

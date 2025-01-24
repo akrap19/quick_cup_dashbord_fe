@@ -480,6 +480,7 @@
 		"noListDataTitle": "Lägg till mallar",
 		"nameUnavailable": "Namnet är inte tillgängligt",
 		"selectTemplateTitle": "Välj mall för att starta",
+		"generalTemplate": "Allmän mall",
 		"selectTemplateDescription": "För att skapa case från mall, välj eller sök efter den mall som passar ditt fall bäst och modifiera den efter dina behov.",
 		"previewAndSaveContent": "Förhandsgranska och spara innehåll",
 		"previewAndSaveContentDescription": "Innan du sparar mallen, kontrollera hur innehållet i mallen kommer att se ut i Journeys-appen.",

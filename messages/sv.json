@@ -442,7 +442,7 @@
 		"createFromTemplate": "Skapa från mall",
 		"createCustom": "Skapa en resa manuellt",
 		"selectTemplate": "Välj mall",
-		"selectTemplateDescription": "Välj mall så att du kan skapa Custom Journey från den.",
+		"selectTemplateDescription": "Välj mall så att du kan skapa Custom Journey från den. Om du väljer den allmänna mallen kommer lösenordet som behövs för att logga in på din resa att visas.",
 		"chooseCreateFromTemplateTypeTitle": "Välj hur du vill använda mallen",
 		"chooseCreateFromTemplateTypeDescription": "Du har möjligheten att göra ändringar i mallen efter du valt den.",
 		"useReadyMadeTemplate": "Använd en färdig mall",

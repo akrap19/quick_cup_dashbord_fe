@@ -72,6 +72,13 @@ export const SelectBarnahusContent = ({ defaultAbouts }: Props) => {
 		}
 	}
 
+	const handleBack = async () => {
+		setAbouts(formData?.items)
+		if (currentStep) {
+			setCurrentStep(currentStep - 1)
+		}
+	}
+
 	return (
 		<FormProvider {...form}>
 			<form style={{ width: '100%' }} onSubmit={form.handleSubmit(onSubmit)}>
@@ -138,7 +145,7 @@ export const SelectBarnahusContent = ({ defaultAbouts }: Props) => {
 							</Stack>
 						</Box> */}
 				</Box>
-				<Actions />
+				<Actions customHandleBack={handleBack} />
 			</form>
 		</FormProvider>
 	)

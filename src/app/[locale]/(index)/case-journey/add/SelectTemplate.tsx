@@ -17,6 +17,7 @@ import { Text } from '@/components/typography/text'
 import { useStepsStore } from '@/store/steps'
 import { requiredString } from 'schemas'
 import { Templates } from 'api/models/template/templates'
+import { TextInput } from '@/components/inputs/text-input'
 
 interface Props {
 	templates: Templates[]
@@ -60,7 +61,10 @@ export const SelectTemplate = ({ templates }: Props) => {
 		defaultValues: { template: '' }
 	})
 
-	const onSubmit = async (data: any) => {
+	const data = form.getValues()
+	const currentTemplate = templates?.find(template => template?.templateId === data?.template)
+
+	const onSubmit = async () => {
 		handleTemplate(data.template)
 
 		if (currentStep) {
@@ -70,6 +74,7 @@ export const SelectTemplate = ({ templates }: Props) => {
 		}
 	}
 
+	console.log('data', currentTemplate)
 	return (
 		<FormProvider {...form}>
 			<form style={{ width: '100%' }} onSubmit={form.handleSubmit(onSubmit)}>
@@ -81,7 +86,7 @@ export const SelectTemplate = ({ templates }: Props) => {
 						<Text fontSize="small" color="neutral.800" textAlign="center">
 							{t('CaseJourney.selectTemplateDescription')}
 						</Text>
-						<Box width="100%">
+						<Box width="100%" display="flex" flexDirection="column" gap={2}>
 							<FormControl name="template">
 								<SearchDropdown
 									placeholder="General.template"
@@ -90,6 +95,11 @@ export const SelectTemplate = ({ templates }: Props) => {
 									isFilter
 								/>
 							</FormControl>
+							{currentTemplate?.isGeneral && (
+								<FormControl name="password">
+									<TextInput disabled={true} defaultValue="Pass1234!" />
+								</FormControl>
+							)}
 						</Box>
 					</Stack>
 				</ManageJourneyIntroWrapper>

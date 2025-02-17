@@ -1,12 +1,10 @@
 'use client'
 
-import clsx from 'clsx'
 import { useTranslations } from 'next-intl'
 import React, { useEffect, useRef, useState } from 'react'
 
 import { BlockIcon } from '@/components/icons/block-icon'
 import { Button } from '@/components/inputs/button'
-import { endIconSpacing } from '@/components/inputs/input-wrapper/InputWrapper.css'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
@@ -57,14 +55,12 @@ export const MobilePreviewDropdown = ({ options, value, handleContentType }: Pro
 
 	return (
 		<div ref={ref} style={{ position: 'relative' }}>
-			<Stack>
-				<Button size="auto" variant="adaptive" onClick={handleDropDownOpening}>
-					<Box className={clsx(mobilePreviewDropdownInput, endIconSpacing)}>
-						<Text className={MobilePreviewDropdownLabel({ variant: 'selectedLabel' })}>{t(`General.${value}`)}</Text>
-						<BlockIcon icon={isOpen ? CarretUpIcon : CarretDownIcon} size="large" color="neutral.800" />
-					</Box>
-				</Button>
-			</Stack>
+			<Button size="auto" variant="adaptive" onClick={handleDropDownOpening}>
+				<Box className={mobilePreviewDropdownInput}>
+					<Text className={MobilePreviewDropdownLabel({ variant: 'selectedLabel' })}>{t(`General.${value}`)}</Text>
+					<BlockIcon icon={isOpen ? CarretUpIcon : CarretDownIcon} size="large" color="neutral.800" />
+				</Box>
+			</Button>
 			{isOpen && (
 				<Box className={mobilePreviewDropdownListContainer}>
 					<Stack gap={4}>

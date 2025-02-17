@@ -64,8 +64,8 @@ export const MobilePreviewContent = ({ content, currentImage, setCurrentImage }:
 						</Button>
 					)}
 				</Inline>
-				<Box borderRadius="small">
-					{contentImages && (
+				<Box display="flex" borderRadius="small" justify="center">
+					{contentImages && contentImages[currentImage]?.url && (
 						<img
 							alt="mobile-preview"
 							src={contentImages[currentImage]?.url}

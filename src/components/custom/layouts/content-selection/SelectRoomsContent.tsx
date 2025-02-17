@@ -67,10 +67,19 @@ export const SelectRoomsContent = ({ defaultRooms }: Props) => {
 		defaultValues
 	})
 
-	const onSubmit = async (data: Schema) => {
-		setRooms(data?.items)
+	const formData = form?.getValues()
+
+	const onSubmit = async () => {
+		setRooms(formData?.items)
 		if (currentStep) {
 			setCurrentStep(currentStep + 1)
+		}
+	}
+
+	const handleBack = async () => {
+		setRooms(formData?.items)
+		if (currentStep) {
+			setCurrentStep(currentStep - 1)
 		}
 	}
 
@@ -112,7 +121,7 @@ export const SelectRoomsContent = ({ defaultRooms }: Props) => {
 						)}
 					</Stack>
 				</Box>
-				<Actions />
+				<Actions customHandleBack={handleBack} />
 			</form>
 		</FormProvider>
 	)

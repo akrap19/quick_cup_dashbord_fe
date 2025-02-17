@@ -66,10 +66,19 @@ export const SelectStaffContent = ({ staffs }: Props) => {
 		defaultValues
 	})
 
-	const onSubmit = async (data: Schema) => {
-		setStaff(data?.items)
+	const formData = form?.getValues()
+
+	const onSubmit = async () => {
+		setStaff(formData?.items)
 		if (currentStep) {
 			setCurrentStep(currentStep + 1)
+		}
+	}
+
+	const handleBack = async () => {
+		setStaff(formData?.items)
+		if (currentStep) {
+			setCurrentStep(currentStep - 1)
 		}
 	}
 
@@ -111,7 +120,7 @@ export const SelectStaffContent = ({ staffs }: Props) => {
 						)}
 					</Stack>
 				</Box>
-				<Actions />
+				<Actions customHandleBack={handleBack} />
 			</form>
 		</FormProvider>
 	)

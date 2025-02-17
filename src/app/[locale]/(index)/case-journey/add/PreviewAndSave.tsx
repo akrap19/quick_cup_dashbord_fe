@@ -74,11 +74,14 @@ export const PreviewAndSave = ({ content }: Props) => {
 					}
 		})
 		.filter(item => item !== null)
+
 	const mergedContentData: Content = {
 		abouts: mergedAboutData as About[],
 		rooms: mergedRoomData as Room[],
 		staff: mergedStaffData as Staff[]
 	}
+
+	const dataToDisplay = type === CaseJourneyTypeEnum.TEMPLATE ? content : mergedContentData
 
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -97,6 +100,7 @@ export const PreviewAndSave = ({ content }: Props) => {
 				const templateId = searchParams.get('templateId')
 				if (templateId && language) {
 					const caseJourneyData = { caseId, languageId: language?.id, templateId }
+
 					result = await createCase(caseJourneyData)
 				}
 			} else {
@@ -141,7 +145,7 @@ export const PreviewAndSave = ({ content }: Props) => {
 						</Box>
 					</Stack>
 					<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
-						<MobilePreview content={mergedContentData} />
+						<MobilePreview content={dataToDisplay} />
 					</Box>
 				</Stack>
 			</Box>

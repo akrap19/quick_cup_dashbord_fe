@@ -446,7 +446,7 @@
 		"createFromTemplate": "Create from template",
 		"createCustom": "Create a Journey manually",
 		"selectTemplate": "Select template",
-		"selectTemplateDescription": "Please select template so you can create Custom Journey from it.",
+		"selectTemplateDescription": "Please select template so you can create Custom Journey from it. If you choose the general template, the password needed to log in to your journey will be shown.",
 		"chooseCreateFromTemplateTypeTitle": "How do you want to use the template?",
 		"chooseCreateFromTemplateTypeDescription": "You can edit the template after you've chosen it.",
 		"useReadyMadeTemplate": "Use template as-is",

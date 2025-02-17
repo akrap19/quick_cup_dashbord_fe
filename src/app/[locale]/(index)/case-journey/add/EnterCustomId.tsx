@@ -58,7 +58,11 @@ export const EnterCustomId = () => {
 
 	return (
 		<FormProvider {...form}>
-			<form style={{ width: '100%' }} onSubmit={form.handleSubmit(onSubmit)}>
+			<form
+				style={{
+					width: '100%'
+				}}
+				onSubmit={form.handleSubmit(onSubmit)}>
 				<ManageJourneyIntroWrapper>
 					<Stack gap={6} alignItems="center">
 						<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">

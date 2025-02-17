@@ -30,13 +30,15 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 		?.map(item => {
 			const includeFlag = abouts?.find(flag => flag.aboutId === item.aboutId)
 
-			return !includeFlag?.includeAudio && !includeFlag?.includeDescription && !includeFlag?.includeImage
+			return !includeFlag?.includeAudio &&
+				!includeFlag?.includeDescription &&
+				(!includeFlag?.includeImage || !includeFlag?.includeImages)
 				? null
 				: {
 						...item,
 						audio: includeFlag?.includeAudio ? item.audio : undefined,
 						description: includeFlag?.includeDescription ? item.description : '',
-						aboutImages: includeFlag?.includeImage ? item.aboutImages : []
+						aboutImages: includeFlag?.includeImage || includeFlag?.includeImages ? item.aboutImages : []
 					}
 		})
 		.filter(item => item !== null)
@@ -44,13 +46,15 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 		?.map(item => {
 			const includeFlag = rooms?.find(flag => flag.roomId === item.roomId)
 
-			return !includeFlag?.includeAudio && !includeFlag?.includeDescription && !includeFlag?.includeImage
+			return !includeFlag?.includeAudio &&
+				!includeFlag?.includeDescription &&
+				(!includeFlag?.includeImage || !includeFlag?.includeImages)
 				? null
 				: {
 						...item,
 						audio: includeFlag?.includeAudio ? item.audio : undefined,
 						description: includeFlag?.includeDescription ? item.description : '',
-						roomImages: includeFlag?.includeImage ? item.roomImages : []
+						roomImages: includeFlag?.includeImage || includeFlag?.includeImages ? item.roomImages : []
 					}
 		})
 		.filter(item => item !== null)
@@ -58,12 +62,12 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 		?.map(item => {
 			const includeFlag = staff?.find(flag => flag.staffId === item.staffId)
 
-			return !includeFlag?.includeDescription && !includeFlag?.includeImage
+			return !includeFlag?.includeDescription && !(!includeFlag?.includeImage || !includeFlag?.includeImages)
 				? null
 				: {
 						...item,
 						description: includeFlag?.includeDescription ? item.description : '',
-						staffImages: includeFlag?.includeImage ? item.staffImages : []
+						staffImages: includeFlag?.includeImage || includeFlag?.includeImages ? item.staffImages : []
 					}
 		})
 		.filter(item => item !== null)

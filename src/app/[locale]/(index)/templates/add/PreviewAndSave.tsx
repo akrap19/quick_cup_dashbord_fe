@@ -24,7 +24,7 @@ interface Props {
 
 export const PreviewAndSave = ({ templateData }: Props) => {
 	const t = useTranslations()
-	const { name, abouts, rooms, staff, isGeneral, resetContent } = useManageContentSelection()
+	const { name, abouts, rooms, staff, isGeneral, password, resetContent } = useManageContentSelection()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const mergedAboutData = templateData?.abouts
 		?.map(item => {
@@ -83,6 +83,7 @@ export const PreviewAndSave = ({ templateData }: Props) => {
 		const templateData: Template = {
 			name,
 			isGeneral: isGeneral === 'true',
+			password,
 			abouts: abouts?.map(({ includeImage, ...rest }) => rest),
 			rooms: rooms?.map(({ includeImage, ...rest }) => rest),
 			staff: staff?.map(({ includeImage, ...rest }) => rest)

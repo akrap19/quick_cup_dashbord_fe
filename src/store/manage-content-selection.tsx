@@ -9,6 +9,8 @@ type ManageTemplate = {
 	setName: (name?: string) => void
 	isGeneral?: string
 	setIsGeneral: (isGeneral?: string) => void
+	password?: string
+	setPassword: (password?: string) => void
 	abouts?: AboutTemplate[]
 	setAbouts: (abouts?: AboutTemplate[]) => void
 	rooms?: RoomTemplate[]
@@ -23,11 +25,13 @@ export const useManageContentSelection = create<ManageTemplate>(set => ({
 	setName: name => set(() => ({ name })),
 	isGeneral: undefined,
 	setIsGeneral: isGeneral => set(() => ({ isGeneral })),
+	password: undefined,
+	setPassword: password => set(() => ({ password })),
 	abouts: undefined,
 	setAbouts: abouts => set(() => ({ abouts })),
 	rooms: undefined,
 	setRooms: rooms => set(() => ({ rooms })),
 	staff: undefined,
 	setStaff: staff => set(() => ({ staff })),
-	resetContent: () => set(() => ({ abouts: undefined, rooms: undefined, staff: undefined }))
+	resetContent: () => set(() => ({ password: undefined, abouts: undefined, rooms: undefined, staff: undefined }))
 }))

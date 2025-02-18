@@ -73,18 +73,18 @@ const CaseJourneyStepNavigation = ({ languages, content, templates, template }: 
 		?.map(shortItem => template?.rooms?.find(longItem => longItem.roomId === shortItem.id))
 		?.filter((item): item is Room => item !== undefined)
 
-	const templateStep = (step: number, isGeneralStep: number) => {
+	const handleTemplateStep = (step: number, isGeneralStep: number) => {
 		return template?.isGeneral ? isGeneralStep : step
 	}
 
 	const totalSteps = (() => {
 		switch (type) {
 			case CaseJourneyTypeEnum.TEMPLATE:
-				return templateStep(9, 8)
+				return handleTemplateStep(9, 8)
 			case CaseJourneyTypeEnum.CUSTOM:
 				return 11
 			case CaseJourneyTypeEnum.CUSTOM_TEMPLATE:
-				return templateStep(13, 12)
+				return handleTemplateStep(13, 12)
 			default:
 				return 8
 		}
@@ -139,34 +139,36 @@ const CaseJourneyStepNavigation = ({ languages, content, templates, template }: 
 			{!template?.isGeneral &&
 				currentStep === 6 &&
 				(type === CaseJourneyTypeEnum.TEMPLATE || type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE) && <SetCasePassword />}
-			{currentStep === templateStep(7, 6) &&
+			{currentStep === handleTemplateStep(7, 6) &&
 				(type === CaseJourneyTypeEnum.TEMPLATE || type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE) && (
 					<SelectTemplateType />
 				)}
 
 			{/* Custom Template */}
-			{currentStep === templateStep(8, 7) && type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE && (
+			{currentStep === handleTemplateStep(8, 7) && type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE && (
 				<SelectBarnahusContent defaultAbouts={template?.abouts} />
 			)}
-			{currentStep === templateStep(9, 8) && type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE && (
+			{currentStep === handleTemplateStep(9, 8) && type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE && (
 				<RearrangeRoom initialCards={cardsTemplateTransformed} cards={cardsTemplate} setCards={setCardsTemplate} />
 			)}
-			{currentStep === templateStep(10, 9) && type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE && (
+			{currentStep === handleTemplateStep(10, 9) && type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE && (
 				<SelectRoomsContent defaultRooms={reorderedTemplateRooms} />
 			)}
-			{currentStep === templateStep(11, 10) && type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE && (
+			{currentStep === handleTemplateStep(11, 10) && type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE && (
 				<SelectStaffContent staffs={template?.staff} />
 			)}
-			{currentStep === templateStep(12, 11) && type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE && (
+			{currentStep === handleTemplateStep(12, 11) && type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE && (
 				<PreviewAndSave content={template} />
 			)}
-			{currentStep === templateStep(13, 12) && type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE && <CaseJourneyPublished />}
+			{currentStep === handleTemplateStep(13, 12) && type === CaseJourneyTypeEnum.CUSTOM_TEMPLATE && (
+				<CaseJourneyPublished />
+			)}
 
 			{/* Ready-made template */}
-			{currentStep === templateStep(8, 7) && type === CaseJourneyTypeEnum.TEMPLATE && (
+			{currentStep === handleTemplateStep(8, 7) && type === CaseJourneyTypeEnum.TEMPLATE && (
 				<PreviewAndSave content={template} />
 			)}
-			{currentStep === templateStep(9, 8) && type === CaseJourneyTypeEnum.TEMPLATE && <CaseJourneyPublished />}
+			{currentStep === handleTemplateStep(9, 8) && type === CaseJourneyTypeEnum.TEMPLATE && <CaseJourneyPublished />}
 		</ManageJourneyWrapper>
 	)
 }

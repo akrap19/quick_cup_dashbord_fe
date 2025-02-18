@@ -74,7 +74,6 @@ export const SelectTemplate = ({ templates }: Props) => {
 		}
 	}
 
-	console.log('data', currentTemplate)
 	return (
 		<FormProvider {...form}>
 			<form style={{ width: '100%' }} onSubmit={form.handleSubmit(onSubmit)}>
@@ -97,7 +96,7 @@ export const SelectTemplate = ({ templates }: Props) => {
 							</FormControl>
 							{currentTemplate?.isGeneral && (
 								<FormControl name="password">
-									<TextInput disabled={true} defaultValue="Pass1234!" />
+									<TextInput disabled={true} defaultValue={currentTemplate?.password} />
 								</FormControl>
 							)}
 						</Box>

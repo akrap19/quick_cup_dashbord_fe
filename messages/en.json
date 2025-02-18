@@ -489,6 +489,8 @@
 		"nameUnavailable": "Name unavailable",
 		"selectTemplateTitle": "Select template to start",
 		"selectTemplateDescription": "To create a Custom Journey from template, choose the template you want to use. You can modify the template after you've chosen it.",
+		"setTemplatePasswordTitle": "Set Template password",
+		"setTemplatePasswordDescription": "A password is set so the journey will be protected and private, ensuring it is maximally personalized for the user.",
 		"previewAndSaveContent": "Preview & save content",
 		"previewAndSaveContentDescription": "Before saving the template, please check how it will look for the user.",
 		"templateSccessfullyCreated": "Template successfully created!",

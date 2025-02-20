@@ -7,7 +7,11 @@ import { MouseEvent } from 'react'
 import { Button } from '@/components/inputs/button'
 import { ButtonVariants } from '@/components/inputs/button/Button.css'
 
-export const CancelButton = (props: ButtonVariants) => {
+type CustomProps = { customLabel?: string }
+
+type Props = CustomProps & ButtonVariants
+
+export const CancelButton = ({ customLabel, size }: Props) => {
 	const t = useTranslations()
 	const router = useRouter()
 
@@ -18,8 +22,8 @@ export const CancelButton = (props: ButtonVariants) => {
 	}
 
 	return (
-		<Button variant="secondary" onClick={goBack} size={props?.size}>
-			{t('General.cancel')}
+		<Button variant="secondary" onClick={goBack} size={size}>
+			{t(customLabel ?? 'General.cancel')}
 		</Button>
 	)
 }

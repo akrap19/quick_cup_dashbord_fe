@@ -27,8 +27,8 @@ export const IsTemplateGeneral = () => {
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 	const options = [
-		{ label: t('Templates.isGeneral'), value: 'true' },
-		{ label: t('Templates.isNotGeneral'), value: 'false' }
+		{ label: t('General.yes'), value: 'true' },
+		{ label: t('General.no'), value: 'false' }
 	]
 
 	const form = useForm<Schema>({
@@ -50,7 +50,7 @@ export const IsTemplateGeneral = () => {
 				<Box paddingX={6}>
 					<ManageJourneyIntroWrapper>
 						<Stack gap={6} alignItems="center">
-							<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
+							<Text fontSize="xbig" fontWeight="semibold" color="neutral.800" textAlign="center">
 								{t('Templates.isGeneralTitle')}
 							</Text>
 							<Text fontSize="small" color="neutral.800" textAlign="center">

@@ -2,6 +2,8 @@
 	"General": {
 		"add": "Lägg till",
 		"save": "Spara",
+		"yes": "Ja",
+		"no": "Nej",
 		"addAndInvite": "Lägg till och bjud in",
 		"assignedBy": "Tillagd av",
 		"action": "Åtgärd",
@@ -85,6 +87,7 @@
 		"delete": "Ta bort",
 		"saveChanges": "Spara ändringar",
 		"stay": "Stanna kvar på sidan",
+		"leave": "Lämna sidan",
 		"staff": "Personal",
 		"abouts": "Om Barnahus",
 		"titleNotDefined": "Titel är inte ifyllt",
@@ -473,6 +476,9 @@
 		"delete": "Radera mallar",
 		"back": "Tillbaka till mallar",
 		"name": "Mallnamn",
+		"isGeneral": "Mallen är generell",
+		"isNotGeneral": "Mallen är inte generell",
+		"isGeneralTitle": "Kommer denna mall att användas för att skapa generiska resor?",
 		"nameTitle": "Vänligen ange mallens namn",
 		"nameDescription": "Välj ett namn för mallen",
 		"selectTemplate": "Välj mall",
@@ -494,6 +500,7 @@
 		"noListDataDescription": "Mallarna är resor som du kan använda flera gånger utan att behöva välja innehållet på nytt. Att skapa en mall är som att skapa en anpassad resa, du väljer rum, personal och den information du vill inkludera. När du har skapar en resa kan du välja 'Skapa från mall', och då skapas resan automatiskt.",
 		"deleteTemplateDescription": "Tryck på 'Radera' om du vill ta bort mallen.",
 		"successfullyDeleted": "Mallen har raderats!",
-		"successfullBulkDelete": "Mallar har raderats!"
+		"successfullBulkDelete": "Mallar har raderats!",
+		"isGeneralDescription": "Generiska resor är resor som kan delas med flera barn samtidigt. Alla andra resor kan endast nås av det barn som resan har anpassats för."
 	}
 }

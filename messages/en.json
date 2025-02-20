@@ -2,6 +2,8 @@
 	"General": {
 		"add": "Add",
 		"save": "Save",
+		"yes": "Yes",
+		"no": "No",
 		"addAndInvite": "Add and invite",
 		"assignedBy": "Assigned by",
 		"action": "Action",
@@ -85,6 +87,7 @@
 		"delete": "Delete",
 		"saveChanges": "Save changes",
 		"stay": "Stay",
+		"leave": "Leave",
 		"staff": "Staff",
 		"abouts": "About Barnahus",
 		"titleNotDefined": "Title not added",
@@ -479,7 +482,7 @@
 		"name": "Template name",
 		"isGeneral": "Template is General",
 		"isNotGeneral": "Template is not General",
-		"isGeneralTitle": "Is template General?",
+		"isGeneralTitle": "Will this template be used to create generic journeys?",
 		"generalTemplate": "General template",
 		"nameTitle": "Please enter template name",
 		"nameDescription": "Choose a name for the template.",
@@ -504,6 +507,6 @@
 		"deleteTemplateDescription": "Press 'Delete' if you want to remove the tempate.",
 		"successfullyDeleted": "Template successfully deleted!",
 		"successfullBulkDelete": "Templates successfully deleted!",
-		"isGeneralDescription": "If the template is general, it will be open for all to see. If it is not, it will be for a specific user and password protected."
+		"isGeneralDescription": "Generic journeys are journeys that can be shared with multiple children at once. All other journeys can only be accessed by the child that the journey has been tailored for"
 	}
 }

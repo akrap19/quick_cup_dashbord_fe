@@ -65,7 +65,7 @@ export const EnterCustomId = () => {
 				onSubmit={form.handleSubmit(onSubmit)}>
 				<ManageJourneyIntroWrapper>
 					<Stack gap={6} alignItems="center">
-						<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
+						<Text fontSize="xbig" fontWeight="semibold" color="neutral.800" textAlign="center">
 							{t('CaseJourney.selectCustomIdTitle')}
 						</Text>
 						<Text fontSize="small" color="neutral.800" textAlign="center">

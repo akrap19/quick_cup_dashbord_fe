@@ -5,9 +5,9 @@ import { tokens } from '@/style/theme.css'
 const selected = { backgroundColor: tokens.colors['primary.75'] }
 
 const drawerItemTemp = {
+	flex: '1',
 	color: tokens.colors['neutral.800'],
 	borderRadius: tokens.borders.radius.small,
-	width: '266px',
 	':hover': { backgroundColor: tokens.colors['neutral.100'] }
 }
 

@@ -16,7 +16,7 @@ import { useOpened } from '@/hooks/use-toggle'
 import { useTableStore } from '@/store/table'
 import { ROUTES } from 'parameters'
 import { Case } from 'api/models/content/case'
-import { deleteCaseFile, deleteCaseFiles } from 'api/services/caseFiles'
+import { deleteCaseFile, deleteCaseFiles, updateCaseFile } from 'api/services/caseFiles'
 
 interface Props {
 	data: Case[]
@@ -28,6 +28,8 @@ export const Inputs = ({ data }: Props) => {
 	const confirmDialog = useOpened()
 	const { checkedItems, checkedItemsLength, clearCheckedItems } = useTableStore()
 	const { replace, refresh } = useRouter()
+	const checkedItemsArray = Object.keys(checkedItems || {})
+	const checkedCase = checkedItemsLength === 1 ? data[Number(checkedItemsArray[0])] : undefined
 
 	const handleFilterChange = (filter: string, value: string) => {
 		const current = qs.parse(searchParams.toString())
@@ -44,6 +46,18 @@ export const Inputs = ({ data }: Props) => {
 	}
 
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)
+
+	const handleNotes = async () => {
+		const result = await updateCaseFile({
+			...checkedCase,
+			caseId: checkedCase?.caseId,
+			canAddNotes: !checkedCase?.canAddNotes
+		})
+
+		if (result?.message === 'OK') {
+			refresh()
+		}
+	}
 
 	const handleDelete = async () => {
 		const indexes = Object.keys(checkedItems || {})
@@ -78,7 +92,11 @@ export const Inputs = ({ data }: Props) => {
 					<AddButton buttonLabel={t('CaseJourney.add')} buttonLink={ROUTES.ADD_CASE_JOURNEY} />
 				</Inline>
 			) : (
-				<DataTableActions onDelete={() => confirmDialog.toggleOpened()} />
+				<DataTableActions
+					onDelete={() => confirmDialog.toggleOpened()}
+					onNotes={handleNotes}
+					isNoteEnebled={checkedCase?.canAddNotes}
+				/>
 			)}
 			<ConfirmActionDialog
 				title="CaseJourney.delete"

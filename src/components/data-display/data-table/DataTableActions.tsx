@@ -11,13 +11,16 @@ import { Text } from '@/components/typography/text'
 import { useTableStore } from '@/store/table'
 import { InputInfo } from '@/components/inputs/input-info'
 import { StarsIcon } from '@/components/icons/stars-icon'
+import { NoteIcon } from '@/components/icons/note-icon'
 
 type DataTableActionsProps = {
 	disableDelete?: boolean
 	displayDeleteInfo?: boolean
+	isNoteEnebled?: boolean
 	onEdit?: () => void
 	onMakeItDefault?: () => void
 	onDelete: () => void
+	onNotes?: () => void
 }
 
 type Props = DataTableActionsProps & ButtonVariants
@@ -26,9 +29,11 @@ export const DataTableActions = ({
 	size = 'large',
 	disableDelete,
 	displayDeleteInfo,
+	isNoteEnebled,
 	onEdit,
 	onMakeItDefault,
-	onDelete
+	onDelete,
+	onNotes
 }: Props) => {
 	const t = useTranslations()
 	const { checkedItemsLength, clearCheckedItems } = useTableStore()
@@ -57,6 +62,14 @@ export const DataTableActions = ({
 						<StarsIcon size="medium" color="warning.500" />
 						<Text color="warning.500" fontWeight="semibold">
 							{t('Languages.makeItDefault')}
+						</Text>
+					</Button>
+				)}
+				{checkedItemsLength === 1 && onNotes && (
+					<Button size={size} variant="secondary" onClick={onNotes}>
+						<NoteIcon size="medium" color={isNoteEnebled ? 'warning.500' : 'success.500'} />
+						<Text color={isNoteEnebled ? 'warning.500' : 'success.500'} fontWeight="semibold">
+							{t(`CaseJourney.${isNoteEnebled ? 'disableNotes' : 'enableNotes'}`)}
 						</Text>
 					</Button>
 				)}

@@ -26,6 +26,7 @@ const CaseJourneyPage = async ({ searchParams }: Props) => {
 		}
 	})
 
+	console.log('case data', caseData)
 	return isInitialListEmpty ? (
 		<NoListData
 			navbarTitle="General.caseJourneys"

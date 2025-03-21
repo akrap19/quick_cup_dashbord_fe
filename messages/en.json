@@ -430,7 +430,7 @@
 		"noListDataTitle": "Add Custom Journeys",
 		"customIdUnavailable": "Custom ID unavailable",
 		"selectBarnahusContentTitle": "Select Barnahus content",
-		"setCasePasswordTitle": "Set Case password",
+		"setCasePasswordTitle": "Set one-time password",
 		"setCasePasswordDescription": "A password is set so the journey will be protected and private, ensuring it is maximally personalized for the user.",
 		"selectBarnahusContentDescription": "Choose the content you would like to display for the user.",
 		"selectRoomsContentTitle": "Select the Rooms you would like to display for the user.",

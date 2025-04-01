@@ -1,4 +1,8 @@
-import { OnboardingData } from './Onboarding'
+export interface OnboardingData {
+	title: string
+	description: string
+	image: string
+}
 
 interface onboardingDataByRole {
 	[key: string]: OnboardingData[]
@@ -74,6 +78,11 @@ export const onboardingData: onboardingDataByRole = {
 			title: 'MasterAdmins.onboardingCreateCaseJourneyTitle',
 			description: 'MasterAdmins.onboardingCreateCaseJourneyDescription',
 			image: '/images/onboardingImages/admin/create-case-journey.png'
+		},
+		{
+			title: 'More information',
+			description: 'MasterAdmins.onboardingCreateCaseJourneyDescription',
+			image: '/images/onboardingImages/journeysBanner.png'
 		}
 	],
 	Practitioner: [

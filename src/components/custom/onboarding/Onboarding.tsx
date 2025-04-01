@@ -20,13 +20,7 @@ import {
 	onboardingItemNumber,
 	onboardingItemsContainer
 } from './Onboarding.css'
-import { onboardingData } from './onboardingData'
-
-export interface OnboardingData {
-	title: string
-	description: string
-	image: string
-}
+import { OnboardingData, onboardingData } from './onboardingData'
 
 type Props = {
 	userRole?: string
@@ -112,7 +106,30 @@ export const Onboarding = ({ userRole, openOnboarding, setOpenOnboarding }: Prop
 							<Text fontSize="xbig" fontWeight="semibold" textAlign="center">
 								{t(data[currentStep].title)}
 							</Text>
-							<Text textAlign="center">{t(data[currentStep].description)}</Text>
+							{isEndOfOnboarding ? (
+								<Text textAlign="center">{t(data[currentStep].description)}</Text>
+							) : (
+								<Stack gap={1}>
+									<Text as="span" textAlign="center">
+										If you want more information or in-depth guidance on how to use the app and dashboard, please see
+										our additional resources. You can check implementation handbook and in-depth user guide{' '}
+										<Button
+											size="auto"
+											variant="link"
+											href="https://childrenatrisk.cbss.org/the-journeys-app-supporting-safe-and-informed-pathways-for-each-child/">
+											here
+										</Button>{' '}
+										or check our Video guidance{' '}
+										<Button
+											size="auto"
+											variant="link"
+											href="https://www.youtube.com/playlist?list=PLSlqZEsR51bn4xqY25BvQXfmHOvH0nwe7">
+											here
+										</Button>
+										.
+									</Text>
+								</Stack>
+							)}
 						</Stack>
 					</Box>
 					<Box className={onboardingImageContainer}>

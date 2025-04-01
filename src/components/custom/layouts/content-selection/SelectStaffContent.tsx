@@ -86,7 +86,7 @@ export const SelectStaffContent = ({ staffs }: Props) => {
 		<FormProvider {...form}>
 			<form style={{ width: '100%' }} onSubmit={form.handleSubmit(onSubmit)}>
 				<Box paddingX={6} paddingY={8} display="flex" justify="center" width="100%">
-					<Stack gap={6}>
+					<Stack gap={6} alignItems="center">
 						<Text color="neutral.800" fontSize="xbig" fontWeight="semibold" textAlign="center">
 							{t('CaseJourney.selectStaffContentTitle')}
 						</Text>

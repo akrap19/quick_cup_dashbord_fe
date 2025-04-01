@@ -19,6 +19,7 @@ import { Base } from 'api/models/common/base'
 export const LanguageDropdown = () => {
 	const t = useTranslations()
 	const pathname = usePathname()
+	const currentPathSegment = pathname.split('/')[1]
 	const [isOpen, setIsOpen] = useState(false)
 	const [currentLanguage, setCurrentLanguage] = useState('en')
 	const ref = useRef<HTMLDivElement>(null)
@@ -63,6 +64,7 @@ export const LanguageDropdown = () => {
 
 	useEffect(() => {
 		document.addEventListener('mousedown', handleClickOutside)
+		handleLanguageChange(currentPathSegment)
 
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside)

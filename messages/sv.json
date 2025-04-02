@@ -19,6 +19,7 @@
 		"aboutBarnahus": "Om Barnahus",
 		"admin": "Admin",
 		"admins": "Admins",
+		"here": "här",
 		"addNewSection": "Lägg till en ny sektion",
 		"sectionAddedBelow": "Din sektion har lagts till nedan",
 		"removeLastSection": "Ta bort sista sektionen",
@@ -127,7 +128,10 @@
 		"showingSomeResults": "Visar resultat {start} - {end} av {results} total",
 		"showingAllResult": "Showing all results ({results})",
 		"addBarnahusOnboardingDescription": "När ett Barnahus läggs till kan en Master Admin utses. Denna individ kan bjuda in fler Barnahus-medarbetare.",
-		"addMasterAdminOnboardingDescription": "En Master-admin är den första personen som bjuds in till kontrollpanelen och deras roll är att bjuda in andra medarbetare (Admins och Barnahus-personal) samt hantera innehållet för appen."
+		"addMasterAdminOnboardingDescription": "En Master-admin är den första personen som bjuds in till kontrollpanelen och deras roll är att bjuda in andra medarbetare (Admins och Barnahus-personal) samt hantera innehållet för appen.",
+		"onboardingLastStepTitle": "Mer information",
+		"onboardingLastStepDescriptionPartOne": "Om du vill ha mer information eller djupgående vägledning om hur du använder appen och instrumentpanelen, se våra ytterligare resurser. Du kan läsa implementeringshandboken och den detaljerade användarguiden",
+		"onboardingLastStepDescriptionPartTwo": "eller titta på vår videovägledning"
 	},
 	"ValidationMeseges": {
 		"required": "Detta fält är obligatoriskt.",

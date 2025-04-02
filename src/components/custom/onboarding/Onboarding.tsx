@@ -111,20 +111,13 @@ export const Onboarding = ({ userRole, openOnboarding, setOpenOnboarding }: Prop
 							) : (
 								<Stack gap={1}>
 									<Text as="span" textAlign="center">
-										If you want more information or in-depth guidance on how to use the app and dashboard, please see
-										our additional resources. You can check implementation handbook and in-depth user guide{' '}
-										<Button
-											size="auto"
-											variant="link"
-											href="https://childrenatrisk.cbss.org/the-journeys-app-supporting-safe-and-informed-pathways-for-each-child/">
-											here
+										{t(data[currentStep].description)}{' '}
+										<Button size="auto" variant="link" href={data[currentStep].link1}>
+											{t('General.here')}
 										</Button>{' '}
-										or check our Video guidance{' '}
-										<Button
-											size="auto"
-											variant="link"
-											href="https://www.youtube.com/playlist?list=PLSlqZEsR51bn4xqY25BvQXfmHOvH0nwe7">
-											here
+										{t(data[currentStep].additionalDescription)}{' '}
+										<Button size="auto" variant="link" href={data[currentStep].link2}>
+											{t('General.here')}
 										</Button>
 										.
 									</Text>

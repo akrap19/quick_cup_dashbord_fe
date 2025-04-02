@@ -19,6 +19,7 @@
 		"aboutBarnahus": "About Barnahus",
 		"admin": "Admin",
 		"admins": "Admins",
+		"here": "here",
 		"addNewSection": "Add a new section",
 		"sectionAddedBelow": "Your section has been added below",
 		"removeLastSection": "Remove last section",
@@ -127,7 +128,10 @@
 		"showingSomeResults": "Showing results {start} - {end} of {results} overall",
 		"showingAllResult": "Showing all results ({results})",
 		"addBarnahusOnboardingDescription": "Adding a Barnahus will allow you to assign a Master Admin, who can invite additional Barnahus staff.",
-		"addMasterAdminOnboardingDescription": "The Master Admin is the first person to be invited to the dashboard and their role is to invite other contributors to the dashboard (Admins and Practitioners) and manage the content for the app."
+		"addMasterAdminOnboardingDescription": "The Master Admin is the first person to be invited to the dashboard and their role is to invite other contributors to the dashboard (Admins and Practitioners) and manage the content for the app.",
+		"onboardingLastStepTitle": "More information",
+		"onboardingLastStepDescriptionPartOne": "If you want more information or in-depth guidance on how to use the app and dashboard, please see our additional resources. You can check implementation handbook and in-depth user guide",
+		"onboardingLastStepDescriptionPartTwo": "or check our video guidance"
 	},
 	"ValidationMeseges": {
 		"required": "This field is required.",

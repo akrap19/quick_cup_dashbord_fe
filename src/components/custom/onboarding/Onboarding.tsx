@@ -20,13 +20,7 @@ import {
 	onboardingItemNumber,
 	onboardingItemsContainer
 } from './Onboarding.css'
-import { onboardingData } from './onboardingData'
-
-export interface OnboardingData {
-	title: string
-	description: string
-	image: string
-}
+import { OnboardingData, onboardingData } from './onboardingData'
 
 type Props = {
 	userRole?: string
@@ -112,7 +106,23 @@ export const Onboarding = ({ userRole, openOnboarding, setOpenOnboarding }: Prop
 							<Text fontSize="xbig" fontWeight="semibold" textAlign="center">
 								{t(data[currentStep].title)}
 							</Text>
-							<Text textAlign="center">{t(data[currentStep].description)}</Text>
+							{isEndOfOnboarding ? (
+								<Text textAlign="center">{t(data[currentStep].description)}</Text>
+							) : (
+								<Stack gap={1}>
+									<Text as="span" textAlign="center">
+										{t(data[currentStep].description)}{' '}
+										<Button size="auto" variant="link" href={data[currentStep].link1}>
+											{t('General.here')}
+										</Button>{' '}
+										{t(data[currentStep].additionalDescription)}{' '}
+										<Button size="auto" variant="link" href={data[currentStep].link2}>
+											{t('General.here')}
+										</Button>
+										.
+									</Text>
+								</Stack>
+							)}
 						</Stack>
 					</Box>
 					<Box className={onboardingImageContainer}>

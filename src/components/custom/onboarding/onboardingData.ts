@@ -1,4 +1,11 @@
-import { OnboardingData } from './Onboarding'
+export interface OnboardingData {
+	title: string
+	description: string
+	additionalDescription?: string
+	image: string
+	link1?: string
+	link2?: string
+}
 
 interface onboardingDataByRole {
 	[key: string]: OnboardingData[]
@@ -15,6 +22,14 @@ export const onboardingData: onboardingDataByRole = {
 			title: 'MasterAdmins.add',
 			description: 'General.addMasterAdminOnboardingDescription',
 			image: '/images/onboardingImages/superAdmin/add-master-admin.png'
+		},
+		{
+			title: 'General.onboardingLastStepTitle',
+			description: 'General.onboardingLastStepDescriptionPartOne',
+			additionalDescription: 'General.onboardingLastStepDescriptionPartTwo',
+			image: '/images/onboardingImages/journeysBanner.png',
+			link1: 'https://childrenatrisk.cbss.org/the-journeys-app-supporting-safe-and-informed-pathways-for-each-child/',
+			link2: ' https://www.youtube.com/playlist?list=PLSlqZEsR51bn4xqY25BvQXfmHOvH0nwe7'
 		}
 	],
 	MasterAdmin: [
@@ -47,6 +62,14 @@ export const onboardingData: onboardingDataByRole = {
 			title: 'MasterAdmins.onboardingCreateCaseJourneyTitle',
 			description: 'MasterAdmins.onboardingCreateCaseJourneyDescription',
 			image: '/images/onboardingImages/masterAdmin/create-case-journey.png'
+		},
+		{
+			title: 'General.onboardingLastStepTitle',
+			description: 'General.onboardingLastStepDescriptionPartOne',
+			additionalDescription: 'General.onboardingLastStepDescriptionPartTwo',
+			image: '/images/onboardingImages/journeysBanner.png',
+			link1: 'https://childrenatrisk.cbss.org/the-journeys-app-supporting-safe-and-informed-pathways-for-each-child/',
+			link2: ' https://www.youtube.com/playlist?list=PLSlqZEsR51bn4xqY25BvQXfmHOvH0nwe7'
 		}
 	],
 	Admin: [
@@ -74,6 +97,14 @@ export const onboardingData: onboardingDataByRole = {
 			title: 'MasterAdmins.onboardingCreateCaseJourneyTitle',
 			description: 'MasterAdmins.onboardingCreateCaseJourneyDescription',
 			image: '/images/onboardingImages/admin/create-case-journey.png'
+		},
+		{
+			title: 'General.onboardingLastStepTitle',
+			description: 'General.onboardingLastStepDescriptionPartOne',
+			additionalDescription: 'General.onboardingLastStepDescriptionPartTwo',
+			image: '/images/onboardingImages/journeysBanner.png',
+			link1: 'https://childrenatrisk.cbss.org/the-journeys-app-supporting-safe-and-informed-pathways-for-each-child/',
+			link2: ' https://www.youtube.com/playlist?list=PLSlqZEsR51bn4xqY25BvQXfmHOvH0nwe7'
 		}
 	],
 	Practitioner: [
@@ -91,6 +122,14 @@ export const onboardingData: onboardingDataByRole = {
 			title: 'MasterAdmins.onboardingCreateCaseJourneyTitle',
 			description: 'MasterAdmins.onboardingCreateCaseJourneyDescription',
 			image: '/images/onboardingImages/practitioner/create-case-journey.png'
+		},
+		{
+			title: 'General.onboardingLastStepTitle',
+			description: 'General.onboardingLastStepDescriptionPartOne',
+			additionalDescription: 'General.onboardingLastStepDescriptionPartTwo',
+			image: '/images/onboardingImages/journeysBanner.png',
+			link1: 'https://childrenatrisk.cbss.org/the-journeys-app-supporting-safe-and-informed-pathways-for-each-child/',
+			link2: ' https://www.youtube.com/playlist?list=PLSlqZEsR51bn4xqY25BvQXfmHOvH0nwe7'
 		}
 	]
 }

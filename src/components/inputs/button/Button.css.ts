@@ -74,6 +74,12 @@ export const button = recipe({
 				':hover': { backgroundColor: tokens.colors['primary.75'] },
 				':disabled': { backgroundColor: tokens.colors['shades.00'] }
 			},
+			link: {
+				backgroundColor: '#FFFFFF',
+				padding: 'unset',
+				textDecoration: 'underline',
+				color: tokens.colors['primary.600']
+			},
 			adaptive: {
 				backgroundColor: 'transparent',
 				color: tokens.colors['primary.500'],

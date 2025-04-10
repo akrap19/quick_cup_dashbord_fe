@@ -40,15 +40,15 @@ export const LanguageDropdown = () => {
 		{ id: 'bg', name: 'Languages.bg' },
 		{ id: 'de', name: 'Languages.de' },
 		{ id: 'dk', name: 'Languages.dk' },
-		{ id: 'ee', name: 'Languages.ee' },
-		{ id: 'slo', name: 'Languages.slo' },
-		{ id: 'esp', name: 'Languages.esp' },
-		{ id: 'fi', name: 'Languages.fi' },
-		{ id: 'is', name: 'Languages.is' },
-		{ id: 'lt', name: 'Languages.lt' },
-		{ id: 'lv', name: 'Languages.lv' },
-		{ id: 'no', name: 'Languages.no' },
-		{ id: 'pl', name: 'Languages.pl' }
+		// { id: 'ee', name: 'Languages.ee' },
+		// { id: 'slo', name: 'Languages.slo' },
+		{ id: 'esp', name: 'Languages.esp' }
+		// { id: 'fi', name: 'Languages.fi' },
+		// { id: 'is', name: 'Languages.is' },
+		// { id: 'lt', name: 'Languages.lt' },
+		// { id: 'lv', name: 'Languages.lv' },
+		// { id: 'no', name: 'Languages.no' },
+		// { id: 'pl', name: 'Languages.pl' }
 	]
 
 	const handleDropDownOpening = (e: React.MouseEvent<HTMLButtonElement>) => {

@@ -5,7 +5,7 @@ import { tokens } from '@/style/theme.css'
 export const dropdownListContainer = style({
 	width: 'auto',
 	maxHeight: '377px',
-	position: 'relative',
+	position: 'absolute',
 	scrollbarWidth: 'thin',
 	paddingTop: tokens.spacing[2],
 	zIndex: tokens.indices.over,
@@ -14,7 +14,8 @@ export const dropdownListContainer = style({
 	border: tokens.borders.border.thin,
 	borderColor: tokens.borders.color['neutral.300'],
 	overflow: 'auto',
-	marginTop: '3px'
+	right: tokens.spacing[16],
+	marginTop: tokens.spacing[0.5]
 })
 
 export const dropdownListItem = style({

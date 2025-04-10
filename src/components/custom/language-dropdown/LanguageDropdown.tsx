@@ -72,19 +72,21 @@ export const LanguageDropdown = () => {
 	}, [])
 
 	return (
-		<div ref={ref}>
-			<Box position="relative">
-				<Box display="flex" width="100%" justifyContent="flex-end">
-					<Button size="auto" variant="adaptive" onClick={handleDropDownOpening}>
-						<Box borderRadius="small" padding={2} backgroundColor="neutral.150" style={{ minWidth: '130px' }}>
-							<Inline gap={2} alignItems="center" justifyContent="space-between">
-								<Text fontSize="medium" fontWeight="semibold" lineHeight="xlarge" color="neutral.800">
-									{t(`Languages.${currentLanguage}`)}
-								</Text>
-								<BlockIcon icon={isOpen ? CarretUpIcon : CarretDownIcon} size="medium" color="neutral.800" />
-							</Inline>
-						</Box>
-					</Button>
+		<>
+			<div ref={ref}>
+				<Box position="relative">
+					<Box display="flex" width="100%" justifyContent="flex-end">
+						<Button size="auto" variant="adaptive" onClick={handleDropDownOpening}>
+							<Box borderRadius="small" padding={2} backgroundColor="neutral.150" style={{ minWidth: '130px' }}>
+								<Inline gap={2} alignItems="center" justifyContent="space-between">
+									<Text fontSize="medium" fontWeight="semibold" lineHeight="xlarge" color="neutral.800">
+										{t(`Languages.${currentLanguage}`)}
+									</Text>
+									<BlockIcon icon={isOpen ? CarretUpIcon : CarretDownIcon} size="medium" color="neutral.800" />
+								</Inline>
+							</Box>
+						</Button>
+					</Box>
 				</Box>
 				{isOpen && (
 					<Box className={dropdownListContainer}>
@@ -107,7 +109,7 @@ export const LanguageDropdown = () => {
 						</Stack>
 					</Box>
 				)}
-			</Box>
-		</div>
+			</div>
+		</>
 	)
 }

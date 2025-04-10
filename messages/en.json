@@ -413,7 +413,7 @@
 		"noListDataDescription": "To create a custom journey for a child, you need to create a Custom-ID that you will link the Custom Journey to. This Custom ID will also serve as the code that children use the first time they log in to their journey. There is no limit to the number of Custom IDs you can create.",
 		"barnahusInfoText": "Admins can only be added to their Barnahus.",
 		"successfullyCreated": "Custom ID successfully created!",
-		"deleteCaseFileDescription": "Press 'Delete' if you want to remove the Custom ID.",
+		"deleteCaseFileDescription": "Press 'Delete' if you want to remove the Custom Journey.",
 		"addCaserDescription": "When adding a new Custom ID, you can utilize the created Custom ID to design a customized journey specifically tailored to it.",
 		"cancelAdd": "Cancel adding 'Custom ID'",
 		"successfullyDeleted": "Custom ID successfully deleted!",
@@ -422,6 +422,7 @@
 	},
 	"CaseJourney": {
 		"add": "Add Custom Journey",
+		"delete": "Delete Custom Journey",
 		"back": "Back to Custom Journeys",
 		"selectCustomIdTitle": "Enter a Custom ID to start",
 		"selectCustomIdDescription": "Please enter a custom ID. This ID will be the code the child uses to log in for the first time.",
@@ -467,6 +468,7 @@
 		"useReadyMadeTemplate": "Use template as-is",
 		"customizeTemplate": "Customise template",
 		"caseJourneySccessfullyCreated": "Custom Journey successfully created!",
+		"deleteCaseJourneyDescription": "Press 'Delete' if you want to remove the Custom Journey.",
 		"noListDataDescription": "By creating a Custom Journey, you will produce the final product of the Journeys dashboard, which will be visible in the mobile application to all users with access.",
 		"successfullyDeleted": "Custom Journey successfully deleted!",
 		"successfullBulkDelete": "Custom Journeys successfully deleted!"

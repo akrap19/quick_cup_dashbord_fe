@@ -68,7 +68,7 @@ export const Onboarding = ({ userRole, openOnboarding, setOpenOnboarding }: Prop
 			<Inline gap={12} justifyContent="space-between" flexWrap="nowrap">
 				<Box className={contentLeftContiner}>
 					<Stack alignItems="center" gap={4}>
-						<Text fontSize="xxbig" fontWeight="bold" lineHeight="medium">
+						<Text fontSize="xxbig" fontWeight="bold" lineHeight="medium" textAlign="center">
 							{t('Onboarding.title')}
 						</Text>
 						<Text textAlign="center">{t('Onboarding.description')}</Text>
@@ -85,7 +85,7 @@ export const Onboarding = ({ userRole, openOnboarding, setOpenOnboarding }: Prop
 									}}>
 									<Inline gap={4} alignItems="center">
 										<Box className={onboardingItemNumber}>{`${i + 1}.`}</Box>
-										{t(item.title)}
+										<Box style={{ maxWidth: '82%' }}>{t(item.title)}</Box>
 									</Inline>
 								</Box>
 							))}

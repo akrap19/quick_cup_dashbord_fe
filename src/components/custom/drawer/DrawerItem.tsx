@@ -42,9 +42,18 @@ export const DrawerItem = ({ item, isOpen, setIsOpen }: Props) => {
 				style={{ cursor: item.route && pathname.includes(item.route) ? 'default' : 'inherit' }}>
 				<Inline gap={4} alignItems="center">
 					{item.icon}
-					<Text fontSize="big" fontWeight="semibold" lineHeight="xlarge">
-						{t(`General.${item.label}`)}
-					</Text>
+					<Box
+						style={{
+							maxWidth: '200px',
+							textOverflow: 'ellipsis',
+							whiteSpace: 'Wrap',
+							flexGrow: '1',
+							textAlign: 'center'
+						}}>
+						<Text fontSize="big" fontWeight="semibold" lineHeight="xlarge" textAlign="left">
+							{t(`General.${item.label}`)}
+						</Text>
+					</Box>
 					{item?.subItems && (isOpen ? <CarretDownIcon /> : <CarretUpIcon />)}
 				</Inline>
 			</Box>
@@ -56,9 +65,18 @@ export const DrawerItem = ({ item, isOpen, setIsOpen }: Props) => {
 				style={{ cursor: item.route && pathname.includes(item.route) ? 'default' : 'inherit' }}>
 				<Inline gap={4} alignItems="center">
 					{item.icon}
-					<Text fontSize="big" fontWeight="semibold" lineHeight="xlarge">
-						{t(`General.${item.label}`)}
-					</Text>
+					<Box
+						style={{
+							maxWidth: '200px',
+							textOverflow: 'ellipsis',
+							whiteSpace: 'Wrap',
+							flexGrow: '1',
+							textAlign: 'center'
+						}}>
+						<Text fontSize="big" fontWeight="semibold" lineHeight="xlarge" textAlign="left">
+							{t(`General.${item.label}`)}
+						</Text>
+					</Box>
 					{item?.subItems && (isOpen ? <CarretDownIcon /> : <CarretUpIcon />)}
 				</Inline>
 			</Box>

@@ -1,6 +1,6 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Session } from 'next-auth'
 import { signOut } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
@@ -38,13 +38,11 @@ interface Props {
 
 export const UserDropdown = ({ session, settings, seenOnboardingSections }: Props) => {
 	const t = useTranslations()
-	const pathname = usePathname()
 	const [isOpen, setIsOpen] = useState(false)
 	const [openOnboarding, setOpenOnboarding] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
-	const { push, replace, refresh } = useRouter()
+	const { replace } = useRouter()
 	const userRole = session?.user?.roles[0]?.name
-	const isEnglish = pathname.includes('en')
 
 	const handleLogout = async () => {
 		const result = await logout()
@@ -64,14 +62,6 @@ export const UserDropdown = ({ session, settings, seenOnboardingSections }: Prop
 		}
 	}
 
-	const handleLanguageChange = () => {
-		const pathSegments = pathname.split('/')
-		const newLocale = isEnglish ? 'sv' : 'en'
-		pathSegments[1] = newLocale
-		push(pathSegments.join('/'))
-		refresh()
-	}
-
 	const options: Option[] = [
 		{
 			label: settings?.email
@@ -83,10 +73,6 @@ export const UserDropdown = ({ session, settings, seenOnboardingSections }: Prop
 		{
 			label: 'General.onboardingFlow',
 			action: () => handleDeleteOnboarding()
-		},
-		{
-			label: isEnglish ? 'Languages.sv' : 'Languages.en',
-			action: () => handleLanguageChange()
 		},
 		{
 			label: 'General.logOut',

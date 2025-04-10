@@ -18,7 +18,7 @@ export const CaseJourneyPublished = () => {
 			<Box paddingX={6} paddingTop={6} borderTop="thin" borderColor="neutral.300">
 				<ManageJourneyIntroWrapper>
 					<Stack gap={6} alignItems="center">
-						<Text fontSize="xbig" fontWeight="semibold" color="neutral.800">
+						<Text fontSize="xbig" fontWeight="semibold" color="neutral.800" textAlign="center">
 							{t('CaseJourney.caseJourneySavedTitle')}
 						</Text>
 						<Text fontSize="small" color="neutral.800" textAlign="center">

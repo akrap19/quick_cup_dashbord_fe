@@ -19,6 +19,7 @@
 		"aboutBarnahus": "Teave Barnahusi kohta",
 		"admin": "Administraator",
 		"admins": "Administraatorid",
+		"here": "siin",
 		"addNewSection": "Lisa uus jaotis",
 		"sectionAddedBelow": "Sinu jaotis on lisatud allapoole",
 		"removeLastSection": "Eemalda viimane jaotis",
@@ -127,7 +128,10 @@
 		"showingSomeResults": "Näitan tulemusi {start}–{end} kokku {results} tulemusest",
 		"showingAllResult": "Kuvan kõik tulemused ({results})",
 		"addBarnahusOnboardingDescription": "Barnahuse lisamine võimaldab määrata peakasutaja, kes saab kutsuda teisi Barnahuse töötajaid.",
-		"addMasterAdminOnboardingDescription": "Peaadministraator on esimene, kes kutsutakse töölauale ja tema roll on kutsuda töölauale teisi osalejaid (administraatoreid ja kaastöötajaid) ning hallata rakenduse sisu."
+		"addMasterAdminOnboardingDescription": "Peaadministraator on esimene, kes kutsutakse töölauale ja tema roll on kutsuda töölauale teisi osalejaid (administraatoreid ja kaastöötajaid) ning hallata rakenduse sisu.",
+		"onboardingLastStepTitle": "Lisateave",
+		"onboardingLastStepDescriptionPartOne": "Kui soovite rohkem teavet või põhjalikku juhendit rakenduse ja juhtpaneeli kasutamise kohta, vaadake meie lisamaterjale. Saate tutvuda rakendamise käsiraamatu ja üksikasjaliku kasutusjuhendiga",
+		"onboardingLastStepDescriptionPartTwo": "või vaadake meie videojuhiseid"
 	},
 	"ValidationMeseges": {
 		"required": "See väli on kohustuslik.",

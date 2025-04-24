@@ -19,6 +19,7 @@
 		"aboutBarnahus": "Om Barnahus",
 		"admin": "Administrator",
 		"admins": "Administratorer",
+		"here": "her",
 		"addNewSection": "Tilføj en ny sektion",
 		"sectionAddedBelow": "Din sektion er blevet tilføjet nedenfor",
 		"removeLastSection": "Fjern sidste sektion",
@@ -127,7 +128,10 @@
 		"showingSomeResults": "Visning af resultater {start} - {end} af {results} i alt",
 		"showingAllResult": "Visning af alle resultater ({results})",
 		"addBarnahusOnboardingDescription": "At tilføje et Barnahus giver dig mulighed for at tildele en Master Admin, der kan invitere yderligere Barnahus personale.",
-		"addMasterAdminOnboardingDescription": "Hovedadministratoren er den første person, der inviteres til dashboardet, og dennes rolle er at invitere andre bidragsydere til dashboardet (administratorer og medarbejdere) og administrere indholdet til appen."
+		"addMasterAdminOnboardingDescription": "Hovedadministratoren er den første person, der inviteres til dashboardet, og dennes rolle er at invitere andre bidragsydere til dashboardet (administratorer og medarbejdere) og administrere indholdet til appen.",
+		"onboardingLastStepTitle": "Mere information",
+		"onboardingLastStepDescriptionPartOne": "Hvis du ønsker mere information eller dybdegående vejledning i brugen af appen og dashboardet, kan du se vores ekstra ressourcer. Du kan tjekke implementeringshåndbogen og den detaljerede brugervejledning",
+		"onboardingLastStepDescriptionPartTwo": "eller se vores videoguides"
 	},
 	"ValidationMeseges": {
 		"required": "Dette felt er obligatorisk.",

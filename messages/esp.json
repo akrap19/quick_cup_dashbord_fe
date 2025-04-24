@@ -19,6 +19,7 @@
 		"aboutBarnahus": "Acerca de Barnahus",
 		"admin": "Administrador",
 		"admins": "Administradores",
+		"here": "aquí",
 		"addNewSection": "Agregar una nueva sección",
 		"sectionAddedBelow": "Tu sección ha sido añadida abajo",
 		"removeLastSection": "Eliminar la última sección",
@@ -127,7 +128,10 @@
 		"showingSomeResults": "Mostrando resultados {inicio} - {fin} de {resultados} en total",
 		"showingAllResult": "Mostrando todos los resultados ({resultados})",
 		"addBarnahusOnboardingDescription": "Agregar un Barnahus te permitirá asignar un Administrador Maestro, quien podrá invitar a más miembros del personal de Barnahus.",
-		"addMasterAdminOnboardingDescription": "El Administrador Maestro es la primera persona invitada al panel. Su función es invitar a otros colaboradores al panel (Administradores y Profesionales) y gestionar el contenido de la aplicación."
+		"addMasterAdminOnboardingDescription": "El Administrador Maestro es la primera persona invitada al panel. Su función es invitar a otros colaboradores al panel (Administradores y Profesionales) y gestionar el contenido de la aplicación.",
+		"onboardingLastStepTitle": "Más información",
+		"onboardingLastStepDescriptionPartOne": "Si deseas más información o una guía detallada sobre cómo usar la aplicación y el panel, consulta nuestros recursos adicionales. Puedes revisar el manual de implementación y la guía de usuario detallada",
+		"onboardingLastStepDescriptionPartTwo": "o ver nuestra guía en video"
 	},
 	"ValidationMeseges": {
 		"required": "Este campo es obligatorio.",

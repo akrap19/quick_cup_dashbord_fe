@@ -19,6 +19,7 @@
 		"aboutBarnahus": "Über Childhood-Haus",
 		"admin": "Admin",
 		"admins": "Admins",
+		"here": "hier",
 		"addNewSection": "Neue Sektion hinzufügen",
 		"sectionAddedBelow": "Ihre Sektion wurde unten hinzugefügt",
 		"removeLastSection": "Letzte Sektion entfernen",
@@ -127,7 +128,10 @@
 		"showingSomeResults": "Ergebnisse anzeigen {start} – {end} von {results} insgesamt",
 		"showingAllResult": "Alle Ergebnisse ({results}) anzeigen",
 		"addBarnahusOnboardingDescription": "Das Hinzufügen eines Barnahus ermöglicht es Ihnen, einen Hauptadministrator zuzuweisen, der weiteres Barnahus-Personal einladen kann.",
-		"addMasterAdminOnboardingDescription": "Der Master-Admin ist die erste Person, die zum Dashboard eingeladen wird, und ihre Rolle besteht darin, andere Mitwirkende zum Dashboard einzuladen (Admins und medizinische/sonstige Fachkräfte) sowie die Inhalte für die App zu verwalten."
+		"addMasterAdminOnboardingDescription": "Der Master-Admin ist die erste Person, die zum Dashboard eingeladen wird, und ihre Rolle besteht darin, andere Mitwirkende zum Dashboard einzuladen (Admins und medizinische/sonstige Fachkräfte) sowie die Inhalte für die App zu verwalten.",
+		"onboardingLastStepTitle": "Weitere Informationen",
+		"onboardingLastStepDescriptionPartOne": "Wenn Sie weitere Informationen oder eine ausführliche Anleitung zur Nutzung der App und des Dashboards wünschen, sehen Sie sich bitte unsere zusätzlichen Ressourcen an. Sie können das Implementierungshandbuch und den ausführlichen Benutzerleitfaden ansehen",
+		"onboardingLastStepDescriptionPartTwo": "oder unsere Videoanleitungen ansehen"
 	},
 	"ValidationMeseges": {
 		"required": "Dieses Feld ist ein Pflichtfeld.",

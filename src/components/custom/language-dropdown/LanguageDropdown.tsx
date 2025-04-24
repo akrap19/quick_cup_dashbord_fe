@@ -40,10 +40,10 @@ export const LanguageDropdown = () => {
 		{ id: 'bg', name: 'Languages.bg' },
 		{ id: 'de', name: 'Languages.de' },
 		{ id: 'dk', name: 'Languages.dk' },
-		// { id: 'ee', name: 'Languages.ee' },
+		{ id: 'ee', name: 'Languages.ee' },
 		// { id: 'slo', name: 'Languages.slo' },
-		{ id: 'esp', name: 'Languages.esp' }
-		// { id: 'fi', name: 'Languages.fi' },
+		{ id: 'esp', name: 'Languages.esp' },
+		{ id: 'fi', name: 'Languages.fi' }
 		// { id: 'is', name: 'Languages.is' },
 		// { id: 'lt', name: 'Languages.lt' },
 		// { id: 'lv', name: 'Languages.lv' },

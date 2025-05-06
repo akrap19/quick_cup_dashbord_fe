@@ -131,7 +131,8 @@
 		"addMasterAdminOnboardingDescription": "Der Master-Admin ist die erste Person, die zum Dashboard eingeladen wird, und ihre Rolle besteht darin, andere Mitwirkende zum Dashboard einzuladen (Admins und medizinische/sonstige Fachkräfte) sowie die Inhalte für die App zu verwalten.",
 		"onboardingLastStepTitle": "Weitere Informationen",
 		"onboardingLastStepDescriptionPartOne": "Wenn Sie weitere Informationen oder eine ausführliche Anleitung zur Nutzung der App und des Dashboards wünschen, sehen Sie sich bitte unsere zusätzlichen Ressourcen an. Sie können das Implementierungshandbuch und den ausführlichen Benutzerleitfaden ansehen",
-		"onboardingLastStepDescriptionPartTwo": "oder unsere Videoanleitungen ansehen"
+		"onboardingLastStepDescriptionPartTwo": "oder unsere Videoanleitungen ansehen",
+		"euDisclaimer": "Finanziert von der Europäischen Union. Die geäußerten Ansichten und Meinungen sind jedoch ausschließlich die der Autoren und spiegeln nicht notwendigerweise die der Europäischen Union wider. Weder die Europäische Union noch die bewilligende Behörde können dafür verantwortlich gemacht werden."
 	},
 	"ValidationMeseges": {
 		"required": "Dieses Feld ist ein Pflichtfeld.",

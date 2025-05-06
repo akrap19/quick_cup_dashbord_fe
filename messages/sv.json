@@ -131,7 +131,8 @@
 		"addMasterAdminOnboardingDescription": "En Master-admin är den första personen som bjuds in till kontrollpanelen och deras roll är att bjuda in andra medarbetare (Admins och Barnahus-personal) samt hantera innehållet för appen.",
 		"onboardingLastStepTitle": "Mer information",
 		"onboardingLastStepDescriptionPartOne": "Om du vill ha mer information eller djupgående vägledning om hur du använder appen och instrumentpanelen, se våra ytterligare resurser. Du kan läsa implementeringshandboken och den detaljerade användarguiden",
-		"onboardingLastStepDescriptionPartTwo": "eller titta på vår videovägledning"
+		"onboardingLastStepDescriptionPartTwo": "eller titta på vår videovägledning",
+		"euDisclaimer": "Finansierat av Europeiska unionen. De åsikter och synpunkter som uttrycks är dock endast författarens/författarnas och återspeglar inte nödvändigtvis Europeiska unionens. Varken Europeiska unionen eller den beviljande myndigheten kan hållas ansvariga för dem."
 	},
 	"ValidationMeseges": {
 		"required": "Detta fält är obligatoriskt.",

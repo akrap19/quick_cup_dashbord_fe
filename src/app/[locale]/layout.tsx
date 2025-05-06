@@ -7,6 +7,12 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import '@/style/app.css'
 import { Box } from '@/components/layout/box'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+	title: 'Journeys | Dashboard',
+	description: 'Barnahus Journeys'
+}
 
 const inter = Inter({
 	weight: ['400', '600', '700', '800'],

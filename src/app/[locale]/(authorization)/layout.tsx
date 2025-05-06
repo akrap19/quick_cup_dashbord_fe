@@ -1,16 +1,17 @@
-import { Metadata } from 'next'
+'use client'
+
 import { ReactNode } from 'react'
 
 import { BrandLogo } from '@/components/custom/brand-logo/BrandLogo'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
-
-export const metadata: Metadata = {
-	title: 'Journeys | Authorization',
-	description: 'Barnahus Journeys'
-}
+import Image from 'next/image'
+import { Text } from '@/components/typography/text'
+import { useTranslations } from 'next-intl'
 
 const AuthorizationLayout = ({ children }: { children: ReactNode }) => {
+	const t = useTranslations()
+
 	return (
 		<Box display="flex" width="100vw" justify="center" align="center">
 			<Stack gap={10} alignItems="center">
@@ -23,6 +24,19 @@ const AuthorizationLayout = ({ children }: { children: ReactNode }) => {
 					style={{ width: '456px' }}>
 					<Stack gap={8} alignItems="center">
 						{children}
+					</Stack>
+				</Box>
+				<Box style={{ width: '380px' }}>
+					<Stack gap={2} alignItems="center">
+						<Text fontSize="xsmall" textAlign="center">
+							{t('General.euDisclaimer')}
+						</Text>
+						<Image
+							src="/images/normal-reproduction-low-resolution.jpg"
+							width={56.25}
+							height={37.5}
+							alt="uploadedPhoto"
+						/>
 					</Stack>
 				</Box>
 			</Stack>

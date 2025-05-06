@@ -131,7 +131,8 @@
 		"addMasterAdminOnboardingDescription": "Pääylläpitäjä on ensimmäinen henkilö, joka kutsutaan ohjauspaneeliin. Hänen tehtävänsä on kutsua muita osallistujia ohjauspaneeliin (ylläpitäjiä ja ammatinharjoittajia) ja hallita sovelluksen sisältöä.",
 		"onboardingLastStepTitle": "Lisätietoja",
 		"onboardingLastStepDescriptionPartOne": "Jos haluat lisätietoja tai syvällistä opastusta sovelluksen ja hallintapaneelin käyttöön, tutustu lisäresursseihimme. Voit tarkistaa toteutusoppaan ja yksityiskohtaisen käyttöohjeen",
-		"onboardingLastStepDescriptionPartTwo": "tai katsoa video-opastuksemme"
+		"onboardingLastStepDescriptionPartTwo": "tai katsoa video-opastuksemme",
+		"euDisclaimer": "Euroopan unionin rahoittama. Esitetyt näkemykset ja mielipiteet ovat kuitenkin ainoastaan kirjoittajan tai kirjoittajien omia, eivätkä välttämättä vastaa Euroopan unionin kantaa. Euroopan unioni tai rahoittava viranomainen eivät ole vastuussa niistä."
 	},
 	"ValidationMeseges": {
 		"required": "Tämä kenttä on pakollinen.",

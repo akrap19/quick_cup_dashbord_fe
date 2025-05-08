@@ -131,7 +131,8 @@
 		"addMasterAdminOnboardingDescription": "Peaadministraator on esimene, kes kutsutakse töölauale ja tema roll on kutsuda töölauale teisi osalejaid (administraatoreid ja kaastöötajaid) ning hallata rakenduse sisu.",
 		"onboardingLastStepTitle": "Lisateave",
 		"onboardingLastStepDescriptionPartOne": "Kui soovite rohkem teavet või põhjalikku juhendit rakenduse ja juhtpaneeli kasutamise kohta, vaadake meie lisamaterjale. Saate tutvuda rakendamise käsiraamatu ja üksikasjaliku kasutusjuhendiga",
-		"onboardingLastStepDescriptionPartTwo": "või vaadake meie videojuhiseid"
+		"onboardingLastStepDescriptionPartTwo": "või vaadake meie videojuhiseid",
+		"euDisclaimer": "Rahastatud Euroopa Liidu poolt. Avaldatud seisukohad ja arvamused on siiski üksnes autori (autorite) omad ega pruugi kajastada Euroopa Liidu seisukohti. Euroopa Liit ega rahastav asutus ei vastuta nende eest"
 	},
 	"ValidationMeseges": {
 		"required": "See väli on kohustuslik.",

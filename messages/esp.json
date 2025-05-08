@@ -131,7 +131,8 @@
 		"addMasterAdminOnboardingDescription": "El Administrador Maestro es la primera persona invitada al panel. Su función es invitar a otros colaboradores al panel (Administradores y Profesionales) y gestionar el contenido de la aplicación.",
 		"onboardingLastStepTitle": "Más información",
 		"onboardingLastStepDescriptionPartOne": "Si deseas más información o una guía detallada sobre cómo usar la aplicación y el panel, consulta nuestros recursos adicionales. Puedes revisar el manual de implementación y la guía de usuario detallada",
-		"onboardingLastStepDescriptionPartTwo": "o ver nuestra guía en video"
+		"onboardingLastStepDescriptionPartTwo": "o ver nuestra guía en video",
+		"euDisclaimer": "Financiado por la Unión Europea. Sin embargo, los puntos de vista y opiniones expresados son únicamente los del autor o los autores y no reflejan necesariamente los de la Unión Europea. Ni la Unión Europea ni la autoridad otorgante pueden ser considerados responsables de ellos."
 	},
 	"ValidationMeseges": {
 		"required": "Este campo es obligatorio.",

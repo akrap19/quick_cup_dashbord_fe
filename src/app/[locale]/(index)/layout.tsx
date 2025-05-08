@@ -1,4 +1,3 @@
-import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth/next'
 import { ReactNode } from 'react'
@@ -11,11 +10,6 @@ import { getSeenOnboardings } from 'api/services/onboarding'
 import { getSettings } from 'api/services/settings'
 import { authOptions } from 'app/api/auth/[...nextauth]/auth'
 import { ROUTES } from 'parameters'
-
-export const metadata: Metadata = {
-	title: 'Journeys | Dashboard',
-	description: 'Barnahus Journeys'
-}
 
 const DashboardLayout = async ({ children }: { children: ReactNode }) => {
 	const session = await getServerSession(authOptions)

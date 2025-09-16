@@ -67,3 +67,4 @@ This starter template includes configuration files for ESLint, Prettier and Husk
 - [Pull Request Naming](./docs/pull_request_naming.md)
 # quick_cup_dashbord_fe
 # quick_cup_dashbord_fe
+# quick_cup_dashbord_fe

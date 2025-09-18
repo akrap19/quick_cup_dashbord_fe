@@ -20,9 +20,9 @@ export const Drawer = ({ role }: Props) => {
 
 	return (
 		<Box className={drawer}>
-			<Stack gap={13}>
-				<Box paddingLeft={6}>
-					<BrandLogo addHomeLink />
+			<Stack gap={13} alignItems="center">
+				<Box>
+					<BrandLogo addHomeLink height={70} />
 				</Box>
 				<Stack gap={4}>
 					{filtredDrawerItems.map(item => (

@@ -5,16 +5,11 @@ import { ReactNode } from 'react'
 import { BrandLogo } from '@/components/custom/brand-logo/BrandLogo'
 import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
-import Image from 'next/image'
-import { Text } from '@/components/typography/text'
-import { useTranslations } from 'next-intl'
 
 const AuthorizationLayout = ({ children }: { children: ReactNode }) => {
-	const t = useTranslations()
-
 	return (
 		<Box display="flex" width="100vw" justify="center" align="center">
-			<Stack gap={10} alignItems="center">
+			<Stack gap={8} alignItems="center">
 				<BrandLogo />
 				<Box
 					backgroundColor="neutral.50"
@@ -26,7 +21,7 @@ const AuthorizationLayout = ({ children }: { children: ReactNode }) => {
 						{children}
 					</Stack>
 				</Box>
-				<Box style={{ width: '380px' }}>
+				{/* <Box style={{ width: '380px' }}>
 					<Stack gap={2} alignItems="center">
 						<Text fontSize="xsmall" textAlign="center">
 							{t('General.euDisclaimer')}
@@ -38,7 +33,7 @@ const AuthorizationLayout = ({ children }: { children: ReactNode }) => {
 							alt="uploadedPhoto"
 						/>
 					</Stack>
-				</Box>
+				</Box> */}
 			</Stack>
 		</Box>
 	)

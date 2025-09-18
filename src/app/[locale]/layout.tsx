@@ -10,8 +10,8 @@ import { Box } from '@/components/layout/box'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-	title: 'Journeys | Dashboard',
-	description: 'Barnahus Journeys'
+	title: 'Quick cup | Dashboard',
+	description: 'Quick cup'
 }
 
 const inter = Inter({

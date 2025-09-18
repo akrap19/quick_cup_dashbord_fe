@@ -22,7 +22,6 @@ import { ROUTES } from 'parameters'
 import { dropdownListContainer, dropdownListItem, dropdownListItemWithAction } from './UserDropdown.css'
 import CarretDownIcon from '../../icons/block-icon/assets/carret-down-icon.svg'
 import CarretUpIcon from '../../icons/block-icon/assets/carret-up-icon.svg'
-import { Onboarding } from '../onboarding'
 
 interface Option {
 	label?: string
@@ -39,7 +38,7 @@ interface Props {
 export const UserDropdown = ({ session, settings, seenOnboardingSections }: Props) => {
 	const t = useTranslations()
 	const [isOpen, setIsOpen] = useState(false)
-	const [openOnboarding, setOpenOnboarding] = useState(false)
+	// const [setOpenOnboarding] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
 	const { replace } = useRouter()
 	const userRole = session?.user?.roles[0]?.name
@@ -56,9 +55,11 @@ export const UserDropdown = ({ session, settings, seenOnboardingSections }: Prop
 		if (userRole) {
 			const result = await deleteOnboarding(userRole)
 
-			if (result?.message === 'OK') {
-				setOpenOnboarding(true)
-			}
+			console.log(result)
+			console.log(seenOnboardingSections)
+			// if (result?.message === 'OK') {
+			// 	setOpenOnboarding(true)
+			// }
 		}
 	}
 
@@ -93,9 +94,9 @@ export const UserDropdown = ({ session, settings, seenOnboardingSections }: Prop
 
 	useEffect(() => {
 		document.addEventListener('mousedown', handleClickOutside)
-		if (userRole && !seenOnboardingSections?.includes(userRole)) {
-			setOpenOnboarding(true)
-		}
+		// if (userRole && !seenOnboardingSections?.includes(userRole)) {
+		// 	setOpenOnboarding(true)
+		// }
 
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside)
@@ -104,9 +105,9 @@ export const UserDropdown = ({ session, settings, seenOnboardingSections }: Prop
 
 	return (
 		<>
-			{userRole && (!seenOnboardingSections?.includes(userRole) || openOnboarding) && (
+			{/* {userRole && (!seenOnboardingSections?.includes(userRole) || openOnboarding) && (
 				<Onboarding userRole={userRole} openOnboarding={openOnboarding} setOpenOnboarding={setOpenOnboarding} />
-			)}
+			)} */}
 			<div ref={ref}>
 				<Box position="relative">
 					<Box display="flex" width="100%" justifyContent="flex-end">

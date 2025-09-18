@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css'
 
 import { tokens } from '@/style/theme.css'
 
-const selected = { backgroundColor: tokens.colors['primary.75'] }
+const selected = { backgroundColor: tokens.colors['primary.50'] }
 
 const drawerItemTemp = {
 	flex: '1',
@@ -12,7 +12,7 @@ const drawerItemTemp = {
 }
 
 export const drawer = style({
-	padding: `${tokens.spacing[12]} ${tokens.spacing[3]} ${tokens.spacing[8]}`,
+	padding: `${tokens.spacing[8]} ${tokens.spacing[3]} ${tokens.spacing[8]}`,
 	backgroundColor: tokens.colors['neutral.50'],
 	borderRight: tokens.borders.border.thin,
 	borderColor: tokens.borders.color['neutral.300'],

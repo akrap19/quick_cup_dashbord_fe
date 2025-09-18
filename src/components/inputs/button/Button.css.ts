@@ -71,7 +71,7 @@ export const button = recipe({
 			ghost: {
 				backgroundColor: tokens.colors['shades.00'],
 				color: tokens.colors['primary.500'],
-				':hover': { backgroundColor: tokens.colors['primary.75'] },
+				':hover': { backgroundColor: tokens.colors['primary.50'] },
 				':disabled': { backgroundColor: tokens.colors['shades.00'] }
 			},
 			link: {

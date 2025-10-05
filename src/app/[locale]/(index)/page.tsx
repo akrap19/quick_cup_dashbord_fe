@@ -13,7 +13,7 @@ const HomePage = async () => {
 		case UserRoleEnum.MASTER_ADMIN:
 			return redirect(ROUTES.ADMINS)
 		case UserRoleEnum.ADMIN:
-			return redirect(ROUTES.CLIENTS)
+			return redirect(ROUTES.SERVICES)
 		case UserRoleEnum.SERVICE:
 			return redirect(ROUTES.SETTINGS)
 		default:

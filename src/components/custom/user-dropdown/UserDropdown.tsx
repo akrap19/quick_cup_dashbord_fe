@@ -16,7 +16,6 @@ import { Text } from '@/components/typography/text'
 import { handleFullName } from '@/utils/handleFullName'
 import { Settings } from 'api/models/settings/settings'
 import { logout } from 'api/services/auth'
-import { deleteOnboarding } from 'api/services/onboarding'
 import { ROUTES } from 'parameters'
 
 import { dropdownListContainer, dropdownListItem, dropdownListItemWithAction } from './UserDropdown.css'
@@ -32,34 +31,19 @@ interface Option {
 interface Props {
 	session: Session | null
 	settings: Settings
-	seenOnboardingSections: string[]
 }
 
-export const UserDropdown = ({ session, settings, seenOnboardingSections }: Props) => {
+export const UserDropdown = ({ session, settings }: Props) => {
 	const t = useTranslations()
 	const [isOpen, setIsOpen] = useState(false)
-	// const [setOpenOnboarding] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
 	const { replace } = useRouter()
-	const userRole = session?.user?.roles[0]?.name
 
 	const handleLogout = async () => {
 		const result = await logout()
 
 		if (result?.message === 'OK') {
 			signOut({ callbackUrl: ROUTES.LOGIN })
-		}
-	}
-
-	const handleDeleteOnboarding = async () => {
-		if (userRole) {
-			const result = await deleteOnboarding(userRole)
-
-			console.log(result)
-			console.log(seenOnboardingSections)
-			// if (result?.message === 'OK') {
-			// 	setOpenOnboarding(true)
-			// }
 		}
 	}
 
@@ -70,10 +54,6 @@ export const UserDropdown = ({ session, settings, seenOnboardingSections }: Prop
 		{
 			label: 'General.profileSettings',
 			action: () => replace(ROUTES.SETTINGS)
-		},
-		{
-			label: 'General.onboardingFlow',
-			action: () => handleDeleteOnboarding()
 		},
 		{
 			label: 'General.logOut',
@@ -94,9 +74,6 @@ export const UserDropdown = ({ session, settings, seenOnboardingSections }: Prop
 
 	useEffect(() => {
 		document.addEventListener('mousedown', handleClickOutside)
-		// if (userRole && !seenOnboardingSections?.includes(userRole)) {
-		// 	setOpenOnboarding(true)
-		// }
 
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside)
@@ -105,9 +82,6 @@ export const UserDropdown = ({ session, settings, seenOnboardingSections }: Prop
 
 	return (
 		<>
-			{/* {userRole && (!seenOnboardingSections?.includes(userRole) || openOnboarding) && (
-				<Onboarding userRole={userRole} openOnboarding={openOnboarding} setOpenOnboarding={setOpenOnboarding} />
-			)} */}
 			<div ref={ref}>
 				<Box position="relative">
 					<Box display="flex" width="100%" justifyContent="flex-end">

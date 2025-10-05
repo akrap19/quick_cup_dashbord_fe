@@ -10,14 +10,14 @@ const HomePage = async () => {
 	const userRole = session?.user?.roles[0]?.name
 
 	switch (userRole) {
-		case UserRoleEnum.SUPER_ADMIN:
-			return redirect(ROUTES.BARNAHUSES)
 		case UserRoleEnum.MASTER_ADMIN:
 			return redirect(ROUTES.ADMINS)
 		case UserRoleEnum.ADMIN:
-			return redirect(ROUTES.PRACTITIONERS)
+			return redirect(ROUTES.CLIENTS)
+		case UserRoleEnum.SERVICE:
+			return redirect(ROUTES.SETTINGS)
 		default:
-			redirect(ROUTES.TEMPLATES)
+			redirect(ROUTES.SETTINGS)
 	}
 
 	return null

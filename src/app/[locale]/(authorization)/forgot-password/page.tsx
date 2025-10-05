@@ -42,7 +42,7 @@ const ForgotPasswordPage = () => {
 		const result = await forgotPassword(email)
 
 		if (result?.message === 'OK') {
-			push(`${ROUTES.FORGOT_PASSWORD_SUCCESS}?email=${email}`)
+			push(`${ROUTES.FORGOT_PASSWORD_SUCCESS}?email=${encodeURIComponent(email)}`)
 		} else {
 			loading.toggleLoading()
 		}

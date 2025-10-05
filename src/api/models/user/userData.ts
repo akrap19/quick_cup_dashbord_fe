@@ -1,4 +1,3 @@
-import { Barnahus } from '../barnahuses/barnahus'
 import { Roles } from '../roles/roles'
 
 export interface UserData {
@@ -9,5 +8,4 @@ export interface UserData {
 	email?: string
 	phoneNumber?: string
 	roles: Roles[]
-	barnahusRoles: Barnahus[]
 }

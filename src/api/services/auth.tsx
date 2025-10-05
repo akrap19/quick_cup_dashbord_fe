@@ -44,7 +44,7 @@ export const logout = async () => {
 }
 
 export const getEmail = async (uid: string) => {
-	const response = await fetchWithoutToken(`/auth/email?uid=${uid}`)
+	const response = await fetchWithoutToken(`auth/email?uid=${uid}`)
 
 	return response.json()
 }

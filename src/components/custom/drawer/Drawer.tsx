@@ -24,7 +24,7 @@ export const Drawer = ({ role }: Props) => {
 				<Box>
 					<BrandLogo addHomeLink height={70} />
 				</Box>
-				<Stack gap={4}>
+				<Stack gap={4} style={{ width: '100%' }}>
 					{filtredDrawerItems.map(item => (
 						<>
 							<DrawerItem item={item} isOpen={isOpen} setIsOpen={setIsOpen} />

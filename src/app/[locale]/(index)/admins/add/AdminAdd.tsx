@@ -13,7 +13,6 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
 import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
-import { Barnahus } from 'api/models/barnahuses/barnahus'
 import { createAdmin } from 'api/services/admins'
 import { ROUTES } from 'parameters'
 import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
@@ -22,7 +21,6 @@ import AdminForm from '../form'
 
 const formSchema = z.object({
 	email: emailSchema.shape.email,
-	barnahus: z.string().optional(),
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
 	phoneNumber: phoneNumberScheme.shape.phone
@@ -30,11 +28,7 @@ const formSchema = z.object({
 
 type Schema = z.infer<typeof formSchema>
 
-interface Props {
-	barnahus?: Barnahus
-}
-
-const AdminAdd = ({ barnahus }: Props) => {
+const AdminAdd = () => {
 	const t = useTranslations()
 	const { push, refresh } = useRouter()
 	const confirmDialog = useOpened()
@@ -46,7 +40,6 @@ const AdminAdd = ({ barnahus }: Props) => {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			email: '',
-			barnahus: barnahus?.location,
 			firstName: '',
 			lastName: '',
 			phoneNumber: ''

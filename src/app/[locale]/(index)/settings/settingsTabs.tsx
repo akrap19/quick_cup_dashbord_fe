@@ -10,7 +10,6 @@ import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useNavbarItemsStore } from '@/store/navbar'
 import { Settings } from 'api/models/settings/settings'
 
-import { EmailForm } from './emailForm'
 import { PasswordForm } from './passwordForm'
 import { PersonalInfoForm } from './personalInfoForm'
 
@@ -34,16 +33,16 @@ const SettingsTabs = ({ settings, session }: Props) => {
 						{t('General.personalInfo')}
 					</Tabs.Tab>
 					<Tabs.Tab value="password">{t('Authorization.password')}</Tabs.Tab>
-					<Tabs.Tab value="email">{t('General.email')}</Tabs.Tab>
+					{/* <Tabs.Tab value="email">{t('General.email')}</Tabs.Tab> */}
 					<Tabs.Panel value="personalInfo">
 						<PersonalInfoForm settings={settings} session={session} />
 					</Tabs.Panel>
 					<Tabs.Panel value="password">
 						<PasswordForm />
 					</Tabs.Panel>
-					<Tabs.Panel value="email">
+					{/* <Tabs.Panel value="email">
 						<EmailForm settings={settings} />
-					</Tabs.Panel>
+					</Tabs.Panel> */}
 				</Tabs>
 			)}
 		</Box>

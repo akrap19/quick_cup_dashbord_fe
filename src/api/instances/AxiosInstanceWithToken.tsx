@@ -7,9 +7,8 @@ const axiosInstanceWithToken = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_BASE_URL
 })
 
-export const setToken = (token?: string, barnahusId?: string) => {
+export const setToken = (token?: string) => {
 	axiosInstanceWithToken.defaults.headers.common['Authorization'] = `Bearer ${token}`
-	axiosInstanceWithToken.defaults.headers['X-Barnahus-Id'] = barnahusId ?? ''
 }
 
 axiosInstanceWithToken.interceptors.request.use(async request => {
@@ -26,10 +25,9 @@ axiosInstanceWithToken.interceptors.request.use(async request => {
 
 		if (result?.status === 200) {
 			const newSession = await getSession()
-			setToken(newSession?.accessToken, newSession?.user?.barnahusRoles[0]?.barnahusId)
+			setToken(newSession?.accessToken)
 
 			request.headers['Authorization'] = `Bearer ${newSession?.accessToken}`
-			request.headers['X-Barnahus-Id'] = newSession?.user?.barnahusRoles[0]?.barnahusId
 		} else {
 			ErrorToast('Session expired. Redirecting to login...')
 			setTimeout(() => {
@@ -55,7 +53,7 @@ axiosInstanceWithToken.interceptors.response.use(
 
 			if (result?.status === 200) {
 				const newSession = await getSession()
-				setToken(newSession?.accessToken, newSession?.user?.barnahusRoles[0]?.barnahusId)
+				setToken(newSession?.accessToken)
 
 				return axiosInstanceWithToken(error.config)
 			} else {

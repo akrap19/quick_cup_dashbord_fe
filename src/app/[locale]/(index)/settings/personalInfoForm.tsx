@@ -19,7 +19,6 @@ import { Stack } from '@/components/layout/stack'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { Settings } from 'api/models/settings/settings'
 import { personal } from 'api/services/settings'
-import { UserRoleEnum } from 'enums/userRoleEnum'
 import { phoneNumberScheme, requiredString } from 'schemas'
 
 const formSchema = z.object({
@@ -38,7 +37,6 @@ interface Props {
 export const PersonalInfoForm = ({ settings, session }: Props) => {
 	const t = useTranslations()
 	const router = useRouter()
-	const isSuperAdmin = session?.user.roles.some(role => role.name === UserRoleEnum.SUPER_ADMIN)
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
@@ -85,36 +83,6 @@ export const PersonalInfoForm = ({ settings, session }: Props) => {
 										<FormControl.Message />
 									</FormControl>
 								</Columns.Item>
-								{!isSuperAdmin && (
-									<>
-										<Columns.Item columns={6}>
-											<Box paddingBottom={7}>
-												<FormControl name="barnahus">
-													<FormControl.Label>{t('General.barnahus')}</FormControl.Label>
-													<TextInput
-														placeholder={t('Settings.barnahusPlacehoder')}
-														defaultValue={settings?.barnahusName}
-														disabled
-													/>
-													<FormControl.Message />
-												</FormControl>
-											</Box>
-										</Columns.Item>
-										<Columns.Item columns={6}>
-											<Box paddingBottom={7}>
-												<FormControl name="locationCode">
-													<FormControl.Label>{t('General.barnahusId')}</FormControl.Label>
-													<TextInput
-														placeholder={t('Settings.barnahusPlacehoder')}
-														defaultValue={settings?.locationCode}
-														disabled
-													/>
-													<FormControl.Message />
-												</FormControl>
-											</Box>
-										</Columns.Item>
-									</>
-								)}
 								<Columns.Item columns={6}>
 									<Box paddingBottom={7}>
 										<FormControl name="phoneNumber">

@@ -27,18 +27,6 @@ export const AdminDetails = ({ admin }: Props) => {
 	return (
 		<DetailsWrapper>
 			<Stack gap={4}>
-				<Label>{t('General.barnahus')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{admin.location ?? t('General.barnahus') + t('General.notDefined')}
-				</Text>
-			</Stack>
-			<Stack gap={4}>
-				<Label>{t('General.barnahusId')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{admin.locationCode ?? t('General.barnahusId') + t('General.notDefined')}
-				</Text>
-			</Stack>
-			<Stack gap={4}>
 				<Label>{t('General.firstName')}</Label>
 				<Text fontSize="small" color="neutral.800">
 					{admin.firstName ?? t('General.firstName') + t('General.notDefined')}

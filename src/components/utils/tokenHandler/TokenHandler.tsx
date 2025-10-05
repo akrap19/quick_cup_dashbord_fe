@@ -11,7 +11,7 @@ export const TokenHandler = ({ children }: Props) => {
 	const session = useSession()
 
 	if (session.status === 'authenticated') {
-		setToken(session.data.accessToken, session.data.user?.barnahusRoles[0]?.barnahusId)
+		setToken(session.data.accessToken)
 	}
 
 	return children

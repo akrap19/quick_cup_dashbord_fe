@@ -25,11 +25,6 @@ const AdminForm = ({ isEdit, cancelDialog }: Props) => {
 				<TextInput disabled={isEdit} type="email" placeholder={t('General.emailPlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
-			<FormControl name="barnahus">
-				<FormControl.Label>{t('General.barnahus')}</FormControl.Label>
-				<TextInput placeholder={t('General.barnahusPlaceholder')} disabled />
-				<FormControl.Message />
-			</FormControl>
 			<FormControl name="firstName">
 				<FormControl.Label>
 					<RequiredLabel>{t('General.firstName')}</RequiredLabel>

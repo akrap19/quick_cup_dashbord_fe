@@ -21,19 +21,6 @@ const AuthorizationLayout = ({ children }: { children: ReactNode }) => {
 						{children}
 					</Stack>
 				</Box>
-				{/* <Box style={{ width: '380px' }}>
-					<Stack gap={2} alignItems="center">
-						<Text fontSize="xsmall" textAlign="center">
-							{t('General.euDisclaimer')}
-						</Text>
-						<Image
-							src="/images/normal-reproduction-low-resolution.jpg"
-							width={56.25}
-							height={37.5}
-							alt="uploadedPhoto"
-						/>
-					</Stack>
-				</Box> */}
 			</Stack>
 		</Box>
 	)

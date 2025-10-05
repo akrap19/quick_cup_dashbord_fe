@@ -1,4 +1,5 @@
 import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
+import { fetchWithoutToken } from 'api/instances/FetchWithoutToken'
 import { fetchWithToken } from 'api/instances/FetchWithToken'
 
 export const getSettings = async () => {
@@ -25,4 +26,10 @@ export const email = async (email: string) => {
 	const response = await axiosInstanceWithToken.put(`/user/email`, { email })
 
 	return response?.data
+}
+
+export const validateEmail = async (uid: string, hash: string) => {
+	const response = await fetchWithoutToken(`user/validateEmail/${uid}/${hash}`)
+
+	return response.json()
 }

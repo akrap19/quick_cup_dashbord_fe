@@ -16,12 +16,13 @@ const SuccessPage = () => {
 	const t = useTranslations()
 	const searchParams = useSearchParams()
 	const [countdown, setCountdown] = useState<number>(30)
-	const email = searchParams.get('email')
+	const email = searchParams.get('email') ? decodeURIComponent(searchParams.get('email')!) : null
 
 	const onSubmit = async (e: any) => {
 		e.preventDefault()
 		e.stopPropagation()
 
+		console.log('Matijaaaaaaaa email 666666', email)
 		if (email) {
 			const result = await forgotPassword(email)
 

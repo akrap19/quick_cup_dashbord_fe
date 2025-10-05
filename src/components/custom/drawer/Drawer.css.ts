@@ -14,6 +14,7 @@ const drawerItemTemp = {
 export const drawer = style({
 	padding: `${tokens.spacing[8]} ${tokens.spacing[3]} ${tokens.spacing[8]}`,
 	backgroundColor: tokens.colors['neutral.50'],
+	minWidth: '200px',
 	borderRight: tokens.borders.border.thin,
 	borderColor: tokens.borders.color['neutral.300'],
 	zIndex: tokens.indices.over
@@ -21,7 +22,8 @@ export const drawer = style({
 
 export const drawerItem = style({
 	...drawerItemTemp,
-	padding: `${tokens.spacing[3]} ${tokens.spacing[4]} ${tokens.spacing[3]} ${tokens.spacing[6]}`
+	flex: '1',
+	padding: `${tokens.spacing[3]} ${tokens.spacing[4]} ${tokens.spacing[3]} ${tokens.spacing[4]}`
 })
 
 export const drawerSubItem = style({

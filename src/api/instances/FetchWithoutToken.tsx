@@ -8,5 +8,6 @@ export const fetchWithoutToken = async (endpoint: string, queryParams?: any) => 
 		query: queryParams
 	})
 
+	console.log('Matijaaaaaaaa url 666666', url)
 	return fetch(url)
 }

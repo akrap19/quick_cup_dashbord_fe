@@ -7,6 +7,7 @@ interface Props {
 		uid: string
 	}
 }
+
 const RegisterPage = async ({ searchParams }: Props) => {
 	const uid = searchParams.uid?.split('/')[0]
 	const response = await getEmail(uid)

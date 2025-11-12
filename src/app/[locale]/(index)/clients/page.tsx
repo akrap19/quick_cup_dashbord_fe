@@ -25,7 +25,8 @@ const ClientsPage = async ({ searchParams }: Props) => {
 			id: client.userId,
 			name: client.name,
 			email: client.email,
-			phoneNumber: client.phoneNumber
+			phoneNumber: client.phoneNumber,
+			status: client.status
 		}
 	})
 

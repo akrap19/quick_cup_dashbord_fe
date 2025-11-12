@@ -19,13 +19,19 @@ interface Props {
 const ServicesPage = async ({ searchParams }: Props) => {
 	const { data: servicesData } = await getServices(searchParams)
 	const isInitialListEmpty = (servicesData?.pagination?.count === 0 && !searchParams.search) || servicesData === null
-	const transformedServiceArray = servicesData?.users?.map((service: any) => {
-		return {
+	const normalizedServices =
+		servicesData?.services?.map((service: any) => ({
 			...service,
-			id: service.userId,
-			name: service.name ?? '-'
-		}
-	})
+			id: service.id ?? service.userId,
+			name: service.name ?? '-',
+			description: service.description ?? null
+		})) ??
+		servicesData?.users?.map((service: any) => ({
+			...service,
+			id: service.id ?? service.userId,
+			name: service.name ?? '-',
+			description: service.description ?? null
+		}))
 
 	return isInitialListEmpty ? (
 		<NoListData
@@ -37,10 +43,10 @@ const ServicesPage = async ({ searchParams }: Props) => {
 		/>
 	) : (
 		<ListWrapper title="General.services">
-			<Inputs data={servicesData?.users} />
+			<Inputs data={normalizedServices ?? []} />
 			<DataTable
 				columns={columns}
-				data={replaceNullInListWithDash(transformedServiceArray)}
+				data={replaceNullInListWithDash(normalizedServices ?? [])}
 				pagination={servicesData?.pagination}
 			/>
 		</ListWrapper>

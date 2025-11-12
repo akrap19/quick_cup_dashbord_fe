@@ -1,5 +1,4 @@
 import { getService } from 'api/services/services'
-import { Service } from 'api/models/services/service'
 
 import { ServiceDetails } from './ServiceDetails'
 
@@ -11,9 +10,8 @@ interface Props {
 
 const ServiceDetailsPage = async ({ params }: Props) => {
 	const { data: serviceData } = await getService(params.id)
-	const service = serviceData.service as Service
 
-	return <ServiceDetails service={service} />
+	return <ServiceDetails service={serviceData} />
 }
 
 export default ServiceDetailsPage

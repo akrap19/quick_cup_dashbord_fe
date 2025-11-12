@@ -14,6 +14,7 @@ import { Item } from './Data'
 import { drawerItem, drawerItemSelected, drawerSubItem } from './Drawer.css'
 import { Text } from '../../typography/text'
 import { Dispatch, SetStateAction } from 'react'
+import { stripLocale } from '@/utils/stripLocale'
 
 interface Props {
 	item: Item
@@ -21,17 +22,29 @@ interface Props {
 	setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 
+const isRouteActive = (pathname: string, route?: string) => {
+	if (!route) {
+		return false
+	}
+
+	if (route === '/') {
+		return pathname === '/'
+	}
+
+	return pathname === route || pathname.startsWith(`${route}/`)
+}
+
 export const DrawerItem = ({ item, isOpen, setIsOpen }: Props) => {
-	const pathname = usePathname()
+	const pathname = stripLocale(usePathname())
 	const t = useTranslations()
 
 	const handleRoute = (item: Item) => {
 		if (!item.subItems) {
-			return item.route ? pathname.includes(item.route) : false
+			return isRouteActive(pathname, item.route)
 		}
 
 		return item.subItems.some(subItem => {
-			return subItem.route && pathname.includes(subItem.route) && !isOpen
+			return isRouteActive(pathname, subItem.route) && !isOpen
 		})
 	}
 
@@ -39,7 +52,7 @@ export const DrawerItem = ({ item, isOpen, setIsOpen }: Props) => {
 		<Button variant="adaptive" size="auto" href={item.route}>
 			<Box
 				className={clsx(item.isSubItem ? drawerSubItem : drawerItem, handleRoute(item) && drawerItemSelected)}
-				style={{ cursor: item.route && pathname.includes(item.route) ? 'default' : 'inherit' }}>
+				style={{ cursor: item.route && isRouteActive(pathname, item.route) ? 'default' : 'inherit' }}>
 				<Inline gap={4} alignItems="center">
 					{item.icon}
 					<Box
@@ -62,7 +75,7 @@ export const DrawerItem = ({ item, isOpen, setIsOpen }: Props) => {
 		<Button variant="adaptive" size="auto" onClick={() => setIsOpen(!isOpen)}>
 			<Box
 				className={clsx(item.isSubItem ? drawerSubItem : drawerItem, handleRoute(item) && drawerItemSelected)}
-				style={{ cursor: item.route && pathname.includes(item.route) ? 'default' : 'inherit' }}>
+				style={{ cursor: item.route && isRouteActive(pathname, item.route) ? 'default' : 'inherit' }}>
 				<Inline gap={4} alignItems="center">
 					{item.icon}
 					<Box

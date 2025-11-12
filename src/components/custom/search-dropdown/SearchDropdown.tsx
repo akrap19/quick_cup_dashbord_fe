@@ -24,6 +24,7 @@ interface Props {
 	name?: string
 	hasSuccess?: boolean
 	value?: string | null
+	disabled?: boolean
 	alwaysShowSearch?: boolean
 	isFilter?: boolean
 	setValue?: Dispatch<SetStateAction<any>>
@@ -35,6 +36,7 @@ export const SearchDropdown = ({
 	placeholder,
 	hasSuccess,
 	value,
+	disabled,
 	alwaysShowSearch,
 	isFilter,
 	setValue
@@ -90,7 +92,7 @@ export const SearchDropdown = ({
 					/>
 				}>
 				<Stack>
-					<Button size="auto" variant="adaptive" onClick={handleDropDownOpening}>
+					<Button size="auto" variant="adaptive" onClick={handleDropDownOpening} disabled={disabled}>
 						<Box className={clsx(input, !isFilter && hasSuccess && inputHasSuccess, endIconSpacing)}>
 							<Text className={DropdownPresentationlabel({ variant: presentationalLabelVariant })}>
 								{choosenValue?.name ?? value ?? `${t('General.select')} ${t(placeholder)}`}

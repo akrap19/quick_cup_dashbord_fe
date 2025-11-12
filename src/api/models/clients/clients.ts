@@ -1,7 +1,6 @@
 export interface Clients {
 	userId: string
-	firstName: string
-	lastName: string
+	name: string
 	email: string
 	phoneNumber: string
 }

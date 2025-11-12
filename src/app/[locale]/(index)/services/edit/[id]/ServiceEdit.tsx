@@ -10,15 +10,13 @@ import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { Service } from 'api/models/services/service'
 import { updateService } from 'api/services/services'
-import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
+import { requiredString } from 'schemas'
 
 import ServiceForm from '../../form'
 
 const formSchema = z.object({
-	email: emailSchema.shape.email,
-	firstName: requiredString.shape.scheme,
-	lastName: requiredString.shape.scheme,
-	phoneNumber: phoneNumberScheme.shape.phone
+	name: requiredString.shape.scheme,
+	description: requiredString.shape.scheme
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -35,21 +33,22 @@ const ServiceEdit = ({ service }: Props) => {
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			email: service?.email,
-			firstName: service?.firstName,
-			lastName: service?.lastName,
-			phoneNumber: service?.phoneNumber ?? ''
+			name: service?.name,
+			description: service?.description ?? ''
 		}
 	})
 
 	const onSubmit = async () => {
 		const data = form.getValues()
 		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
-		const result = await updateService({ ...dataWIhoutEmptyString, userId: service?.userId })
+		const result = await updateService({ ...dataWIhoutEmptyString, id: service?.id })
+
 		if (result?.message === 'OK') {
 			localStorage.setItem('editMessage', 'Services.successfullyEdited')
 			refresh()
-			back()
+			setTimeout(() => {
+				back()
+			}, 500)
 		}
 	}
 

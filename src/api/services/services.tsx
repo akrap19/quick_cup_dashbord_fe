@@ -15,35 +15,33 @@ export const getServices = (query: Query) => {
 		limit: query.limit ?? 10
 	}
 
-	return fetchWithToken(`service`, queryParams)
+	return fetchWithToken(`services`, queryParams)
 }
 
 export const createService = async (service: ServicePayload) => {
-	const response = await axiosInstanceWithToken.post(`/service`, service)
+	const response = await axiosInstanceWithToken.post(`/services`, service)
 
 	return response?.data
 }
 
 export const updateService = async (service: ServicePayload) => {
-	const response = await axiosInstanceWithToken.put(`/service`, service)
+	const response = await axiosInstanceWithToken.put(`/services/${service.id}`, service)
 
 	return response?.data
 }
 
 export const getService = (serviceId: string) => {
-	return fetchWithToken(`service/${serviceId}`)
+	return fetchWithToken(`services/${serviceId}`)
 }
 
 export const deleteService = async (serviceId: string) => {
-	const response = await axiosInstanceWithToken.delete(`/service`, {
-		data: { userId: serviceId }
-	})
+	const response = await axiosInstanceWithToken.delete(`/services/${serviceId}`)
 
 	return response?.data
 }
 
 export const deleteServices = async (serviceIds: string[]) => {
-	const response = await axiosInstanceWithToken.delete(`/service/bulk`, { data: { userIds: serviceIds } })
+	const response = await axiosInstanceWithToken.delete(`/services/bulk`, { data: { serviceIds } })
 
 	return response?.data
 }

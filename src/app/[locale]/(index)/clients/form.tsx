@@ -44,6 +44,11 @@ const ClientForm = ({ isEdit, cancelDialog }: Props) => {
 				<TextInput placeholder={t('General.phoneNumberPlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
+			<FormControl name="location">
+				<FormControl.Label>{t('General.location')}</FormControl.Label>
+				<TextInput placeholder={t('General.locationPlaceholder')} />
+				<FormControl.Message />
+			</FormControl>
 		</FormItems>
 	)
 }

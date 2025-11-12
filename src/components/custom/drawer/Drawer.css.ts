@@ -36,3 +36,7 @@ export const drawerItemSelected = style({
 	...selected,
 	':hover': selected
 })
+
+export const drawerSection = style({
+	width: '100%'
+})

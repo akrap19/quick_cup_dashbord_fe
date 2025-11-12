@@ -11,7 +11,7 @@ interface Props {
 const ServiceEditPage = async ({ params }: Props) => {
 	const { data: serviceData } = await getService(params.id)
 
-	return <ServiceEdit service={serviceData?.service} />
+	return <ServiceEdit service={serviceData} />
 }
 
 export default ServiceEditPage

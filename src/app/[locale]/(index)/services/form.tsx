@@ -5,8 +5,10 @@ import { useTranslations } from 'next-intl'
 import { FormItems } from '@/components/custom/layouts/add-form'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
+import { Textarea } from '@/components/inputs/text-area'
 import { TextInput } from '@/components/inputs/text-input'
 import { OpenedProps } from '@/hooks/use-toggle'
+import { Stack } from 'components/layout/stack/Stack'
 
 interface Props {
 	isEdit?: boolean
@@ -18,32 +20,22 @@ const ServiceForm = ({ isEdit, cancelDialog }: Props) => {
 
 	return (
 		<FormItems openCancelDialog={cancelDialog?.toggleOpened}>
-			<FormControl name="email">
-				<FormControl.Label>
-					<RequiredLabel>{t('General.email')}</RequiredLabel>
-				</FormControl.Label>
-				<TextInput disabled={isEdit} type="email" placeholder={t('General.emailPlaceholder')} />
-				<FormControl.Message />
-			</FormControl>
-			<FormControl name="firstName">
-				<FormControl.Label>
-					<RequiredLabel>{t('General.firstName')}</RequiredLabel>
-				</FormControl.Label>
-				<TextInput placeholder={t('General.firstNamePlaceholder')} />
-				<FormControl.Message />
-			</FormControl>
-			<FormControl name="lastName">
-				<FormControl.Label>
-					<RequiredLabel>{t('General.lastName')}</RequiredLabel>
-				</FormControl.Label>
-				<TextInput placeholder={t('General.lastNamePlaceholder')} />
-				<FormControl.Message />
-			</FormControl>
-			<FormControl name="phoneNumber">
-				<FormControl.Label>{t('General.phoneNumber')}</FormControl.Label>
-				<TextInput placeholder={t('General.phoneNumberPlaceholder')} />
-				<FormControl.Message />
-			</FormControl>
+			<Stack gap={6} style={{ width: '50%' }}>
+				<FormControl name="name">
+					<FormControl.Label>
+						<RequiredLabel>{t('General.name')}</RequiredLabel>
+					</FormControl.Label>
+					<TextInput placeholder={t('General.namePlaceholder')} />
+					<FormControl.Message />
+				</FormControl>
+				<FormControl name="description" maxLength="500">
+					<FormControl.Label>
+						<RequiredLabel>{t('General.description')}</RequiredLabel>
+					</FormControl.Label>
+					<Textarea placeholder={t('General.descriptionPlaceholder')} rows={4} />
+					<FormControl.Message />
+				</FormControl>
+			</Stack>
 		</FormItems>
 	)
 }

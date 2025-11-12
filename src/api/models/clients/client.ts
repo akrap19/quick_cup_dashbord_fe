@@ -5,6 +5,5 @@ export interface Client {
 	email: string
 	phoneNumber: string
 	location: string
-	locationCode: string
-	userProfession: string
+	status: string
 }

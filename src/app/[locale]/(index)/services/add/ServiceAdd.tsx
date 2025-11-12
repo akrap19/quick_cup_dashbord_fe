@@ -8,32 +8,26 @@ import { z } from 'zod'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
-import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
 import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { createService } from 'api/services/services'
 import { ROUTES } from 'parameters'
-import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
+import { requiredString } from 'schemas'
 
 import ServiceForm from '../form'
 
 const formSchema = z.object({
-	email: emailSchema.shape.email,
-	firstName: requiredString.shape.scheme,
-	lastName: requiredString.shape.scheme,
-	phoneNumber: phoneNumberScheme.shape.phone
+	name: requiredString.shape.scheme,
+	description: requiredString.shape.scheme
 })
 
 type Schema = z.infer<typeof formSchema>
 
-interface Props {}
-
-const ServiceAdd = ({}: Props) => {
+const ServiceAdd = () => {
 	const t = useTranslations()
 	const { push, refresh } = useRouter()
-	const confirmDialog = useOpened()
 	const cancelDialog = useOpened()
 	useNavbarItems({ title: 'Services.add', backLabel: 'Services.back' })
 
@@ -41,25 +35,21 @@ const ServiceAdd = ({}: Props) => {
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			email: '',
-			firstName: '',
-			lastName: '',
-			phoneNumber: ''
+			name: '',
+			description: ''
 		}
 	})
-
-	const handleDialog = () => {
-		confirmDialog.toggleOpened()
-	}
 
 	const onSubmit = async () => {
 		const data = form.getValues()
 		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
 		const result = await createService(dataWIhoutEmptyString)
+
 		if (result?.message === 'OK') {
 			SuccessToast(t('Services.successfullyCreated'))
-			push(ROUTES.SERVICES)
+
 			refresh()
+			push(ROUTES.SERVICES)
 		}
 	}
 
@@ -67,18 +57,11 @@ const ServiceAdd = ({}: Props) => {
 		<>
 			<FormWrapper>
 				<FormProvider {...form}>
-					<form onSubmit={form.handleSubmit(handleDialog)}>
+					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<ServiceForm cancelDialog={cancelDialog} />
 					</form>
 				</FormProvider>
 			</FormWrapper>
-			<ConfirmActionDialog
-				title="Services.addNew"
-				description="Services.addServiceDescription"
-				buttonLabel="General.addAndInvite"
-				confirmDialog={confirmDialog}
-				onSubmit={onSubmit}
-			/>
 			<CancelAddDialog cancelDialog={cancelDialog} title="Services.cancelAdd" values={form.getValues()} />
 		</>
 	)

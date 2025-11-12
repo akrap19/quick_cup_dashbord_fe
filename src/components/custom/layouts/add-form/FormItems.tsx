@@ -55,7 +55,7 @@ export const FormItems = ({ children, openCancelDialog }: Props) => {
 					{t('General.cancel')}
 				</Button>
 				<Button type="submit" disabled={!formContext.formState.isValid}>
-					{t(openCancelDialog ? 'General.save&Add' : 'General.saveChanges')}
+					{t('General.saveChanges')}
 				</Button>
 			</Inline>
 		</Stack>

@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { string, z } from 'zod'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
@@ -23,7 +23,8 @@ const formSchema = z.object({
 	email: emailSchema.shape.email,
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
-	phoneNumber: phoneNumberScheme.shape.phone
+	phoneNumber: phoneNumberScheme.shape.phone,
+	location: string().optional()
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -44,7 +45,8 @@ const ClientAdd = ({}: Props) => {
 			email: '',
 			firstName: '',
 			lastName: '',
-			phoneNumber: ''
+			phoneNumber: '',
+			location: ''
 		}
 	})
 

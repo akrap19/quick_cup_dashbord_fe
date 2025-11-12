@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { FormProvider, useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { string, z } from 'zod'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
@@ -18,7 +18,8 @@ const formSchema = z.object({
 	email: emailSchema.shape.email,
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
-	phoneNumber: phoneNumberScheme.shape.phone
+	phoneNumber: phoneNumberScheme.shape.phone,
+	location: string().optional()
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -38,7 +39,8 @@ const ClientEdit = ({ client }: Props) => {
 			email: client.email,
 			firstName: client.firstName,
 			lastName: client.lastName,
-			phoneNumber: client.phoneNumber ?? ''
+			phoneNumber: client.phoneNumber ?? '',
+			location: client.location ?? ''
 		}
 	})
 
@@ -49,7 +51,10 @@ const ClientEdit = ({ client }: Props) => {
 		if (result?.message === 'OK') {
 			localStorage.setItem('editMessage', 'Clients.successfullyEdited')
 			refresh()
-			back()
+
+			setTimeout(() => {
+				back()
+			}, 500)
 		}
 	}
 

@@ -1,7 +1,5 @@
 export interface Services {
-	userId: string
-	firstName: string
-	lastName: string
-	email: string
-	phoneNumber: string
+	id: string
+	name: string
+	description: string | null
 }

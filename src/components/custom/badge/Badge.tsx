@@ -14,7 +14,11 @@ const variantTextMap: Record<string, string> = {
 	open: 'General.open',
 	inprogress: 'General.inProgress',
 	closed: 'General.closed',
-	other: 'General.other'
+	other: 'General.other',
+	active: 'General.active',
+	blocked: 'General.blocked',
+	created: 'General.created',
+	deleted: 'General.deleted'
 }
 
 export const Badge = ({ variant = 'draft' }: Props) => {

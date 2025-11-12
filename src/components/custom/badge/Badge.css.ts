@@ -46,6 +46,22 @@ export const badge = recipe({
 			other: {
 				color: tokens.colors['destructive.700'],
 				background: tokens.colors['destructive.100']
+			},
+			active: {
+				color: tokens.colors['success.700'],
+				background: tokens.colors['success.100']
+			},
+			blocked: {
+				color: tokens.colors['destructive.700'],
+				background: tokens.colors['destructive.100']
+			},
+			created: {
+				color: tokens.colors['warning.700'],
+				background: tokens.colors['warning.100']
+			},
+			deleted: {
+				color: tokens.colors['destructive.700'],
+				background: tokens.colors['destructive.100']
 			}
 		}
 	},

@@ -14,13 +14,17 @@ import { useOpened } from '@/hooks/use-toggle'
 import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { createService } from 'api/services/services'
 import { ROUTES } from 'parameters'
-import { requiredString } from 'schemas'
+import { requiredString, servicePriceSchema } from 'schemas'
 
 import ServiceForm from '../form'
+import { PriceCalculationUnit } from 'enums/priceCalculationUnit'
 
 const formSchema = z.object({
 	name: requiredString.shape.scheme,
-	description: requiredString.shape.scheme
+	prices: z.array(servicePriceSchema).min(1, 'Services.atLeastOneServicePriceRequired'),
+	priceCalculationUnit: z.nativeEnum(PriceCalculationUnit, {
+		required_error: 'ValidationMeseges.required'
+	})
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -36,7 +40,8 @@ const ServiceAdd = () => {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			name: '',
-			description: ''
+			prices: [{ minQuantity: undefined, maxQuantity: undefined, price: undefined }],
+			priceCalculationUnit: undefined
 		}
 	})
 

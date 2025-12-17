@@ -7,6 +7,9 @@ export interface Order {
 	totalAmount: number
 	customerName: string
 	notes: string | null
+	location?: string
+	place: string
+	street: string
 }
 
 export interface OrdersResponse {

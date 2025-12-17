@@ -10,25 +10,33 @@ import { TableHead, TableHeader, TableRow } from '../table'
 // eslint-disable-next-line
 interface Props<TData, TValue> {
 	table: Table<TData>
+	enableCheckboxes?: boolean
+	columnWidth?: string
 }
 
-export const DataTableHeader = <TData, TValue>({ table }: Props<TData, TValue>) => {
+export const DataTableHeader = <TData, TValue>({
+	table,
+	enableCheckboxes = true,
+	columnWidth
+}: Props<TData, TValue>) => {
 	const t = useTranslations()
 
 	return (
 		<TableHeader>
 			{table.getHeaderGroups().map(headerGroup => (
 				<TableRow key={headerGroup.id}>
-					<TableHead>
-						<Checkbox
-							checked={table?.getIsAllRowsSelected()}
-							indeterminate={table.getIsSomeRowsSelected()}
-							onChange={table.getToggleAllRowsSelectedHandler()}
-						/>
-					</TableHead>
+					{enableCheckboxes && (
+						<TableHead style={columnWidth ? { width: columnWidth } : undefined}>
+							<Checkbox
+								checked={table?.getIsAllRowsSelected()}
+								indeterminate={table.getIsSomeRowsSelected()}
+								onChange={table.getToggleAllRowsSelectedHandler()}
+							/>
+						</TableHead>
+					)}
 					{headerGroup.headers.map(header => {
 						return (
-							<TableHead key={header.id}>
+							<TableHead key={header.id} style={columnWidth ? { width: columnWidth } : undefined}>
 								{/* For sort uncomment lines */}
 								{/* <Inline justifyContent="space-between"> */}
 								{header.isPlaceholder ? null : flexRender(t(header.column.columnDef.header), header.getContext())}

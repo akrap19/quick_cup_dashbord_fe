@@ -11,22 +11,26 @@ import {
 	startIconSpacing
 } from '../input-wrapper/InputWrapper.css'
 
+type InputSize = 'small' | 'medium' | 'large'
+
 interface CustomInputProps {
 	hasError?: boolean
 	hasSuccess?: boolean
 	endIcon?: JSX.Element
 	startIcon?: JSX.Element
+	size?: InputSize
 }
 
-type Props = InputHTMLAttributes<HTMLInputElement> & CustomInputProps
+type BaseInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>
+type Props = BaseInputProps & CustomInputProps
 
-export const TextInput = ({ hasError, hasSuccess, startIcon, endIcon, ...rest }: Props) => {
+export const TextInput = ({ hasError, hasSuccess, startIcon, endIcon, size = 'medium', ...rest }: Props) => {
 	return (
 		<InputWrapper startIcon={startIcon} endIcon={endIcon}>
 			<input
 				{...rest}
 				className={clsx(
-					input,
+					input({ size }),
 					hasError && inputHasError,
 					hasSuccess && inputHasSuccess,
 					endIcon && endIconSpacing,

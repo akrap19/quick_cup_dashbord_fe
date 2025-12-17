@@ -31,6 +31,8 @@ const formSchema = z.object({
 	startDate: requiredString.shape.scheme,
 	endDate: requiredString.shape.scheme,
 	location: requiredString.shape.scheme,
+	place: requiredString.shape.scheme,
+	street: requiredString.shape.scheme,
 	userId: requiredString.shape.scheme
 })
 
@@ -52,6 +54,8 @@ const EventAdd = ({ clients, isClient }: EventAddProps) => {
 			startDate: '',
 			endDate: '',
 			location: '',
+			place: '',
+			street: '',
 			userId: isClient ? session.data?.user?.userId : ''
 		}
 	})
@@ -59,7 +63,13 @@ const EventAdd = ({ clients, isClient }: EventAddProps) => {
 	const onSubmit = async () => {
 		const data = form.getValues()
 		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
-		const result = await createEvent(dataWIhoutEmptyString)
+		const payload = {
+			...dataWIhoutEmptyString,
+			place: dataWIhoutEmptyString.place?.trim() || '',
+			street: dataWIhoutEmptyString.street?.trim() || ''
+		}
+		const result = await createEvent(payload)
+
 		if (result?.message === 'OK') {
 			SuccessToast(t('Events.successfullyCreated'))
 			push(ROUTES.EVENTS)

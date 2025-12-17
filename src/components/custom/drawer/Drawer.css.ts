@@ -13,7 +13,7 @@ const drawerItemTemp = {
 
 export const drawer = style({
 	padding: `${tokens.spacing[8]} ${tokens.spacing[3]} ${tokens.spacing[8]}`,
-	backgroundColor: tokens.colors['neutral.50'],
+	backgroundColor: tokens.colors['shades.00'],
 	minWidth: '200px',
 	borderRight: tokens.borders.border.thin,
 	borderColor: tokens.borders.color['neutral.300'],

@@ -1,15 +1,14 @@
-'use client'
-
-import { useTranslations } from 'next-intl'
-
-import { EditButton } from '@/components/custom/button/edit-button'
-import { DetailsWrapper } from '@/components/custom/layouts/DetailsWrapper'
 import { Label } from '@/components/inputs/label'
 import { Stack } from '@/components/layout/stack'
-import { Text } from '@/components/typography/text'
-import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { Service } from 'api/models/services/service'
-import { ROUTES } from 'parameters'
+import { Text } from '@/components/typography/text'
+import { useTranslations } from 'next-intl'
+import { Box } from '@/components/layout/box'
+import { DataTable } from '@/components/data-display/data-table'
+import { priceColumns } from './priceColumns'
+import { replaceNullInListWithDash } from '@/utils/replaceNullInListWithDash'
+import { tokens } from '@/style/theme.css'
+import { formatUnitLabel } from '@/utils/index'
 
 interface Props {
 	service: Service
@@ -17,26 +16,48 @@ interface Props {
 
 export const ServiceDetails = ({ service }: Props) => {
 	const t = useTranslations()
-	useNavbarItems({
-		title: service.name,
-		backLabel: 'Services.back',
-		actionButton: <EditButton buttonLabel="Services.edit" buttonLink={ROUTES.EDIT_SERVICES + service?.id} />
-	})
 
 	return (
-		<DetailsWrapper>
-			<Stack gap={4}>
-				<Label>{t('General.name')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{service.name}
-				</Text>
-			</Stack>
-			<Stack gap={4}>
-				<Label>{t('General.description')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{service.description ?? t('General.description') + t('General.notDefined')}
-				</Text>
-			</Stack>
-		</DetailsWrapper>
+		<Box paddingTop={6} paddingBottom={8} width="100%">
+			<Box
+				padding={6}
+				style={{ maxWidth: '60rem' }}
+				backgroundColor="shades.00"
+				border="thin"
+				borderColor="neutral.300">
+				<Stack gap={8}>
+					<div
+						style={{
+							display: 'grid',
+							gridTemplateColumns: 'repeat(2, 1fr)',
+							columnGap: tokens.spacing[6],
+							rowGap: tokens.spacing[8]
+						}}>
+						<Stack gap={4}>
+							<Label>{t('General.name')}</Label>
+							<Text fontSize="small" color="neutral.800">
+								{service?.name ?? t('General.name') + t('General.notDefined')}
+							</Text>
+						</Stack>
+						<Stack gap={4}>
+							<Label>{t('Services.priceCalculationUnit')}</Label>
+							<Text fontSize="small" color="neutral.800">
+								{formatUnitLabel(service?.priceCalculationUnit) ??
+									t('Services.priceCalculationUnit') + t('General.notDefined')}
+							</Text>
+						</Stack>
+					</div>
+					<Box style={{ width: '100%' }}>
+						<DataTable
+							columns={priceColumns}
+							data={replaceNullInListWithDash(service?.prices ?? [])}
+							enableCheckboxes={false}
+							enableRowClick={false}
+							equalColumnWidths={true}
+						/>
+					</Box>
+				</Stack>
+			</Box>
+		</Box>
 	)
 }

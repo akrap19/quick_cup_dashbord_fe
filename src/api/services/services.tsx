@@ -45,3 +45,9 @@ export const deleteServices = async (serviceIds: string[]) => {
 
 	return response?.data
 }
+
+export const getAllServicesPrices = async () => {
+	const response = await fetchWithToken(`services/prices`)
+
+	return response?.data
+}

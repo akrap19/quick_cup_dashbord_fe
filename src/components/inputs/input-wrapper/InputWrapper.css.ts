@@ -1,4 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string */
+import { RecipeVariants, recipe } from '@vanilla-extract/recipes'
 import { style } from '@vanilla-extract/css'
 
 import { tokens } from 'style/theme.css'
@@ -9,7 +10,8 @@ const disabled = {
 	borderColor: tokens.colors['neutral.300'],
 	color: tokens.colors['neutral.500'],
 	boxShadow: 'unset',
-	opacity: '0.75'
+	opacity: '0.75',
+	backgroundColor: 'unset'
 }
 const hasError = { borderColor: tokens.colors['destructive.500'] }
 const hasSuccess = { borderColor: tokens.colors['success.500'] }
@@ -19,28 +21,51 @@ export const inputWrapper = style({
 	color: tokens.colors['neutral.800']
 })
 
-export const input = style({
-	height: '2.5rem',
-	width: '100%',
-	display: 'flex',
-	alignItems: 'center',
-	outline: 'none',
-	border: `1px solid ${tokens.colors['neutral.300']}`,
-	fontSize: tokens.typography.size.small,
-	lineHeight: tokens.typography.lineHeight.medium,
-	borderRadius: tokens.borders.radius.small,
-	paddingLeft: tokens.spacing[3],
-	paddingRight: tokens.spacing[3],
-	backgroundColor: tokens.colors['shades.00'],
-	color: 'inherit',
+export const input = recipe({
+	base: {
+		width: '100%',
+		display: 'flex',
+		alignItems: 'center',
+		outline: 'none',
+		border: `1px solid ${tokens.colors['neutral.300']}`,
+		lineHeight: tokens.typography.lineHeight.medium,
+		borderRadius: tokens.borders.radius.small,
+		backgroundColor: tokens.colors['neutral.50'],
+		color: 'inherit',
 
-	':focus': activeBorder,
-	':hover': activeBorder,
-	':active': activeBorder,
-	'::placeholder': placeholder,
-	':-ms-input-placeholder': placeholder,
-	'::-webkit-input-placeholder': placeholder,
-	':disabled': disabled
+		':focus': activeBorder,
+		':hover': activeBorder,
+		':active': activeBorder,
+		'::placeholder': placeholder,
+		':-ms-input-placeholder': placeholder,
+		'::-webkit-input-placeholder': placeholder,
+		':disabled': disabled
+	},
+	variants: {
+		size: {
+			small: {
+				height: '2.125rem',
+				fontSize: tokens.typography.size.small,
+				paddingLeft: tokens.spacing[3],
+				paddingRight: tokens.spacing[3]
+			},
+			medium: {
+				height: '2.5rem',
+				fontSize: tokens.typography.size.small,
+				paddingLeft: tokens.spacing[3],
+				paddingRight: tokens.spacing[3]
+			},
+			large: {
+				height: '3rem',
+				fontSize: tokens.typography.size.medium,
+				paddingLeft: tokens.spacing[4],
+				paddingRight: tokens.spacing[4]
+			}
+		}
+	},
+	defaultVariants: {
+		size: 'medium'
+	}
 })
 
 export const inputHasError = style({
@@ -58,6 +83,8 @@ export const inputHasSuccess = style({
 	':active': hasSuccess,
 	':disabled': disabled
 })
+
+export type InputVariants = RecipeVariants<typeof input>
 
 export const iconSlot = style({
 	position: 'absolute',

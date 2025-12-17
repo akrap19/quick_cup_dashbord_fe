@@ -12,6 +12,7 @@ import { deleteMedia, media } from 'api/services/common'
 
 import * as styles from './PhotoUpload.css'
 import { IconDeleteButton } from '../../button/icon-delete-button/IconDeleteButton'
+import { ItemCarousel } from '../../item-carousel/ItemCarousel'
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
 	initialImagesUrls?: string[]
@@ -148,15 +149,19 @@ export const PhotoUpload = ({ initialImagesUrls, onPhotosChange, ...rest }: Prop
 				<br />
 				{t('General.photoUploadInstructions')}
 			</label>
-			{photos &&
-				photos.map((photo: string) => (
-					<Box position="relative" style={{ height: '212px' }} key={photo}>
-						<Box className={styles.imageDeleteIconContainer}>
-							<IconDeleteButton onDelete={() => handleDelete(photo)} />
-						</Box>
-						<Image src={photo} width={212} height={212} alt="uploadedPhoto" style={{ objectFit: 'cover' }} />
-					</Box>
-				))}
+			<div style={{ width: '242px', height: '300px' }}>
+				<ItemCarousel key={photos.join(',')}>
+					{photos &&
+						photos.map((photo: string) => (
+							<Box position="relative" key={photo}>
+								<Box className={styles.imageDeleteIconContainer}>
+									<IconDeleteButton onDelete={() => handleDelete(photo)} />
+								</Box>
+								<Image src={photo} width={242} height={300} alt="uploadedPhoto" style={{ objectFit: 'contain' }} />
+							</Box>
+						))}
+				</ItemCarousel>
+			</div>
 		</Inline>
 	)
 }

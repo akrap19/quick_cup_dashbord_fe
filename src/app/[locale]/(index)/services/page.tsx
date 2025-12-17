@@ -24,13 +24,13 @@ const ServicesPage = async ({ searchParams }: Props) => {
 			...service,
 			id: service.id ?? service.userId,
 			name: service.name ?? '-',
-			description: service.description ?? null
+			locations: service.locations ?? '-'
 		})) ??
 		servicesData?.users?.map((service: any) => ({
 			...service,
 			id: service.id ?? service.userId,
 			name: service.name ?? '-',
-			description: service.description ?? null
+			locations: service.locations ?? '-'
 		}))
 
 	return isInitialListEmpty ? (

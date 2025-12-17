@@ -37,6 +37,18 @@ export const EventDetails = ({ event }: Props) => {
 					{event.location ?? t('General.location') + t('General.notDefined')}
 				</Text>
 			</Stack>
+			<Stack gap={4}>
+				<Label>{t('General.placeAndPostalCode')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{event.place ?? t('General.placeAndPostalCode') + t('General.notDefined')}
+				</Text>
+			</Stack>
+			<Stack gap={4}>
+				<Label>{t('General.streetAndNumber')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{event.street ?? t('General.streetAndNumber') + t('General.notDefined')}
+				</Text>
+			</Stack>
 			<Stack gap={4} style={{ width: '100%' }}>
 				<Label>{t('General.owner')}</Label>
 				<Text fontSize="small" color="neutral.800">

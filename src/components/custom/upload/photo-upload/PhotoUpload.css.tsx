@@ -7,8 +7,9 @@ export const fileInput = style({
 })
 
 export const photoUploadLabel = style({
-	height: '212px',
-	width: '212px',
+	height: '300px',
+	width: '242px',
+	borderRadius: tokens.borders.radius.small,
 	cursor: 'pointer',
 	display: 'inline-block',
 	backgroundColor: tokens.colors['neutral.150'],

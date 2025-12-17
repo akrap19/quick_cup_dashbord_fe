@@ -41,27 +41,33 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 	}
 
 	const onChangeWithMaxLengthCheck = (value: string) => {
+		if (!onChange) return
+
 		const textWithoutHtmlTags = removeHtmlTags(value)
+		const trimmedText = textWithoutHtmlTags?.trim() || ''
 
-		if (!textWithoutHtmlTags && onChange) {
-			onChange(value as any)
+		// Normalize empty HTML values (like <p><br></p>, <p></p>, etc.) to empty string
+		if (!trimmedText) {
+			onChange('' as any)
+			return
 		}
 
-		if (onChange && maxLength && textWithoutHtmlTags) {
-			if (textWithoutHtmlTags?.length <= maxLength) {
-				onChange(value as any)
-			} else {
-				const valueForReplace = textWithoutHtmlTags.slice(500)
-				const stringWithoutLastHtmlTags = removeAllLastHtmlTags(value)
-				const lastIndex = stringWithoutLastHtmlTags.lastIndexOf(valueForReplace)
-				const valueForChange =
-					stringWithoutLastHtmlTags.slice(0, lastIndex) +
-					stringWithoutLastHtmlTags.slice(lastIndex + valueForReplace.length)
-				const finalValue = valueForChange + extractLastHtmlTags(value)
+		// If maxLength is provided, enforce it
+		if (maxLength && trimmedText.length > maxLength) {
+			const valueForReplace = trimmedText.slice(maxLength)
+			const stringWithoutLastHtmlTags = removeAllLastHtmlTags(value)
+			const lastIndex = stringWithoutLastHtmlTags.lastIndexOf(valueForReplace)
+			const valueForChange =
+				stringWithoutLastHtmlTags.slice(0, lastIndex) +
+				stringWithoutLastHtmlTags.slice(lastIndex + valueForReplace.length)
+			const finalValue = valueForChange + extractLastHtmlTags(value)
 
-				onChange(finalValue as any)
-			}
+			onChange(finalValue as any)
+			return
 		}
+
+		// Otherwise, pass the value through normally
+		onChange(value as any)
 	}
 
 	useEffect(() => {

@@ -35,6 +35,14 @@ const EventForm = ({ cancelDialog, clients, isClient }: Props) => {
 				<TextInput placeholder={t('General.namePlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
+			{!isClient ? (
+				<FormControl name="userId">
+					<FormControl.Label>{t('General.owner')}</FormControl.Label>
+					<SearchDropdown placeholder="General.ownerPlaceholder" options={transformedClientArray} alwaysShowSearch />
+				</FormControl>
+			) : (
+				<div />
+			)}
 			<FormControl name="location">
 				<FormControl.Label>
 					<RequiredLabel>{t('General.location')}</RequiredLabel>
@@ -42,15 +50,21 @@ const EventForm = ({ cancelDialog, clients, isClient }: Props) => {
 				<TextInput placeholder={t('Events.locationPlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
-			{!isClient && (
-				<>
-					<FormControl name="userId">
-						<FormControl.Label>{t('General.owner')}</FormControl.Label>
-						<SearchDropdown placeholder="General.ownerPlaceholder" options={transformedClientArray} alwaysShowSearch />
-					</FormControl>
-					<div />
-				</>
-			)}
+			<FormControl name="place">
+				<FormControl.Label>
+					<RequiredLabel>{t('General.placeAndPostalCode')}</RequiredLabel>
+				</FormControl.Label>
+				<TextInput placeholder={t('General.placeAndPostalCodePlaceholder')} autoComplete="off" />
+				<FormControl.Message />
+			</FormControl>
+			<FormControl name="street">
+				<FormControl.Label>
+					<RequiredLabel>{t('General.streetAndNumber')}</RequiredLabel>
+				</FormControl.Label>
+				<TextInput placeholder={t('General.streetAndNumberPlaceholder')} autoComplete="off" />
+				<FormControl.Message />
+			</FormControl>
+			<div />
 			<FormControl name="startDate">
 				<FormControl.Label>
 					<RequiredLabel>{t('Events.startDate')}</RequiredLabel>

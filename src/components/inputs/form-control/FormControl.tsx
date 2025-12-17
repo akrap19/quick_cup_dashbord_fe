@@ -24,6 +24,7 @@ import { RichTextEditor } from '../rich-text-editor'
 import { Select } from '../select'
 import { Textarea } from '../text-area'
 import { TextInput } from '../text-input'
+import { FormTable } from '@/components/custom/form-table/FormTable'
 
 type Props = {
 	name: string
@@ -55,7 +56,8 @@ export const FormControl = ({ name, maxLength, successMessageString, errorMessag
 		Checkbox,
 		CheckboxGroup,
 		SearchDropdown,
-		RadioGroup
+		RadioGroup,
+		FormTable
 	])
 
 	return (

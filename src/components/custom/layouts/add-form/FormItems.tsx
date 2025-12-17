@@ -14,10 +14,11 @@ import { tokens } from '@/style/theme.css'
 
 interface Props {
 	children: any
+	summary?: string
 	openCancelDialog?: () => void
 }
 
-export const FormItems = ({ children, openCancelDialog }: Props) => {
+export const FormItems = ({ children, summary, openCancelDialog }: Props) => {
 	const t = useTranslations()
 	const formContext = useFormContext()
 	const { back } = useRouter()
@@ -50,13 +51,18 @@ export const FormItems = ({ children, openCancelDialog }: Props) => {
 				children
 			)}
 			<Divider />
-			<Inline gap={4}>
-				<Button variant="secondary" onClick={handleCancel}>
-					{t('General.cancel')}
-				</Button>
-				<Button type="submit" disabled={!formContext.formState.isValid}>
-					{t('General.saveChanges')}
-				</Button>
+			<Inline justifyContent="space-between" alignItems="flex-start">
+				<Inline gap={4}>
+					<Button variant="secondary" onClick={handleCancel}>
+						{t('General.cancel')}
+					</Button>
+					<Button type="submit" disabled={!formContext.formState.isValid}>
+						{t('General.saveChanges')}
+					</Button>
+				</Inline>
+				<Text fontSize="xbig" color="neutral.900" fontWeight="semibold">
+					{summary}
+				</Text>
 			</Inline>
 		</Stack>
 	)

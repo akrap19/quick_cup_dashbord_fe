@@ -1,13 +1,13 @@
 import { ListWrapper } from '@/components/custom/layouts'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
-import { DataTable } from '@/components/data-display/data-table'
-import { replaceNullInListWithDash } from '@/utils/replaceNullInListWithDash'
 import { getProducts } from 'api/services/products'
 import { ROUTES } from 'parameters'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 
-import { columns } from './columns'
 import { Inputs } from './inputs'
+import { ShopItemCard } from '@/components/custom/shop-item-card/ShopItemCard'
+import { Product } from 'api/models/products/product'
+import { Inline } from '@/components/layout/inline'
 
 interface Props {
 	searchParams: {
@@ -25,7 +25,8 @@ const BuyPage = async ({ searchParams }: Props) => {
 			...buy,
 			id: buy.id,
 			name: buy.name ?? '-',
-			description: buy.description ?? '-'
+			description: buy.description ?? '-',
+			images: buy.images?.map((image: any) => image.url) ?? []
 		}
 	})
 
@@ -39,12 +40,12 @@ const BuyPage = async ({ searchParams }: Props) => {
 		/>
 	) : (
 		<ListWrapper title="General.buy">
-			<Inputs data={buyData?.products} />
-			<DataTable
-				columns={columns}
-				data={replaceNullInListWithDash(transformedBuyArray)}
-				pagination={buyData?.pagination}
-			/>
+			<Inputs />
+			<Inline gap={6}>
+				{transformedBuyArray?.map((product: Product) => (
+					<ShopItemCard key={product.id} shopItem={product} route={ROUTES.BUY} editRoute={ROUTES.EDIT_BUY} />
+				))}
+			</Inline>
 		</ListWrapper>
 	)
 }

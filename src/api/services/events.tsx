@@ -4,8 +4,8 @@ import { EventPayload } from 'api/models/event/eventPayload'
 
 interface Query {
 	search: string
-	page: number
-	limit: number
+	page?: number
+	limit?: number
 }
 
 export const getEvents = (query: Query) => {

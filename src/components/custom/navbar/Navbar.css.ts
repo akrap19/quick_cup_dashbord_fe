@@ -7,7 +7,7 @@ export const navbar = style({
 	justifyContent: 'space-between',
 	height: '7.5rem',
 	padding: `${tokens.spacing[13]} ${tokens.spacing[16]} ${tokens.spacing[8]} ${tokens.spacing[10]}`,
-	backgroundColor: tokens.colors['neutral.50'],
+	backgroundColor: tokens.colors['shades.00'],
 	borderBottom: tokens.borders.border.thin,
 	borderColor: tokens.borders.color['neutral.300']
 })

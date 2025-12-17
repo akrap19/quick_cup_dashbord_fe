@@ -1,5 +1,5 @@
 import { divider } from './Divider.css'
 
-export const Divider = () => {
-	return <div className={divider} />
+export const Divider = ({ backgroundColor }: { backgroundColor?: string }) => {
+	return <div className={divider} style={{ backgroundColor }} />
 }

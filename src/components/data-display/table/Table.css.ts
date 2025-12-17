@@ -16,6 +16,7 @@ const font = {
 export const tableWrapper = style({
 	border: border.border,
 	borderColor: border.borderColor,
+	borderRadius: tokens.borders.radius.small,
 	width: '100%',
 	overflow: 'auto',
 	maxHeight: 'calc(100vh - 348px)'

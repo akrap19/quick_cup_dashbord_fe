@@ -95,7 +95,7 @@
 }
 
 .ql-container.ql-snow {
-	height: 128px;
+	height: 160px;
 	border-radius: 8px;
 	border: unset;
 }
@@ -103,7 +103,7 @@
 .ql-editor {
 	font-family: 'Inter', sans-serif;
 	padding: 10px 48px 10px 12px !important;
-	background-color: #fff;
+	background-color: #fcfcfc;
 	border-radius: 8px;
 	border-right: 1px solid #d6d6dd;
 	border-bottom: 1px solid #d6d6dd;

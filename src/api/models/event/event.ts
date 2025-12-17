@@ -6,4 +6,6 @@ export interface Event {
 	startDate: string | null
 	endDate: string | null
 	location: string | null
+	place: string
+	street: string
 }

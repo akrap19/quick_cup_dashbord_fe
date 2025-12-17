@@ -10,7 +10,6 @@ import { ListBulletsIcon } from '@/components/icons/list-bullets-icon'
 import { UserRoleEnum } from 'enums/userRoleEnum'
 import { ROUTES } from 'parameters'
 import { KeyIcon } from '@/components/icons/key-icon'
-import { BarcodeIcon } from '@/components/icons/barcode-icon'
 
 export type ItemSection = 'users' | 'offers' | 'manage'
 
@@ -46,19 +45,23 @@ export const drawerItems: Item[] = [
 		section: 'users'
 	},
 	{
-		label: 'products',
-		icon: <BarcodeIcon />,
-		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.SERVICE],
-		section: 'offers',
-		subItems: [
-			{ label: 'buy', icon: <ShoppingBagIcon />, route: ROUTES.BUY, isSubItem: true },
-			{ label: 'rent', icon: <KeyIcon />, route: ROUTES.RENT, isSubItem: true }
-		]
-	},
-	{
 		label: 'service',
 		icon: <ServiceIcon />,
 		route: ROUTES.SERVICES,
+		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.SERVICE],
+		section: 'users'
+	},
+	{
+		label: 'buy',
+		icon: <ShoppingBagIcon />,
+		route: ROUTES.BUY,
+		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.SERVICE],
+		section: 'offers'
+	},
+	{
+		label: 'rent',
+		icon: <KeyIcon />,
+		route: ROUTES.RENT,
 		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.SERVICE],
 		section: 'offers'
 	},

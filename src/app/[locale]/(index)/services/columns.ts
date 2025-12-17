@@ -4,5 +4,5 @@ import { Services } from 'api/models/services/Services'
 
 export const columns: Array<ColumnDef<Services>> = [
 	{ accessorKey: 'name', header: 'General.name' },
-	{ accessorKey: 'description', header: 'General.description' }
+	{ accessorKey: 'locations', header: 'General.locations' }
 ]

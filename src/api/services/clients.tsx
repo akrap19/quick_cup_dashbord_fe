@@ -4,8 +4,8 @@ import { ClientPayload } from 'api/models/clients/clientPayload'
 
 interface Query {
 	search: string
-	page: number
-	limit: number
+	page?: number
+	limit?: number
 }
 
 export const getClients = (query: Query) => {

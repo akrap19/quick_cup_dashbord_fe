@@ -21,6 +21,8 @@ const formSchema = z.object({
 	startDate: requiredString.shape.scheme,
 	endDate: requiredString.shape.scheme,
 	location: requiredString.shape.scheme,
+	place: requiredString.shape.scheme,
+	street: requiredString.shape.scheme,
 	userId: requiredString.shape.scheme
 })
 
@@ -45,6 +47,8 @@ const EventEdit = ({ event, clients, isClient }: Props) => {
 			startDate: event?.startDate ?? '',
 			endDate: event?.endDate ?? '',
 			location: event?.location ?? '',
+			place: event?.place ?? '',
+			street: event?.street ?? '',
 			userId: event?.userId ?? ''
 		}
 	})
@@ -52,7 +56,15 @@ const EventEdit = ({ event, clients, isClient }: Props) => {
 	const onSubmit = async () => {
 		const data = form.getValues()
 		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
-		const result = await updateEvent({ ...dataWIhoutEmptyString, id: event?.id })
+		const payload = {
+			...dataWIhoutEmptyString,
+			title: dataWIhoutEmptyString.title,
+			place: dataWIhoutEmptyString.place?.trim() || '',
+			street: dataWIhoutEmptyString.street?.trim() || '',
+			id: event?.id
+		}
+		delete payload.title
+		const result = await updateEvent(payload)
 		if (result?.message === 'OK') {
 			localStorage.setItem('editMessage', 'Events.successfullyEdited')
 			refresh()

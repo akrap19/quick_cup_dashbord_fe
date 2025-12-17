@@ -1,3 +1,5 @@
+import { Product } from '../products/product'
+
 export interface ClientPayload {
 	userId?: string
 	email?: string
@@ -6,4 +8,5 @@ export interface ClientPayload {
 	barnahus?: string
 	userProfession: string
 	phoneNumber: string
+	productPrices?: Product[]
 }

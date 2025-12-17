@@ -36,7 +36,7 @@ export const DetailsWrapper = ({ children }: Props) => {
 					<Box
 						padding={6}
 						style={{ maxWidth: '60rem' }}
-						backgroundColor="neutral.50"
+						backgroundColor="shades.00"
 						border="thin"
 						borderColor="neutral.300">
 						<div

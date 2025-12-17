@@ -1,13 +1,13 @@
 import { ListWrapper } from '@/components/custom/layouts'
 import { NoListData } from '@/components/custom/no-list-data/NoListData'
-import { DataTable } from '@/components/data-display/data-table'
-import { replaceNullInListWithDash } from '@/utils/replaceNullInListWithDash'
 import { getProducts } from 'api/services/products'
 import { ROUTES } from 'parameters'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 
-import { columns } from './columns'
 import { Inputs } from './inputs'
+import { ShopItemCard } from '@/components/custom/shop-item-card/ShopItemCard'
+import { Product } from 'api/models/products/product'
+import { Inline } from '@/components/layout/inline'
 
 interface Props {
 	searchParams: {
@@ -25,7 +25,8 @@ const RentPage = async ({ searchParams }: Props) => {
 			...rent,
 			id: rent.id,
 			name: rent.name ?? '-',
-			description: rent.description ?? '-'
+			description: rent.description ?? '-',
+			images: rent.images?.map((image: any) => image.url) ?? []
 		}
 	})
 
@@ -39,12 +40,12 @@ const RentPage = async ({ searchParams }: Props) => {
 		/>
 	) : (
 		<ListWrapper title="General.rent">
-			<Inputs data={rentData?.products} />
-			<DataTable
-				columns={columns}
-				data={replaceNullInListWithDash(transformedRentArray)}
-				pagination={rentData?.pagination}
-			/>
+			<Inputs />
+			<Inline gap={6}>
+				{transformedRentArray?.map((product: Product) => (
+					<ShopItemCard key={product.id} shopItem={product} route={ROUTES.RENT} editRoute={ROUTES.EDIT_RENT} />
+				))}
+			</Inline>
 		</ListWrapper>
 	)
 }

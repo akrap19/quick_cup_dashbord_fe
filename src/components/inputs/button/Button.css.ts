@@ -14,7 +14,7 @@ export const button = recipe({
 
 		':disabled': {
 			cursor: 'default',
-			opacity: '0.3'
+			opacity: '0.8'
 		},
 		':focus-visible': {
 			outline: 'unset',
@@ -25,6 +25,12 @@ export const button = recipe({
 		size: {
 			auto: {
 				height: 'auto'
+			},
+			icon: {
+				height: 'auto',
+				width: 'auto',
+				padding: tokens.spacing[2],
+				borderRadius: tokens.borders.radius.large
 			},
 			small: {
 				height: '2.125rem',
@@ -84,6 +90,12 @@ export const button = recipe({
 				backgroundColor: 'transparent',
 				color: tokens.colors['primary.500'],
 				padding: 'unset'
+			},
+			warning: {
+				backgroundColor: tokens.colors['warning.500'],
+				color: tokens.colors['neutral.50'],
+				':hover': { backgroundColor: tokens.colors['warning.400'] },
+				':disabled': { backgroundColor: tokens.colors['warning.200'] }
 			},
 			destructive: {
 				backgroundColor: tokens.colors['destructive.500'],

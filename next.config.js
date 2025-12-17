@@ -13,7 +13,7 @@ const withNextIntl = createNextIntlPlugin()
 const nextConfig = {
 	reactStrictMode: false,
 	images: {
-		domains: ['via.placeholder.com', 'storage.googleapis.com']
+		domains: ['via.placeholder.com', 'storage.googleapis.com', 'files.quickcup.eu']
 	},
 	// TODO: remove this
 	// https://nextjs.org/docs/app/api-reference/next-config-js/appDir

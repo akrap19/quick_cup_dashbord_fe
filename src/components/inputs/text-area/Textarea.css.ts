@@ -24,7 +24,7 @@ export const textarea = style({
 	lineHeight: tokens.typography.lineHeight.medium,
 	borderRadius: tokens.borders.radius.small,
 	padding: `${tokens.spacing[2]} ${tokens.spacing[3]}`,
-	backgroundColor: tokens.colors['shades.00'],
+	backgroundColor: tokens.colors['neutral.50'],
 	color: 'inherit',
 	fontFamily: 'unset',
 	resize: 'none',

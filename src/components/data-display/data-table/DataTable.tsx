@@ -27,9 +27,20 @@ interface Props<TData, TValue> {
 	data: TData[]
 	pagination?: Pagination
 	contentSection?: string
+	enableCheckboxes?: boolean
+	enableRowClick?: boolean
+	equalColumnWidths?: boolean
 }
 
-export const DataTable = <TData, TValue>({ columns, data, pagination, contentSection }: Props<TData, TValue>) => {
+export const DataTable = <TData, TValue>({
+	columns,
+	data,
+	pagination,
+	contentSection,
+	enableCheckboxes = true,
+	enableRowClick = true,
+	equalColumnWidths = false
+}: Props<TData, TValue>) => {
 	const { checkedItems } = useTableStore()
 	const searchParams = useSearchParams()
 	const { replace } = useRouter()
@@ -83,11 +94,22 @@ export const DataTable = <TData, TValue>({ columns, data, pagination, contentSec
 		handleQueryParams('page', pageIndex.toString())
 	}, [table.getState().pagination.pageIndex])
 
+	const columnCount = columns.length + (enableCheckboxes ? 1 : 0)
+	const columnWidth = equalColumnWidths ? `${100 / columnCount}%` : undefined
+
 	return (
 		<>
-			<Table>
-				<DataTableHeader table={table} />
-				<DataTableBody table={table} columns={columns} contentSection={contentSection} data={data} />
+			<Table style={equalColumnWidths ? { tableLayout: 'fixed' } : undefined}>
+				<DataTableHeader table={table} enableCheckboxes={enableCheckboxes} columnWidth={columnWidth} />
+				<DataTableBody
+					table={table}
+					columns={columns}
+					contentSection={contentSection}
+					data={data}
+					enableCheckboxes={enableCheckboxes}
+					enableRowClick={enableRowClick}
+					columnWidth={columnWidth}
+				/>
 			</Table>
 			{pagination && <DataTablePagination table={table} pagination={pagination} />}
 		</>

@@ -3,17 +3,14 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 import { AnchorHTMLAttributes, ButtonHTMLAttributes, MouseEventHandler, ReactNode } from 'react'
-
+import { CSSProperties } from 'react'
 import { ButtonVariants, button } from './Button.css'
 
-// Required props for both button and anchor
-type RequiredProps = { children: ReactNode }
-// When href prop is passed also allow other anchor attributes
+type RequiredProps = { children: ReactNode; style?: CSSProperties }
 type AnchorProps = { onClick?: never; href: string } & Pick<
 	AnchorHTMLAttributes<HTMLAnchorElement>,
 	'target' | 'rel' | 'className'
 >
-// When onClick prop is passed also allow other button attributes
 type ButtonProps = { onClick?: MouseEventHandler<HTMLButtonElement>; href?: never } & Pick<
 	ButtonHTMLAttributes<HTMLButtonElement>,
 	'type' | 'className' | 'disabled'

@@ -5,7 +5,6 @@ import { useFormContext } from 'react-hook-form'
 import { useEffect, useRef } from 'react'
 import { ItemCarousel } from '@/components/custom/item-carousel/ItemCarousel'
 import Image from 'next/image'
-import { Inline } from '@/components/layout/inline'
 import { Button } from '@/components/inputs/button'
 import { TrashIcon } from '@/components/icons/trash-icon'
 import { Text } from '@/components/typography/text'
@@ -19,6 +18,7 @@ import { ProductPrice } from 'api/models/products/productPrice'
 import { useBuyStore } from '@/store/buy'
 import { useRentStore } from '@/store/rent'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
+import { OrderProductCardContainer } from '@/components/custom/order-product-card-container'
 
 interface OrderProductCardProps {
 	product: Product
@@ -92,51 +92,59 @@ export const OrderProductCard = ({ product, index }: OrderProductCardProps) => {
 		store.removeItem(productId)
 	}
 
+	const imageSection = (
+		<ItemCarousel>
+			{/* @ts-ignore */}
+			{product?.images?.map((item: string) => (
+				<Image
+					key={item}
+					alt={item}
+					src={item ?? ''}
+					width={121}
+					height={150}
+					style={{ objectFit: 'contain' }}
+					priority
+				/>
+			))}
+		</ItemCarousel>
+	)
+
+	const productInfoSection = (
+		<>
+			<Text fontSize="big" color="neutral.900" fontWeight="semibold">
+				{product.name + ' ' + product.size}
+			</Text>
+			<Box flex="1" position="absolute" style={{ bottom: 0, left: 0, width: '140px' }}>
+				<Text color="neutral.700">{t('General.quantity')}</Text>
+				<FormControl name={quantityFieldName as any}>
+					<NumericInput placeholder={t('General.quantityPlaceholder')} allowNegative={false} decimalScale={0} />
+				</FormControl>
+			</Box>
+		</>
+	)
+
+	const rightSection = (
+		<Stack alignItems="flex-end" justifyContent="space-between" style={{ height: '150px' }}>
+			<Button
+				type="button"
+				variant="destructive"
+				size="icon"
+				onClick={() => handleRemoveProduct(product.id)}
+				disabled={isOnlyOneProduct}>
+				<TrashIcon size="small" color="shades.00" />
+			</Button>
+			<Text color="neutral.900" fontSize="medium" fontWeight="semibold">
+				{totalPrice}€
+			</Text>
+		</Stack>
+	)
+
 	return (
-		<Box key={product.id} paddingY={3} paddingX={3} borderRadius="small" boxShadow="large">
-			<Inline justifyContent="space-between" alignItems="flex-start">
-				<Inline justifyContent="center" alignItems="flex-start" gap={3} key={product.id}>
-					<Box style={{ width: '140px', height: '150px' }}>
-						<ItemCarousel>
-							{product?.images?.map((item: string) => (
-								<Image
-									key={item}
-									alt={item}
-									src={item ?? ''}
-									width={121}
-									height={150}
-									style={{ objectFit: 'contain' }}
-									priority
-								/>
-							))}
-						</ItemCarousel>
-					</Box>
-					<Box position="relative" style={{ height: '150px' }}>
-						<Text fontSize="big" color="neutral.900" fontWeight="semibold">
-							{product.name + ' ' + product.size}
-						</Text>
-						<Box flex="1" position="absolute" style={{ bottom: 0, left: 0, width: '140px' }}>
-							<Text color="neutral.700">{t('General.quantity')}</Text>
-							<FormControl name={quantityFieldName as any}>
-								<NumericInput placeholder={t('General.quantityPlaceholder')} allowNegative={false} decimalScale={0} />
-							</FormControl>
-						</Box>
-					</Box>
-				</Inline>
-				<Stack alignItems="flex-end" justifyContent="space-between" style={{ height: '150px' }}>
-					<Button
-						type="button"
-						variant="destructive"
-						size="icon"
-						onClick={() => handleRemoveProduct(product.id)}
-						disabled={isOnlyOneProduct}>
-						<TrashIcon size="small" color="shades.00" />
-					</Button>
-					<Text color="neutral.900" fontSize="medium" fontWeight="semibold">
-						{totalPrice}€
-					</Text>
-				</Stack>
-			</Inline>
-		</Box>
+		<OrderProductCardContainer
+			key={product.id}
+			imageSection={imageSection}
+			productInfoSection={productInfoSection}
+			rightSection={rightSection}
+		/>
 	)
 }

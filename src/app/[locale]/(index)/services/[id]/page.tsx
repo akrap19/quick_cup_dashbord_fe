@@ -27,7 +27,7 @@ const ServiceDetailsPage = async ({ params, searchParams }: Props) => {
 		(serviceLocationsData?.pagination?.count === 0 && !searchParams.search) || serviceLocationsData === null
 
 	return (
-		<Box paddingTop={8} paddingX={10} width="100%">
+		<Box paddingTop={8} paddingX={10} width="100%" overflow="auto" style={{ height: 'calc(100vh - 120px)' }}>
 			<ServiceTabs
 				service={serviceData}
 				serviceLocations={serviceLocationsData?.serviceLocations || []}

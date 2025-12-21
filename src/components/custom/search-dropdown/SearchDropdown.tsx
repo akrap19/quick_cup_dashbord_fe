@@ -96,7 +96,11 @@ export const SearchDropdown = ({
 						<Box
 							className={clsx(input({ size: 'medium' }), !isFilter && hasSuccess && inputHasSuccess, endIconSpacing)}>
 							<Text className={DropdownPresentationlabel({ variant: presentationalLabelVariant })}>
-								{choosenValue?.name ?? value ?? `${t('General.select')} ${t(placeholder).toLowerCase()}`}
+								{choosenValue?.name
+									? t(choosenValue?.name)
+									: value
+										? t(value)
+										: `${t('General.select')} ${t(placeholder).toLowerCase()}`}
 							</Text>
 						</Box>
 					</Button>

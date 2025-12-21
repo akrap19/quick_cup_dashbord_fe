@@ -28,5 +28,8 @@ export const ROUTES = {
 	CLIENTS: '/clients',
 	ADD_CLIENTS: '/clients/add',
 	EDIT_CLIENTS: '/clients/edit/',
-	SETTINGS: '/settings'
+	SETTINGS: '/settings',
+	ADDITIONAL_COSTS: '/additional-costs',
+	ADD_ADDITIONAL_COSTS: '/additional-costs/add',
+	EDIT_ADDITIONAL_COSTS: '/additional-costs/edit/'
 }

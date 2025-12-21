@@ -52,7 +52,7 @@ const BuyAdd = ({ servicesPrices }: Props) => {
 			servicesPrices?.map(service => ({
 				serviceId: service.serviceId,
 				prices:
-					service.prices?.map(price => ({
+					service.buyPrices?.map(price => ({
 						minQuantity: price.minQuantity,
 						maxQuantity: price.maxQuantity,
 						price: price.price

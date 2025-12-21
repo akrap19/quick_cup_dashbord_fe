@@ -1,6 +1,9 @@
 import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
 import { fetchWithToken } from 'api/instances/FetchWithToken'
+import { CalculateMultipleServicePrice } from 'api/models/services/calculateMultipleServicePrice'
+import { CalculateMultipleServicePriceResponse } from 'api/models/services/calculateMultipleServicePriceResponse'
 import { ServicePayload } from 'api/models/services/ServicePayload'
+import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 
 interface Query {
 	search: string
@@ -46,8 +49,22 @@ export const deleteServices = async (serviceIds: string[]) => {
 	return response?.data
 }
 
-export const getAllServicesPrices = async () => {
-	const response = await fetchWithToken(`services/prices`)
+export const getAllServicesPrices = async (acquisitionType: AcquisitionTypeEnum) => {
+	const response = await fetchWithToken(`services/prices`, { acquisitionType })
 
 	return response?.data
+}
+
+export const getServicePrices = async (
+	serviceId: string,
+	calculateMultipleServicePrice: CalculateMultipleServicePrice,
+	signal?: AbortSignal
+): Promise<CalculateMultipleServicePriceResponse> => {
+	const response = await axiosInstanceWithToken.post(
+		`/services/${serviceId}/calculate-price-multiple`,
+		calculateMultipleServicePrice,
+		{ signal }
+	)
+
+	return response?.data?.data
 }

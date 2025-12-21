@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl'
 import qs from 'query-string'
 import { useDebounce } from 'rooks'
 
-import { AddButton } from '@/components/custom/button/add-button'
 import { SearchInput } from '@/components/custom/inputs/search-input'
 import { DataTableActions } from '@/components/data-display/data-table/DataTableActions'
 import { Box } from '@/components/layout/box'
@@ -17,6 +16,10 @@ import { useTableStore } from '@/store/table'
 import { Order } from 'api/models/order/order'
 import { deleteOrder, deleteOrders } from 'api/services/orders'
 import { ROUTES } from 'parameters'
+import { OrderActionButtons } from './orderActionButtons'
+import { UserRoleEnum } from 'enums/userRoleEnum'
+import { OrderStatusEnum } from 'enums/orderStatusEnum'
+import { useHasRoleAccess } from '@/hooks/use-has-role-access'
 
 interface Props {
 	data: Order[]
@@ -44,6 +47,14 @@ export const Inputs = ({ data }: Props) => {
 	}
 
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)
+	const hasRoleAccessForOrderActionButtons = useHasRoleAccess([
+		UserRoleEnum.MASTER_ADMIN,
+		UserRoleEnum.ADMIN,
+		UserRoleEnum.CLIENT
+	])
+	const hasRoleAccessChangeStatus = useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN])
+	const isClient = useHasRoleAccess([UserRoleEnum.CLIENT])
+	const isAdminOrMasterAdmin = useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN])
 
 	const handleEdit = () => {
 		const index = Object.keys(checkedItems || {})
@@ -84,6 +95,33 @@ export const Inputs = ({ data }: Props) => {
 		}
 	}
 
+	const getSelectedOrder = () => {
+		const index = Object.keys(checkedItems || {})
+		const numericIndex = parseInt(index[0], 10)
+
+		return hasRoleAccessChangeStatus ? data[numericIndex] : undefined
+	}
+
+	const shouldShowEdit = () => {
+		if (checkedItemsLength !== 1) {
+			return false
+		}
+
+		const index = Object.keys(checkedItems || {})
+		const numericIndex = parseInt(index[0], 10)
+		const selectedOrder = data[numericIndex]
+
+		if (!selectedOrder) {
+			return false
+		}
+
+		if (isClient) {
+			return selectedOrder.status === OrderStatusEnum.PENDING
+		}
+
+		return isAdminOrMasterAdmin
+	}
+
 	return (
 		<div>
 			{checkedItemsLength === 0 ? (
@@ -96,10 +134,10 @@ export const Inputs = ({ data }: Props) => {
 							onChange={({ target: { name, value } }) => debouncedFilterChange(name, value)}
 						/>
 					</Box>
-					<AddButton buttonLabel={t('Orders.add')} buttonLink={ROUTES.ADD_ORDERS} />
+					{hasRoleAccessForOrderActionButtons && <OrderActionButtons />}
 				</Inline>
 			) : (
-				<DataTableActions onEdit={handleEdit} onDelete={() => confirmDialog.toggleOpened()} />
+				<DataTableActions onEdit={shouldShowEdit() ? handleEdit : undefined} selectedItem={getSelectedOrder()} />
 			)}
 			<ConfirmActionDialog
 				title="Orders.delete"

@@ -10,6 +10,7 @@ import { ListBulletsIcon } from '@/components/icons/list-bullets-icon'
 import { UserRoleEnum } from 'enums/userRoleEnum'
 import { ROUTES } from 'parameters'
 import { KeyIcon } from '@/components/icons/key-icon'
+import { EuroIcon } from '@/components/icons/euro-icon'
 
 export type ItemSection = 'users' | 'offers' | 'manage'
 
@@ -41,14 +42,14 @@ export const drawerItems: Item[] = [
 		label: 'clients',
 		icon: <GroupsIcon />,
 		route: ROUTES.CLIENTS,
-		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.SERVICE],
+		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN],
 		section: 'users'
 	},
 	{
 		label: 'service',
 		icon: <ServiceIcon />,
 		route: ROUTES.SERVICES,
-		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.SERVICE],
+		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN],
 		section: 'users'
 	},
 	{
@@ -69,7 +70,14 @@ export const drawerItems: Item[] = [
 		label: 'events',
 		icon: <CalendarStarIcon />,
 		route: ROUTES.EVENTS,
-		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.CLIENT, UserRoleEnum.SERVICE],
+		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.CLIENT],
+		section: 'manage'
+	},
+	{
+		label: 'additionalCosts',
+		icon: <EuroIcon />,
+		route: ROUTES.ADDITIONAL_COSTS,
+		usedByRoles: [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN],
 		section: 'manage'
 	},
 	{

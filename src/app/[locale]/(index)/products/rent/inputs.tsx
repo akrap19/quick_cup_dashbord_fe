@@ -15,6 +15,8 @@ import { useRentStore } from '@/store/rent'
 
 import { ListBulletsIcon } from '@/components/icons/list-bullets-icon'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
+import { useHasRoleAccess } from '@/hooks/use-has-role-access'
+import { UserRoleEnum } from 'enums/userRoleEnum'
 
 export const Inputs = () => {
 	const t = useTranslations()
@@ -54,11 +56,13 @@ export const Inputs = () => {
 				/>
 			</Box>
 			<Inline gap={4} alignItems="center">
-				<AddButton buttonLabel={t('Rent.add')} buttonLink={ROUTES.ADD_RENT} />
+				{useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN]) && (
+					<AddButton buttonLabel={t('Rent.add')} buttonLink={ROUTES.ADD_RENT} />
+				)}
 				{itemsCount > 0 && (
 					<Button variant="success" size="large" onClick={handleCreateRentOrder}>
 						<ListBulletsIcon />
-						{t('Rent.createRentOrder')}
+						{t('Orders.finishRentOrder')}
 					</Button>
 				)}
 			</Inline>

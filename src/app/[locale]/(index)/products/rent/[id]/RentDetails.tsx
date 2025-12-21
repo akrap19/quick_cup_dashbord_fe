@@ -20,6 +20,8 @@ import { columns } from './columns'
 import { servicePriceColumns } from './servicePriceColumns'
 import { replaceNullInListWithDash } from '@/utils/replaceNullInListWithDash'
 import { Button } from '@/components/inputs/button'
+import { useHasRoleAccess } from '@/hooks/use-has-role-access'
+import { UserRoleEnum } from 'enums/userRoleEnum'
 
 interface Props {
 	product: Product
@@ -33,7 +35,9 @@ export const RentDetails = ({ product }: Props) => {
 	useNavbarItems({
 		title,
 		backLabel: 'Rent.back',
-		actionButton: <EditButton buttonLabel="Rent.edit" buttonLink={ROUTES.EDIT_RENT + product?.id} />
+		actionButton: useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN]) && (
+			<EditButton buttonLabel="Rent.edit" buttonLink={ROUTES.EDIT_RENT + product?.id} />
+		)
 	})
 
 	return (
@@ -110,7 +114,7 @@ export const RentDetails = ({ product }: Props) => {
 					equalColumnWidths={true}
 				/>
 			</Box>
-			{product.servicePrices && product.servicePrices.length > 0 && (
+			{product?.servicePrices && product?.servicePrices?.length > 0 && (
 				<Box style={{ gridColumn: 'span 2', width: '100%' }}>
 					<Stack gap={6}>
 						<div>
@@ -123,7 +127,7 @@ export const RentDetails = ({ product }: Props) => {
 						</div>
 						{showServicePriceList && (
 							<>
-								{product.servicePrices.map(service => (
+								{product?.servicePrices?.map(service => (
 									<Box key={service.serviceId} style={{ width: '85%', marginBottom: '16px' }}>
 										<Stack gap={4} style={{ marginBottom: '16px' }}>
 											<Label>{service.serviceName}</Label>

@@ -18,7 +18,16 @@ const variantTextMap: Record<string, string> = {
 	active: 'General.active',
 	blocked: 'General.blocked',
 	created: 'General.created',
-	deleted: 'General.deleted'
+	deleted: 'General.deleted',
+	pending: 'Orders.statusPending',
+	accepted: 'Orders.statusAccepted',
+	declined: 'Orders.statusDeclined',
+	payment_pending: 'Orders.statusPaymentPending',
+	payment_received: 'Orders.statusPaymentReceived',
+	in_production: 'Orders.statusInProduction',
+	ready: 'Orders.statusReady',
+	in_transit: 'Orders.statusInTransit',
+	completed: 'Orders.statusCompleted'
 }
 
 export const Badge = ({ variant = 'draft' }: Props) => {

@@ -1,6 +1,7 @@
 import axiosInstanceWithToken from 'api/instances/AxiosInstanceWithToken'
 import { fetchWithToken } from 'api/instances/FetchWithToken'
 import { OrderPayload } from 'api/models/order/orderPayload'
+import { OrderStatusEnum } from 'enums/orderStatusEnum'
 
 interface Query {
 	search: string
@@ -42,6 +43,12 @@ export const deleteOrder = async (orderId: string) => {
 
 export const deleteOrders = async (orderIds: string[]) => {
 	const response = await axiosInstanceWithToken.delete(`/orders/bulk`, { data: { orderIds } })
+
+	return response?.data
+}
+
+export const updateOrderStatus = async (status: OrderStatusEnum, orderId: string) => {
+	const response = await axiosInstanceWithToken.patch(`/orders/${orderId}/status`, { status })
 
 	return response?.data
 }

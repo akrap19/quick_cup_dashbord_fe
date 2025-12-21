@@ -15,6 +15,8 @@ import { useBuyStore } from '@/store/buy'
 
 import { ListBulletsIcon } from '@/components/icons/list-bullets-icon'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
+import { useHasRoleAccess } from '@/hooks/use-has-role-access'
+import { UserRoleEnum } from 'enums/userRoleEnum'
 
 export const Inputs = () => {
 	const t = useTranslations()
@@ -54,11 +56,13 @@ export const Inputs = () => {
 				/>
 			</Box>
 			<Inline gap={4} alignItems="center">
-				<AddButton buttonLabel={t('Buy.add')} buttonLink={ROUTES.ADD_BUY} />
+				{useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN]) && (
+					<AddButton buttonLabel={t('Buy.add')} buttonLink={ROUTES.ADD_BUY} />
+				)}
 				{itemsCount > 0 && (
 					<Button variant="success" size="large" onClick={handleCreateBuyOrder}>
 						<ListBulletsIcon />
-						{t('Buy.createBuyOrder')}
+						{t('Orders.finishBuyOrder')}
 					</Button>
 				)}
 			</Inline>

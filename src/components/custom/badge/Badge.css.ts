@@ -6,6 +6,8 @@ export const badge = recipe({
 	base: {
 		display: 'inline-flex',
 		alignItems: 'center',
+		width: 'fit-content',
+		whiteSpace: 'nowrap',
 		gap: tokens.spacing[1],
 		padding: `${tokens.spacing[1]} ${tokens.spacing[3]}`,
 		fontSize: tokens.typography.size.xsmall,
@@ -62,6 +64,42 @@ export const badge = recipe({
 			deleted: {
 				color: tokens.colors['destructive.700'],
 				background: tokens.colors['destructive.100']
+			},
+			pending: {
+				color: tokens.colors['warning.700'],
+				background: tokens.colors['warning.100']
+			},
+			accepted: {
+				color: tokens.colors['success.700'],
+				background: tokens.colors['success.100']
+			},
+			declined: {
+				color: tokens.colors['destructive.700'],
+				background: tokens.colors['destructive.100']
+			},
+			payment_pending: {
+				color: tokens.colors['warning.700'],
+				background: tokens.colors['warning.100']
+			},
+			payment_received: {
+				color: tokens.colors['success.700'],
+				background: tokens.colors['success.100']
+			},
+			in_production: {
+				color: tokens.colors['warning.700'],
+				background: tokens.colors['warning.100']
+			},
+			ready: {
+				color: tokens.colors['success.700'],
+				background: tokens.colors['success.100']
+			},
+			in_transit: {
+				color: tokens.colors['warning.700'],
+				background: tokens.colors['warning.100']
+			},
+			completed: {
+				color: tokens.colors['success.700'],
+				background: tokens.colors['success.100']
 			}
 		}
 	},

@@ -23,6 +23,8 @@ import { useBuyStore } from '@/store/buy'
 import { useRentStore } from '@/store/rent'
 import { MinusIcon } from '@/components/icons/minus-icon'
 import { ROUTES } from 'parameters'
+import { useHasRoleAccess } from '@/hooks/use-has-role-access'
+import { UserRoleEnum } from 'enums/userRoleEnum'
 
 interface Props {
 	shopItem: Product
@@ -83,28 +85,32 @@ export const ShopItemCard = ({ shopItem, route, editRoute }: Props) => {
 					<Stack gap={1}>
 						<Box width="100%" position="relative">
 							<Stack gap={2}>
-								<Box position="absolute" style={{ top: 0, right: 0, zIndex: 1 }}>
-									<Button
-										variant={isItemAlreadyInCart ? 'destructive' : 'success'}
-										size="icon"
-										onClick={handleAddProduct}>
-										{isItemAlreadyInCart ? (
-											<MinusIcon size="small" color="shades.00" />
-										) : (
-											<PlainPlusIcon size="small" color="shades.00" />
-										)}
-									</Button>
-								</Box>
-								<Box position="absolute" style={{ top: '65%', right: 0, zIndex: 1 }}>
-									<Stack gap={2}>
-										<Button variant="warning" size="icon" onClick={handleEdit}>
-											<PencilIcon size="small" color="shades.00" />
+								{useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.CLIENT]) && (
+									<Box position="absolute" style={{ top: 0, right: 0, zIndex: 1 }}>
+										<Button
+											variant={isItemAlreadyInCart ? 'destructive' : 'success'}
+											size="icon"
+											onClick={handleAddProduct}>
+											{isItemAlreadyInCart ? (
+												<MinusIcon size="small" color="shades.00" />
+											) : (
+												<PlainPlusIcon size="small" color="shades.00" />
+											)}
 										</Button>
-										<Button variant="destructive" size="icon" onClick={handleConfirmDialog}>
-											<TrashIcon size="small" color="shades.00" />
-										</Button>
-									</Stack>
-								</Box>
+									</Box>
+								)}
+								{useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN]) && (
+									<Box position="absolute" style={{ top: '65%', right: 0, zIndex: 1 }}>
+										<Stack gap={2}>
+											<Button variant="warning" size="icon" onClick={handleEdit}>
+												<PencilIcon size="small" color="shades.00" />
+											</Button>
+											<Button variant="destructive" size="icon" onClick={handleConfirmDialog}>
+												<TrashIcon size="small" color="shades.00" />
+											</Button>
+										</Stack>
+									</Box>
+								)}
 								<ItemCarousel>
 									{shopItem?.images?.map((item: any) => (
 										<div key={item} className={shopItemCardImageContainer}>

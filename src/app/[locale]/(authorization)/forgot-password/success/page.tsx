@@ -22,7 +22,6 @@ const SuccessPage = () => {
 		e.preventDefault()
 		e.stopPropagation()
 
-		console.log('Matijaaaaaaaa email 666666', email)
 		if (email) {
 			const result = await forgotPassword(email)
 

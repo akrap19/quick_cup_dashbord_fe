@@ -2,6 +2,7 @@
 
 import { Cell, ColumnDef, Table, flexRender } from '@tanstack/react-table'
 import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 import { Badge } from '@/components/custom/badge'
 import { NoResult } from '@/components/custom/no-result/NoResult'
@@ -31,8 +32,13 @@ export const DataTableBody = <TData, TValue>({
 	columnWidth
 }: Props<TData, TValue>) => {
 	const pathname = usePathname()
+	const t = useTranslations()
 
 	const renderCellContent = (cell: Cell<TData, unknown>) => {
+		if (cell.column.id === 'statusDescription') {
+			const translationKey = cell.getValue() as string
+			return <>{t(translationKey)}</>
+		}
 		if (cell.column.id.includes('status')) {
 			return (
 				<Box position="relative">

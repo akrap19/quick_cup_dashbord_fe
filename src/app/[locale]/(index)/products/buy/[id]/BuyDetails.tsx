@@ -20,6 +20,8 @@ import { columns } from './columns'
 import { servicePriceColumns } from './servicePriceColumns'
 import { replaceNullInListWithDash } from '@/utils/replaceNullInListWithDash'
 import { Button } from '@/components/inputs/button'
+import { useHasRoleAccess } from '@/hooks/use-has-role-access'
+import { UserRoleEnum } from 'enums/userRoleEnum'
 
 interface Props {
 	product: Product
@@ -33,7 +35,9 @@ export const BuyDetails = ({ product }: Props) => {
 	useNavbarItems({
 		title,
 		backLabel: 'Buy.back',
-		actionButton: <EditButton buttonLabel="Buy.edit" buttonLink={ROUTES.EDIT_BUY + product?.id} />
+		actionButton: useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN]) && (
+			<EditButton buttonLabel="Buy.edit" buttonLink={ROUTES.EDIT_BUY + product?.id} />
+		)
 	})
 
 	return (

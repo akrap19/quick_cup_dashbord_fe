@@ -29,13 +29,13 @@ export const optionalPhoneNumberScheme = z.object({
 
 export const productPriceSchema = z.object({
 	minQuantity: z.number().min(1),
-	maxQuantity: z.number().min(1).optional(),
+	maxQuantity: z.number().min(1).nullish(),
 	price: z.number().min(0)
 })
 
 export const servicePriceSchema = z.object({
 	minQuantity: z.number().min(1),
-	maxQuantity: z.number().min(1).optional(),
+	maxQuantity: z.number().min(1).nullish(),
 	price: z.number().min(0)
 })
 

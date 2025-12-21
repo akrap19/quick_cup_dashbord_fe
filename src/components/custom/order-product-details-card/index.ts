@@ -1,0 +1,1 @@
+export { OrderProductDetailsCard } from './OrderProductDetailsCard'

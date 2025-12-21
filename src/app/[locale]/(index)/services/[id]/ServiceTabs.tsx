@@ -20,7 +20,7 @@ interface Props {
 export const ServiceTabs = ({ service, serviceLocations, serviceLocationsPagination, isInitialListEmpty }: Props) => {
 	const t = useTranslations()
 	useNavbarItems({
-		title: service.name,
+		title: service?.name,
 		backLabel: 'Services.back',
 		actionButton: <EditButton buttonLabel="Services.edit" buttonLink={ROUTES.EDIT_SERVICES + service?.id} />
 	})

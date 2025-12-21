@@ -15,15 +15,16 @@ interface Props {
 	checked?: boolean
 	indeterminate?: boolean
 	disabled?: boolean
+	style?: React.CSSProperties
 	onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
-export const Checkbox = ({ name, label, value, checked, indeterminate, disabled, onChange }: Props) => {
+export const Checkbox = ({ name, label, value, checked, indeterminate, disabled, style, onChange }: Props) => {
 	const isChecked = checked ? checked : disabled ? !disabled : value
 	const color = isChecked ? tokens.colors['primary.500'] : tokens.colors['shades.00']
 
 	return (
-		<label className={label && styles.checkboxWrapper}>
+		<label className={label && styles.checkboxWrapper} style={{ ...style }}>
 			<span className={styles.checkboxField} style={{ cursor: disabled ? 'default' : 'pointer' }}>
 				<input
 					type="checkbox"

@@ -12,14 +12,17 @@ import { useTableStore } from '@/store/table'
 import { InputInfo } from '@/components/inputs/input-info'
 import { StarsIcon } from '@/components/icons/stars-icon'
 import { NoteIcon } from '@/components/icons/note-icon'
+import { OrderStatusButtons } from '@/components/custom/order-status-buttons'
+import { Order } from 'api/models/order/order'
 
 type DataTableActionsProps = {
 	disableDelete?: boolean
 	displayDeleteInfo?: boolean
 	isNoteEnebled?: boolean
+	selectedItem?: Order
 	onEdit?: () => void
 	onMakeItDefault?: () => void
-	onDelete: () => void
+	onDelete?: () => void
 	onNotes?: () => void
 }
 
@@ -30,6 +33,7 @@ export const DataTableActions = ({
 	disableDelete,
 	displayDeleteInfo,
 	isNoteEnebled,
+	selectedItem,
 	onEdit,
 	onMakeItDefault,
 	onDelete,
@@ -51,6 +55,7 @@ export const DataTableActions = ({
 				</Button>
 			</Inline>
 			<Inline gap={4} alignItems="center">
+				{checkedItemsLength === 1 && selectedItem && <OrderStatusButtons selectedItem={selectedItem} />}
 				{onEdit && checkedItemsLength === 1 && (
 					<Button size={size} variant="secondary" onClick={() => onEdit()}>
 						<PencilIcon size="medium" color="neutral.700" />
@@ -73,12 +78,14 @@ export const DataTableActions = ({
 						</Text>
 					</Button>
 				)}
-				<Button disabled={disableDelete} size={size} variant="secondary" onClick={() => onDelete()}>
-					<TrashIcon size="medium" color="destructive.500" />
-					<Text color="destructive.500" fontWeight="semibold">
-						{t('General.delete')}
-					</Text>
-				</Button>
+				{onDelete && (
+					<Button disabled={disableDelete} size={size} variant="secondary" onClick={() => onDelete()}>
+						<TrashIcon size="medium" color="destructive.500" />
+						<Text color="destructive.500" fontWeight="semibold">
+							{t('General.delete')}
+						</Text>
+					</Button>
+				)}
 				{displayDeleteInfo && <InputInfo infoText="Languages.deleteInfo" />}
 			</Inline>
 		</Inline>

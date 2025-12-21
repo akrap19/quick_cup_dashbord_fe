@@ -58,7 +58,7 @@ const RentAdd = ({ servicesPrices }: Props) => {
 			servicesPrices?.map(service => ({
 				serviceId: service.serviceId,
 				prices:
-					service.prices?.map(price => ({
+					service.rentPrices?.map(price => ({
 						minQuantity: price.minQuantity,
 						maxQuantity: price.maxQuantity,
 						price: price.price

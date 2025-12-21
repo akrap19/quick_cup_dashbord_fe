@@ -17,7 +17,7 @@ export const FormWrapper = ({ children }: Props) => {
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
-				<Box padding={10} width="100%">
+				<Box padding={10} width="100%" style={{ height: 'calc(100vh - 120px)' }} overflow="auto">
 					<Box
 						padding={6}
 						style={{ maxWidth: '60rem' }}

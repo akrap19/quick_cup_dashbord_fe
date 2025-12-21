@@ -103,7 +103,7 @@ export const SearchDropdownDrawer = ({ name, options, placeholder, alwaysShowSea
 							options?.map(option => (
 								<Button size="auto" variant="adaptive" onClick={e => handleDropdownOption(e, option)}>
 									<Box className={dropdownListItem}>
-										<Text fontSize="small">{option.name}</Text>
+										<Text fontSize="small">{t(option.name)}</Text>
 									</Box>
 								</Button>
 							))

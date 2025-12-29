@@ -1,6 +1,7 @@
 export interface Event {
 	id: string
 	userId: string
+	userName: string
 	title: string
 	description: string | null
 	startDate: string | null

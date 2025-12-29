@@ -4,29 +4,28 @@ import { Button } from '@/components/inputs/button'
 import { KeyIcon } from '@/components/icons/key-icon'
 import { Inline } from '@/components/layout/inline'
 import { ROUTES } from 'parameters'
-import { useBuyStore } from '@/store/buy'
-import { useRentStore } from '@/store/rent'
 import { ShoppingBagIcon } from '@/components/icons/shopping-bag-icon'
 import { useTranslations } from 'next-intl'
+import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
+import { useRouter } from 'next/navigation'
 
 export const OrderActionButtons = () => {
 	const t = useTranslations()
-	const buyItems = useBuyStore(state => state.selectedItems)
-	const rentItems = useRentStore(state => state.selectedItems)
-	const hasBuyItems = buyItems.length > 0
-	const hasRentItems = rentItems.length > 0
-	const buyLabel = hasBuyItems ? 'Orders.continueBuyOrder' : 'Orders.createBuyOrder'
-	const rentLabel = hasRentItems ? 'Orders.continueRentOrder' : 'Orders.createRentOrder'
+	const { push } = useRouter()
+
+	const handleCreateBuyOrder = (acquisitionType: AcquisitionTypeEnum) => {
+		push(ROUTES.ADD_ORDERS + '?acquisitionType=' + acquisitionType)
+	}
 
 	return (
 		<Inline justifyContent="center" gap={4}>
-			<Button href={ROUTES.BUY} variant="success" size="large">
+			<Button variant="success" size="large" onClick={() => handleCreateBuyOrder(AcquisitionTypeEnum.BUY)}>
 				<ShoppingBagIcon />
-				{t(buyLabel)}
+				{t('Orders.createBuyOrder')}
 			</Button>
-			<Button href={ROUTES.RENT} variant="primary" size="large">
+			<Button variant="primary" size="large" onClick={() => handleCreateBuyOrder(AcquisitionTypeEnum.RENT)}>
 				<KeyIcon />
-				{t(rentLabel)}
+				{t('Orders.createRentOrder')}
 			</Button>
 		</Inline>
 	)

@@ -25,6 +25,7 @@ import { Select } from '../select'
 import { Textarea } from '../text-area'
 import { TextInput } from '../text-input'
 import { FormTable } from '@/components/custom/form-table/FormTable'
+import { ProductStateFormTable } from '@/components/custom/product-state-form-table/ProductStateFormTable'
 
 type Props = {
 	name: string
@@ -57,7 +58,8 @@ export const FormControl = ({ name, maxLength, successMessageString, errorMessag
 		CheckboxGroup,
 		SearchDropdown,
 		RadioGroup,
-		FormTable
+		FormTable,
+		ProductStateFormTable
 	])
 
 	return (

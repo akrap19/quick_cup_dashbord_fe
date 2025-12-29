@@ -1,6 +1,7 @@
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { ProductPrice } from './productPrice'
 import { Service } from '../services/service'
+import { ProductState } from './productState'
 
 export interface ProductPayload {
 	id?: string
@@ -15,4 +16,5 @@ export interface ProductPayload {
 	prices?: ProductPrice[]
 	acquisitionType: AcquisitionTypeEnum
 	servicePrices?: Service[]
+	productStates?: ProductState[]
 }

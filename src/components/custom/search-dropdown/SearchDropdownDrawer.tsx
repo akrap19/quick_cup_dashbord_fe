@@ -23,9 +23,10 @@ interface Props {
 	name?: string
 	alwaysShowSearch?: boolean
 	setValue?: Dispatch<SetStateAction<any>>
+	width?: number
 }
 
-export const SearchDropdownDrawer = ({ name, options, placeholder, alwaysShowSearch, setValue }: Props) => {
+export const SearchDropdownDrawer = ({ name, options, placeholder, alwaysShowSearch, setValue, width }: Props) => {
 	const t = useTranslations()
 	const searchParams = useSearchParams()
 	const formContext = useFormContext()
@@ -85,7 +86,7 @@ export const SearchDropdownDrawer = ({ name, options, placeholder, alwaysShowSea
 	}, [])
 
 	return (
-		<Box className={dropdownListContainer}>
+		<Box className={dropdownListContainer} style={width ? { width: `${width}px` } : undefined}>
 			<Stack gap={2}>
 				{(alwaysShowSearch || options?.length > 5) && (
 					<Box width="100%" paddingX={1}>

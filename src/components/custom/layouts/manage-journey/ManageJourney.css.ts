@@ -16,6 +16,7 @@ export const actions = style({
 })
 
 export const manageJourneyWrapper = style({
+	minHeight: 'calc(100vh - 266px)',
 	position: 'relative',
 	maxWidth: '60rem',
 	paddingTop: tokens.spacing[6],

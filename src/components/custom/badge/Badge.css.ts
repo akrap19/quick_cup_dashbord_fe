@@ -9,7 +9,7 @@ export const badge = recipe({
 		width: 'fit-content',
 		whiteSpace: 'nowrap',
 		gap: tokens.spacing[1],
-		padding: `${tokens.spacing[1]} ${tokens.spacing[3]}`,
+		padding: `${tokens.spacing[2]} ${tokens.spacing[3]}`,
 		fontSize: tokens.typography.size.xsmall,
 		fontWeight: tokens.typography.weight.bold,
 		lineHeight: tokens.typography.lineHeight.small,

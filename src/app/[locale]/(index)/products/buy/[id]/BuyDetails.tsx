@@ -18,6 +18,7 @@ import { Inline } from '@/components/layout/inline'
 import { DataTable } from '@/components/data-display/data-table'
 import { columns } from './columns'
 import { servicePriceColumns } from './servicePriceColumns'
+import { productStateColumns } from './productStateColumns'
 import { replaceNullInListWithDash } from '@/utils/replaceNullInListWithDash'
 import { Button } from '@/components/inputs/button'
 import { useHasRoleAccess } from '@/hooks/use-has-role-access'
@@ -149,6 +150,20 @@ export const BuyDetails = ({ product }: Props) => {
 								))}
 							</>
 						)}
+					</Stack>
+				</Box>
+			)}
+			{product?.productStates && product?.productStates.length > 0 && (
+				<Box style={{ gridColumn: 'span 2' }}>
+					<Stack gap={4}>
+						<Label>{t('Product.productStates')}</Label>
+						<DataTable
+							columns={productStateColumns}
+							data={replaceNullInListWithDash(product.productStates ?? [])}
+							enableCheckboxes={false}
+							enableRowClick={false}
+							equalColumnWidths={true}
+						/>
 					</Stack>
 				</Box>
 			)}

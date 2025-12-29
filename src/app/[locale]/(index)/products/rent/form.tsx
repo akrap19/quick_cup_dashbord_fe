@@ -20,6 +20,8 @@ import { Service } from 'api/models/services/service'
 import { Dispatch, SetStateAction } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { Button } from '@/components/inputs/button'
+import { ProductStateFormTable } from '@/components/custom/product-state-form-table/ProductStateFormTable'
+import { Base } from 'api/models/common/base'
 
 interface Props {
 	cancelDialog?: OpenedProps
@@ -29,6 +31,8 @@ interface Props {
 	setShowServices: Dispatch<SetStateAction<boolean>>
 	servicesPrices: Service[]
 	form: UseFormReturn<any>
+	users: Base[]
+	serviceLocations: Base[]
 }
 
 const RentForm = ({
@@ -38,7 +42,9 @@ const RentForm = ({
 	showServices,
 	setShowServices,
 	servicesPrices,
-	form
+	form,
+	users,
+	serviceLocations
 }: Props) => {
 	const t = useTranslations()
 
@@ -198,6 +204,13 @@ const RentForm = ({
 						)
 					})}
 				</Stack>
+			</Box>
+			<Box style={{ gridColumn: 'span 2' }}>
+				<FormControl name="productStates">
+					<FormControl.Label>{t('Product.productStates')}</FormControl.Label>
+					<ProductStateFormTable name="productStates" serviceLocations={serviceLocations} users={users} />
+					<FormControl.Message />
+				</FormControl>
 			</Box>
 		</FormItems>
 	)

@@ -62,7 +62,7 @@ export const Inputs = () => {
 				{itemsCount > 0 && (
 					<Button variant="success" size="large" onClick={handleCreateBuyOrder}>
 						<ListBulletsIcon />
-						{t('Orders.finishBuyOrder')}
+						{t('Orders.createBuyOrder')}
 					</Button>
 				)}
 			</Inline>

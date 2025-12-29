@@ -1,11 +1,13 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useFormContext, useWatch, Controller } from 'react-hook-form'
+import { useFormContext, useWatch } from 'react-hook-form'
 import { useEffect, useRef } from 'react'
 import { FormControl } from '@/components/inputs/form-control'
-import { Checkbox } from '@/components/inputs/checkbox'
 import { NumericInput } from '@/components/inputs/numeric-input'
+import { Button } from '@/components/inputs/button'
+import { PlainPlusIcon } from '@/components/icons/plain-plus-icon'
+import { MinusIcon } from '@/components/icons/minus-icon'
 import { Text } from '@/components/typography/text'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
@@ -115,15 +117,21 @@ export const AdditionalCostListItem = ({
 				<Box display="flex" style={{ flex: 1 }}>
 					<Inline justifyContent="flex-start" alignItems="center" gap={3}>
 						{!isReadOnlyInCreate && (
-							<Box display="flex" alignItems="center">
-								<Controller
-									name={isIncludedFieldName as any}
-									control={form.control}
-									render={({ field }) => (
-										<Checkbox checked={field.value || false} onChange={e => field.onChange(e.target.checked)} />
-									)}
-								/>
-							</Box>
+							<Button
+								variant={isIncluded ? 'destructive' : 'success'}
+								size="icon"
+								onClick={e => {
+									e.preventDefault()
+									e.stopPropagation()
+									form.setValue(isIncludedFieldName, !isIncluded, { shouldValidate: true })
+								}}
+								type="button">
+								{isIncluded ? (
+									<MinusIcon size="small" color="shades.00" />
+								) : (
+									<PlainPlusIcon size="small" color="shades.00" />
+								)}
+							</Button>
 						)}
 						<Inline alignItems="center" justifyContent="center" gap={1}>
 							<Text fontSize="medium" color="neutral.900" fontWeight="semibold">

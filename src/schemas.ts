@@ -52,3 +52,12 @@ export const productServicePriceSchema = z.object({
 		.optional()
 		.default([])
 })
+
+export const productStateSchema = z.object({
+	id: z.string().optional(),
+	status: z.string().min(1),
+	location: z.string().min(1),
+	quantity: z.number().min(1),
+	serviceId: z.string().optional(),
+	userId: z.string().optional()
+})

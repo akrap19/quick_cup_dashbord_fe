@@ -80,9 +80,7 @@ const EventForm = ({ cancelDialog, clients, isClient }: Props) => {
 				<FormControl.Message />
 			</FormControl>
 			<FormControl name="description" maxLength="500">
-				<FormControl.Label>
-					<RequiredLabel>{t('General.description')}</RequiredLabel>
-				</FormControl.Label>
+				<FormControl.Label>{t('General.description')}</FormControl.Label>
 				<Textarea placeholder={t('General.descriptionPlaceholder')} rows={4} />
 				<FormControl.Message />
 			</FormControl>

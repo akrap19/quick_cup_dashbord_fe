@@ -98,7 +98,7 @@ export const OrderAdd = ({ acquisitionType, clients, events, additionalCosts }: 
 	const buyStore = useBuyStore()
 	const rentStore = useRentStore()
 	const { selectedItems } = isRent ? rentStore : buyStore
-	useNavbarItems({ title: 'Orders.add', backLabel: 'Orders.back' })
+	useNavbarItems({ title: isRent ? 'Orders.addRent' : 'Orders.addBuy', backLabel: 'General.back' })
 
 	const initialProducts = useMemo(() => {
 		return selectedItems.map((product: Product) => ({
@@ -109,7 +109,7 @@ export const OrderAdd = ({ acquisitionType, clients, events, additionalCosts }: 
 	}, [selectedItems])
 
 	const initialAdditionalCosts = useMemo(() => {
-		return additionalCosts.map((additionalCost: AdditionalCosts) => ({
+		return additionalCosts?.map((additionalCost: AdditionalCosts) => ({
 			additionalCostId: additionalCost.id,
 			isIncluded: false,
 			quantity: 0,

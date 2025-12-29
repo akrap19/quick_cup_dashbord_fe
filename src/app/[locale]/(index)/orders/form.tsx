@@ -35,6 +35,7 @@ interface Props {
 	isEditMode?: boolean
 	orderStatus?: string
 	acquisitionType?: AcquisitionTypeEnum
+	serviceLocations?: Base[]
 }
 
 export const OrderForm = ({
@@ -45,7 +46,8 @@ export const OrderForm = ({
 	additionalCosts,
 	isEditMode = false,
 	orderStatus,
-	acquisitionType
+	acquisitionType,
+	serviceLocations = []
 }: Props) => {
 	const t = useTranslations()
 	const form = useFormContext()
@@ -158,6 +160,7 @@ export const OrderForm = ({
 											acquisitionType={formAcquisitionType}
 											orderStatus={orderStatus}
 											isEditMode={isEditMode}
+											serviceLocations={serviceLocations}
 										/>
 									)
 								})}

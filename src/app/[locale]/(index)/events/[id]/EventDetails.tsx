@@ -7,9 +7,11 @@ import { DetailsWrapper } from '@/components/custom/layouts/DetailsWrapper'
 import { Label } from '@/components/inputs/label'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
+import { Box } from '@/components/layout/box'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { Event } from 'api/models/event/event'
 import { ROUTES } from 'parameters'
+import { formatDate } from '@/utils/formatDate'
 
 interface Props {
 	event: Event
@@ -32,6 +34,12 @@ export const EventDetails = ({ event }: Props) => {
 				</Text>
 			</Stack>
 			<Stack gap={4}>
+				<Label>{t('General.owner')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{event.userName ?? t('General.owner') + t('General.notDefined')}
+				</Text>
+			</Stack>
+			<Stack gap={4}>
 				<Label>{t('General.location')}</Label>
 				<Text fontSize="small" color="neutral.800">
 					{event.location ?? t('General.location') + t('General.notDefined')}
@@ -49,30 +57,27 @@ export const EventDetails = ({ event }: Props) => {
 					{event.street ?? t('General.streetAndNumber') + t('General.notDefined')}
 				</Text>
 			</Stack>
-			<Stack gap={4} style={{ width: '100%' }}>
-				<Label>{t('General.owner')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{event.userId ?? t('General.owner') + t('General.notDefined')}
-				</Text>
-			</Stack>
+			<div />
 			<Stack gap={4}>
 				<Label>{t('Events.startDate')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{event.startDate ?? t('Events.startDate') + t('General.notDefined')}
+					{event.startDate ? formatDate(event.startDate) : t('Events.startDate') + t('General.notDefined')}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('Events.endDate')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{event.endDate ?? t('Events.endDate') + t('General.notDefined')}
+					{event.endDate ? formatDate(event.endDate) : t('Events.endDate') + t('General.notDefined')}
 				</Text>
 			</Stack>
-			<Stack gap={4}>
-				<Label>{t('General.description')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{event.description ?? t('General.description') + t('General.notDefined')}
-				</Text>
-			</Stack>
+			<Box style={{ gridColumn: 'span 2' }}>
+				<Stack gap={4}>
+					<Label>{t('General.description')}</Label>
+					<Text fontSize="small" color="neutral.800">
+						{event.description ?? t('General.description') + t('General.notDefined')}
+					</Text>
+				</Stack>
+			</Box>
 		</DetailsWrapper>
 	)
 }

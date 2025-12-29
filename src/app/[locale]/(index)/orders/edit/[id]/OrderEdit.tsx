@@ -56,7 +56,8 @@ const formSchema = z.object({
 				isIncluded: z.boolean().default(false),
 				quantity: z.number(),
 				price: z.number(),
-				productQuantities: z.record(z.string(), z.number()).optional()
+				productQuantities: z.record(z.string(), z.number()).optional(),
+				serviceLocationId: z.string().optional()
 			})
 		)
 		.optional()
@@ -74,9 +75,10 @@ interface Props {
 	events: Base[]
 	products: Product[]
 	additionalCosts: AdditionalCosts[]
+	serviceLocations?: Base[]
 }
 
-const OrderEdit = ({ order, clients, events, products, additionalCosts }: Props) => {
+const OrderEdit = ({ order, clients, events, products, additionalCosts, serviceLocations = [] }: Props) => {
 	const t = useTranslations()
 	const { push, refresh } = useRouter()
 	const cancelDialog = useOpened()
@@ -124,7 +126,10 @@ const OrderEdit = ({ order, clients, events, products, additionalCosts }: Props)
 	}, [order?.additionalCosts, additionalCosts])
 
 	const initialServices = useMemo(() => {
-		const serviceMap = new Map<string, { serviceId: string; isIncluded: boolean; quantity: number; price: number }>()
+		const serviceMap = new Map<
+			string,
+			{ serviceId: string; isIncluded: boolean; quantity: number; price: number; serviceLocationId?: string }
+		>()
 		const isRent = order?.acquisitionType === AcquisitionTypeEnum.RENT
 
 		// Create a map of order services for quick lookup
@@ -133,7 +138,8 @@ const OrderEdit = ({ order, clients, events, products, additionalCosts }: Props)
 			order.services.forEach((orderService: any) => {
 				orderServicesMap.set(orderService.serviceId, {
 					quantity: orderService.quantity || 0,
-					price: orderService.price || 0
+					price: orderService.price || 0,
+					serviceLocationId: orderService.serviceLocationId
 				})
 			})
 		}
@@ -154,7 +160,8 @@ const OrderEdit = ({ order, clients, events, products, additionalCosts }: Props)
 							// Include if it's default OR if it's in the order
 							isIncluded: isDefault || !!orderService,
 							quantity: orderService?.quantity || 0,
-							price: orderService?.price || 0
+							price: orderService?.price || 0,
+							serviceLocationId: orderService?.serviceLocationId
 						})
 					}
 				})
@@ -170,7 +177,8 @@ const OrderEdit = ({ order, clients, events, products, additionalCosts }: Props)
 						serviceId: serviceId,
 						isIncluded: true, // If it's in order.services, it should be included
 						quantity: orderService.quantity || 0,
-						price: orderService.price || 0
+						price: orderService.price || 0,
+						serviceLocationId: orderService.serviceLocationId
 					})
 				}
 			})
@@ -290,7 +298,8 @@ const OrderEdit = ({ order, clients, events, products, additionalCosts }: Props)
 				.map(s => ({
 					serviceId: s.serviceId,
 					quantity: Number(s.quantity) || 0,
-					price: Number(s.price) || 0
+					price: Number(s.price) || 0,
+					serviceLocationId: s.serviceLocationId
 				})),
 			additionalCosts: formData.additionalCosts
 				.filter(ac => ac.isIncluded)
@@ -346,6 +355,7 @@ const OrderEdit = ({ order, clients, events, products, additionalCosts }: Props)
 							isEditMode={true}
 							orderStatus={order?.status}
 							acquisitionType={order?.acquisitionType}
+							serviceLocations={serviceLocations}
 						/>
 					</form>
 				</FormProvider>

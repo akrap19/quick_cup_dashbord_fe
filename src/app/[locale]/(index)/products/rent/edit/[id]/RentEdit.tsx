@@ -11,8 +11,9 @@ import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { Product } from 'api/models/products/product'
 import { updateProduct } from 'api/services/products'
-import { productServicePriceSchema, requiredString } from 'schemas'
+import { productServicePriceSchema, productStateSchema, requiredString } from 'schemas'
 import { Service } from 'api/models/services/service'
+import { Base } from 'api/models/common/base'
 
 import RentForm from '../../form'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
@@ -33,7 +34,8 @@ const formSchema = z.object({
 	description: z.string().optional(),
 	imageIds: z.array(z.string()).optional(),
 	prices: z.array(priceTierSchema).min(1, 'Rent.atLeastOneProductPriceRequired'),
-	servicePrices: z.array(productServicePriceSchema).optional().default([])
+	servicePrices: z.array(productServicePriceSchema).optional().default([]),
+	productStates: z.array(productStateSchema).optional().default([])
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -41,9 +43,11 @@ type Schema = z.infer<typeof formSchema>
 interface Props {
 	product: Product
 	servicesPrices: Service[]
+	users: Base[]
+	serviceLocations: Base[]
 }
 
-const RentEdit = ({ product, servicesPrices }: Props) => {
+const RentEdit = ({ product, servicesPrices, users, serviceLocations }: Props) => {
 	const { back, refresh } = useRouter()
 	const [showServices, setShowServices] = useState(false)
 	useNavbarItems({ title: 'Rent.edit', backLabel: 'Rent.back' })
@@ -117,7 +121,8 @@ const RentEdit = ({ product, servicesPrices }: Props) => {
 			description: product?.description ?? '',
 			imageIds: initialImageIds,
 			prices: product?.prices ?? [],
-			servicePrices: initialProductServicePrices
+			servicePrices: initialProductServicePrices,
+			productStates: product?.productStates ?? []
 		}
 	})
 
@@ -213,6 +218,8 @@ const RentEdit = ({ product, servicesPrices }: Props) => {
 						setShowServices={setShowServices}
 						servicesPrices={servicesPrices ?? []}
 						form={form}
+						users={users}
+						serviceLocations={serviceLocations}
 					/>
 				</form>
 			</FormProvider>

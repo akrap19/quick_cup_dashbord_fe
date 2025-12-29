@@ -1,5 +1,6 @@
 {
 	"General": {
+		"requiredServicesWarning": "Storitve označene z zvezdico (*) so obvezne",
 		"add": "Dodaj",
 		"save": "Shrani",
 		"yes": "Da",
@@ -37,6 +38,7 @@
 		"statusDescription": "Opis statusa",
 		"service": "Storitev",
 		"services": "Storitve",
+		"serviceLocation": "Lokacija storitve",
 		"buy": "Kupi",
 		"rent": "Iznajmi",
 		"events": "Dogodki",
@@ -51,7 +53,7 @@
 		"quantityPerUnitPlaceholder": "npr. 1",
 		"transportationUnit": "Transportna enota",
 		"transportationUnitPlaceholder": "npr. paleta",
-		"unitsPerTransportationUnit": "Enot na transportno enoto",
+		"unitsPerTransportationUnit": "Škatel na paleto",
 		"unitsPerTransportationUnitPlaceholder": "npr. 24",
 		"descriptionPlaceholder": "npr. Večkratno uporaben kozarec za festivale",
 		"locations": "Lokacije",
@@ -178,7 +180,19 @@
 		"onboardingLastStepTitle": "Več informacij",
 		"onboardingLastStepDescriptionPartOne": "Če želiš več informacij ali poglobljene vodnike o tem, kako uporabljati aplikacijo in nadzorno ploščo, si oglej naše dodatne vire. Lahko preveriš priročnik za implementacijo in poglobljeni uporabniški vodnik",
 		"onboardingLastStepDescriptionPartTwo": "ali si oglej naše video vodnike",
-		"euDisclaimer": "Financirano s strani Evropske unije. Mnenja in stališča izražena so vendar samo s strani avtorjev in ne odražajo nujno stališč Evropske unije. Niti Evropska unija niti organ, ki podeljuje sredstva, ne moreta biti odgovorna za njih."
+		"euDisclaimer": "Financirano s strani Evropske unije. Mnenja in stališča izražena so vendar samo s strani avtorjev in ne odražajo nujno stališč Evropske unije. Niti Evropska unija niti organ, ki podeljuje sredstva, ne moreta biti odgovorna za njih.",
+		"holder": "Nosilec",
+		"productStates": "Stanja izdelka"
+	},
+	"Product": {
+		"productStates": "Stanja izdelka",
+		"available": "Na voljo",
+		"in_use": "V uporabi",
+		"maintenance": "Vzdrževanje",
+		"reserved": "Rezervirano",
+		"damaged": "Poškodovano",
+		"service": "Storitev",
+		"user": "Uporabnik"
 	},
 	"ValidationMeseges": {
 		"required": "To polje je obvezno.",
@@ -375,6 +389,8 @@
 	},
 	"Orders": {
 		"add": "Dodaj naročilo",
+		"addBuy": "Kreiraj naročilo za nakup",
+		"addRent": "Dodaj naročilo za najem",
 		"createBuyOrder": "Kreiraj narudžbu za kupnju",
 		"createRentOrder": "Kreiraj narudžbu za izdavanje",
 		"continueBuyOrder": "Nadaljuj naročilo za nakup",
@@ -410,6 +426,14 @@
 		"contactPersonContact": "Kontaktna številka osebe",
 		"contactPersonContactPlaceholder": "npr. 091/123-456",
 		"additionalCostsAfterPaymentDescription": "Ti dodatni stroški bodo zaračunani po zaključku naročila ako bo potrebno.",
+		"step1Title": "Izdelki",
+		"step1Description": "Izberite izdelke, ki jih želite dodati v svoje naročilo.",
+		"step2Title": "Storitve",
+		"step2Description": "Izberite dodatne storitve za svoje naročilo.",
+		"step3Title": "Dodatni stroški",
+		"step3Description": "Dodajte dodatne stroške v svoje naročilo.",
+		"step4Title": "Informacije o naročilu",
+		"step4Description": "Vnesite informacije o stranki in dostavi za svoje naročilo.",
 		"statusPending": "Naročilo prejeto",
 		"statusPendingDescription": "Tvoje naročilo je bilo prejeto in se pregleduje.",
 		"statusAccepted": "Naročilo sprejeto",

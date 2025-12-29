@@ -44,11 +44,16 @@ export const SearchDropdown = ({
 	const t = useTranslations()
 	const [isOpen, setIsOpen] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
+	const inputWrapperRef = useRef<HTMLDivElement>(null)
 	const [choosenValue, setChoosenValue] = useState<Base>()
+	const [inputWidth, setInputWidth] = useState<number | undefined>(undefined)
 	const presentationalLabelVariant = isFilter ? 'filterLabel' : value ? 'formLabel' : 'placeholder'
 
 	const handleDropDownOpening = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault()
+		if (inputWrapperRef.current) {
+			setInputWidth(inputWrapperRef.current.offsetWidth)
+		}
 		setIsOpen(!isOpen)
 	}
 
@@ -83,29 +88,31 @@ export const SearchDropdown = ({
 
 	return (
 		<div ref={ref}>
-			<InputWrapper
-				endIcon={
-					<BlockIcon
-						icon={isOpen ? CarretUpIcon : CarretDownIcon}
-						size="medium"
-						color={!isFilter && hasSuccess ? 'success.500' : 'neutral.500'}
-					/>
-				}>
-				<Stack>
-					<Button size="auto" variant="adaptive" onClick={handleDropDownOpening} disabled={disabled}>
-						<Box
-							className={clsx(input({ size: 'medium' }), !isFilter && hasSuccess && inputHasSuccess, endIconSpacing)}>
-							<Text className={DropdownPresentationlabel({ variant: presentationalLabelVariant })}>
-								{choosenValue?.name
-									? t(choosenValue?.name)
-									: value
-										? t(value)
-										: `${t('General.select')} ${t(placeholder).toLowerCase()}`}
-							</Text>
-						</Box>
-					</Button>
-				</Stack>
-			</InputWrapper>
+			<div ref={inputWrapperRef}>
+				<InputWrapper
+					endIcon={
+						<BlockIcon
+							icon={isOpen ? CarretUpIcon : CarretDownIcon}
+							size="medium"
+							color={!isFilter && hasSuccess ? 'success.500' : 'neutral.500'}
+						/>
+					}>
+					<Stack>
+						<Button size="auto" variant="adaptive" onClick={handleDropDownOpening} disabled={disabled}>
+							<Box
+								className={clsx(input({ size: 'medium' }), !isFilter && hasSuccess && inputHasSuccess, endIconSpacing)}>
+								<Text className={DropdownPresentationlabel({ variant: presentationalLabelVariant })}>
+									{choosenValue?.name
+										? t(choosenValue?.name)
+										: value
+											? t(value)
+											: `${t('General.select')} ${t(placeholder).toLowerCase()}`}
+								</Text>
+							</Box>
+						</Button>
+					</Stack>
+				</InputWrapper>
+			</div>
 			{isOpen && (
 				<SearchDropdownDrawer
 					options={options}
@@ -113,6 +120,7 @@ export const SearchDropdown = ({
 					name={name}
 					alwaysShowSearch={alwaysShowSearch}
 					setValue={setValue}
+					width={inputWidth}
 				/>
 			)}
 		</div>

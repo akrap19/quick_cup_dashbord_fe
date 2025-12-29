@@ -1,5 +1,6 @@
 {
 	"General": {
+		"requiredServicesWarning": "Services marked with an asterisk (*) are required",
 		"add": "Add",
 		"save": "Save",
 		"yes": "Yes",
@@ -35,6 +36,7 @@
 		"statusDescription": "Status description",
 		"service": "Service",
 		"services": "Services",
+		"serviceLocation": "Service Location",
 		"buy": "Buy",
 		"rent": "Rent",
 		"events": "Events",
@@ -49,7 +51,7 @@
 		"quantityPerUnitPlaceholder": "e.g. 1",
 		"transportationUnit": "Transportation unit",
 		"transportationUnitPlaceholder": "e.g. pallet",
-		"unitsPerTransportationUnit": "Units per transportation unit",
+		"unitsPerTransportationUnit": "Boxes per pallet",
 		"unitsPerTransportationUnitPlaceholder": "e.g. 24",
 		"descriptionPlaceholder": "e.g. Reusable cup for festivals",
 		"locations": "Locations",
@@ -180,7 +182,19 @@
 		"onboardingLastStepTitle": "More information",
 		"onboardingLastStepDescriptionPartOne": "If you want more information or in-depth guidance on how to use the app and dashboard, please see our additional resources. You can check implementation handbook and in-depth user guide",
 		"onboardingLastStepDescriptionPartTwo": "or check our video guidance",
-		"euDisclaimer": "Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union. Neither the European Union nor the granting authority can be held responsible for them."
+		"euDisclaimer": "Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union. Neither the European Union nor the granting authority can be held responsible for them.",
+		"holder": "Holder",
+		"productStates": "Product States"
+	},
+	"Product": {
+		"productStates": "Product States",
+		"available": "Available",
+		"in_use": "In Use",
+		"maintenance": "Maintenance",
+		"reserved": "Reserved",
+		"damaged": "Damaged",
+		"service": "Service",
+		"user": "User"
 	},
 	"ValidationMeseges": {
 		"required": "This field is required.",
@@ -377,6 +391,8 @@
 	},
 	"Orders": {
 		"add": "Add Order",
+		"addBuy": "Create Buy Order",
+		"addRent": "Add Rent Order",
 		"createBuyOrder": "Create buy order",
 		"createRentOrder": "Create rent order",
 		"continueBuyOrder": "Continue buy order",
@@ -414,6 +430,14 @@
 		"contactPersonContact": "Contact person phone number",
 		"contactPersonContactPlaceholder": "e.g. +385 345 56 86",
 		"additionalCostsAfterPaymentDescription": "These additional costs will be charged after the order is completed if needed.",
+		"step1Title": "Products",
+		"step1Description": "Select the products you want to add to your order.",
+		"step2Title": "Services",
+		"step2Description": "Choose additional services for your order.",
+		"step3Title": "Additional Costs",
+		"step3Description": "Add any additional costs to your order.",
+		"step4Title": "Order Information",
+		"step4Description": "Enter the customer and delivery information for your order.",
 		"statusPending": "Order Received",
 		"statusPendingDescription": "Your order has been received and is being reviewed.",
 		"statusAccepted": "Order Accepted",

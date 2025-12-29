@@ -6,7 +6,9 @@ import { Text } from '@/components/typography/text'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { Stack } from '@/components/layout/stack'
-import { Checkbox } from '@/components/inputs/checkbox'
+import { Button } from '@/components/inputs/button'
+import { PlainPlusIcon } from '@/components/icons/plain-plus-icon'
+import { MinusIcon } from '@/components/icons/minus-icon'
 import { NumericInput } from '@/components/inputs/numeric-input'
 import { Service } from 'api/models/services/service'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
@@ -15,6 +17,11 @@ import { OrderStatusEnum } from 'enums/orderStatusEnum'
 import { Product } from 'api/models/products/product'
 import { getServicePrices } from 'api/services/services'
 import { useTranslations } from 'next-intl'
+import { RequiredLabel } from '@/components/inputs/required-label'
+import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdown'
+import { Base } from 'api/models/common/base'
+import { useHasRoleAccess } from '@/hooks/use-has-role-access'
+import { UserRoleEnum } from 'enums/userRoleEnum'
 
 interface ServiceListItemProps {
 	service: Service
@@ -23,6 +30,7 @@ interface ServiceListItemProps {
 	acquisitionType: AcquisitionTypeEnum
 	orderStatus?: string
 	isEditMode?: boolean
+	serviceLocations?: Base[]
 }
 
 export const ServiceListItem = ({
@@ -31,7 +39,8 @@ export const ServiceListItem = ({
 	products,
 	acquisitionType,
 	orderStatus,
-	isEditMode = false
+	isEditMode = false,
+	serviceLocations = []
 }: ServiceListItemProps) => {
 	const t = useTranslations()
 	const form = useFormContext()
@@ -40,10 +49,13 @@ export const ServiceListItem = ({
 	const quantityFieldName = `services.${serviceIndex}.quantity`
 	const priceFieldName = `services.${serviceIndex}.price`
 	const productQuantitiesFieldName = `services.${serviceIndex}.productQuantities`
+	const serviceLocationIdFieldName = `services.${serviceIndex}.serviceLocationId`
 
 	const formProducts = useWatch({ control: form.control, name: 'products' }) || []
 	const currentPrice = useWatch({ control: form.control, name: priceFieldName }) || 0
+	const isIncluded = useWatch({ control: form.control, name: isIncludedFieldName }) || false
 	const productQuantities = useWatch({ control: form.control, name: productQuantitiesFieldName }) || {}
+	const isAdminOrMasterAdmin = useHasRoleAccess([UserRoleEnum.ADMIN, UserRoleEnum.MASTER_ADMIN])
 
 	// Determine input type based on acquisition type
 	const inputType = acquisitionType === AcquisitionTypeEnum.RENT ? service.inputTypeForRent : service.inputTypeForBuy
@@ -52,15 +64,17 @@ export const ServiceListItem = ({
 	const isDefault =
 		acquisitionType === AcquisitionTypeEnum.RENT ? service.isDefaultServiceForRent : service.isDefaultServiceForBuy
 
-	// Don't show checkbox if input type is "after"
-	const showCheckbox = inputType !== InputTypeEnum.AFTER && !isDefault
+	// Show button if input type is not "after" (for both default and non-default items)
+	const showButton = inputType !== InputTypeEnum.AFTER
 
 	// Show quantity fields per product if order status is ACCEPTED and input type is not "after"
 	const showProductQuantityFields =
-		isEditMode && orderStatus === OrderStatusEnum.ACCEPTED && inputType !== InputTypeEnum.AFTER
+		isEditMode && orderStatus !== OrderStatusEnum.PENDING && inputType === InputTypeEnum.AFTER
+
+	// Get service ID
+	const serviceId = service.id || service.serviceId
 
 	// Get products that have this service
-	const serviceId = service.id || service.serviceId
 	const productsWithService = useMemo(() => {
 		return products.filter(product => {
 			if (!product.servicePrices || product.servicePrices.length === 0) return false
@@ -204,6 +218,13 @@ export const ServiceListItem = ({
 		}
 	}, [calculationKey, calculatePrice])
 
+	// Get service locations for this specific service
+	const locationsForThisService = useMemo(() => {
+		if (!serviceId || !serviceLocations) return []
+		// Filter locations that belong to this service
+		return serviceLocations.filter(location => (location as any).serviceId === serviceId)
+	}, [serviceId, serviceLocations])
+
 	// Display price always (it's always calculated), but it's only included in total if checkbox is checked (or default)
 	const displayPrice = currentPrice
 
@@ -213,20 +234,39 @@ export const ServiceListItem = ({
 				<Inline justifyContent="space-between" alignItems="center" gap={3}>
 					<Box display="flex" style={{ flex: 1 }}>
 						<Inline justifyContent="flex-start" alignItems="center" gap={3}>
-							{showCheckbox && (
-								<Box display="flex" alignItems="center">
-									<Controller
-										name={isIncludedFieldName as any}
-										control={form.control}
-										render={({ field }) => (
-											<Checkbox checked={field.value || false} onChange={e => field.onChange(e.target.checked)} />
-										)}
-									/>
-								</Box>
+							{showButton && (
+								<Button
+									variant={isIncluded ? 'destructive' : 'success'}
+									size="icon"
+									disabled={isDefault}
+									onClick={e => {
+										e.preventDefault()
+										e.stopPropagation()
+										if (!isDefault) {
+											form.setValue(isIncludedFieldName, !isIncluded, { shouldValidate: true })
+										}
+									}}
+									type="button">
+									{isIncluded ? (
+										<MinusIcon size="small" color="shades.00" />
+									) : (
+										<PlainPlusIcon size="small" color="shades.00" />
+									)}
+								</Button>
 							)}
-							<Text fontSize="medium" color="neutral.900" fontWeight="semibold">
-								{service.serviceName || service.name}
-							</Text>
+							{isDefault ? (
+								<div>
+									<RequiredLabel>
+										<Text as="span" fontSize="medium" color="neutral.900" fontWeight="semibold">
+											{service.serviceName || service.name}
+										</Text>
+									</RequiredLabel>
+								</div>
+							) : (
+								<Text fontSize="medium" color="neutral.900" fontWeight="semibold">
+									{service.serviceName || service.name}
+								</Text>
+							)}
 						</Inline>
 					</Box>
 					<Box display="flex" alignItems="flex-start" paddingTop={1}>
@@ -236,7 +276,7 @@ export const ServiceListItem = ({
 					</Box>
 				</Inline>
 				{showProductQuantityFields && productsWithService.length > 0 && (
-					<Box paddingLeft={showCheckbox ? 5 : 0}>
+					<Box paddingLeft={showButton ? 5 : 0}>
 						<Stack gap={2}>
 							{productsWithService.map(product => {
 								return (
@@ -265,6 +305,31 @@ export const ServiceListItem = ({
 								)
 							})}
 						</Stack>
+					</Box>
+				)}
+				{isAdminOrMasterAdmin && isIncluded && (
+					<Box paddingLeft={showButton ? 5 : 0} paddingTop={2}>
+						<Inline alignItems="center" gap={2}>
+							<Text color="neutral.700" fontSize="small" style={{ minWidth: '120px' }}>
+								{t('General.serviceLocation')}:
+							</Text>
+							<Box position="relative" style={{ width: '240px' }}>
+								<Controller
+									name={serviceLocationIdFieldName}
+									control={form.control}
+									render={({ field }) => (
+										<SearchDropdown
+											name={field.name}
+											options={locationsForThisService}
+											placeholder={t('General.serviceLocation')}
+											alwaysShowSearch={locationsForThisService.length > 5}
+											disabled={!serviceId}
+											value={field.value}
+										/>
+									)}
+								/>
+							</Box>
+						</Inline>
 					</Box>
 				)}
 			</Stack>

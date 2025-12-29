@@ -2,10 +2,17 @@ import { getOrder } from 'api/services/orders'
 import { getClients } from 'api/services/clients'
 import { getEvents } from 'api/services/events'
 import { getAdditionalCosts } from 'api/services/additionalCosts'
-import { getProduct } from 'api/services/products'
-import { Product } from 'api/models/products/product'
+import { getProducts } from 'api/services/products'
+import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
+import { getServiceLocations } from 'api/services/serviceLocations'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from 'app/api/auth/[...nextauth]/auth'
+import { UserRoleEnum } from 'enums/userRoleEnum'
+import { hasRoleAccess } from 'utils/hasRoleAccess'
+import { Base } from 'api/models/common/base'
+import { ServiceLocation } from 'api/models/service-locations/serviceLocation'
 
-import OrderEdit from './OrderEdit'
+import { OrderEditWizard } from './OrderEditWizard'
 
 interface Props {
 	params: {
@@ -53,84 +60,85 @@ const OrderEditPage = async ({ params, searchParams }: Props) => {
 			}
 		}) || []
 
-	// Collect all unique service definitions from order.services
-	const serviceDefinitionsMap = new Map()
-	if (order?.services) {
-		order.services.forEach((orderService: any) => {
-			if (orderService.service && orderService.serviceId) {
-				serviceDefinitionsMap.set(orderService.serviceId, orderService.service)
-			}
-		})
-	}
-
-	// Fetch full product data for each product to get all servicePrices
-	const productsWithFullData = await Promise.all(
-		(order?.products || [])
-			.filter((orderProduct: any) => orderProduct.product && orderProduct.productId)
-			.map(async (orderProduct: any) => {
-				try {
-					// Fetch full product data to get all servicePrices
-					const { data: fullProduct } = await getProduct(orderProduct.productId)
-					return fullProduct || orderProduct.product
-				} catch (error) {
-					// If fetch fails, use the product from order
-					return orderProduct.product
-				}
-			})
-	)
-
-	const transformedProductsArray: Product[] = productsWithFullData.map((product: any) => {
-		// Get existing servicePrices from full product data (should have all services)
-		let servicePrices = product.servicePrices ?? []
-
-		// Merge: add any services from order that aren't already in servicePrices, and update existing ones
-		if (servicePrices.length > 0) {
-			const existingServiceIds = new Set(servicePrices.map((s: any) => s.id || s.serviceId))
-			// Update existing services with service definitions from order (to ensure we have latest default flags)
-			servicePrices = servicePrices.map((service: any) => {
-				const serviceId = service.id || service.serviceId
-				const orderServiceDef = serviceDefinitionsMap.get(serviceId)
-				// If service exists in order, merge properties (preserve order service definition which has correct flags)
-				if (orderServiceDef) {
-					return { ...service, ...orderServiceDef }
-				}
-				return service
-			})
-			// Add any services from order that aren't already in servicePrices
-			serviceDefinitionsMap.forEach((serviceDef, serviceId) => {
-				if (!existingServiceIds.has(serviceId)) {
-					servicePrices.push(serviceDef)
-				}
-			})
-		} else if (serviceDefinitionsMap.size > 0) {
-			// If no servicePrices, add from order.services
-			servicePrices = Array.from(serviceDefinitionsMap.values())
-		}
-
-		return {
-			...product,
-			id: product.id,
-			name: product.name ?? '-',
-			description: product.description ?? '-',
-			images: product.images?.map((image: any) => image.url) ?? [],
-			servicePrices: servicePrices,
-			prices: product.prices ?? [],
-			size: product.size ?? '',
-			unit: product.unit ?? '',
-			quantityPerUnit: product.quantityPerUnit ?? 0,
-			transportationUnit: product.transportationUnit ?? '',
-			unitsPerTransportationUnit: product.unitsPerTransportationUnit ?? 0,
-			acquisitionType: product.acquisitionType ?? order?.acquisitionType
-		} as Product
+	// Fetch all products for the acquisition type (like in add page)
+	const { data: productsData } = await getProducts({
+		acquisitionType: order?.acquisitionType || AcquisitionTypeEnum.BUY,
+		limit: 100,
+		page: 1
 	})
 
+	const transformedProductsArray =
+		productsData?.products?.map((product: any) => {
+			return {
+				...product,
+				id: product.id,
+				name: product.name ?? '-',
+				description: product.description ?? '-',
+				images: product.images?.map((image: any) => image.url) ?? []
+			}
+		}) || []
+
+	// Get user session to check role
+	const session = await getServerSession(authOptions)
+	const userRole = session?.user?.roles[0]?.name
+	const isAdminOrMasterAdmin = hasRoleAccess(userRole, [UserRoleEnum.ADMIN, UserRoleEnum.MASTER_ADMIN])
+
+	// Collect unique service IDs from products
+	const uniqueServiceIds = new Set<string>()
+	transformedProductsArray.forEach((product: any) => {
+		if (product.servicePrices && product.servicePrices.length > 0) {
+			product.servicePrices.forEach((service: any) => {
+				const serviceId = service.id || service.serviceId
+				if (serviceId) {
+					uniqueServiceIds.add(serviceId)
+				}
+			})
+		}
+	})
+
+	// Fetch service locations for all services (only if admin/master admin)
+	let serviceLocations: Base[] = []
+	if (isAdminOrMasterAdmin && uniqueServiceIds.size > 0) {
+		try {
+			const allLocations: Base[] = []
+			await Promise.all(
+				Array.from(uniqueServiceIds).map(async serviceId => {
+					try {
+						const response = await getServiceLocations({
+							search: '',
+							serviceId: serviceId,
+							page: 1,
+							limit: 100
+						})
+
+						if (response?.data?.serviceLocations) {
+							const locations: Base[] = response.data.serviceLocations.map((loc: ServiceLocation) => ({
+								id: loc.id || '',
+								name: `${loc.city} - ${loc.address}`,
+								serviceId: serviceId
+							}))
+							allLocations.push(...locations)
+						}
+					} catch (error) {
+						console.error(`Error fetching service locations for service ${serviceId}:`, error)
+					}
+				})
+			)
+			serviceLocations = allLocations
+		} catch (error) {
+			console.error('Error fetching service locations:', error)
+		}
+	}
+
 	return (
-		<OrderEdit
+		<OrderEditWizard
 			order={order}
+			acquisitionType={order?.acquisitionType || AcquisitionTypeEnum.BUY}
 			clients={transformedClientArray}
 			events={transformedEventArray}
-			products={transformedProductsArray}
 			additionalCosts={additionalCostsData?.additionalCosts || []}
+			allProducts={transformedProductsArray}
+			serviceLocations={serviceLocations}
 		/>
 	)
 }

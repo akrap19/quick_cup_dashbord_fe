@@ -1,17 +1,13 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useTranslations } from 'next-intl'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import { z } from 'zod'
 import { useEffect, useMemo } from 'react'
 
-import { Box } from '@/components/layout/box'
 import { Stack } from '@/components/layout/stack'
-import { Text } from '@/components/typography/text'
 import { AdditionalCostListItem } from '@/components/custom/additional-cost-card'
 import { AdditionalCosts } from 'api/models/additional-costs/additionalCosts'
-import { MethodOfPayment } from 'enums/methodOfPaymentEnum'
 import { useOrderWizardStore, Step3AdditionalCostsData } from '@/store/order-wizard'
 import { BillingTypeEnum } from 'enums/billingTypeEnum'
 
@@ -33,7 +29,6 @@ interface Props {
 }
 
 export const Step3AdditionalCosts = ({ additionalCosts }: Props) => {
-	const t = useTranslations()
 	const { step3Data, setStep3Data, setTotalAmount, step1Data, step2Data } = useOrderWizardStore()
 
 	// Initialize additional costs

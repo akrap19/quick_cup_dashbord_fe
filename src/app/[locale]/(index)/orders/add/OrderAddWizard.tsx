@@ -7,8 +7,10 @@ import { useEffect } from 'react'
 import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { useNavbarItemsStore } from '@/store/navbar'
 import { useOpened } from '@/hooks/use-toggle'
 import { useSteps } from '@/hooks/use-steps'
+import { Loader } from '@/components/custom/loader/Loader'
 import { OrderPayload } from 'api/models/order/orderPayload'
 import { OrderProduct } from 'api/models/order/orderProduct'
 import { createOrder } from 'api/services/orders'
@@ -24,14 +26,17 @@ import { useStepsStore } from '@/store/steps'
 import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
 import { useOrderWizardStore } from '@/store/order-wizard'
 
+import { Step1ClientSelection } from './steps/Step1ClientSelection'
 import { Step1Products } from './steps/Step1Products'
 import { Step2Services } from './steps/Step2Services'
 import { Step3AdditionalCosts } from './steps/Step3AdditionalCosts'
 import { Step4OrderInformation } from './steps/Step4OrderInformation'
 import { WizardFooter } from './WizardFooter'
 import { Stack } from '@/components/layout/stack'
+import { useSession } from 'next-auth/react'
 
 interface Props {
+	isAdmin: boolean
 	acquisitionType: AcquisitionTypeEnum
 	clients: Base[]
 	events: Base[]
@@ -40,9 +45,8 @@ interface Props {
 	serviceLocations?: Base[]
 }
 
-const TOTAL_STEPS = 4
-
 export const OrderAddWizard = ({
+	isAdmin,
 	acquisitionType,
 	clients,
 	events,
@@ -53,10 +57,11 @@ export const OrderAddWizard = ({
 	const t = useTranslations()
 	const { push, refresh } = useRouter()
 	const cancelDialog = useOpened()
+	const { navbarIsLoading } = useNavbarItemsStore()
 	const isRent = acquisitionType === AcquisitionTypeEnum.RENT
 	const buyStore = useBuyStore()
 	const rentStore = useRentStore()
-	const { selectedItems } = isRent ? rentStore : buyStore
+	const { selectedItems, clearItems } = isRent ? rentStore : buyStore
 	const { setCurrentStep } = useStepsStore()
 	const {
 		currentStep,
@@ -65,18 +70,29 @@ export const OrderAddWizard = ({
 		step2Data,
 		step3Data,
 		step4Data,
+		customerId,
 		totalAmount,
-		clearWizard
+		clearWizard,
+		setCustomerId
 	} = useOrderWizardStore()
+	const { data: session } = useSession()
+	const TOTAL_STEPS = isAdmin ? 5 : 4
 
 	useNavbarItems({ title: isRent ? 'Orders.addRent' : 'Orders.addBuy', backLabel: 'General.back' })
 	useSteps({ totalSteps: TOTAL_STEPS, currentStep })
+
+	// Auto-populate client ID for non-admin users
+	useEffect(() => {
+		if (!isAdmin && session?.user?.userId && !customerId) {
+			setCustomerId(session.user.userId)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isAdmin, session?.user?.userId])
 
 	useEffect(() => {
 		setCurrentStep(currentStep)
 	}, [currentStep, setCurrentStep])
 
-	// Initialize step from store or set to 1
 	useEffect(() => {
 		if (currentStep < 1 || currentStep > TOTAL_STEPS) {
 			setWizardStep(1)
@@ -102,7 +118,7 @@ export const OrderAddWizard = ({
 
 		const payload: OrderPayload = {
 			acquisitionType: step4Data.acquisitionType || acquisitionType,
-			customerId: step4Data.customerId!,
+			customerId: customerId!,
 			eventId: step4Data.eventId,
 			location: step4Data.location?.trim(),
 			place: step4Data.place!.trim(),
@@ -157,7 +173,11 @@ export const OrderAddWizard = ({
 
 		if (result?.message === 'OK') {
 			SuccessToast(t('Orders.successfullyCreated'))
-			clearWizard()
+
+			setTimeout(() => {
+				clearWizard()
+				clearItems()
+			}, 2500)
 			push(ROUTES.ORDERS)
 			refresh()
 		}
@@ -178,51 +198,98 @@ export const OrderAddWizard = ({
 	// Validation check - each step component handles its own validation
 	// We'll check if required data exists for the current step
 	const isValid = () => {
-		switch (currentStep) {
-			case 1:
-				// Check if there are products in store and they have quantity > 0
-				const hasProductsInStore = selectedItems.length > 0
-				const hasQuantity = step1Data?.products?.some(p => Number(p.quantity) > 0) || false
-				return hasProductsInStore && hasQuantity
-			case 2:
-				return true // Services are optional
-			case 3:
-				return true // Additional costs are optional
-			case 4:
-				return !!(step4Data?.customerId && step4Data?.place && step4Data?.street)
-			default:
-				return false
+		if (isAdmin) {
+			switch (currentStep) {
+				case 1:
+					// Step 1: Client selection (admin only)
+					return !!customerId
+				case 2:
+					// Step 2: Products
+					const hasProductsInStore = selectedItems.length > 0
+					const hasQuantity = step1Data?.products?.some(p => Number(p.quantity) > 0) || false
+					return hasProductsInStore && hasQuantity
+				case 3:
+					return true // Services are optional
+				case 4:
+					return true // Additional costs are optional
+				case 5:
+					return !!(step4Data?.place && step4Data?.street)
+				default:
+					return false
+			}
+		} else {
+			switch (currentStep) {
+				case 1:
+					// Step 1: Products (non-admin)
+					const hasProductsInStore = selectedItems.length > 0
+					const hasQuantity = step1Data?.products?.some(p => Number(p.quantity) > 0) || false
+					return hasProductsInStore && hasQuantity
+				case 2:
+					return true // Services are optional
+				case 3:
+					return true // Additional costs are optional
+				case 4:
+					return !!(customerId && step4Data?.place && step4Data?.street)
+				default:
+					return false
+			}
 		}
 	}
 
 	return (
 		<>
-			<form onSubmit={handleStepSubmit} style={{ flex: 1 }}>
-				<ManageJourneyWrapper onStepClick={setWizardStep}>
-					<Stack gap={6}>
-						{currentStep === 1 && <Step1Products products={allProducts || []} selectedItems={selectedItems} />}
-						{currentStep === 2 && (
-							<Step2Services
-								products={selectedItems}
-								acquisitionType={acquisitionType}
-								serviceLocations={serviceLocations}
-							/>
-						)}
-						{currentStep === 3 && <Step3AdditionalCosts additionalCosts={additionalCosts} />}
-						{currentStep === 4 && (
-							<Step4OrderInformation customers={clients} events={events} acquisitionType={acquisitionType} />
-						)}
-					</Stack>
-				</ManageJourneyWrapper>
-				<WizardFooter
-					currentStep={currentStep}
-					totalSteps={TOTAL_STEPS}
-					totalAmountLabel={totalAmountDisplay}
-					onBack={() => cancelDialog.toggleOpened()}
-					onPrevious={handleBack}
-					isValid={isValid()}
-				/>
-			</form>
+			{navbarIsLoading ? (
+				<Loader />
+			) : (
+				<form onSubmit={handleStepSubmit} style={{ flex: 1 }}>
+					<ManageJourneyWrapper
+						onStepClick={setWizardStep}
+						stepTitleKey={
+							isAdmin && currentStep === 1
+								? undefined
+								: isAdmin && currentStep > 1
+									? `Orders.step${currentStep - 1}Title`
+									: undefined
+						}
+						stepDescriptionKey={
+							isAdmin && currentStep === 1
+								? undefined
+								: isAdmin && currentStep > 1
+									? `Orders.step${currentStep - 1}Description`
+									: undefined
+						}>
+						<Stack gap={6}>
+							{isAdmin && currentStep === 1 && (
+								<Step1ClientSelection customers={clients} acquisitionType={acquisitionType} />
+							)}
+							{((isAdmin && currentStep === 2) || (!isAdmin && currentStep === 1)) && (
+								<Step1Products products={allProducts || []} selectedItems={selectedItems} />
+							)}
+							{((isAdmin && currentStep === 3) || (!isAdmin && currentStep === 2)) && (
+								<Step2Services
+									products={selectedItems}
+									acquisitionType={acquisitionType}
+									serviceLocations={serviceLocations}
+								/>
+							)}
+							{((isAdmin && currentStep === 4) || (!isAdmin && currentStep === 3)) && (
+								<Step3AdditionalCosts additionalCosts={additionalCosts} />
+							)}
+							{((isAdmin && currentStep === 5) || (!isAdmin && currentStep === 4)) && (
+								<Step4OrderInformation events={events} acquisitionType={acquisitionType} />
+							)}
+						</Stack>
+					</ManageJourneyWrapper>
+					<WizardFooter
+						currentStep={currentStep}
+						totalSteps={TOTAL_STEPS}
+						totalAmountLabel={totalAmountDisplay}
+						onBack={() => cancelDialog.toggleOpened()}
+						onPrevious={handleBack}
+						isValid={isValid()}
+					/>
+				</form>
+			)}
 			<CancelAddDialog cancelDialog={cancelDialog} title="Orders.cancelAdd" values={{}} />
 		</>
 	)

@@ -27,7 +27,13 @@ const variantTextMap: Record<string, string> = {
 	in_production: 'Orders.statusInProduction',
 	ready: 'Orders.statusReady',
 	in_transit: 'Orders.statusInTransit',
-	completed: 'Orders.statusCompleted'
+	completed: 'Orders.statusCompleted',
+	available: 'Product.available',
+	in_use: 'Product.in_use',
+	maintenance: 'Product.maintenance',
+	reserved: 'Product.reserved',
+	damaged: 'Product.damaged',
+	owned_by_client: 'Product.owned_by_client'
 }
 
 export const Badge = ({ variant = 'draft' }: Props) => {

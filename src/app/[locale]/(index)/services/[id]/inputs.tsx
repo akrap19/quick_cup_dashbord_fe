@@ -50,7 +50,7 @@ export const Inputs = ({ data, serviceId }: Props) => {
 		const index = Object.keys(checkedItems || {})
 		const numericIndex = parseInt(index[0], 10)
 
-		push(ROUTES.EDIT_SERVICE_LOCATION.replace('{id}', serviceId) + data[numericIndex].id)
+		push(ROUTES.EDIT_SERVICE_LOCATION.replace('{id}', serviceId) + data[numericIndex]?.id)
 		refresh()
 	}
 
@@ -59,7 +59,7 @@ export const Inputs = ({ data, serviceId }: Props) => {
 
 		const ids = indexes.map(index => {
 			const numericIndex = parseInt(index, 10)
-			return data[numericIndex].id
+			return data[numericIndex]?.id
 		})
 
 		if (ids.length === 0 || !ids[0]) return

@@ -10,15 +10,15 @@ import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { ServiceLocation } from 'api/models/service-locations/serviceLocation'
 import { updateServiceLocation } from 'api/services/serviceLocations'
-import { requiredString } from 'schemas'
+import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
 
 import ServiceLocationForm from '../../form'
 
 const formSchema = z.object({
 	city: requiredString.shape.scheme,
 	address: requiredString.shape.scheme,
-	phone: requiredString.shape.scheme,
-	email: requiredString.shape.scheme
+	phone: phoneNumberScheme.shape.phone,
+	email: emailSchema.shape.email
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -46,7 +46,7 @@ const ServiceLocationEdit = ({ serviceLocation, serviceId }: Props) => {
 	const onSubmit = async () => {
 		const data = form.getValues()
 		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
-		const result = await updateServiceLocation({ ...dataWIhoutEmptyString, id: serviceLocation?.id, serviceId })
+		const result = await updateServiceLocation(serviceLocation?.id ?? '', { ...dataWIhoutEmptyString, serviceId })
 
 		if (result?.message === 'OK') {
 			localStorage.setItem('editMessage', 'ServiceLocations.successfullyEdited')
@@ -61,7 +61,7 @@ const ServiceLocationEdit = ({ serviceLocation, serviceId }: Props) => {
 		<FormWrapper>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<ServiceLocationForm isEdit />
+					<ServiceLocationForm />
 				</form>
 			</FormProvider>
 		</FormWrapper>

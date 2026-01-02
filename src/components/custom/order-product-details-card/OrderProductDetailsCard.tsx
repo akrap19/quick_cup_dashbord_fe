@@ -61,7 +61,7 @@ export const OrderProductDetailsCard = ({ orderProduct }: OrderProductDetailsCar
 	const productInfoSection = (
 		<Stack justifyContent="space-between" style={{ height: '100%' }}>
 			<Text fontSize="big" color="neutral.900" fontWeight="semibold">
-				{product.name} {product.size ? product.size : ''}
+				{product.name}
 			</Text>
 			<Stack gap={1}>
 				<Text color="neutral.700">

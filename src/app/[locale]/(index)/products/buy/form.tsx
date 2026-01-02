@@ -113,11 +113,7 @@ const BuyForm = ({
 				<TextInput placeholder={t('General.namePlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
-			<FormControl name="size">
-				<FormControl.Label>{t('General.size')}</FormControl.Label>
-				<TextInput placeholder={t('General.sizePlaceholder')} />
-				<FormControl.Message />
-			</FormControl>
+			<div />
 			<FormControl name="unit">
 				<FormControl.Label>
 					<RequiredLabel>{t('General.unit')}</RequiredLabel>
@@ -179,39 +175,43 @@ const BuyForm = ({
 					<FormControl.Message />
 				</FormControl>
 			</Box>
-			<Box style={{ gridColumn: 'span 2' }}>
-				<Stack gap={5}>
-					<div>
-						<Button
-							type="button"
-							variant={showServices ? 'destructive' : 'success'}
-							size="small"
-							onClick={() => setShowServices(!showServices)}>
-							{showServices ? t('General.stopCustomizingServicePrices') : t('General.customizeServicePrices')}
-						</Button>
-					</div>
-					{servicesPrices.map((service, index) => {
-						const fieldName = `servicePrices.${index}.prices`
-						form.setValue(`servicePrices.${index}.serviceId`, service.serviceId)
+			{servicesPrices && servicesPrices.length > 0 && (
+				<Box style={{ gridColumn: 'span 2' }}>
+					<Stack gap={5}>
+						<div>
+							<Button
+								type="button"
+								variant={showServices ? 'destructive' : 'success'}
+								size="small"
+								onClick={() => setShowServices(!showServices)}>
+								{showServices ? t('General.stopCustomizingServicePrices') : t('General.customizeServicePrices')}
+							</Button>
+						</div>
+						{servicesPrices.map((service, index) => {
+							const fieldName = `servicePrices.${index}.prices`
+							form.setValue(`servicePrices.${index}.serviceId`, service.serviceId)
 
-						return (
-							<Box key={service.serviceId} style={{ marginBottom: '1.5rem', display: showServices ? 'block' : 'none' }}>
-								<FormControl name={fieldName}>
-									<FormControl.Label>{service.serviceName}</FormControl.Label>
-									<FormTable
-										name={fieldName}
-										columns={servicePriceFormTableColumns}
-										defaultRow={{ minQuantity: undefined, price: undefined }}
-										emptyMessage={t('General.noPricesAdded')}
-										addButtonLabel={t('General.addRow')}
-									/>
-									<FormControl.Message />
-								</FormControl>
-							</Box>
-						)
-					})}
-				</Stack>
-			</Box>
+							return (
+								<Box
+									key={service.serviceId}
+									style={{ marginBottom: '1.5rem', display: showServices ? 'block' : 'none' }}>
+									<FormControl name={fieldName}>
+										<FormControl.Label>{service.serviceName}</FormControl.Label>
+										<FormTable
+											name={fieldName}
+											columns={servicePriceFormTableColumns}
+											defaultRow={{ minQuantity: undefined, price: undefined }}
+											emptyMessage={t('General.noPricesAdded')}
+											addButtonLabel={t('General.addRow')}
+										/>
+										<FormControl.Message />
+									</FormControl>
+								</Box>
+							)
+						})}
+					</Stack>
+				</Box>
+			)}
 		</FormItems>
 	)
 }

@@ -5,4 +5,5 @@ export interface ServiceLocation {
 	address: string
 	phone: string
 	email: string
+	serviceName?: string
 }

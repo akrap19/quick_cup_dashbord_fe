@@ -36,45 +36,45 @@ export const EventDetails = ({ event }: Props) => {
 			<Stack gap={4}>
 				<Label>{t('General.owner')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{event.userName ?? t('General.owner') + t('General.notDefined')}
+					{event.userName ?? '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.location')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{event.location ?? t('General.location') + t('General.notDefined')}
+					{event.location ?? '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.placeAndPostalCode')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{event.place ?? t('General.placeAndPostalCode') + t('General.notDefined')}
+					{event.place ?? '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.streetAndNumber')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{event.street ?? t('General.streetAndNumber') + t('General.notDefined')}
+					{event.street ?? '-'}
 				</Text>
 			</Stack>
 			<div />
 			<Stack gap={4}>
 				<Label>{t('Events.startDate')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{event.startDate ? formatDate(event.startDate) : t('Events.startDate') + t('General.notDefined')}
+					{event.startDate ? formatDate(event.startDate) : '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('Events.endDate')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{event.endDate ? formatDate(event.endDate) : t('Events.endDate') + t('General.notDefined')}
+					{event.endDate ? formatDate(event.endDate) : '-'}
 				</Text>
 			</Stack>
 			<Box style={{ gridColumn: 'span 2' }}>
 				<Stack gap={4}>
 					<Label>{t('General.description')}</Label>
 					<Text fontSize="small" color="neutral.800">
-						{event.description ?? t('General.description') + t('General.notDefined')}
+						{event.description ?? '-'}
 					</Text>
 				</Stack>
 			</Box>

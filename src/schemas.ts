@@ -58,6 +58,6 @@ export const productStateSchema = z.object({
 	status: z.string().min(1),
 	location: z.string().min(1),
 	quantity: z.number().min(1),
-	serviceId: z.string().optional(),
+	serviceLocationId: z.string().optional(),
 	userId: z.string().optional()
 })

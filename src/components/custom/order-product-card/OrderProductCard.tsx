@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 import { useFormContext } from 'react-hook-form'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { ItemCarousel } from '@/components/custom/item-carousel/ItemCarousel'
 import Image from 'next/image'
 import { Button } from '@/components/inputs/button'
@@ -15,7 +15,6 @@ import { Product } from 'api/models/products/product'
 import { useWatch } from 'react-hook-form'
 import { FormControl } from '@/components/inputs/form-control'
 import { NumericInput } from '@/components/inputs/numeric-input'
-import { ProductPrice } from 'api/models/products/productPrice'
 import { useBuyStore } from '@/store/buy'
 import { useRentStore } from '@/store/rent'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
@@ -31,27 +30,15 @@ export const OrderProductCard = ({ product, index }: OrderProductCardProps) => {
 	const form = useFormContext()
 	const buyStore = useBuyStore()
 	const rentStore = useRentStore()
-
-	// Get acquisition type to determine which store to use
 	const acquisitionType = form.getValues('acquisitionType')
 	const isRent = acquisitionType === AcquisitionTypeEnum.RENT
 	const store = isRent ? rentStore : buyStore
 	const isProductInStore = store.selectedItems.some(item => item.id === product.id)
-
-	// Only create field names if product is in form (index >= 0)
-	const quantityFieldName = index >= 0 ? `products.${index}.quantity` : 'products.0.quantity'
-	const productIdFieldName = index >= 0 ? `products.${index}.productId` : 'products.0.productId'
-	const priceFieldName = index >= 0 ? `products.${index}.price` : 'products.0.price'
-
-	// Always call useWatch hooks (they must be called unconditionally)
-	// Use a safe default field name when index < 0 to avoid hook order issues
-	const quantityValue = useWatch({ control: form.control, name: quantityFieldName as any })
+	const quantityFieldName = index >= 0 ? `products.${index}.quantity` : ''
+	const productIdFieldName = index >= 0 ? `products.${index}.productId` : ''
+	const priceFieldName = index >= 0 ? `products.${index}.price` : ''
 	const priceValue = useWatch({ control: form.control, name: priceFieldName as any })
-
-	// Only use the values if product is actually in the form
-	const quantity = index >= 0 ? quantityValue || 0 : 0
 	const currentPrice = index >= 0 ? priceValue || 0 : 0
-	const previousQuantityRef = useRef<number>(quantity)
 
 	useEffect(() => {
 		if (index >= 0 && productIdFieldName) {
@@ -63,39 +50,6 @@ export const OrderProductCard = ({ product, index }: OrderProductCardProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [index])
 
-	useEffect(() => {
-		// Only calculate price if product is in store and has valid index
-		if (!isProductInStore || index < 0 || !priceFieldName) return
-
-		if (previousQuantityRef.current === quantity) {
-			return
-		}
-		previousQuantityRef.current = quantity
-
-		if (quantity > 0) {
-			const singleProductPrice =
-				product.prices.find((price: ProductPrice) => {
-					const minQty = price?.minQuantity ?? 0
-					const maxQty = price?.maxQuantity ?? Infinity
-					return quantity >= minQty && quantity <= maxQty
-				})?.price ?? 0
-
-			const calculatedPrice = Number.parseFloat((singleProductPrice * quantity).toFixed(3))
-			const currentPriceValue = form.getValues(priceFieldName as any)
-
-			// Only update if the price actually changed
-			if (currentPriceValue !== calculatedPrice) {
-				form.setValue(priceFieldName as any, calculatedPrice, { shouldValidate: false, shouldDirty: false })
-			}
-		} else {
-			const currentPriceValue = form.getValues(priceFieldName as any)
-			if (currentPriceValue !== 0) {
-				form.setValue(priceFieldName as any, 0, { shouldValidate: false, shouldDirty: false })
-			}
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [quantity, isProductInStore, index, priceFieldName])
-
 	const totalPrice = currentPrice
 
 	const handleToggleProduct = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -104,6 +58,10 @@ export const OrderProductCard = ({ product, index }: OrderProductCardProps) => {
 
 		if (isProductInStore) {
 			store.removeItem(product.id)
+
+			form.setValue(productIdFieldName as any, undefined, { shouldValidate: false })
+			form.setValue(quantityFieldName as any, '', { shouldValidate: false })
+			form.setValue(priceFieldName as any, 0, { shouldValidate: false })
 		} else {
 			store.addItem(product)
 		}
@@ -111,25 +69,30 @@ export const OrderProductCard = ({ product, index }: OrderProductCardProps) => {
 
 	const imageSection = (
 		<ItemCarousel>
-			{/* @ts-ignore */}
-			{product?.images?.map((item: string) => (
-				<Image
-					key={item}
-					alt={item}
-					src={item ?? ''}
-					width={121}
-					height={150}
-					style={{ objectFit: 'contain' }}
-					priority
-				/>
-			))}
+			{(product?.images && product.images.length > 0
+				? product.images
+				: [{ url: '/images/no_image_placeholder.png' }]
+			).map((item: any, index: number) => {
+				const imageUrl = typeof item === 'string' ? item : item?.url || item
+				return (
+					<Image
+						key={imageUrl || index}
+						alt={product.name || 'Product image'}
+						src={imageUrl ?? ''}
+						width={121}
+						height={150}
+						style={{ objectFit: 'contain' }}
+						priority
+					/>
+				)
+			})}
 		</ItemCarousel>
 	)
 
 	const productInfoSection = (
 		<>
 			<Text fontSize="big" color="neutral.900" fontWeight="semibold">
-				{product.name + ' ' + product.size}
+				{product.name}
 			</Text>
 
 			<Box flex="1" position="absolute" style={{ bottom: 0, left: 0, width: '140px' }}>
@@ -138,7 +101,7 @@ export const OrderProductCard = ({ product, index }: OrderProductCardProps) => {
 					<NumericInput
 						placeholder={t('General.quantityPlaceholder')}
 						allowNegative={false}
-						decimalScale={0}
+						decimalScale={3}
 						disabled={!isProductInStore}
 					/>
 				</FormControl>
@@ -160,7 +123,7 @@ export const OrderProductCard = ({ product, index }: OrderProductCardProps) => {
 				)}
 			</Button>
 			<Text color="neutral.900" fontSize="medium" fontWeight="semibold">
-				{totalPrice}€
+				{totalPrice?.toFixed(3)}€
 			</Text>
 		</Stack>
 	)

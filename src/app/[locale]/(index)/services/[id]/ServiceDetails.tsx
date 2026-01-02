@@ -47,26 +47,25 @@ export const ServiceDetails = ({ service }: Props) => {
 						<Stack gap={4}>
 							<Label>{t('General.name')}</Label>
 							<Text fontSize="small" color="neutral.800">
-								{service?.name ?? t('General.name') + t('General.notDefined')}
+								{service?.name ?? '-'}
 							</Text>
 						</Stack>
 						<Stack gap={4}>
 							<Label>{t('Services.priceCalculationUnit')}</Label>
 							<Text fontSize="small" color="neutral.800">
-								{formatUnitLabel(service?.priceCalculationUnit) ??
-									t('Services.priceCalculationUnit') + t('General.notDefined')}
+								{formatUnitLabel(service?.priceCalculationUnit) ?? '-'}
 							</Text>
 						</Stack>
 						<Stack gap={4}>
 							<Label>{t('Services.acquisitionType')}</Label>
 							<Text fontSize="small" color="neutral.800">
-								{service?.acquisitionType ? getServiceLabel(service.acquisitionType) : t('General.notDefined')}
+								{service?.acquisitionType ? getServiceLabel(service.acquisitionType) : '-'}
 							</Text>
 						</Stack>
 						<Stack gap={4}>
 							<Label>{t('Services.billingInterval')}</Label>
 							<Text fontSize="small" color="neutral.800">
-								{service?.billingInterval ? getServiceLabel(service.billingInterval) : t('General.notDefined')}
+								{service?.billingInterval ? getServiceLabel(service.billingInterval) : '-'}
 							</Text>
 						</Stack>
 						<Stack gap={4} style={{ gridColumn: 'span 2' }}>
@@ -90,7 +89,7 @@ export const ServiceDetails = ({ service }: Props) => {
 									<Stack gap={4}>
 										<Label>{t('Services.inputOrderTime')}</Label>
 										<Text fontSize="small" color="neutral.800">
-											{service?.inputTypeForBuy ? getServiceLabel(service.inputTypeForBuy) : t('General.notDefined')}
+											{service?.inputTypeForBuy ? getServiceLabel(service.inputTypeForBuy) : '-'}
 										</Text>
 									</Stack>
 									<Stack gap={4}>
@@ -100,7 +99,7 @@ export const ServiceDetails = ({ service }: Props) => {
 												? service.isDefaultServiceForBuy
 													? t('General.yes')
 													: t('General.no')
-												: t('General.notDefined')}
+												: '-'}
 										</Text>
 									</Stack>
 									<Box style={{ gridColumn: 'span 2', width: '100%' }}>
@@ -133,7 +132,7 @@ export const ServiceDetails = ({ service }: Props) => {
 									<Stack gap={4}>
 										<Label>{t('Services.inputOrderTime')}</Label>
 										<Text fontSize="small" color="neutral.800">
-											{service?.inputTypeForRent ? getServiceLabel(service.inputTypeForRent) : t('General.notDefined')}
+											{service?.inputTypeForRent ? getServiceLabel(service.inputTypeForRent) : '-'}
 										</Text>
 									</Stack>
 									<Stack gap={4}>
@@ -143,7 +142,7 @@ export const ServiceDetails = ({ service }: Props) => {
 												? service.isDefaultServiceForRent
 													? t('General.yes')
 													: t('General.no')
-												: t('General.notDefined')}
+												: '-'}
 										</Text>
 									</Stack>
 									<Box style={{ gridColumn: 'span 2', width: '100%' }}>

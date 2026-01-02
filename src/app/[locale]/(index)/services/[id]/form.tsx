@@ -5,15 +5,15 @@ import { useTranslations } from 'next-intl'
 import { FormItems } from '@/components/custom/layouts/add-form'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
+import { NumericInput } from '@/components/inputs/numeric-input'
 import { TextInput } from '@/components/inputs/text-input'
 import { OpenedProps } from '@/hooks/use-toggle'
 
 interface Props {
-	isEdit?: boolean
 	cancelDialog?: OpenedProps
 }
 
-const ServiceLocationForm = ({ isEdit, cancelDialog }: Props) => {
+const ServiceLocationForm = ({ cancelDialog }: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -36,7 +36,7 @@ const ServiceLocationForm = ({ isEdit, cancelDialog }: Props) => {
 				<FormControl.Label>
 					<RequiredLabel>{t('General.phoneNumber')}</RequiredLabel>
 				</FormControl.Label>
-				<TextInput placeholder={t('General.phoneNumberPlaceholder')} />
+				<NumericInput placeholder={t('General.phoneNumberPlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
 			<FormControl name="email">

@@ -5,8 +5,11 @@ export interface Client {
 	firstName: string
 	lastName: string
 	email: string
-	phoneNumber: string
-	location: string
 	status: string
+	phoneNumber: string
+	companyName?: string | null
+	pin?: string | null
+	street?: string | null
+	location?: string | null
 	productPrices: Product[]
 }

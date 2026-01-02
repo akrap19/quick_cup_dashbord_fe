@@ -26,48 +26,48 @@ export const OrderInformationDetails = ({ order }: Props) => {
 					{handleFullName(order.customer.firstName, order.customer.lastName)}
 				</Text>
 			</Stack>
+			<div />
 			<Stack gap={4}>
 				<Label>{t('General.event')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{order.event?.title}
+					{order.event?.title ?? '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.location')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{emptyToDash(order.location)}
+					{emptyToDash(order.location) ?? '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.placeAndPostalCode')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{order.place ?? t('General.placeAndPostalCode') + t('General.notDefined')}
+					{order.place ?? '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.streetAndNumber')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{order.street ?? t('General.streetAndNumber') + t('General.notDefined')}
+					{order.street ?? '-'}
 				</Text>
 			</Stack>
-			<div />
 			<Stack gap={4}>
 				<Label>{t('Orders.contactPerson')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{order.contactPerson ?? t('Orders.contactPerson') + t('General.notDefined')}
+					{order.contactPerson || '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('Orders.contactPersonContact')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{order.contactPersonContact ?? t('Orders.contactPersonContact') + t('General.notDefined')}
+					{order.contactPersonContact ?? '-'}
 				</Text>
 			</Stack>
 			<Box style={{ gridColumn: 'span 2' }}>
 				<Stack gap={4}>
 					<Label>{t('General.notes')}</Label>
 					<Text fontSize="small" color="neutral.800">
-						{order.notes ?? t('General.notes') + t('General.notDefined')}
+						{order.notes ?? '-'}
 					</Text>
 				</Stack>
 			</Box>

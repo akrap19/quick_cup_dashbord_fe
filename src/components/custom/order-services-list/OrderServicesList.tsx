@@ -64,7 +64,7 @@ export const OrderServicesList = ({ services, products = [] }: OrderServicesList
 							key={orderService.serviceId || index}
 							paddingY={3}
 							paddingX={0}
-							style={{ borderBottom: '1px solid #E5E7EB' }}>
+							style={index !== services.length - 1 ? { borderBottom: '1px solid #E5E7EB' } : undefined}>
 							<Stack gap={2}>
 								<Inline justifyContent="space-between" alignItems="center" gap={3}>
 									<Box display="flex" style={{ flex: 1 }}>
@@ -97,7 +97,6 @@ export const OrderServicesList = ({ services, products = [] }: OrderServicesList
 															const product = productsMap.get(productId)
 															const productName =
 																product?.product?.name || product?.product?.productName || t('General.product')
-															const productSize = product?.product?.size ? ` ${product.product.size}` : ''
 
 															// Calculate price per product proportionally
 															const productPrice =
@@ -109,7 +108,6 @@ export const OrderServicesList = ({ services, products = [] }: OrderServicesList
 																		<Stack gap={1}>
 																			<Text color="neutral.700" fontSize="small" fontWeight="semibold">
 																				{productName}
-																				{productSize}
 																			</Text>
 																			<Text color="neutral.600" fontSize="small">
 																				{t('General.quantity')}: {Math.round(serviceQuantity)}
@@ -131,7 +129,6 @@ export const OrderServicesList = ({ services, products = [] }: OrderServicesList
 																product.product?.name ||
 																product.product?.productName ||
 																`${t('General.product')} ${product.productId}`
-															const productSize = product.product?.size ? ` ${product.product.size}` : ''
 															const productQuantity = product.quantity || 0
 
 															// Calculate total product quantity for proportional calculation
@@ -162,7 +159,6 @@ export const OrderServicesList = ({ services, products = [] }: OrderServicesList
 																		<Stack gap={1}>
 																			<Text color="neutral.700" fontSize="small" fontWeight="semibold">
 																				{productName}
-																				{productSize}
 																			</Text>
 																			<Text color="neutral.600" fontSize="small">
 																				{t('General.quantity')}: {Math.round(serviceQuantityForProduct)}

@@ -35,7 +35,13 @@ export const ListWrapper = ({ title, children }: ListWrapperProps) => {
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
-				<Box width="100%" paddingY={8} paddingRight={16} paddingLeft={10}>
+				<Box
+					width="100%"
+					paddingY={8}
+					paddingRight={16}
+					paddingLeft={10}
+					overflow="auto"
+					style={{ height: 'calc(100vh - 120px)' }}>
 					<Stack gap={7}>{children}</Stack>
 				</Box>
 			)}

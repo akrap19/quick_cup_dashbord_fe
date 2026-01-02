@@ -14,8 +14,12 @@ export const OrderAdditionalCostsList = ({ additionalCosts }: OrderAdditionalCos
 	return (
 		<Box style={{ gridColumn: 'span 2' }}>
 			<Stack gap={0}>
-				{additionalCosts.map(orderAdditionalCost => (
-					<Box key={orderAdditionalCost.id} paddingY={3} paddingX={0} style={{ borderBottom: '1px solid #E5E7EB' }}>
+				{additionalCosts.map((orderAdditionalCost, index) => (
+					<Box
+						key={orderAdditionalCost.id}
+						paddingY={3}
+						paddingX={0}
+						style={index !== additionalCosts.length - 1 ? { borderBottom: '1px solid #E5E7EB' } : undefined}>
 						<Inline justifyContent="space-between" alignItems="center" gap={3}>
 							<Box display="flex" style={{ flex: 1 }}>
 								<Text fontSize="medium" color="neutral.900" fontWeight="semibold">

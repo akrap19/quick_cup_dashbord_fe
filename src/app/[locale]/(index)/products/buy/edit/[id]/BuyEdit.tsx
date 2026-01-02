@@ -11,31 +11,24 @@ import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { Product } from 'api/models/products/product'
 import { updateProduct } from 'api/services/products'
-import { productServicePriceSchema, productStateSchema, requiredString } from 'schemas'
+import { productPriceSchema, productServicePriceSchema, productStateSchema, requiredString } from 'schemas'
 import { Service } from 'api/models/services/service'
 import { Base } from 'api/models/common/base'
 
 import BuyForm from '../../form'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 
-const priceTierSchema = z.object({
-	minQuantity: z.number().min(1),
-	maxQuantity: z.number().min(1).optional(),
-	price: z.number().min(1)
-})
-
 const formSchema = z.object({
 	name: requiredString.shape.scheme,
-	size: z.string().optional(),
 	unit: requiredString.shape.scheme,
 	quantityPerUnit: z.coerce.number().min(1),
 	transportationUnit: requiredString.shape.scheme,
 	unitsPerTransportationUnit: z.coerce.number().min(1),
 	description: z.string().optional(),
 	imageIds: z.array(z.string()).optional(),
-	prices: z.array(priceTierSchema).min(1, 'Buy.atLeastOneProductPriceRequired'),
+	prices: z.array(productPriceSchema).min(1, 'Buy.atLeastOneProductPriceRequired'),
 	servicePrices: z.array(productServicePriceSchema).optional().default([]),
-	productStates: z.array(productStateSchema).optional().default([])
+	productStates: z.array(productStateSchema).min(1, 'Buy.atLeastOneProductStateRequired')
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -108,12 +101,28 @@ const BuyEdit = ({ product, servicesPrices, users, serviceLocations }: Props) =>
 		[servicesPrices]
 	)
 
+	// Normalize productStates to match form schema (extract only required fields, handle nested serviceLocation)
+	const normalizedProductStates = useMemo(() => {
+		if (!product?.productStates || product.productStates.length === 0) {
+			return []
+		}
+
+		return product.productStates.map(state => ({
+			id: state.id,
+			status: state.status,
+			location: state.location,
+			quantity: state.quantity,
+			// Extract serviceLocationId from nested serviceLocation object if needed
+			serviceLocationId: state.serviceLocationId || (state.serviceLocation as any)?.id || undefined,
+			userId: state.userId || undefined
+		}))
+	}, [product?.productStates])
+
 	const form = useForm<Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			name: product?.name ?? '',
-			size: product?.size ?? '',
 			unit: product?.unit ?? '',
 			quantityPerUnit: product?.quantityPerUnit ?? undefined,
 			transportationUnit: product?.transportationUnit ?? '',
@@ -122,7 +131,7 @@ const BuyEdit = ({ product, servicesPrices, users, serviceLocations }: Props) =>
 			imageIds: initialImageIds,
 			prices: product?.prices ?? [],
 			servicePrices: initialProductServicePrices,
-			productStates: product?.productStates ?? []
+			productStates: normalizedProductStates
 		}
 	})
 
@@ -178,14 +187,26 @@ const BuyEdit = ({ product, servicesPrices, users, serviceLocations }: Props) =>
 
 		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
 
+		// Transform productStates to only include required fields: status, location, quantity, serviceLocationId, userId
+		const transformedProductStates = data.productStates.map(state => ({
+			status: state.status,
+			location: state.location,
+			quantity: state.quantity,
+			serviceLocationId: state.serviceLocationId || null,
+			userId: state.userId || null
+		}))
+
+		// Exclude imageIds from payload
+		const { imageIds, ...dataWithoutImageIds } = dataWIhoutEmptyString
+
 		const shortenedDataWithServicePrices = {
-			...dataWIhoutEmptyString,
-			servicePrices: showServices && changedServices.length > 0 ? changedServices : undefined
+			...dataWithoutImageIds,
+			servicePrices: showServices && changedServices.length > 0 ? changedServices : undefined,
+			productStates: transformedProductStates
 		}
 
-		const result = await updateProduct({
+		const result = await updateProduct(product?.id, {
 			...shortenedDataWithServicePrices,
-			id: product?.id,
 			acquisitionType: AcquisitionTypeEnum.BUY,
 			imageIdsToAdd,
 			imageIdsToRemove,

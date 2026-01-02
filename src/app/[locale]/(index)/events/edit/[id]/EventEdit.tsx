@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { format } from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -44,8 +45,8 @@ const EventEdit = ({ event, clients, isClient }: Props) => {
 		defaultValues: {
 			title: event?.title,
 			description: event?.description ?? '',
-			startDate: event?.startDate ?? '',
-			endDate: event?.endDate ?? '',
+			startDate: event?.startDate ? format(new Date(event.startDate), 'yyyy-MM-dd') : '',
+			endDate: event?.endDate ? format(new Date(event.endDate), 'yyyy-MM-dd') : '',
 			location: event?.location ?? '',
 			place: event?.place ?? '',
 			street: event?.street ?? '',
@@ -63,8 +64,9 @@ const EventEdit = ({ event, clients, isClient }: Props) => {
 			street: dataWIhoutEmptyString.street?.trim() || '',
 			id: event?.id
 		}
-		delete payload.title
+
 		const result = await updateEvent(payload)
+
 		if (result?.message === 'OK') {
 			localStorage.setItem('editMessage', 'Events.successfullyEdited')
 			refresh()

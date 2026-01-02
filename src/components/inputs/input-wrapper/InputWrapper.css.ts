@@ -8,10 +8,7 @@ const activeBorder = { borderColor: tokens.colors['primary.300'], boxShadow: tok
 const placeholder = { color: tokens.colors['neutral.300'] }
 const disabled = {
 	borderColor: tokens.colors['neutral.300'],
-	color: tokens.colors['neutral.500'],
-	boxShadow: 'unset',
-	opacity: '0.75',
-	backgroundColor: 'unset'
+	boxShadow: 'unset'
 }
 const hasError = { borderColor: tokens.colors['destructive.500'] }
 const hasSuccess = { borderColor: tokens.colors['success.500'] }
@@ -32,6 +29,7 @@ export const input = recipe({
 		borderRadius: tokens.borders.radius.small,
 		backgroundColor: tokens.colors['neutral.50'],
 		color: 'inherit',
+		fontFamily: 'var(--inter-font)',
 
 		':focus': activeBorder,
 		':hover': activeBorder,
@@ -61,10 +59,18 @@ export const input = recipe({
 				paddingLeft: tokens.spacing[4],
 				paddingRight: tokens.spacing[4]
 			}
+		},
+		disabled: {
+			true: {
+				':focus': disabled,
+				':hover': disabled,
+				':active': disabled
+			}
 		}
 	},
 	defaultVariants: {
-		size: 'medium'
+		size: 'medium',
+		disabled: false
 	}
 })
 

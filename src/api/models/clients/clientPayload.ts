@@ -5,8 +5,10 @@ export interface ClientPayload {
 	email?: string
 	firstName: string
 	lastName: string
-	barnahus?: string
-	userProfession: string
 	phoneNumber: string
+	companyName?: string | null
+	pin?: string | null
+	street?: string | null
+	location?: string | null
 	productPrices?: Product[]
 }

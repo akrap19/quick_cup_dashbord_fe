@@ -15,22 +15,15 @@ import { useOpened } from '@/hooks/use-toggle'
 import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { createProduct } from 'api/services/products'
 import { ROUTES } from 'parameters'
-import { productServicePriceSchema, productStateSchema, requiredString } from 'schemas'
+import { productPriceSchema, productServicePriceSchema, productStateSchema, requiredString } from 'schemas'
 import { Service } from 'api/models/services/service'
 import { Base } from 'api/models/common/base'
 
 import RentForm from '../form'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 
-const productPriceSchema = z.object({
-	minQuantity: z.number().min(1),
-	maxQuantity: z.number().min(1).optional(),
-	price: z.number().min(0)
-})
-
 const formSchema = z.object({
 	name: requiredString.shape.scheme,
-	size: z.string().optional(),
 	unit: requiredString.shape.scheme,
 	quantityPerUnit: z.coerce.number().min(1),
 	transportationUnit: requiredString.shape.scheme,
@@ -39,7 +32,7 @@ const formSchema = z.object({
 	imageIds: z.array(z.string()).optional(),
 	prices: z.array(productPriceSchema).min(1, 'Rent.atLeastOneProductPriceRequired'),
 	servicePrices: z.array(productServicePriceSchema).optional().default([]),
-	productStates: z.array(productStateSchema).optional().default([])
+	productStates: z.array(productStateSchema).min(1, 'Rent.atLeastOneProductStateRequired')
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -76,7 +69,6 @@ const RentAdd = ({ servicesPrices, users, serviceLocations }: Props) => {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			name: '',
-			size: '',
 			unit: '',
 			quantityPerUnit: undefined,
 			transportationUnit: '',
@@ -134,9 +126,13 @@ const RentAdd = ({ servicesPrices, users, serviceLocations }: Props) => {
 			})
 			.filter((service): service is NonNullable<typeof service> => service !== null)
 
+		// No transformation needed - serviceLocationId is already the location ID
+		const transformedProductStates = data.productStates
+
 		const shortenedDataWithServicePrices = {
 			...data,
-			servicePrices: showServices && changedServices.length > 0 ? changedServices : undefined
+			servicePrices: showServices && changedServices.length > 0 ? changedServices : undefined,
+			productStates: transformedProductStates
 		}
 
 		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(shortenedDataWithServicePrices)

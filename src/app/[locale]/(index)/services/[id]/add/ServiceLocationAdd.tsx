@@ -13,15 +13,15 @@ import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
 import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { createServiceLocation } from 'api/services/serviceLocations'
-import { requiredString } from 'schemas'
+import { emailSchema, phoneNumberScheme, requiredString } from 'schemas'
 
 import ServiceLocationForm from '../form'
 
 const formSchema = z.object({
 	city: requiredString.shape.scheme,
 	address: requiredString.shape.scheme,
-	phone: requiredString.shape.scheme,
-	email: requiredString.shape.scheme
+	phone: phoneNumberScheme.shape.phone,
+	email: emailSchema.shape.email
 })
 
 type Schema = z.infer<typeof formSchema>

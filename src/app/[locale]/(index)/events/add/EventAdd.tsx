@@ -27,10 +27,10 @@ type EventAddProps = {
 
 const formSchema = z.object({
 	title: requiredString.shape.scheme,
-	description: requiredString.shape.scheme,
+	description: z.string().optional(),
 	startDate: requiredString.shape.scheme,
 	endDate: requiredString.shape.scheme,
-	location: requiredString.shape.scheme,
+	location: z.string().optional(),
 	place: requiredString.shape.scheme,
 	street: requiredString.shape.scheme,
 	userId: requiredString.shape.scheme

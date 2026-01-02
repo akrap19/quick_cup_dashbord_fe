@@ -36,7 +36,7 @@ export const SearchDropdown = ({
 	placeholder,
 	hasSuccess,
 	value,
-	disabled,
+	disabled = false,
 	alwaysShowSearch,
 	isFilter,
 	setValue
@@ -100,7 +100,11 @@ export const SearchDropdown = ({
 					<Stack>
 						<Button size="auto" variant="adaptive" onClick={handleDropDownOpening} disabled={disabled}>
 							<Box
-								className={clsx(input({ size: 'medium' }), !isFilter && hasSuccess && inputHasSuccess, endIconSpacing)}>
+								className={clsx(
+									input({ size: 'medium', disabled }),
+									!isFilter && hasSuccess && inputHasSuccess,
+									endIconSpacing
+								)}>
 								<Text className={DropdownPresentationlabel({ variant: presentationalLabelVariant })}>
 									{choosenValue?.name
 										? t(choosenValue?.name)

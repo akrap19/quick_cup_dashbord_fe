@@ -36,39 +36,57 @@ export const ClientDetails = ({ client }: Props) => {
 	return (
 		<DetailsWrapper>
 			<Stack gap={4}>
+				<Label>{t('General.companyName')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{client.companyName ?? '-'}
+				</Text>
+			</Stack>
+			<Stack gap={4}>
+				<Label>{t('General.pin')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{client.pin ?? '-'}
+				</Text>
+			</Stack>
+			<Stack gap={4}>
 				<Label>{t('General.firstName')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{client.firstName ?? t('General.firstName') + t('General.notDefined')}
+					{client.firstName ?? '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.lastName')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{client.lastName ?? t('General.lastName') + t('General.notDefined')}
+					{client.lastName ?? '-'}
+				</Text>
+			</Stack>
+			<Stack gap={4}>
+				<Label>{t('General.email')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{client.email ?? '-'}
+				</Text>
+			</Stack>
+			<Stack gap={4}>
+				<Label>{t('General.phoneNumber')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{client.phoneNumber ?? '-'}
+				</Text>
+			</Stack>
+			<Stack gap={4}>
+				<Label>{t('General.placeAndPostalCode')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{client.location ?? '-'}
+				</Text>
+			</Stack>
+			<Stack gap={4}>
+				<Label>{t('General.streetAndNumber')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{client.street ?? '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.status')}</Label>
 				<Text fontSize="small" color="neutral.800">
 					<Badge variant={client.status as any} />
-				</Text>
-			</Stack>
-			<Stack gap={4}>
-				<Label>{t('General.location')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{client.location ?? t('General.location') + t('General.notDefined')}
-				</Text>
-			</Stack>
-			<Stack gap={4}>
-				<Label>{t('General.email')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{client.email ?? t('General.email') + t('General.notDefined')}
-				</Text>
-			</Stack>
-			<Stack gap={4}>
-				<Label>{t('General.phoneNumber')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{client.phoneNumber ?? t('General.phoneNumber') + t('General.notDefined')}
 				</Text>
 			</Stack>
 			{client.productPrices && client.productPrices.length > 0 && (
@@ -85,9 +103,9 @@ export const ClientDetails = ({ client }: Props) => {
 						{showPriceList && (
 							<>
 								{client.productPrices.map(product => (
-									<Box key={product.id} style={{ width: '85%', marginBottom: '16px' }}>
+									<Box key={product.id} style={{ marginBottom: '16px' }}>
 										<Stack gap={4} style={{ marginBottom: '16px' }}>
-											<Label>{product.productName + ' ' + product.size}</Label>
+											<Label>{product.productName}</Label>
 										</Stack>
 										{product.prices && product.prices.length > 0 ? (
 											<DataTable

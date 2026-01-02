@@ -11,7 +11,10 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
 	title: 'Quick cup | Dashboard',
-	description: 'Quick cup'
+	description: 'Quick cup',
+	icons: {
+		icon: '/images/QuickCup_icon.png'
+	}
 }
 
 const inter = Inter({

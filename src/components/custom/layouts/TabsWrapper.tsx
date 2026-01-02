@@ -28,7 +28,12 @@ export const TabsWrapper = ({ children }: { children: ReactNode }) => {
 			{navbarIsLoading ? (
 				<Loader />
 			) : (
-				<Box padding={6} backgroundColor="neutral.50" border="thin" borderColor="neutral.300">
+				<Box
+					padding={6}
+					backgroundColor="neutral.50"
+					border="thin"
+					borderColor="neutral.300"
+					style={{ height: 'calc(100vh - 336px)' }}>
 					<div
 						style={{
 							display: 'grid',

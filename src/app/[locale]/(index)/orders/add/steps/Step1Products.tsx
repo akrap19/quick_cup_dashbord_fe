@@ -9,8 +9,9 @@ import { OrderProductCard } from '@/components/custom/order-product-card/OrderPr
 import { Product } from 'api/models/products/product'
 import { requiredString } from 'schemas'
 import { useOrderWizardStore, Step1ProductsData } from '@/store/order-wizard'
-import { ProductPrice } from 'api/models/products/productPrice'
 import { tokens } from '@/style/theme.css'
+import { NoResult } from '@/components/custom/no-result/NoResult'
+import { getProductPrices } from 'api/services/products'
 
 const orderProductSchema = z.object({
 	productId: requiredString.shape.scheme,
@@ -34,7 +35,7 @@ interface Props {
 }
 
 export const Step1Products = ({ products = [], selectedItems = [] }: Props) => {
-	const { step1Data, setStep1Data, setTotalAmount } = useOrderWizardStore()
+	const { step1Data, setStep1Data, setTotalAmount, customerId } = useOrderWizardStore()
 
 	// Initialize form with products from selectedItems (those in store) or from step1Data
 	const getInitialProducts = () => {
@@ -86,37 +87,45 @@ export const Step1Products = ({ products = [], selectedItems = [] }: Props) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedItems.map(p => p.id).join(',')])
 
-	// Calculate prices based on quantity
+	// Calculate prices using API when quantity changes
 	useEffect(() => {
-		formProducts.forEach((formProduct, index) => {
-			if (!formProduct) return
-			const product = products.find(p => p.id === formProduct.productId)
-			if (!product) return
+		if (!customerId) return
 
-			const quantity = Number(formProduct.quantity) || 0
-			if (quantity > 0) {
-				const singleProductPrice =
-					product.prices.find((price: ProductPrice) => {
-						const minQty = price?.minQuantity ?? 0
-						const maxQty = price?.maxQuantity ?? Infinity
-						return quantity >= minQty && quantity <= maxQty
-					})?.price ?? 0
+		const calculatePrices = async () => {
+			const currentProducts = form.getValues('products') || []
 
-				const calculatedPrice = Number.parseFloat((singleProductPrice * quantity).toFixed(3))
-				const currentPrice = form.getValues(`products.${index}.price`)
+			for (let index = 0; index < currentProducts.length; index++) {
+				const formProduct = currentProducts[index]
+				if (!formProduct) continue
 
-				if (currentPrice !== calculatedPrice) {
-					form.setValue(`products.${index}.price`, calculatedPrice, { shouldValidate: false, shouldDirty: false })
-				}
-			} else {
-				const currentPrice = form.getValues(`products.${index}.price`)
-				if (currentPrice !== 0) {
+				const quantity = Number(formProduct.quantity) || 0
+
+				if (quantity > 0) {
+					try {
+						const response = await getProductPrices({
+							productId: formProduct.productId,
+							quantity: quantity,
+							userId: customerId
+						})
+
+						const totalPrice = response?.data?.totalPrice ?? 0
+						form.setValue(`products.${index}.price`, totalPrice, {
+							shouldValidate: false,
+							shouldDirty: false
+						})
+					} catch (error) {
+						// On error, set price to 0
+						form.setValue(`products.${index}.price`, 0, { shouldValidate: false, shouldDirty: false })
+					}
+				} else {
 					form.setValue(`products.${index}.price`, 0, { shouldValidate: false, shouldDirty: false })
 				}
 			}
-		})
+		}
+
+		calculatePrices()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [formProducts.map(p => p.quantity).join(',')])
+	}, [formProducts.map(p => `${p.productId}-${p.quantity}`).join(','), customerId])
 
 	// Save to store and calculate total when form changes
 	useEffect(() => {
@@ -133,13 +142,6 @@ export const Step1Products = ({ products = [], selectedItems = [] }: Props) => {
 		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [form.watch])
-
-	// Calculate initial total
-	useEffect(() => {
-		const productsTotal = formProducts.reduce((sum, product) => sum + (product.price || 0), 0)
-		setTotalAmount(productsTotal)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
 
 	return (
 		<FormProvider {...form}>
@@ -158,7 +160,7 @@ export const Step1Products = ({ products = [], selectedItems = [] }: Props) => {
 					})}
 				</div>
 			) : (
-				<div>No products available</div>
+				<NoResult size="large" noResoultMessage="General.noAvailableProducts" />
 			)}
 		</FormProvider>
 	)

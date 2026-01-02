@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import { z } from 'zod'
-import { useEffect, useMemo, useCallback, useRef } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
@@ -13,12 +13,20 @@ import { Product } from 'api/models/products/product'
 import { Service } from 'api/models/services/service'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { useOrderWizardStore, Step2ServicesData } from '@/store/order-wizard'
-import { getServicePrices } from 'api/services/services'
-import { useBuyStore } from '@/store/buy'
-import { useRentStore } from '@/store/rent'
 import { Base } from 'api/models/common/base'
+import { NoResult } from '@/components/custom/no-result'
 
 const step2Schema = z.object({
+	products: z
+		.array(
+			z.object({
+				productId: z.string(),
+				quantity: z.coerce.number().min(0),
+				price: z.coerce.number().min(0)
+			})
+		)
+		.optional()
+		.default([]),
 	services: z
 		.array(
 			z.object({
@@ -45,12 +53,9 @@ interface Props {
 export const Step2Services = ({ products, acquisitionType, serviceLocations = [] }: Props) => {
 	const t = useTranslations()
 	const { step2Data, setStep2Data, setTotalAmount, step1Data } = useOrderWizardStore()
-	const buyStore = useBuyStore()
-	const rentStore = useRentStore()
 	const isRent = acquisitionType === AcquisitionTypeEnum.RENT
-	const { selectedItems } = isRent ? rentStore : buyStore
 
-	// Collect unique services from all products
+	// Collect unique services from all products (use products prop which is selectedItems from parent)
 	const uniqueServices = useMemo(() => {
 		const serviceMap = new Map<string, Service>()
 
@@ -68,166 +73,114 @@ export const Step2Services = ({ products, acquisitionType, serviceLocations = []
 		return Array.from(serviceMap.values())
 	}, [products])
 
-	// Initialize services
+	// Get products from step1Data for the form (ServiceListItem needs this)
+	const formProducts = useMemo(() => {
+		return step1Data?.products || []
+	}, [step1Data?.products])
+
+	// Initialize services based on uniqueServices to ensure consistency
 	const initialServices = useMemo(() => {
-		if (step2Data?.services) {
-			return step2Data.services
+		// If we have saved data, try to merge it with current services
+		if (step2Data?.services && step2Data.services.length > 0) {
+			const savedServicesMap = new Map(step2Data.services.map(s => [s.serviceId, s]))
+
+			// Build services array from uniqueServices, preserving saved data where available
+			return uniqueServices.map(service => {
+				const serviceId = service.id || service.serviceId
+				const savedService = savedServicesMap.get(serviceId)
+
+				if (savedService) {
+					// Preserve saved data
+					return {
+						serviceId: serviceId,
+						isIncluded: savedService.isIncluded,
+						quantity: savedService.quantity,
+						price: savedService.price,
+						productQuantities: savedService.productQuantities,
+						serviceLocationId: savedService.serviceLocationId
+					}
+				}
+
+				// New service - initialize with defaults
+				const isDefault = isRent ? service.isDefaultServiceForRent : service.isDefaultServiceForBuy
+				return {
+					serviceId: serviceId,
+					isIncluded: isDefault || false,
+					quantity: 0,
+					price: 0,
+					serviceLocationId: undefined
+				}
+			})
 		}
 
-		const serviceMap = new Map<
-			string,
-			{ serviceId: string; isIncluded: boolean; quantity: number; price: number; serviceLocationId?: string }
-		>()
+		// No saved data - initialize all services from uniqueServices
+		return uniqueServices.map(service => {
+			const serviceId = service.id || service.serviceId
+			const isDefault = isRent ? service.isDefaultServiceForRent : service.isDefaultServiceForBuy
 
-		selectedItems.forEach((product: Product) => {
-			if (product.servicePrices && product.servicePrices.length > 0) {
-				product.servicePrices.forEach(service => {
-					const serviceId = service.id || service.serviceId
-					if (serviceId && !serviceMap.has(serviceId)) {
-						const isDefault = isRent ? service.isDefaultServiceForRent : service.isDefaultServiceForBuy
-
-						serviceMap.set(serviceId, {
-							serviceId: serviceId,
-							isIncluded: isDefault || false,
-							quantity: 0,
-							price: 0,
-							serviceLocationId: undefined
-						})
-					}
-				})
+			return {
+				serviceId: serviceId,
+				isIncluded: isDefault || false,
+				quantity: 0,
+				price: 0,
+				serviceLocationId: undefined
 			}
 		})
-
-		return Array.from(serviceMap.values())
-	}, [selectedItems, isRent, step2Data])
+	}, [uniqueServices, isRent, step2Data])
 
 	const form = useForm<Step2Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(step2Schema),
 		defaultValues: {
+			products: formProducts,
 			services: initialServices
 		}
 	})
 
-	const formServices = useWatch({ control: form.control, name: 'services' }) || []
-
-	// Calculate service prices
-	const calculateServicePrices = useCallback(async () => {
-		if (!step1Data?.products) return
-
-		const productsWithQuantity = step1Data.products.filter(p => Number(p.quantity) > 0)
-
-		for (const formService of formServices) {
-			const serviceId = formService.serviceId
-			if (!serviceId) continue
-
-			const productsForCalculation = productsWithQuantity.map(p => ({
-				productId: p.productId,
-				quantity: p.quantity
-			}))
-
-			if (productsForCalculation.length === 0) {
-				const serviceIndex = formServices.findIndex(s => s.serviceId === serviceId)
-				if (serviceIndex >= 0) {
-					form.setValue(`services.${serviceIndex}.price`, 0, { shouldValidate: false, shouldDirty: false })
-					form.setValue(`services.${serviceIndex}.quantity`, 0, { shouldValidate: false, shouldDirty: false })
-				}
-				continue
-			}
-
-			try {
-				const response = await getServicePrices(serviceId, {
-					products: productsForCalculation,
-					acquisitionType
-				})
-
-				if (response) {
-					const calculatedPrice = Number.parseFloat((response.totalPrice || 0).toFixed(3))
-					const serviceIndex = formServices.findIndex(s => s.serviceId === serviceId)
-					if (serviceIndex >= 0) {
-						const currentPrice = form.getValues(`services.${serviceIndex}.price`)
-						if (currentPrice !== calculatedPrice) {
-							form.setValue(`services.${serviceIndex}.price`, calculatedPrice, {
-								shouldValidate: false,
-								shouldDirty: false
-							})
-						}
-
-						const totalQuantity = productsForCalculation.reduce((sum, p) => sum + p.quantity, 0)
-						form.setValue(`services.${serviceIndex}.quantity`, totalQuantity, {
-							shouldValidate: false,
-							shouldDirty: false
-						})
-					}
-				}
-			} catch (error) {
-				const serviceIndex = formServices.findIndex(s => s.serviceId === serviceId)
-				if (serviceIndex >= 0) {
-					form.setValue(`services.${serviceIndex}.price`, 0, { shouldValidate: false, shouldDirty: false })
-				}
-			}
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [formServices.map(s => s.serviceId).join(','), step1Data?.products, acquisitionType])
-
-	const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-
+	// Reset form when initialServices or formProducts change (e.g., when navigating back or products change)
 	useEffect(() => {
-		if (debounceTimeoutRef.current) {
-			clearTimeout(debounceTimeoutRef.current)
-		}
+		form.reset({
+			products: formProducts,
+			services: initialServices
+		})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [
+		uniqueServices.map(s => s.id || s.serviceId).join(','),
+		formProducts.map(p => `${p.productId}-${p.quantity}`).join(',')
+	])
 
-		debounceTimeoutRef.current = setTimeout(() => {
-			calculateServicePrices()
-		}, 300)
-
-		return () => {
-			if (debounceTimeoutRef.current) {
-				clearTimeout(debounceTimeoutRef.current)
-			}
-		}
-	}, [calculateServicePrices])
+	const formServices = useWatch({ control: form.control, name: 'services' }) || []
 
 	// Save to store and calculate total when form changes
 	useEffect(() => {
 		const subscription = form.watch(data => {
 			const servicesTotal = (data.services || []).reduce((sum, formService) => {
 				if (!formService) return sum
+
+				// Find if this service is default
 				let isDefault = false
-				selectedItems.forEach((product: Product) => {
+				products.forEach((product: Product) => {
 					if (product.servicePrices && product.servicePrices.length > 0) {
 						const service = product.servicePrices.find(
 							s => (s.id && s.id === formService.serviceId) || (s.serviceId && s.serviceId === formService.serviceId)
 						)
 						if (service) {
 							isDefault = isRent ? service.isDefaultServiceForRent : service.isDefaultServiceForBuy
+
 							if (isDefault) return
 						}
 					}
 				})
+
 				return sum + (formService.isIncluded || isDefault ? formService.price || 0 : 0)
 			}, 0)
 
 			const stepData: Step2ServicesData = {
-				services: (data.services || [])
-					.filter((s): s is NonNullable<typeof s> => s !== undefined)
-					.filter(
-						(
-							s
-						): s is {
-							serviceId: string
-							isIncluded: boolean
-							quantity: number
-							price: number
-							productQuantities?: Record<string, number>
-							serviceLocationId?: string
-						} =>
-							!!s.serviceId &&
-							typeof s.isIncluded === 'boolean' &&
-							typeof s.quantity === 'number' &&
-							typeof s.price === 'number'
-					)
+				services: (data.services || []).filter(
+					(s): s is NonNullable<typeof s> => s !== undefined
+				) as Step2ServicesData['services']
 			}
+
 			setStep2Data(stepData)
 
 			// Update total amount (will be combined with other steps in parent)
@@ -237,7 +190,7 @@ export const Step2Services = ({ products, acquisitionType, serviceLocations = []
 
 		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [form.watch, selectedItems, isRent, step1Data])
+	}, [form.watch, products, isRent, step1Data])
 
 	const hasServices = uniqueServices.length > 0
 
@@ -249,18 +202,40 @@ export const Step2Services = ({ products, acquisitionType, serviceLocations = []
 
 	return (
 		<FormProvider {...form}>
-			<Stack gap={3}>
-				{hasDefaultService && (
-					<Text fontSize="small" color="destructive.500">
-						{t('General.requiredServicesWarning')}
-					</Text>
-				)}
-				{hasServices && (
+			{hasServices ? (
+				<Stack gap={3}>
+					{hasDefaultService && (
+						<Text fontSize="small" color="destructive.500">
+							{t('General.requiredServicesWarning')}
+						</Text>
+					)}
+
 					<Stack gap={0}>
 						{uniqueServices.map((service: Service) => {
 							const serviceId = service.id || service.serviceId
-							const serviceIndex = formServices.findIndex((fs: any) => fs.serviceId === serviceId)
-							if (serviceIndex < 0) return null
+							const serviceIndex = formServices.findIndex((fs: any) => fs?.serviceId === serviceId)
+
+							// Ensure service exists in form, if not add it
+							if (serviceIndex < 0) {
+								// This shouldn't happen, but if it does, add the service
+								const isDefault = isRent ? service.isDefaultServiceForRent : service.isDefaultServiceForBuy
+								const currentServices = form.getValues('services') || []
+								form.setValue(
+									'services',
+									[
+										...currentServices,
+										{
+											serviceId: serviceId,
+											isIncluded: isDefault || false,
+											quantity: 0,
+											price: 0,
+											serviceLocationId: undefined
+										}
+									],
+									{ shouldValidate: false }
+								)
+								return null
+							}
 
 							return (
 								<ServiceListItem
@@ -275,8 +250,10 @@ export const Step2Services = ({ products, acquisitionType, serviceLocations = []
 							)
 						})}
 					</Stack>
-				)}
-			</Stack>
+				</Stack>
+			) : (
+				<NoResult size="large" noResoultMessage="General.noAvailableProducts" />
+			)}
 		</FormProvider>
 	)
 }

@@ -38,8 +38,8 @@ export const ProductStateFormTable = ({ name, value, onChange, serviceLocations,
 			productStates.forEach((state, index) => {
 				if (state?.location === ProductStateLocationEnum.SERVICE && state?.userId) {
 					form.setValue(`${name}.${index}.userId`, undefined)
-				} else if (state?.location === ProductStateLocationEnum.USER && state?.serviceId) {
-					form.setValue(`${name}.${index}.serviceId`, undefined)
+				} else if (state?.location === ProductStateLocationEnum.USER && state?.serviceLocationId) {
+					form.setValue(`${name}.${index}.serviceLocationId`, undefined)
 				}
 			})
 		}
@@ -76,7 +76,7 @@ export const ProductStateFormTable = ({ name, value, onChange, serviceLocations,
 						<SearchDropdown
 							name={fieldName}
 							options={statusOptions}
-							placeholder={t('General.status')}
+							placeholder={''}
 							value={row.status || null}
 							alwaysShowSearch={statusOptions.length > 5}
 						/>
@@ -94,7 +94,7 @@ export const ProductStateFormTable = ({ name, value, onChange, serviceLocations,
 						<SearchDropdown
 							name={fieldName}
 							options={locationOptions}
-							placeholder={t('General.location')}
+							placeholder={''}
 							value={row.location || null}
 							alwaysShowSearch={locationOptions.length > 5}
 						/>
@@ -114,16 +114,16 @@ export const ProductStateFormTable = ({ name, value, onChange, serviceLocations,
 
 					// Get the appropriate options based on location
 					const options = isServiceLocation ? serviceLocations : isUserLocation ? users : []
-					// Determine which field to update (serviceId or userId)
-					const fieldToUpdate = isServiceLocation ? 'serviceId' : 'userId'
-					const currentValue = isServiceLocation ? row.serviceId : row.userId
+					// Determine which field to update (serviceLocationId or userId)
+					const fieldToUpdate = isServiceLocation ? 'serviceLocationId' : 'userId'
+					const currentValue = isServiceLocation ? row.serviceLocationId : row.userId
 					const fieldName = `${name}.${rowIndex}.${fieldToUpdate}`
 
 					return (
 						<SearchDropdown
 							name={fieldName}
 							options={options}
-							placeholder={t('General.holder')}
+							placeholder={''}
 							value={currentValue || null}
 							disabled={isDisabled}
 							alwaysShowSearch={options.length > 5}

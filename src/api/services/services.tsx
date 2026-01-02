@@ -55,6 +55,11 @@ export const getAllServicesPrices = async (acquisitionType: AcquisitionTypeEnum)
 	return response?.data
 }
 
+export const getServiceLocationsOptions = async () => {
+	const response = await fetchWithToken(`services/service-locations`)
+	return response?.data
+}
+
 export const getServicePrices = async (
 	serviceId: string,
 	calculateMultipleServicePrice: CalculateMultipleServicePrice,

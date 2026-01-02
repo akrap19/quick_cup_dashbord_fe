@@ -18,7 +18,7 @@ import { Inline } from '@/components/layout/inline'
 import { DataTable } from '@/components/data-display/data-table'
 import { columns } from './columns'
 import { servicePriceColumns } from './servicePriceColumns'
-import { productStateColumns } from './productStateColumns'
+import { getProductStateColumns } from './productStateColumns'
 import { replaceNullInListWithDash } from '@/utils/replaceNullInListWithDash'
 import { Button } from '@/components/inputs/button'
 import { useHasRoleAccess } from '@/hooks/use-has-role-access'
@@ -31,7 +31,7 @@ interface Props {
 export const RentDetails = ({ product }: Props) => {
 	const t = useTranslations()
 	const [showServicePriceList, setShowServicePriceList] = useState(false)
-	const title = product?.name ?? t('General.name') + t('General.notDefined')
+	const title = product?.name ?? '-'
 
 	useNavbarItems({
 		title,
@@ -46,76 +46,90 @@ export const RentDetails = ({ product }: Props) => {
 			<Stack gap={4}>
 				<Label>{t('General.name')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{product?.name ?? t('General.name') + t('General.notDefined')}
+					{product?.name ?? '-'}
 				</Text>
 			</Stack>
-			<Stack gap={4}>
-				<Label>{t('General.size')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{product?.size ?? t('General.size') + t('General.notDefined')}
-				</Text>
-			</Stack>
+			<div />
 			<Stack gap={4}>
 				<Label>{t('General.unit')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{product?.unit ?? t('General.unit') + t('General.notDefined')}
+					{product?.unit ?? '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.quantityPerUnit')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{product?.quantityPerUnit ?? t('General.quantityPerUnit') + t('General.notDefined')}
+					{product?.quantityPerUnit ?? '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.transportationUnit')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{product?.transportationUnit ?? t('General.transportationUnit') + t('General.notDefined')}
+					{product?.transportationUnit ?? '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.unitsPerTransportationUnit')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{product?.unitsPerTransportationUnit ?? t('General.unitsPerTransportationUnit') + t('General.notDefined')}
+					{product?.unitsPerTransportationUnit ?? '-'}
 				</Text>
 			</Stack>
-			<Inline justifyContent="center" alignItems="center">
-				<Box style={{ width: '242px', height: '300px' }}>
-					<ItemCarousel>
-						{product?.images?.map((item: any) => (
-							<Image
-								key={item}
-								alt="quick cup image"
-								src={item?.url}
-								width={242}
-								height={300}
-								style={{ objectFit: 'contain' }}
-								priority
-							/>
-						))}
-					</ItemCarousel>
-				</Box>
-			</Inline>
+			{product?.images && product?.images.length > 0 && (
+				<Inline justifyContent="center" alignItems="center">
+					<Box style={{ width: '242px', height: '300px' }}>
+						<ItemCarousel>
+							{product?.images?.map((item: any) => (
+								<Image
+									key={item}
+									alt="quick cup image"
+									src={item?.url}
+									width={242}
+									height={300}
+									style={{ objectFit: 'contain' }}
+									priority
+								/>
+							))}
+						</ItemCarousel>
+					</Box>
+				</Inline>
+			)}
 			<Stack gap={4}>
 				<Label>{t('General.description')}</Label>
 				<Text
 					fontSize="small"
 					color="neutral.800"
 					dangerouslySetInnerHTML={{
-						__html: product?.description ?? t('General.description') + t('General.notDefined')
+						__html: product?.description ?? '-'
 					}}
 				/>
 			</Stack>
 			<Box style={{ gridColumn: 'span 2' }}>
-				<DataTable
-					columns={columns}
-					data={replaceNullInListWithDash(product?.prices ?? [])}
-					enableCheckboxes={false}
-					enableRowClick={false}
-					equalColumnWidths={true}
-				/>
+				<Stack gap={4}>
+					<Label>{t('General.price')}</Label>
+					<DataTable
+						columns={columns}
+						data={replaceNullInListWithDash(product?.prices ?? [])}
+						enableCheckboxes={false}
+						enableRowClick={false}
+						equalColumnWidths={true}
+					/>
+				</Stack>
 			</Box>
-			{product?.servicePrices && product?.servicePrices?.length > 0 && (
+			{product?.productStates && product?.productStates.length > 0 && (
+				<Box style={{ gridColumn: 'span 2' }}>
+					<Stack gap={4}>
+						<Label>{t('Product.productStates')}</Label>
+						<DataTable
+							columns={getProductStateColumns(t)}
+							data={replaceNullInListWithDash(product.productStates ?? [])}
+							enableCheckboxes={false}
+							enableRowClick={false}
+							equalColumnWidths={true}
+						/>
+					</Stack>
+				</Box>
+			)}
+			{product.servicePrices && product.servicePrices.length > 0 && (
 				<Box style={{ gridColumn: 'span 2', width: '100%' }}>
 					<Stack gap={6}>
 						<div>
@@ -128,8 +142,8 @@ export const RentDetails = ({ product }: Props) => {
 						</div>
 						{showServicePriceList && (
 							<>
-								{product?.servicePrices?.map(service => (
-									<Box key={service.serviceId} style={{ width: '85%', marginBottom: '16px' }}>
+								{product.servicePrices.map(service => (
+									<Box key={service.serviceId} style={{ marginBottom: '16px' }}>
 										<Stack gap={4} style={{ marginBottom: '16px' }}>
 											<Label>{service.serviceName}</Label>
 										</Stack>
@@ -150,20 +164,6 @@ export const RentDetails = ({ product }: Props) => {
 								))}
 							</>
 						)}
-					</Stack>
-				</Box>
-			)}
-			{product?.productStates && product?.productStates.length > 0 && (
-				<Box style={{ gridColumn: 'span 2' }}>
-					<Stack gap={4}>
-						<Label>{t('Product.productStates')}</Label>
-						<DataTable
-							columns={productStateColumns}
-							data={replaceNullInListWithDash(product.productStates ?? [])}
-							enableCheckboxes={false}
-							enableRowClick={false}
-							equalColumnWidths={true}
-						/>
 					</Stack>
 				</Box>
 			)}

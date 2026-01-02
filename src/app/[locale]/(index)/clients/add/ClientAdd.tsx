@@ -31,6 +31,9 @@ const formSchema = z.object({
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
 	phoneNumber: phoneNumberScheme.shape.phone,
+	companyName: requiredString.shape.scheme,
+	pin: requiredString.shape.scheme,
+	street: string().optional().nullable(),
 	location: string().optional(),
 	productPrices: z.array(clientProductPriceSchema).optional().default([])
 })
@@ -71,6 +74,9 @@ const ClientAdd = ({ productsPrices }: Props) => {
 			firstName: '',
 			lastName: '',
 			phoneNumber: '',
+			companyName: '',
+			pin: '',
+			street: '',
 			location: '',
 			productPrices: initialProductPrices
 		}

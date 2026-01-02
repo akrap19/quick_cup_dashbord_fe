@@ -10,7 +10,6 @@ export interface Product {
 	name: string
 	productName: string
 	description: string
-	size: string
 	unit: string
 	quantityPerUnit: number
 	transportationUnit: string

@@ -19,7 +19,6 @@ import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { BillingIntervalEnum } from 'enums/billingIntervalEnum'
 import { InputTypeEnum } from 'enums/inputTypeEnum'
 import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdown'
-import { formatUnitLabel } from '@/utils/index'
 import { Heading } from '@/components/typography/heading'
 import { Stack } from '@/components/layout/stack'
 import { tokens } from '@/style/theme.css'
@@ -120,7 +119,7 @@ const ServiceForm = ({ isEdit, cancelDialog }: Props) => {
 				</FormControl.Label>
 				<SearchDropdown
 					placeholder={t('Services.priceCalculationUnitPlaceholder')}
-					options={Object.values(PriceCalculationUnit).map(unit => ({ id: unit, name: formatUnitLabel(unit) }))}
+					options={Object.values(PriceCalculationUnit).map(unit => ({ id: unit, name: t(`Services.${unit}`) }))}
 				/>
 				<FormControl.Message />
 			</FormControl>

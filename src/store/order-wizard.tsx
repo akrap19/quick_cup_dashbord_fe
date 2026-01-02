@@ -32,7 +32,6 @@ export interface Step3AdditionalCostsData {
 
 export interface Step4OrderInformationData {
 	acquisitionType: AcquisitionTypeEnum
-	customerId?: string
 	eventId?: string
 	location?: string
 	place?: string
@@ -45,6 +44,7 @@ export interface Step4OrderInformationData {
 type OrderWizardStore = {
 	currentStep: number
 	acquisitionType?: AcquisitionTypeEnum
+	customerId?: string
 	step1Data?: Step1ProductsData
 	step2Data?: Step2ServicesData
 	step3Data?: Step3AdditionalCostsData
@@ -52,6 +52,7 @@ type OrderWizardStore = {
 	totalAmount: number
 	setCurrentStep: (step: number) => void
 	setAcquisitionType: (type: AcquisitionTypeEnum) => void
+	setCustomerId: (id: string) => void
 	setStep1Data: (data: Step1ProductsData) => void
 	setStep2Data: (data: Step2ServicesData) => void
 	setStep3Data: (data: Step3AdditionalCostsData) => void
@@ -65,6 +66,7 @@ export const useOrderWizardStore = create<OrderWizardStore>()(
 		(set, get) => ({
 			currentStep: 1,
 			acquisitionType: undefined,
+			customerId: undefined,
 			step1Data: undefined,
 			step2Data: undefined,
 			step3Data: undefined,
@@ -72,6 +74,7 @@ export const useOrderWizardStore = create<OrderWizardStore>()(
 			totalAmount: 0,
 			setCurrentStep: step => set({ currentStep: step }),
 			setAcquisitionType: type => set({ acquisitionType: type }),
+			setCustomerId: id => set({ customerId: id }),
 			setStep1Data: data => set({ step1Data: data }),
 			setStep2Data: data => set({ step2Data: data }),
 			setStep3Data: data => set({ step3Data: data }),
@@ -81,6 +84,7 @@ export const useOrderWizardStore = create<OrderWizardStore>()(
 				set({
 					currentStep: 1,
 					acquisitionType: undefined,
+					customerId: undefined,
 					step1Data: undefined,
 					step2Data: undefined,
 					step3Data: undefined,
@@ -93,4 +97,3 @@ export const useOrderWizardStore = create<OrderWizardStore>()(
 		}
 	)
 )
-

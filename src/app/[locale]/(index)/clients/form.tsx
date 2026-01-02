@@ -15,6 +15,7 @@ import { Box } from '@/components/layout/box'
 import { UseFormReturn } from 'react-hook-form'
 import { Button } from '@/components/inputs/button'
 import { Stack } from '@/components/layout/stack'
+import { NumericInput } from '@/components/inputs/numeric-input'
 
 interface Props {
 	form: UseFormReturn<any>
@@ -58,70 +59,91 @@ const ClientForm = ({ form, isEdit, showProducts, setShowProducts, cancelDialog,
 
 	return (
 		<FormItems openCancelDialog={cancelDialog?.toggleOpened}>
-			<FormControl name="email">
+			<FormControl name="companyName">
 				<FormControl.Label>
-					<RequiredLabel>{t('General.email')}</RequiredLabel>
+					<RequiredLabel>{t('General.companyName')}</RequiredLabel>
 				</FormControl.Label>
-				<TextInput disabled={isEdit} type="email" placeholder={t('General.emailPlaceholder')} />
+				<TextInput placeholder={t('General.companyNamePlaceholder')} />
+				<FormControl.Message />
+			</FormControl>
+			<FormControl name="pin">
+				<FormControl.Label>
+					<RequiredLabel>{t('General.pin')}</RequiredLabel>
+				</FormControl.Label>
+				<NumericInput placeholder={t('General.pinPlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
 			<FormControl name="firstName">
 				<FormControl.Label>
-					<RequiredLabel>{t('General.firstName')}</RequiredLabel>
+					<RequiredLabel>{t('General.firstNameContactPerson')}</RequiredLabel>
 				</FormControl.Label>
 				<TextInput placeholder={t('General.firstNamePlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
 			<FormControl name="lastName">
 				<FormControl.Label>
-					<RequiredLabel>{t('General.lastName')}</RequiredLabel>
+					<RequiredLabel>{t('General.lastNameContactPerson')}</RequiredLabel>
 				</FormControl.Label>
 				<TextInput placeholder={t('General.lastNamePlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
+			<FormControl name="email">
+				<FormControl.Label>
+					<RequiredLabel>{t('General.emailContactPerson')}</RequiredLabel>
+				</FormControl.Label>
+				<TextInput disabled={isEdit} type="email" placeholder={t('General.emailPlaceholder')} />
+				<FormControl.Message />
+			</FormControl>
 			<FormControl name="phoneNumber">
-				<FormControl.Label>{t('General.phoneNumber')}</FormControl.Label>
+				<FormControl.Label>{t('General.phoneNumberContactPerson')}</FormControl.Label>
 				<TextInput placeholder={t('General.phoneNumberPlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
 			<FormControl name="location">
-				<FormControl.Label>{t('General.location')}</FormControl.Label>
-				<TextInput placeholder={t('General.locationPlaceholder')} />
+				<FormControl.Label>{t('General.placeAndPostalCode')}</FormControl.Label>
+				<TextInput placeholder={t('General.placeAndPostalCodePlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
-			<Box style={{ gridColumn: 'span 2' }}>
-				<Stack gap={5}>
-					<div>
-						<Button
-							type="button"
-							variant={showProducts ? 'destructive' : 'success'}
-							size="small"
-							onClick={() => setShowProducts(!showProducts)}>
-							{showProducts ? t('General.stopCustomizingProductPrices') : t('General.customizeProductPrices')}
-						</Button>
-					</div>
-					{productsPrices.map((product, index) => {
-						const fieldName = `productPrices.${index}.prices`
-						form.setValue(`productPrices.${index}.productId`, product.productId)
+			<FormControl name="street">
+				<FormControl.Label>{t('General.streetAndNumber')}</FormControl.Label>
+				<TextInput placeholder={t('General.streetAndNumberPlaceholder')} />
+				<FormControl.Message />
+			</FormControl>
+			{productsPrices && productsPrices.length > 0 && (
+				<Box style={{ gridColumn: 'span 2' }}>
+					<Stack gap={5}>
+						<div>
+							<Button
+								type="button"
+								variant={showProducts ? 'destructive' : 'success'}
+								size="small"
+								onClick={() => setShowProducts(!showProducts)}>
+								{showProducts ? t('General.stopCustomizingProductPrices') : t('General.customizeProductPrices')}
+							</Button>
+						</div>
+						{productsPrices.map((product, index) => {
+							const fieldName = `productPrices.${index}.prices`
+							form.setValue(`productPrices.${index}.productId`, product.productId)
 
-						return (
-							<Box key={product.id} style={{ marginBottom: '1.5rem', display: showProducts ? 'block' : 'none' }}>
-								<FormControl name={fieldName}>
-									<FormControl.Label>{product.productName + ' ' + product.size}</FormControl.Label>
-									<FormTable
-										name={fieldName}
-										columns={formTableColumns}
-										defaultRow={{ minQuantity: undefined, price: undefined }}
-										emptyMessage={t('General.noPricesAdded')}
-										addButtonLabel={t('General.addRow')}
-									/>
-									<FormControl.Message />
-								</FormControl>
-							</Box>
-						)
-					})}
-				</Stack>
-			</Box>
+							return (
+								<Box key={product.id} style={{ marginBottom: '1.5rem', display: showProducts ? 'block' : 'none' }}>
+									<FormControl name={fieldName}>
+										<FormControl.Label>{product.productName}</FormControl.Label>
+										<FormTable
+											name={fieldName}
+											columns={formTableColumns}
+											defaultRow={{ minQuantity: undefined, price: undefined }}
+											emptyMessage={t('General.noPricesAdded')}
+											addButtonLabel={t('General.addRow')}
+										/>
+										<FormControl.Message />
+									</FormControl>
+								</Box>
+							)
+						})}
+					</Stack>
+				</Box>
+			)}
 		</FormItems>
 	)
 }

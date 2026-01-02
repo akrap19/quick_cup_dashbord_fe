@@ -41,9 +41,17 @@ export const AdditionalCostsDetails = ({ additionalCost }: Props) => {
 				</Text>
 			</Stack>
 			<Stack gap={4}>
+				<Label>{t('AdditionalCosts.acquisitionType')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{additionalCost.acquisitionType
+						? getAdditionalCostsLabel(additionalCost.acquisitionType)
+						: '-'}
+				</Text>
+			</Stack>
+			<Stack gap={4}>
 				<Label>{t('AdditionalCosts.billingType')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{additionalCost.billingType ? getAdditionalCostsLabel(additionalCost.billingType) : t('General.notDefined')}
+					{additionalCost.billingType ? getAdditionalCostsLabel(additionalCost.billingType) : '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
@@ -51,15 +59,7 @@ export const AdditionalCostsDetails = ({ additionalCost }: Props) => {
 				<Text fontSize="small" color="neutral.800">
 					{additionalCost.methodOfPayment
 						? getAdditionalCostsLabel(additionalCost.methodOfPayment)
-						: t('General.notDefined')}
-				</Text>
-			</Stack>
-			<Stack gap={4}>
-				<Label>{t('AdditionalCosts.acquisitionType')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{additionalCost.acquisitionType
-						? getAdditionalCostsLabel(additionalCost.acquisitionType)
-						: t('General.notDefined')}
+						: '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
@@ -67,7 +67,7 @@ export const AdditionalCostsDetails = ({ additionalCost }: Props) => {
 				<Text fontSize="small" color="neutral.800">
 					{additionalCost.price !== null && additionalCost.price !== undefined
 						? `${additionalCost.price.toFixed(2)}€`
-						: t('General.notDefined')}
+						: '-'}
 				</Text>
 			</Stack>
 		</DetailsWrapper>

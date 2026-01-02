@@ -6,7 +6,6 @@ import { ProductState } from './productState'
 export interface ProductPayload {
 	id?: string
 	name: string
-	size?: string
 	unit: string
 	quantityPerUnit: number
 	transportationUnit: string

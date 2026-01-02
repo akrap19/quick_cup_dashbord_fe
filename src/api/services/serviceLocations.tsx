@@ -26,8 +26,8 @@ export const createServiceLocation = async (serviceLocation: ServiceLocationPayl
 	return response?.data
 }
 
-export const updateServiceLocation = async (serviceLocation: ServiceLocationPayload) => {
-	const response = await axiosInstanceWithToken.put(`/service-locations/${serviceLocation.id}`, serviceLocation)
+export const updateServiceLocation = async (id: string, serviceLocation: ServiceLocationPayload) => {
+	const response = await axiosInstanceWithToken.put(`/service-locations/${id}`, serviceLocation)
 
 	return response?.data
 }

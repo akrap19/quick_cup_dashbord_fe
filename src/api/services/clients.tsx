@@ -3,7 +3,7 @@ import { fetchWithToken } from 'api/instances/FetchWithToken'
 import { ClientPayload } from 'api/models/clients/clientPayload'
 
 interface Query {
-	search: string
+	search?: string
 	page?: number
 	limit?: number
 }

@@ -29,25 +29,25 @@ export const AdminDetails = ({ admin }: Props) => {
 			<Stack gap={4}>
 				<Label>{t('General.firstName')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{admin.firstName ?? t('General.firstName') + t('General.notDefined')}
+					{admin.firstName ?? '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.lastName')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{admin.lastName ?? t('General.lastName') + t('General.notDefined')}
+					{admin.lastName ?? '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.email')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{admin.email ?? t('General.email') + t('General.notDefined')}
+					{admin.email ?? '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.phoneNumber')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{admin.phoneNumber ?? t('General.phoneNumber') + t('General.notDefined')}
+					{admin.phoneNumber ?? '-'}
 				</Text>
 			</Stack>
 		</DetailsWrapper>

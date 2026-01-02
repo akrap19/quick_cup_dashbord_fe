@@ -100,6 +100,30 @@ export const badge = recipe({
 			completed: {
 				color: tokens.colors['success.700'],
 				background: tokens.colors['success.100']
+			},
+			available: {
+				color: tokens.colors['success.700'],
+				background: tokens.colors['success.100']
+			},
+			in_use: {
+				color: tokens.colors['warning.700'],
+				background: tokens.colors['warning.100']
+			},
+			maintenance: {
+				color: tokens.colors['warning.700'],
+				background: tokens.colors['warning.100']
+			},
+			reserved: {
+				color: tokens.colors['neutral.700'],
+				background: tokens.colors['neutral.100']
+			},
+			damaged: {
+				color: tokens.colors['destructive.700'],
+				background: tokens.colors['destructive.100']
+			},
+			owned_by_client: {
+				color: tokens.colors['neutral.700'],
+				background: tokens.colors['neutral.100']
 			}
 		}
 	},

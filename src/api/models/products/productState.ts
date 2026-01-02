@@ -1,5 +1,7 @@
 import { ProductStateLocationEnum } from 'enums/productStateLocationEnum'
 import { ProductStateStatusEnum } from 'enums/productStateStatusEnum'
+import { ServiceLocation } from '../service-locations/serviceLocation'
+import { Client } from '../clients/client'
 
 export interface ProductState {
 	id?: string
@@ -7,6 +9,8 @@ export interface ProductState {
 	location: ProductStateLocationEnum
 	productId?: string
 	quantity: number
-	serviceId?: string
+	serviceLocationId?: string
+	serviceLocation?: ServiceLocation
 	userId?: string
+	user?: Client
 }

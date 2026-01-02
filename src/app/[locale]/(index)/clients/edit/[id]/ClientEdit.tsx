@@ -8,11 +8,8 @@ import { string, z } from 'zod'
 import { useState, useMemo } from 'react'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
-import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
-import { ConfirmActionDialog } from '@/components/overlay/confirm-action-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
-import { useOpened } from '@/hooks/use-toggle'
 import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
 import { Client } from 'api/models/clients/client'
 import { updateClient } from 'api/services/clients'
@@ -31,6 +28,9 @@ const formSchema = z.object({
 	firstName: requiredString.shape.scheme,
 	lastName: requiredString.shape.scheme,
 	phoneNumber: phoneNumberScheme.shape.phone,
+	companyName: requiredString.shape.scheme,
+	pin: requiredString.shape.scheme,
+	street: string().optional().nullable(),
 	location: string().optional(),
 	productPrices: z.array(clientProductPriceSchema).optional().default([])
 })
@@ -45,8 +45,6 @@ interface Props {
 const ClientEdit = ({ client, productsPrices }: Props) => {
 	const t = useTranslations()
 	const { back, refresh } = useRouter()
-	const confirmDialog = useOpened()
-	const cancelDialog = useOpened()
 	const [showProducts, setShowProducts] = useState(false)
 	useNavbarItems({ title: 'Clients.edit', backLabel: 'Clients.back' })
 
@@ -97,14 +95,13 @@ const ClientEdit = ({ client, productsPrices }: Props) => {
 			firstName: client.firstName,
 			lastName: client.lastName,
 			phoneNumber: client.phoneNumber ?? '',
+			companyName: client.companyName ?? '',
+			pin: client.pin ?? '',
+			street: client.street ?? '',
 			location: client.location ?? '',
 			productPrices: initialClientProductPrices
 		}
 	})
-
-	const handleDialog = () => {
-		confirmDialog.toggleOpened()
-	}
 
 	const onSubmit = async () => {
 		const data = form.getValues()
@@ -171,30 +168,19 @@ const ClientEdit = ({ client, productsPrices }: Props) => {
 	}
 
 	return (
-		<>
-			<FormWrapper>
-				<FormProvider {...form}>
-					<form onSubmit={form.handleSubmit(handleDialog)}>
-						<ClientForm
-							form={form}
-							isEdit
-							showProducts={showProducts}
-							setShowProducts={setShowProducts}
-							cancelDialog={cancelDialog}
-							productsPrices={productsPrices ?? []}
-						/>
-					</form>
-				</FormProvider>
-			</FormWrapper>
-			<ConfirmActionDialog
-				title="Clients.edit"
-				description="Clients.editClientDescription"
-				buttonLabel="General.save"
-				confirmDialog={confirmDialog}
-				onSubmit={onSubmit}
-			/>
-			<CancelAddDialog cancelDialog={cancelDialog} title="Clients.cancelEdit" values={form.getValues()} />
-		</>
+		<FormWrapper>
+			<FormProvider {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)}>
+					<ClientForm
+						form={form}
+						isEdit
+						showProducts={showProducts}
+						setShowProducts={setShowProducts}
+						productsPrices={productsPrices ?? []}
+					/>
+				</form>
+			</FormProvider>
+		</FormWrapper>
 	)
 }
 

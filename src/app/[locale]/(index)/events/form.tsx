@@ -22,7 +22,7 @@ const EventForm = ({ cancelDialog, clients, isClient }: Props) => {
 	const transformedClientArray = clients?.map((client: Clients) => {
 		return {
 			id: client.userId,
-			name: client.name
+			name: client.companyName
 		}
 	})
 
@@ -37,16 +37,16 @@ const EventForm = ({ cancelDialog, clients, isClient }: Props) => {
 			</FormControl>
 			{!isClient ? (
 				<FormControl name="userId">
-					<FormControl.Label>{t('General.owner')}</FormControl.Label>
+					<FormControl.Label>
+						<RequiredLabel>{t('General.owner')}</RequiredLabel>
+					</FormControl.Label>
 					<SearchDropdown placeholder="General.ownerPlaceholder" options={transformedClientArray} alwaysShowSearch />
 				</FormControl>
 			) : (
 				<div />
 			)}
 			<FormControl name="location">
-				<FormControl.Label>
-					<RequiredLabel>{t('General.location')}</RequiredLabel>
-				</FormControl.Label>
+				<FormControl.Label>{t('General.location')}</FormControl.Label>
 				<TextInput placeholder={t('Events.locationPlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
@@ -69,14 +69,14 @@ const EventForm = ({ cancelDialog, clients, isClient }: Props) => {
 				<FormControl.Label>
 					<RequiredLabel>{t('Events.startDate')}</RequiredLabel>
 				</FormControl.Label>
-				<TextInput placeholder={t('Events.startDatePlaceholder')} />
+				<TextInput type="date" placeholder={t('Events.startDatePlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
 			<FormControl name="endDate">
 				<FormControl.Label>
 					<RequiredLabel>{t('Events.endDate')}</RequiredLabel>
 				</FormControl.Label>
-				<TextInput placeholder={t('Events.endDatePlaceholder')} />
+				<TextInput type="date" placeholder={t('Events.endDatePlaceholder')} />
 				<FormControl.Message />
 			</FormControl>
 			<FormControl name="description" maxLength="500">

@@ -21,7 +21,7 @@ export const manageJourneyWrapper = style({
 	maxWidth: '60rem',
 	paddingTop: tokens.spacing[6],
 	paddingBottom: tokens.spacing[6],
-	backgroundColor: tokens.colors['neutral.50'],
+	backgroundColor: tokens.colors['shades.00'],
 	border: tokens.borders.border.thin,
 	borderColor: tokens.borders.color['neutral.300']
 })

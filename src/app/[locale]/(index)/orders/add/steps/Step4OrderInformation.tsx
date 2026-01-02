@@ -21,7 +21,6 @@ import { useOrderWizardStore, Step4OrderInformationData } from '@/store/order-wi
 
 const step4Schema = z.object({
 	acquisitionType: z.nativeEnum(AcquisitionTypeEnum),
-	customerId: requiredString.shape.scheme,
 	eventId: z.string().optional(),
 	location: z.string().optional(),
 	place: requiredString.shape.scheme,
@@ -43,21 +42,19 @@ const step4Schema = z.object({
 type Step4Schema = z.infer<typeof step4Schema>
 
 interface Props {
-	customers: Base[]
 	events: Base[]
 	acquisitionType: AcquisitionTypeEnum
 }
 
-export const Step4OrderInformation = ({ customers, events, acquisitionType }: Props) => {
+export const Step4OrderInformation = ({ events, acquisitionType }: Props) => {
 	const t = useTranslations()
-	const { step4Data, setStep4Data, setAcquisitionType } = useOrderWizardStore()
+	const { step4Data, setStep4Data, setAcquisitionType, customerId } = useOrderWizardStore()
 
 	const form = useForm<Step4Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(step4Schema),
 		defaultValues: {
 			acquisitionType: (step4Data?.acquisitionType as AcquisitionTypeEnum | undefined) ?? acquisitionType,
-			customerId: step4Data?.customerId || undefined,
 			eventId: step4Data?.eventId || undefined,
 			location: step4Data?.location || '',
 			place: step4Data?.place || '',
@@ -78,7 +75,6 @@ export const Step4OrderInformation = ({ customers, events, acquisitionType }: Pr
 		const subscription = form.watch(data => {
 			const stepData: Step4OrderInformationData = {
 				acquisitionType: data.acquisitionType as AcquisitionTypeEnum,
-				customerId: data.customerId,
 				eventId: data.eventId,
 				location: data.location,
 				place: data.place,
@@ -94,8 +90,6 @@ export const Step4OrderInformation = ({ customers, events, acquisitionType }: Pr
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [form.watch])
 
-	const customerId = form.watch('customerId')
-
 	return (
 		<FormProvider {...form}>
 			<Stack gap={6}>
@@ -109,13 +103,6 @@ export const Step4OrderInformation = ({ customers, events, acquisitionType }: Pr
 						columnGap: tokens.spacing[6],
 						rowGap: tokens.spacing[8]
 					}}>
-					<FormControl name="customerId">
-						<FormControl.Label>
-							<RequiredLabel>{t('General.client')}</RequiredLabel>
-						</FormControl.Label>
-						<SearchDropdown options={customers} placeholder={t('General.client')} alwaysShowSearch={true} />
-						<FormControl.Message />
-					</FormControl>
 					<FormControl name="eventId">
 						<FormControl.Label>{t('General.event')}</FormControl.Label>
 						<SearchDropdown
@@ -131,7 +118,6 @@ export const Step4OrderInformation = ({ customers, events, acquisitionType }: Pr
 						<TextInput placeholder={t('General.locationPlaceholder')} autoComplete="off" />
 						<FormControl.Message />
 					</FormControl>
-					<div />
 					<FormControl name="place">
 						<FormControl.Label>
 							<RequiredLabel>{t('General.placeAndPostalCode')}</RequiredLabel>

@@ -12,7 +12,7 @@ type Props = { size: 'small' | 'large'; noResoultMessage: string }
 export const NoResult = ({ size, noResoultMessage }: Props) => {
 	const t = useTranslations()
 	const noResultSizes =
-		size === 'small' ? { paddingY: 2, width: 164, height: 100 } : { paddingY: 6, width: 264, height: 180 }
+		size === 'small' ? { paddingY: 2, width: 112, height: 140 } : { paddingY: 6, width: 225, height: 280 }
 
 	return (
 		<Box
@@ -24,7 +24,7 @@ export const NoResult = ({ size, noResoultMessage }: Props) => {
 			<Stack gap={1}>
 				<Box width="100%" display="flex" alignItems="center" justifyContent="center">
 					<Image
-						src="/images/no-data-found.svg"
+						src="/images/no-data-found.png"
 						alt="noDataFound"
 						width={noResultSizes.width}
 						height={noResultSizes.height}

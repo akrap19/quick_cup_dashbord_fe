@@ -15,6 +15,8 @@ import { OrderServicesList } from '@/components/custom/order-services-list'
 import { Tabs } from '@/components/navigation/tabs'
 import { OrderDetailsFooter } from './OrderDetailsFooter'
 import { OrderInformationDetails } from './OrderInformationDetails'
+import { useNavbarItemsStore } from '@/store/navbar'
+import { Loader } from '@/components/custom/loader/Loader'
 
 interface Props {
 	order: Order
@@ -24,13 +26,19 @@ export const OrderDetails = ({ order }: Props) => {
 	const t = useTranslations()
 	const totalAmount = order.totalAmount === 0 ? 0 : order.totalAmount?.toFixed(3)
 	const totalAmountLabel = t('Orders.totalAmount') + ': ' + totalAmount + '€'
+
+	const { navbarIsLoading } = useNavbarItemsStore()
 	useNavbarItems({
 		title: order.orderNumber,
 		backLabel: 'Orders.back',
 		actionButton: <EditButton buttonLabel="Orders.edit" buttonLink={ROUTES.EDIT_ORDERS + order?.id} />
 	})
 
-	return (
+	return navbarIsLoading ? (
+		<Box style={{ width: 'calc(100vw - 400px)' }}>
+			<Loader />
+		</Box>
+	) : (
 		<>
 			<Tabs size="large">
 				<Tabs.Tab value="products" defaultTab>

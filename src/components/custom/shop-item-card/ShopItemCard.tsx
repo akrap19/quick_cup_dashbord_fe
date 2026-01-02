@@ -5,7 +5,6 @@ import { Stack } from '@/components/layout/stack'
 import Image from 'next/image'
 import { shopItemCardContainer, shopItemCardImageContainer } from './ShopItemCard.css'
 import { Box } from '@/components/layout/box'
-import { Inline } from '@/components/layout/inline'
 import { Divider } from '@/components/layout/divider'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/inputs/button'
@@ -62,6 +61,9 @@ export const ShopItemCard = ({ shopItem, route, editRoute }: Props) => {
 		if (result?.message === 'OK') {
 			SuccessToast(t('Buy.successfullyDeleted'))
 
+			buyStore.removeItem(shopItem.id)
+			rentStore.removeItem(shopItem.id)
+
 			confirmDialog.toggleOpened()
 			router.refresh()
 		}
@@ -112,7 +114,10 @@ export const ShopItemCard = ({ shopItem, route, editRoute }: Props) => {
 									</Box>
 								)}
 								<ItemCarousel>
-									{shopItem?.images?.map((item: any) => (
+									{(shopItem?.images && shopItem.images.length > 0
+										? shopItem.images
+										: ['/images/no_image_placeholder.png']
+									).map((item: any) => (
 										<div key={item} className={shopItemCardImageContainer}>
 											<Image alt="quick cup image" src={item} fill objectFit="contain" priority />
 										</div>
@@ -121,21 +126,16 @@ export const ShopItemCard = ({ shopItem, route, editRoute }: Props) => {
 								<Stack gap={1}>
 									<Divider backgroundColor="neutral.100" />
 									<Stack justifyContent="flex-start">
-										<Inline justifyContent="space-between">
-											<Stack>
-												<Text fontSize="medium" textAlign="left" fontWeight="semibold" color="neutral.800">
-													{t(shopItem.name)}
-												</Text>
-												{/* {shopItem.isCustomizable && (
+										<Stack>
+											<Text fontSize="medium" textAlign="left" fontWeight="semibold" color="neutral.800">
+												{t(shopItem.name)}
+											</Text>
+											{/* {shopItem.isCustomizable && (
 												<Text fontSize="medium" textAlign="left" fontWeight="semibold" className={rainbowText}>
 													{t('EventCups.customizable')}
 												</Text>
 											)} */}
-											</Stack>
-											<Text fontSize="medium" textAlign="left" fontWeight="semibold" color="neutral.800">
-												{shopItem?.size}
-											</Text>
-										</Inline>
+										</Stack>
 										<Box style={{ width: '100%', height: '4px' }} />
 
 										{/* <Text textAlign="left" color="neutral.500">

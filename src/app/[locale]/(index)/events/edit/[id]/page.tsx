@@ -17,7 +17,7 @@ interface Props {
 const EventEditPage = async ({ params }: Props) => {
 	const { data: eventData } = await getEvent(params.id)
 	const event = (eventData?.event ?? eventData) as Event
-	const { data: clientsData } = await getClients({ search: event.userId, page: 1, limit: 100 })
+	const { data: clientsData } = await getClients({ search: undefined, page: 1, limit: 100 })
 	const session = await getServerSession(authOptions)
 	const isClient = session?.user?.roles[0]?.name.toLowerCase() === UserRoleEnum.CLIENT
 

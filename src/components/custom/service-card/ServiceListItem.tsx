@@ -179,12 +179,10 @@ export const ServiceListItem = ({
 					form.setValue(priceFieldName, calculatedPrice, { shouldValidate: false, shouldDirty: false })
 				}
 
-				// Calculate total quantity for reference (sum of all product quantities)
-				let totalQuantity = 0
-				productsForCalculation.forEach(p => {
-					totalQuantity += p.quantity
+				form.setValue(quantityFieldName, Math.ceil(response.combinedCalculatedQuantity), {
+					shouldValidate: false,
+					shouldDirty: false
 				})
-				form.setValue(quantityFieldName, totalQuantity, { shouldValidate: false, shouldDirty: false })
 			}
 		} catch (error: any) {
 			// On error, set price to 0
@@ -222,7 +220,7 @@ export const ServiceListItem = ({
 	const locationsForThisService = useMemo(() => {
 		if (!serviceId || !serviceLocations) return []
 		// Filter locations that belong to this service
-		return serviceLocations.filter(location => (location as any).serviceId === serviceId)
+		return serviceLocations.filter(location => (location as any).name.includes(service.serviceName || service.name))
 	}, [serviceId, serviceLocations])
 
 	// Display price always (it's always calculated), but it's only included in total if checkbox is checked (or default)
@@ -282,7 +280,7 @@ export const ServiceListItem = ({
 								return (
 									<Inline key={product.id} alignItems="center" gap={2}>
 										<Text color="neutral.700" fontSize="small" style={{ minWidth: '120px' }}>
-											{product.name} {product.size}:
+											{product.name}:
 										</Text>
 										<Box style={{ width: '140px' }}>
 											<Controller

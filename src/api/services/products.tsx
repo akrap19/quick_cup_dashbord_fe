@@ -3,6 +3,7 @@ import { fetchWithToken } from 'api/instances/FetchWithToken'
 import { ProductPayload } from 'api/models/products/productPayload'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { ProductEditPayload } from 'api/models/products/productEditPayload'
+import { ProductPricesPayload } from 'api/models/products/productPricesPayload'
 
 interface Query {
 	search?: string
@@ -28,8 +29,8 @@ export const createProduct = async (product: ProductPayload) => {
 	return response?.data
 }
 
-export const updateProduct = async (product: ProductEditPayload) => {
-	const response = await axiosInstanceWithToken.put(`/products/${product.id}`, product)
+export const updateProduct = async (id: string, product: ProductEditPayload) => {
+	const response = await axiosInstanceWithToken.put(`/products/${id}`, product)
 
 	return response?.data
 }
@@ -58,6 +59,12 @@ export const getAllProductsPrices = async (query: Query) => {
 	}
 
 	const response = await fetchWithToken(`products/prices`, queryParams)
+
+	return response?.data
+}
+
+export const getProductPrices = async (payload: ProductPricesPayload) => {
+	const response = await axiosInstanceWithToken.post(`/products/calculate-price`, payload)
 
 	return response?.data
 }

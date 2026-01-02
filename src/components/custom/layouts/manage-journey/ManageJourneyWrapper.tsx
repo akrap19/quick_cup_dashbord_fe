@@ -14,9 +14,11 @@ import { useTranslations } from 'next-intl'
 interface Props {
 	children: ReactNode
 	onStepClick?: (stepNumber: number) => void
+	stepTitleKey?: string
+	stepDescriptionKey?: string
 }
 
-export const ManageJourneyWrapper = ({ children, onStepClick }: Props) => {
+export const ManageJourneyWrapper = ({ children, onStepClick, stepTitleKey, stepDescriptionKey }: Props) => {
 	const { totalSteps, currentStep, setCurrentStep } = useStepsStore()
 	const t = useTranslations()
 
@@ -64,14 +66,16 @@ export const ManageJourneyWrapper = ({ children, onStepClick }: Props) => {
 							)
 						})}
 				</Box>
-				<Box paddingBottom={6} paddingX={6}>
-					<Heading variant="h3" color="neutral.900" textAlign="center">
-						{t(`Orders.step${currentStep}Title`)}
-					</Heading>
-					<Text lineHeight="xlarge" color="neutral.700" textAlign="center">
-						{t(`Orders.step${currentStep}Description`)}
-					</Text>
-				</Box>
+				{(stepTitleKey || stepDescriptionKey) && (
+					<Box paddingBottom={6} paddingX={6}>
+						<Heading variant="h3" color="neutral.900" textAlign="center">
+							{t(stepTitleKey || `Orders.step${currentStep}Title`)}
+						</Heading>
+						<Text lineHeight="xlarge" color="neutral.700" textAlign="center">
+							{t(stepDescriptionKey || `Orders.step${currentStep}Description`)}
+						</Text>
+					</Box>
+				)}
 				<Divider />
 				<Box paddingX={6} paddingTop={6}>
 					{children}

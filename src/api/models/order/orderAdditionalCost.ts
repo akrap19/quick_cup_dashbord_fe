@@ -1,4 +1,5 @@
 import { AdditionalCosts } from '../additional-costs/additionalCosts'
+import { QuantityByProduct } from './orderService'
 
 export interface OrderAdditionalCost {
 	id: string
@@ -7,6 +8,7 @@ export interface OrderAdditionalCost {
 	additionalCost: AdditionalCosts
 	price: number
 	quantity: number | null
+	quantityByProduct?: QuantityByProduct[]
 	createdAt: string
 	updatedAt: string
 }

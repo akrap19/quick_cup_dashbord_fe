@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { TrashIcon } from '@/components/icons/trash-icon'
 import { Button } from '@/components/inputs/button'
 

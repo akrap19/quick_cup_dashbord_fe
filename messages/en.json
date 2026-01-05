@@ -15,6 +15,7 @@
 		"admin": "Admin",
 		"admins": "Admins",
 		"here": "here",
+		"event": "Event",
 		"placeAndPostalCode": "Place and postal code",
 		"placeAndPostalCodePlaceholder": "e.g. Zagreb, 10000, etc.",
 		"streetAndNumber": "Street and number",
@@ -417,6 +418,8 @@
 		"finishRentOrder": "Finish rent order",
 		"addNew": "Add new Order",
 		"edit": "Edit Order",
+		"editBuy": "Edit Buy Order",
+		"editRent": "Edit Rent Order",
 		"delete": "Delete Orders",
 		"back": "Back to Orders",
 		"search": "Search Orders",
@@ -472,8 +475,11 @@
 		"statusReadyDescription": "Your order is ready and will be shipped/picked up soon.",
 		"statusInTransit": "Order in Transit",
 		"statusInTransitDescription": "Your order is on its way to you or ready for pickup.",
+		"statusFinalPaymentPending": "Final Invoice Sent - Awaiting Payment",
+		"statusFinalPaymentPendingDescription": "Your order has been delivered or is ready for pickup. Final invoice has been sent. Please complete the final payment to finalize your order.",
 		"statusCompleted": "Order Completed",
-		"statusCompletedDescription": "Your order has been completed. Final invoice has been sent. Thank you for your business!"
+		"statusCompletedDescription": "Your order has been completed. Final invoice has been sent. Thank you for your business!",
+		"setServiceLocations": "Set Service Locations"
 	},
 	"AdditionalCosts": {
 		"add": "Add Additional Cost",

@@ -37,7 +37,7 @@ const OrderEditPage = async ({ params, searchParams }: Props) => {
 			return {
 				...client,
 				id: client.userId,
-				name: client.name
+				name: client.companyName
 			}
 		}) || []
 

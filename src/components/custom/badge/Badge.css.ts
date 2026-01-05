@@ -97,6 +97,10 @@ export const badge = recipe({
 				color: tokens.colors['warning.700'],
 				background: tokens.colors['warning.100']
 			},
+			final_payment_pending: {
+				color: tokens.colors['warning.700'],
+				background: tokens.colors['warning.100']
+			},
 			completed: {
 				color: tokens.colors['success.700'],
 				background: tokens.colors['success.100']

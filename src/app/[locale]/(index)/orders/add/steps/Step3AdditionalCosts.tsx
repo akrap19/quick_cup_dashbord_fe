@@ -10,12 +10,16 @@ import { AdditionalCostListItem } from '@/components/custom/additional-cost-card
 import { AdditionalCosts } from 'api/models/additional-costs/additionalCosts'
 import { useOrderWizardStore, Step3AdditionalCostsData } from '@/store/order-wizard'
 import { BillingTypeEnum } from 'enums/billingTypeEnum'
+import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
+import { Product } from 'api/models/products/product'
+import { Order } from 'api/models/order/order'
 
 const additionalCostSchema = z.object({
 	additionalCostId: z.string(),
 	isIncluded: z.boolean().default(false),
 	quantity: z.coerce.number().min(0).default(0),
-	price: z.coerce.number().min(0).default(0)
+	price: z.coerce.number().min(0).default(0),
+	productQuantities: z.record(z.string(), z.coerce.number().min(0)).optional()
 })
 
 const step3Schema = z.object({
@@ -26,10 +30,16 @@ type Step3Schema = z.infer<typeof step3Schema>
 
 interface Props {
 	additionalCosts: AdditionalCosts[]
+	acquisitionType: AcquisitionTypeEnum
+	order?: Order
+	products?: Product[]
 }
 
-export const Step3AdditionalCosts = ({ additionalCosts }: Props) => {
-	const { step3Data, setStep3Data, setTotalAmount, step1Data, step2Data } = useOrderWizardStore()
+export const Step3AdditionalCosts = ({ additionalCosts, acquisitionType, order, products = [] }: Props) => {
+	const { getStep3Data, getStep1Data, getStep2Data, setStep3Data, setTotalAmount } = useOrderWizardStore()
+	const step3Data = getStep3Data(acquisitionType)
+	const step1Data = getStep1Data(acquisitionType)
+	const step2Data = getStep2Data(acquisitionType)
 
 	// Initialize additional costs
 	const initialAdditionalCosts = useMemo(() => {
@@ -73,7 +83,9 @@ export const Step3AdditionalCosts = ({ additionalCosts }: Props) => {
 			}
 
 			if (additionalCost.billingType === BillingTypeEnum.BY_PIECE) {
+				// Use quantity field directly (it will be updated by AdditionalCostListItem if productQuantities exist)
 				const quantity = Number(formCost.quantity) || 0
+
 				if (quantity > 0) {
 					const calculatedPrice = Number.parseFloat((additionalCost.price * quantity).toFixed(3))
 					const currentPrice = form.getValues(`additionalCosts.${index}.price`)
@@ -105,7 +117,11 @@ export const Step3AdditionalCosts = ({ additionalCosts }: Props) => {
 			}
 		})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [formAdditionalCosts.map(ac => `${ac.additionalCostId}-${ac.isIncluded}-${ac.quantity}`).join(',')])
+	}, [
+		formAdditionalCosts
+			.map(ac => `${ac.additionalCostId}-${ac.isIncluded}-${ac.quantity}-${JSON.stringify(ac.productQuantities || {})}`)
+			.join(',')
+	])
 
 	// Save to store and calculate total when form changes
 	useEffect(() => {
@@ -117,14 +133,24 @@ export const Step3AdditionalCosts = ({ additionalCosts }: Props) => {
 
 			const stepData: Step3AdditionalCostsData = {
 				additionalCosts:
-					data.additionalCosts?.map(ac => ({
-						additionalCostId: ac?.additionalCostId || '',
-						isIncluded: ac?.isIncluded || false,
-						quantity: ac?.quantity || 0,
-						price: ac?.price || 0
-					})) || []
+					data.additionalCosts?.map(ac => {
+						// Filter out undefined values from productQuantities
+						const productQuantities = ac?.productQuantities
+							? (Object.fromEntries(
+									Object.entries(ac.productQuantities).filter(([_, value]) => value !== undefined)
+								) as Record<string, number>)
+							: undefined
+
+						return {
+							additionalCostId: ac?.additionalCostId || '',
+							isIncluded: ac?.isIncluded || false,
+							quantity: ac?.quantity || 0,
+							price: ac?.price || 0,
+							productQuantities
+						}
+					}) || []
 			}
-			setStep3Data(stepData)
+			setStep3Data(stepData, acquisitionType)
 
 			// Update total amount (combine all steps)
 			const step1Total = step1Data?.products?.reduce((sum, p) => sum + (p.price || 0), 0) || 0
@@ -132,12 +158,12 @@ export const Step3AdditionalCosts = ({ additionalCosts }: Props) => {
 				step2Data?.services?.reduce((sum, s) => {
 					return sum + (s.isIncluded ? s.price || 0 : 0)
 				}, 0) || 0
-			setTotalAmount(step1Total + step2Total + additionalCostsTotal)
+			setTotalAmount(step1Total + step2Total + additionalCostsTotal, acquisitionType)
 		})
 
 		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [form.watch, step1Data, step2Data])
+	}, [form.watch, step1Data, step2Data, acquisitionType])
 
 	const visibleAdditionalCosts = additionalCosts
 
@@ -151,7 +177,10 @@ export const Step3AdditionalCosts = ({ additionalCosts }: Props) => {
 							key={additionalCost.id}
 							additionalCost={additionalCost}
 							index={originalIndex}
-							isEditMode={false}
+							isEditMode={!!order}
+							orderStatus={order?.status}
+							order={order}
+							products={products}
 						/>
 					)
 				})}

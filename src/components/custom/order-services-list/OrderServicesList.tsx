@@ -49,12 +49,20 @@ export const OrderServicesList = ({ services, products = [] }: OrderServicesList
 					// Find products that have this service
 					const productsWithService = serviceToProductsMap.get(serviceId) || []
 
-					// Calculate price per product if we have productQuantities
+					// Check if we have quantityByProduct from API
+					const hasQuantityByProduct = orderService.quantityByProduct && orderService.quantityByProduct.length > 0
+					
+					// Calculate price per product if we have quantityByProduct or productQuantities
 					const hasProductBreakdown =
-						orderService.productQuantities && Object.keys(orderService.productQuantities).length > 0
-					const totalQuantity = hasProductBreakdown
-						? Object.values(orderService.productQuantities!).reduce((sum, qty) => sum + qty, 0)
-						: orderService.quantity
+						hasQuantityByProduct ||
+						(orderService.productQuantities && Object.keys(orderService.productQuantities).length > 0)
+					
+					let totalQuantity = orderService.quantity
+					if (hasQuantityByProduct) {
+						totalQuantity = orderService.quantityByProduct!.reduce((sum, qbp) => sum + (qbp.quantity || 0), 0)
+					} else if (orderService.productQuantities && Object.keys(orderService.productQuantities).length > 0) {
+						totalQuantity = Object.values(orderService.productQuantities).reduce((sum, qty) => sum + qty, 0)
+					}
 
 					// Always show product breakdown if we have products (even if some have 0 quantity)
 					const shouldShowBreakdown = products && products.length > 0
@@ -90,27 +98,27 @@ export const OrderServicesList = ({ services, products = [] }: OrderServicesList
 								{shouldShowBreakdown && (
 									<Box paddingLeft={2}>
 										<Stack gap={2}>
-											{hasProductBreakdown && orderService.productQuantities
-												? Object.entries(orderService.productQuantities)
-														.filter(([_, serviceQuantity]) => serviceQuantity > 0)
-														.map(([productId, serviceQuantity]) => {
-															const product = productsMap.get(productId)
+											{hasProductBreakdown && hasQuantityByProduct
+												? orderService.quantityByProduct!
+														.filter(qbp => qbp.quantity > 0)
+														.map(qbp => {
+															const product = productsMap.get(qbp.productId)
 															const productName =
 																product?.product?.name || product?.product?.productName || t('General.product')
 
 															// Calculate price per product proportionally
 															const productPrice =
-																totalQuantity > 0 ? (orderService.price * serviceQuantity) / totalQuantity : 0
+																totalQuantity > 0 ? (orderService.price * qbp.quantity) / totalQuantity : 0
 
 															return (
-																<Inline key={productId} justifyContent="space-between" alignItems="center" gap={3}>
+																<Inline key={qbp.productId} justifyContent="space-between" alignItems="center" gap={3}>
 																	<Box display="flex" style={{ flex: 1 }}>
 																		<Stack gap={1}>
 																			<Text color="neutral.700" fontSize="small" fontWeight="semibold">
 																				{productName}
 																			</Text>
 																			<Text color="neutral.600" fontSize="small">
-																				{t('General.quantity')}: {Math.round(serviceQuantity)}
+																				{t('General.quantity')}: {Math.round(qbp.quantity)}
 																			</Text>
 																		</Stack>
 																	</Box>
@@ -122,6 +130,38 @@ export const OrderServicesList = ({ services, products = [] }: OrderServicesList
 																</Inline>
 															)
 														})
+												: hasProductBreakdown && orderService.productQuantities
+													? Object.entries(orderService.productQuantities)
+															.filter(([_, serviceQuantity]) => serviceQuantity > 0)
+															.map(([productId, serviceQuantity]) => {
+																const product = productsMap.get(productId)
+																const productName =
+																	product?.product?.name || product?.product?.productName || t('General.product')
+
+																// Calculate price per product proportionally
+																const productPrice =
+																	totalQuantity > 0 ? (orderService.price * serviceQuantity) / totalQuantity : 0
+
+																return (
+																	<Inline key={productId} justifyContent="space-between" alignItems="center" gap={3}>
+																		<Box display="flex" style={{ flex: 1 }}>
+																			<Stack gap={1}>
+																				<Text color="neutral.700" fontSize="small" fontWeight="semibold">
+																					{productName}
+																				</Text>
+																				<Text color="neutral.600" fontSize="small">
+																					{t('General.quantity')}: {Math.round(serviceQuantity)}
+																				</Text>
+																			</Stack>
+																		</Box>
+																		<Box display="flex" alignItems="flex-start">
+																			<Text color="neutral.700" fontSize="small" fontWeight="semibold">
+																				{productPrice.toFixed(3)}€
+																			</Text>
+																		</Box>
+																	</Inline>
+																)
+															})
 												: productsWithService
 														.filter(product => product.quantity > 0)
 														.map(product => {

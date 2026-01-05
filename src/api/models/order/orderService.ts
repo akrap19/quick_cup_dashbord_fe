@@ -1,5 +1,10 @@
 import { Service } from '../services/service'
 
+export interface QuantityByProduct {
+	productId: string
+	quantity: number
+}
+
 export interface OrderService {
 	serviceId: string
 	quantity: number
@@ -8,6 +13,7 @@ export interface OrderService {
 	serviceLocationId?: string
 	serviceLocations?: OrderServiceLocation
 	productQuantities?: Record<string, number>
+	quantityByProduct?: QuantityByProduct[]
 }
 
 export interface OrderServiceLocation {

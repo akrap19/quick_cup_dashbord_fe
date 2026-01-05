@@ -14,7 +14,7 @@ interface Props {
 	totalAmountLabel: string
 	onBack: () => void
 	onPrevious: () => void
-	isValid: boolean
+	isValid?: boolean
 }
 
 export const WizardFooter = ({ currentStep, totalSteps, totalAmountLabel, onBack, onPrevious, isValid }: Props) => {

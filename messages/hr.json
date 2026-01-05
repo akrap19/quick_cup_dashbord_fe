@@ -444,6 +444,8 @@
 		"finishRentOrder": "Završi narudžbu za posudbu",
 		"addNew": "Dodaj novu narudžbu",
 		"edit": "Uredi narudžbu",
+		"editBuy": "Uredi narudžbu za kupnju",
+		"editRent": "Uredi narudžbu za posudbu",
 		"delete": "Obriši narudžbe",
 		"back": "Natrag na narudžbe",
 		"search": "Pretraži narudžbe",
@@ -499,8 +501,11 @@
 		"statusReadyDescription": "Vaša narudžba je spremna i bit će uskoro poslana/preuzeta.",
 		"statusInTransit": "Narudžba u tranzitu",
 		"statusInTransitDescription": "Vaša narudžba je na putu do vas ili je spremna za preuzimanje.",
+		"statusFinalPaymentPending": "Završni račun poslan - čeka se plaćanje",
+		"statusFinalPaymentPendingDescription": "Vaša narudžba je isporučena ili je spremna za preuzimanje. Završni račun je poslan. Molimo dovršite završno plaćanje kako biste finalizirali narudžbu.",
 		"statusCompleted": "Narudžba završena",
-		"statusCompletedDescription": "Vaša narudžba je završena. Završni račun je poslan. Hvala vam na poslovanju!"
+		"statusCompletedDescription": "Vaša narudžba je završena. Završni račun je poslan. Hvala vam na poslovanju!",
+		"setServiceLocations": "Postavi lokacije usluga"
 	},
 	"AdditionalCosts": {
 		"add": "Dodaj dodatni trošak",

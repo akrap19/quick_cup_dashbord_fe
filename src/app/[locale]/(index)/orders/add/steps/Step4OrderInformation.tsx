@@ -48,7 +48,9 @@ interface Props {
 
 export const Step4OrderInformation = ({ events, acquisitionType }: Props) => {
 	const t = useTranslations()
-	const { step4Data, setStep4Data, setAcquisitionType, customerId } = useOrderWizardStore()
+	const { getStep4Data, getCustomerId, setStep4Data, setAcquisitionType } = useOrderWizardStore()
+	const step4Data = getStep4Data(acquisitionType)
+	const customerId = getCustomerId(acquisitionType)
 
 	const form = useForm<Step4Schema>({
 		mode: 'onChange',
@@ -83,12 +85,12 @@ export const Step4OrderInformation = ({ events, acquisitionType }: Props) => {
 				contactPersonContact: data.contactPersonContact,
 				notes: data.notes
 			}
-			setStep4Data(stepData)
+			setStep4Data(stepData, acquisitionType)
 		})
 
 		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [form.watch])
+	}, [form.watch, acquisitionType])
 
 	return (
 		<FormProvider {...form}>

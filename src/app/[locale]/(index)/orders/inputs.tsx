@@ -115,6 +115,10 @@ export const Inputs = ({ data }: Props) => {
 			return false
 		}
 
+		if (selectedOrder.status === OrderStatusEnum.COMPLETED) {
+			return false
+		}
+
 		if (isClient) {
 			return selectedOrder.status === OrderStatusEnum.PENDING
 		}

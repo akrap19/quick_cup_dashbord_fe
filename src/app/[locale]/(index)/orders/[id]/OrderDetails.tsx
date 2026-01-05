@@ -86,7 +86,7 @@ export const OrderDetails = ({ order }: Props) => {
 					<TabsWrapper>
 						{order.additionalCosts && order.additionalCosts.length > 0 ? (
 							<Box style={{ gridColumn: 'span 2' }}>
-								<OrderAdditionalCostsList additionalCosts={order.additionalCosts} />
+								<OrderAdditionalCostsList additionalCosts={order.additionalCosts} products={order.products} />
 							</Box>
 						) : (
 							<Box style={{ gridColumn: 'span 2' }}>

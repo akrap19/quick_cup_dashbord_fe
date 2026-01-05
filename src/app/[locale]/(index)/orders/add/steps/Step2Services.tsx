@@ -15,6 +15,7 @@ import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { useOrderWizardStore, Step2ServicesData } from '@/store/order-wizard'
 import { Base } from 'api/models/common/base'
 import { NoResult } from '@/components/custom/no-result'
+import { Order } from 'api/models/order/order'
 
 const step2Schema = z.object({
 	products: z
@@ -47,12 +48,15 @@ type Step2Schema = z.infer<typeof step2Schema>
 interface Props {
 	products: Product[]
 	acquisitionType: AcquisitionTypeEnum
+	order?: Order
 	serviceLocations?: Base[]
 }
 
-export const Step2Services = ({ products, acquisitionType, serviceLocations = [] }: Props) => {
+export const Step2Services = ({ products, acquisitionType, order, serviceLocations = [] }: Props) => {
 	const t = useTranslations()
-	const { step2Data, setStep2Data, setTotalAmount, step1Data } = useOrderWizardStore()
+	const { getStep2Data, getStep1Data, setStep2Data, setTotalAmount } = useOrderWizardStore()
+	const step2Data = getStep2Data(acquisitionType)
+	const step1Data = getStep1Data(acquisitionType)
 	const isRent = acquisitionType === AcquisitionTypeEnum.RENT
 
 	// Collect unique services from all products (use products prop which is selectedItems from parent)
@@ -151,7 +155,6 @@ export const Step2Services = ({ products, acquisitionType, serviceLocations = []
 
 	const formServices = useWatch({ control: form.control, name: 'services' }) || []
 
-	// Save to store and calculate total when form changes
 	useEffect(() => {
 		const subscription = form.watch(data => {
 			const servicesTotal = (data.services || []).reduce((sum, formService) => {
@@ -181,16 +184,16 @@ export const Step2Services = ({ products, acquisitionType, serviceLocations = []
 				) as Step2ServicesData['services']
 			}
 
-			setStep2Data(stepData)
+			setStep2Data(stepData, acquisitionType)
 
 			// Update total amount (will be combined with other steps in parent)
 			const step1Total = step1Data?.products?.reduce((sum, p) => sum + (p.price || 0), 0) || 0
-			setTotalAmount(step1Total + servicesTotal)
+			setTotalAmount(step1Total + servicesTotal, acquisitionType)
 		})
 
 		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [form.watch, products, isRent, step1Data])
+	}, [form.watch, products, isRent, step1Data, acquisitionType])
 
 	const hasServices = uniqueServices.length > 0
 
@@ -243,8 +246,8 @@ export const Step2Services = ({ products, acquisitionType, serviceLocations = []
 									service={service}
 									serviceIndex={serviceIndex}
 									products={products}
+									order={order}
 									acquisitionType={acquisitionType}
-									isEditMode={false}
 									serviceLocations={serviceLocations}
 								/>
 							)

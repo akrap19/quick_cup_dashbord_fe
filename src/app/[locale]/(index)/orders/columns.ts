@@ -14,6 +14,7 @@ const getStatusDescriptionKey = (status: string): string => {
 		IN_PRODUCTION: 'statusInProductionDescription',
 		READY: 'statusReadyDescription',
 		IN_TRANSIT: 'statusInTransitDescription',
+		FINAL_PAYMENT_PENDING: 'statusFinalPaymentPendingDescription',
 		COMPLETED: 'statusCompletedDescription'
 	}
 	return `Orders.${statusMap[status] || 'statusPendingDescription'}`

@@ -14,6 +14,7 @@
 		"emailPlaceholder": "npr. john.doe@gmail.com",
 		"admin": "Admin",
 		"admins": "Admins",
+		"event": "Dogodek",
 		"here": "tukaj",
 		"place": "Mesto",
 		"placeAndPostalCode": "Mesto in poštna številka",
@@ -415,6 +416,8 @@
 		"finishRentOrder": "Zaključi narudžbo za najem",
 		"addNew": "Dodaj novo naročilo",
 		"edit": "Uredi naročilo",
+		"editBuy": "Uredi naročilo za nakup",
+		"editRent": "Uredi naročilo za najem",
 		"delete": "Izbriši naročila",
 		"back": "Nazaj na naročila",
 		"search": "Išči naročila",
@@ -468,8 +471,11 @@
 		"statusReadyDescription": "Tvoje naročilo je pripravljeno in bo kmalu poslano/prejeto.",
 		"statusInTransit": "Naročilo v tranzitu",
 		"statusInTransitDescription": "Tvoje naročilo je na poti do tebe ali je pripravljeno za prevzem.",
+		"statusFinalPaymentPending": "Končni račun poslan - čakanje na plačilo",
+		"statusFinalPaymentPendingDescription": "Tvoje naročilo je bilo dostavljeno ali je pripravljeno za prevzem. Končni račun je bil poslan. Prosimo, dokončaj končno plačilo, da finaliziraš naročilo.",
 		"statusCompleted": "Naročilo zaključeno",
-		"statusCompletedDescription": "Tvoje naročilo je bilo zaključeno. Končni račun je bil poslan. Hvala za poslovanje!"
+		"statusCompletedDescription": "Tvoje naročilo je bilo zaključeno. Končni račun je bil poslan. Hvala za poslovanje!",
+		"setServiceLocations": "Nastavi lokacije storitev"
 	},
 	"AdditionalCosts": {
 		"add": "Dodaj dodatni strošek",

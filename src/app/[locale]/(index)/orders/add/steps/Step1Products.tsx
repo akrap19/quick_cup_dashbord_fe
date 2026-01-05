@@ -12,6 +12,7 @@ import { useOrderWizardStore, Step1ProductsData } from '@/store/order-wizard'
 import { tokens } from '@/style/theme.css'
 import { NoResult } from '@/components/custom/no-result/NoResult'
 import { getProductPrices } from 'api/services/products'
+import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 
 const orderProductSchema = z.object({
 	productId: requiredString.shape.scheme,
@@ -32,10 +33,13 @@ type Step1Schema = z.infer<typeof step1Schema>
 interface Props {
 	products?: Product[]
 	selectedItems?: Product[]
+	acquisitionType: AcquisitionTypeEnum
 }
 
-export const Step1Products = ({ products = [], selectedItems = [] }: Props) => {
-	const { step1Data, setStep1Data, setTotalAmount, customerId } = useOrderWizardStore()
+export const Step1Products = ({ products = [], selectedItems = [], acquisitionType }: Props) => {
+	const { getStep1Data, getCustomerId, setStep1Data, setTotalAmount } = useOrderWizardStore()
+	const step1Data = getStep1Data(acquisitionType)
+	const customerId = getCustomerId(acquisitionType)
 
 	// Initialize form with products from selectedItems (those in store) or from step1Data
 	const getInitialProducts = () => {
@@ -81,6 +85,15 @@ export const Step1Products = ({ products = [], selectedItems = [] }: Props) => {
 		// Remove products that are not in store anymore
 		const productsToRemove = currentFormProducts.filter((p: any) => !selectedProductIds.has(p.productId))
 		if (productsToRemove.length > 0) {
+			// Clear quantities for products being removed before filtering
+			productsToRemove.forEach((productToRemove: any, removeIndex: number) => {
+				const originalIndex = currentFormProducts.findIndex((p: any) => p.productId === productToRemove.productId)
+				if (originalIndex >= 0) {
+					form.setValue(`products.${originalIndex}.quantity`, undefined as any, { shouldValidate: false })
+					form.setValue(`products.${originalIndex}.price`, 0, { shouldValidate: false })
+					form.setValue(`products.${originalIndex}.productId`, undefined as any, { shouldValidate: false })
+				}
+			})
 			const updatedProducts = currentFormProducts.filter((p: any) => selectedProductIds.has(p.productId))
 			form.setValue('products', updatedProducts, { shouldValidate: false })
 		}
@@ -131,17 +144,17 @@ export const Step1Products = ({ products = [], selectedItems = [] }: Props) => {
 	useEffect(() => {
 		const subscription = form.watch(data => {
 			const productsTotal = (data.products || []).reduce((sum, product) => sum + (product?.price || 0), 0)
-			setTotalAmount(productsTotal)
+			setTotalAmount(productsTotal, acquisitionType)
 
 			const stepData: Step1ProductsData = {
 				products: (data.products || []).filter((p): p is { productId: string; quantity: number; price: number } => !!p)
 			}
-			setStep1Data(stepData)
+			setStep1Data(stepData, acquisitionType)
 		})
 
 		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [form.watch])
+	}, [form.watch, acquisitionType])
 
 	return (
 		<FormProvider {...form}>

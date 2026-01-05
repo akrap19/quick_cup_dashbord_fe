@@ -27,6 +27,7 @@ export interface Step3AdditionalCostsData {
 		isIncluded: boolean
 		quantity: number
 		price: number
+		productQuantities?: Record<string, number>
 	}>
 }
 
@@ -41,56 +42,154 @@ export interface Step4OrderInformationData {
 	notes?: string
 }
 
-type OrderWizardStore = {
+interface OrderData {
 	currentStep: number
-	acquisitionType?: AcquisitionTypeEnum
 	customerId?: string
 	step1Data?: Step1ProductsData
 	step2Data?: Step2ServicesData
 	step3Data?: Step3AdditionalCostsData
 	step4Data?: Step4OrderInformationData
 	totalAmount: number
-	setCurrentStep: (step: number) => void
+}
+
+type OrderWizardStore = {
+	buyOrder: OrderData
+	rentOrder: OrderData
+	currentAcquisitionType?: AcquisitionTypeEnum
+	// Getters that return data for a specific acquisition type
+	getCurrentStep: (type: AcquisitionTypeEnum) => number
+	getCustomerId: (type: AcquisitionTypeEnum) => string | undefined
+	getStep1Data: (type: AcquisitionTypeEnum) => Step1ProductsData | undefined
+	getStep2Data: (type: AcquisitionTypeEnum) => Step2ServicesData | undefined
+	getStep3Data: (type: AcquisitionTypeEnum) => Step3AdditionalCostsData | undefined
+	getStep4Data: (type: AcquisitionTypeEnum) => Step4OrderInformationData | undefined
+	getTotalAmount: (type: AcquisitionTypeEnum) => number
+	// Setters that set data for a specific acquisition type
+	setCurrentStep: (step: number, type: AcquisitionTypeEnum) => void
+	setCustomerId: (id: string, type: AcquisitionTypeEnum) => void
+	setStep1Data: (data: Step1ProductsData, type: AcquisitionTypeEnum) => void
+	setStep2Data: (data: Step2ServicesData, type: AcquisitionTypeEnum) => void
+	setStep3Data: (data: Step3AdditionalCostsData, type: AcquisitionTypeEnum) => void
+	setStep4Data: (data: Step4OrderInformationData, type: AcquisitionTypeEnum) => void
+	setTotalAmount: (amount: number, type: AcquisitionTypeEnum) => void
 	setAcquisitionType: (type: AcquisitionTypeEnum) => void
-	setCustomerId: (id: string) => void
-	setStep1Data: (data: Step1ProductsData) => void
-	setStep2Data: (data: Step2ServicesData) => void
-	setStep3Data: (data: Step3AdditionalCostsData) => void
-	setStep4Data: (data: Step4OrderInformationData) => void
-	setTotalAmount: (amount: number) => void
-	clearWizard: () => void
+	clearWizard: (type?: AcquisitionTypeEnum) => void
+}
+
+const defaultOrderData: OrderData = {
+	currentStep: 1,
+	customerId: undefined,
+	step1Data: undefined,
+	step2Data: undefined,
+	step3Data: undefined,
+	step4Data: undefined,
+	totalAmount: 0
 }
 
 export const useOrderWizardStore = create<OrderWizardStore>()(
 	persist(
 		(set, get) => ({
-			currentStep: 1,
-			acquisitionType: undefined,
-			customerId: undefined,
-			step1Data: undefined,
-			step2Data: undefined,
-			step3Data: undefined,
-			step4Data: undefined,
-			totalAmount: 0,
-			setCurrentStep: step => set({ currentStep: step }),
-			setAcquisitionType: type => set({ acquisitionType: type }),
-			setCustomerId: id => set({ customerId: id }),
-			setStep1Data: data => set({ step1Data: data }),
-			setStep2Data: data => set({ step2Data: data }),
-			setStep3Data: data => set({ step3Data: data }),
-			setStep4Data: data => set({ step4Data: data }),
-			setTotalAmount: amount => set({ totalAmount: amount }),
-			clearWizard: () =>
-				set({
-					currentStep: 1,
-					acquisitionType: undefined,
-					customerId: undefined,
-					step1Data: undefined,
-					step2Data: undefined,
-					step3Data: undefined,
-					step4Data: undefined,
-					totalAmount: 0
-				})
+			buyOrder: { ...defaultOrderData },
+			rentOrder: { ...defaultOrderData },
+			currentAcquisitionType: undefined,
+			// Getters
+			getCurrentStep: type => {
+				const order = type === AcquisitionTypeEnum.BUY ? get().buyOrder : get().rentOrder
+				return order.currentStep
+			},
+			getCustomerId: type => {
+				const order = type === AcquisitionTypeEnum.BUY ? get().buyOrder : get().rentOrder
+				return order.customerId
+			},
+			getStep1Data: type => {
+				const order = type === AcquisitionTypeEnum.BUY ? get().buyOrder : get().rentOrder
+				return order.step1Data
+			},
+			getStep2Data: type => {
+				const order = type === AcquisitionTypeEnum.BUY ? get().buyOrder : get().rentOrder
+				return order.step2Data
+			},
+			getStep3Data: type => {
+				const order = type === AcquisitionTypeEnum.BUY ? get().buyOrder : get().rentOrder
+				return order.step3Data
+			},
+			getStep4Data: type => {
+				const order = type === AcquisitionTypeEnum.BUY ? get().buyOrder : get().rentOrder
+				return order.step4Data
+			},
+			getTotalAmount: type => {
+				const order = type === AcquisitionTypeEnum.BUY ? get().buyOrder : get().rentOrder
+				return order.totalAmount
+			},
+			// Setters
+			setCurrentStep: (step, type) =>
+				set(state => {
+					if (type === AcquisitionTypeEnum.BUY) {
+						return { buyOrder: { ...state.buyOrder, currentStep: step } }
+					}
+					return { rentOrder: { ...state.rentOrder, currentStep: step } }
+				}),
+			setCustomerId: (id, type) =>
+				set(state => {
+					if (type === AcquisitionTypeEnum.BUY) {
+						return { buyOrder: { ...state.buyOrder, customerId: id } }
+					}
+					return { rentOrder: { ...state.rentOrder, customerId: id } }
+				}),
+			setStep1Data: (data, type) =>
+				set(state => {
+					if (type === AcquisitionTypeEnum.BUY) {
+						return { buyOrder: { ...state.buyOrder, step1Data: data } }
+					}
+					return { rentOrder: { ...state.rentOrder, step1Data: data } }
+				}),
+			setStep2Data: (data, type) =>
+				set(state => {
+					if (type === AcquisitionTypeEnum.BUY) {
+						return { buyOrder: { ...state.buyOrder, step2Data: data } }
+					}
+					return { rentOrder: { ...state.rentOrder, step2Data: data } }
+				}),
+			setStep3Data: (data, type) =>
+				set(state => {
+					if (type === AcquisitionTypeEnum.BUY) {
+						return { buyOrder: { ...state.buyOrder, step3Data: data } }
+					}
+					return { rentOrder: { ...state.rentOrder, step3Data: data } }
+				}),
+			setStep4Data: (data, type) =>
+				set(state => {
+					if (type === AcquisitionTypeEnum.BUY) {
+						return { buyOrder: { ...state.buyOrder, step4Data: data } }
+					}
+					return { rentOrder: { ...state.rentOrder, step4Data: data } }
+				}),
+			setTotalAmount: (amount, type) =>
+				set(state => {
+					if (type === AcquisitionTypeEnum.BUY) {
+						return { buyOrder: { ...state.buyOrder, totalAmount: amount } }
+					}
+					return { rentOrder: { ...state.rentOrder, totalAmount: amount } }
+				}),
+			setAcquisitionType: type => set({ currentAcquisitionType: type }),
+			clearWizard: type => {
+				if (type) {
+					// Clear specific order type
+					set(state => {
+						if (type === AcquisitionTypeEnum.BUY) {
+							return { buyOrder: { ...defaultOrderData } }
+						}
+						return { rentOrder: { ...defaultOrderData } }
+					})
+				} else {
+					// Clear all
+					set({
+						buyOrder: { ...defaultOrderData },
+						rentOrder: { ...defaultOrderData },
+						currentAcquisitionType: undefined
+					})
+				}
+			}
 		}),
 		{
 			name: 'order-wizard-store'

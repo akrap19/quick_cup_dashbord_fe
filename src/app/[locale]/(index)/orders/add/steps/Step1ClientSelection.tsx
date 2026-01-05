@@ -33,7 +33,8 @@ interface Props {
 
 export const Step1ClientSelection = ({ customers, acquisitionType }: Props) => {
 	const t = useTranslations()
-	const { customerId, setCustomerId } = useOrderWizardStore()
+	const { getCustomerId, setCustomerId } = useOrderWizardStore()
+	const customerId = getCustomerId(acquisitionType)
 	const { data: session } = useSession()
 	const isAdmin = useHasRoleAccess([UserRoleEnum.ADMIN, UserRoleEnum.MASTER_ADMIN])
 	const currentUserId = session?.user?.userId
@@ -50,21 +51,21 @@ export const Step1ClientSelection = ({ customers, acquisitionType }: Props) => {
 	useEffect(() => {
 		if (!isAdmin && currentUserId && !customerId) {
 			form.setValue('customerId', currentUserId)
-			setCustomerId(currentUserId)
+			setCustomerId(currentUserId, acquisitionType)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isAdmin, currentUserId])
+	}, [isAdmin, currentUserId, acquisitionType])
 
 	useEffect(() => {
 		const subscription = form.watch(data => {
 			if (data.customerId) {
-				setCustomerId(data.customerId)
+				setCustomerId(data.customerId, acquisitionType)
 			}
 		})
 
 		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [form.watch, setCustomerId])
+	}, [form.watch, acquisitionType])
 
 	return (
 		<FormProvider {...form}>

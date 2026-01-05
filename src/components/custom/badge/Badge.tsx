@@ -27,6 +27,7 @@ const variantTextMap: Record<string, string> = {
 	in_production: 'Orders.statusInProduction',
 	ready: 'Orders.statusReady',
 	in_transit: 'Orders.statusInTransit',
+	final_payment_pending: 'Orders.statusFinalPaymentPending',
 	completed: 'Orders.statusCompleted',
 	available: 'Product.available',
 	in_use: 'Product.in_use',

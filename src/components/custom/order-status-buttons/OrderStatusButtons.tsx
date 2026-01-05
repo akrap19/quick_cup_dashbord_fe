@@ -2,14 +2,20 @@
 
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 import { Button } from '@/components/inputs/button'
 import { Inline } from '@/components/layout/inline'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
 import { useTableStore } from '@/store/table'
+import { useOrderWizardStore } from '@/store/order-wizard'
 import { Order } from 'api/models/order/order'
 import { updateOrderStatus } from 'api/services/orders'
 import { OrderStatusEnum } from 'enums/orderStatusEnum'
+import { ROUTES } from 'parameters'
+import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
+import { UserRoleEnum } from 'enums/userRoleEnum'
+import { hasRoleAccess } from 'utils/hasRoleAccess'
 
 interface Props {
 	selectedItem: Order
@@ -18,7 +24,9 @@ interface Props {
 export const OrderStatusButtons = ({ selectedItem }: Props) => {
 	const t = useTranslations()
 	const { clearCheckedItems } = useTableStore()
-	const { refresh } = useRouter()
+	const { push, refresh } = useRouter()
+	const { data: session } = useSession()
+	const { setCurrentStep, setAcquisitionType } = useOrderWizardStore()
 
 	if (!selectedItem) {
 		return null
@@ -36,6 +44,45 @@ export const OrderStatusButtons = ({ selectedItem }: Props) => {
 			clearCheckedItems()
 			refresh()
 		}
+	}
+
+	const handleNavigateToServiceLocations = () => {
+		if (!selectedItem?.id) {
+			return
+		}
+
+		const userRole = session?.user?.roles[0]?.name
+		const isAdmin = hasRoleAccess(userRole, [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN])
+
+		// Services step: step 3 for admin, step 2 for non-admin
+		const servicesStep = isAdmin ? 3 : 2
+
+		const acquisitionType = selectedItem.acquisitionType || AcquisitionTypeEnum.BUY
+
+		// Set the step and acquisition type in the store before navigating
+		setAcquisitionType(acquisitionType)
+		setCurrentStep(servicesStep, acquisitionType)
+
+		// Navigate to edit order page
+		push(ROUTES.EDIT_ORDERS + selectedItem.id)
+	}
+
+	// Check if all services have service locations set
+	const hasAllServiceLocations = () => {
+		const services = selectedItem.services || []
+		if (services.length === 0) {
+			return true // No services means all have locations (none needed)
+		}
+
+		// Check if all services that are included (quantity > 0) have serviceLocationId
+		return services.every(service => {
+			// If service has no quantity, it might not need a location
+			if (!service.quantity || service.quantity === 0) {
+				return true
+			}
+			// Service with quantity must have a serviceLocationId
+			return !!service.serviceLocationId
+		})
 	}
 
 	const currentStatus = selectedItem.status as OrderStatusEnum
@@ -73,11 +120,20 @@ export const OrderStatusButtons = ({ selectedItem }: Props) => {
 			)
 			break
 		case OrderStatusEnum.PAYMENT_RECEIVED:
-			buttons.push(
-				<Button key="in-production" variant="primary" onClick={() => handleStatusUpdate(OrderStatusEnum.IN_PRODUCTION)}>
-					{t('Orders.statusInProduction')}
-				</Button>
-			)
+			!hasAllServiceLocations()
+				? buttons.push(
+						<Button key="service-locations" variant="primary" onClick={handleNavigateToServiceLocations}>
+							{t('Orders.setServiceLocations')}
+						</Button>
+					)
+				: buttons.push(
+						<Button
+							key="in-production"
+							variant="primary"
+							onClick={() => handleStatusUpdate(OrderStatusEnum.IN_PRODUCTION)}>
+							{t('Orders.statusInProduction')}
+						</Button>
+					)
 			break
 		case OrderStatusEnum.IN_PRODUCTION:
 			buttons.push(
@@ -94,6 +150,16 @@ export const OrderStatusButtons = ({ selectedItem }: Props) => {
 			)
 			break
 		case OrderStatusEnum.IN_TRANSIT:
+			buttons.push(
+				<Button
+					key="final-payment-pending"
+					variant="primary"
+					onClick={() => handleStatusUpdate(OrderStatusEnum.FINAL_PAYMENT_PENDING)}>
+					{t('Orders.statusFinalPaymentPending')}
+				</Button>
+			)
+			break
+		case OrderStatusEnum.FINAL_PAYMENT_PENDING:
 			buttons.push(
 				<Button key="completed" variant="success" onClick={() => handleStatusUpdate(OrderStatusEnum.COMPLETED)}>
 					{t('Orders.statusCompleted')}

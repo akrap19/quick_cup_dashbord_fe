@@ -22,14 +22,14 @@ import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdo
 import { Base } from 'api/models/common/base'
 import { useHasRoleAccess } from '@/hooks/use-has-role-access'
 import { UserRoleEnum } from 'enums/userRoleEnum'
+import { Order } from 'api/models/order/order'
 
 interface ServiceListItemProps {
 	service: Service
 	serviceIndex: number
 	products: Product[]
+	order?: Order
 	acquisitionType: AcquisitionTypeEnum
-	orderStatus?: string
-	isEditMode?: boolean
 	serviceLocations?: Base[]
 }
 
@@ -37,9 +37,8 @@ export const ServiceListItem = ({
 	service,
 	serviceIndex,
 	products,
+	order,
 	acquisitionType,
-	orderStatus,
-	isEditMode = false,
 	serviceLocations = []
 }: ServiceListItemProps) => {
 	const t = useTranslations()
@@ -68,8 +67,7 @@ export const ServiceListItem = ({
 	const showButton = inputType !== InputTypeEnum.AFTER
 
 	// Show quantity fields per product if order status is ACCEPTED and input type is not "after"
-	const showProductQuantityFields =
-		isEditMode && orderStatus !== OrderStatusEnum.PENDING && inputType === InputTypeEnum.AFTER
+	const showProductQuantityFields = order && order?.status !== OrderStatusEnum.PENDING
 
 	// Get service ID
 	const serviceId = service.id || service.serviceId
@@ -183,6 +181,21 @@ export const ServiceListItem = ({
 					shouldValidate: false,
 					shouldDirty: false
 				})
+
+				// Update product quantities from API response
+				if (response.products && Array.isArray(response.products)) {
+					const currentProductQuantities = form.getValues(productQuantitiesFieldName) || {}
+					const updatedProductQuantities: Record<string, number> = { ...currentProductQuantities }
+					response.products.forEach(product => {
+						if (product.productId && product.quantity !== undefined) {
+							updatedProductQuantities[product.productId] = product.quantity
+						}
+					})
+					form.setValue(productQuantitiesFieldName, updatedProductQuantities, {
+						shouldValidate: false,
+						shouldDirty: false
+					})
+				}
 			}
 		} catch (error: any) {
 			// On error, set price to 0
@@ -273,7 +286,7 @@ export const ServiceListItem = ({
 						</Text>
 					</Box>
 				</Inline>
-				{showProductQuantityFields && productsWithService.length > 0 && (
+				{showProductQuantityFields && isIncluded && productsWithService.length > 0 && (
 					<Box paddingLeft={showButton ? 5 : 0}>
 						<Stack gap={2}>
 							{productsWithService.map(product => {
@@ -284,6 +297,7 @@ export const ServiceListItem = ({
 										</Text>
 										<Box style={{ width: '140px' }}>
 											<Controller
+												defaultValue={productQuantities[product.id] || 0}
 												name={`${productQuantitiesFieldName}.${product.id}` as any}
 												control={form.control}
 												render={({ field }) => (

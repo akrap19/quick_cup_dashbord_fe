@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { useEffect } from 'react'
+import { FormEvent, useEffect } from 'react'
 
 import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
@@ -64,17 +64,32 @@ export const OrderAddWizard = ({
 	const { selectedItems, clearItems } = isRent ? rentStore : buyStore
 	const { setCurrentStep } = useStepsStore()
 	const {
-		currentStep,
+		getCurrentStep,
+		getStep1Data,
+		getStep2Data,
+		getStep3Data,
+		getStep4Data,
+		getCustomerId,
+		getTotalAmount,
 		setCurrentStep: setWizardStep,
-		step1Data,
-		step2Data,
-		step3Data,
-		step4Data,
-		customerId,
-		totalAmount,
+		setCustomerId,
 		clearWizard,
-		setCustomerId
+		setAcquisitionType
 	} = useOrderWizardStore()
+
+	// Get data for current acquisition type
+	const currentStep = getCurrentStep(acquisitionType)
+	const step1Data = getStep1Data(acquisitionType)
+	const step2Data = getStep2Data(acquisitionType)
+	const step3Data = getStep3Data(acquisitionType)
+	const step4Data = getStep4Data(acquisitionType)
+	const customerId = getCustomerId(acquisitionType)
+	const totalAmount = getTotalAmount(acquisitionType)
+
+	// Wrapper functions that include acquisition type
+	const setWizardStepWithType = (step: number) => setWizardStep(step, acquisitionType)
+	const setCustomerIdWithType = (id: string) => setCustomerId(id, acquisitionType)
+	const clearWizardWithType = () => clearWizard(acquisitionType)
 	const { data: session } = useSession()
 	const TOTAL_STEPS = isAdmin ? 5 : 4
 
@@ -84,10 +99,15 @@ export const OrderAddWizard = ({
 	// Auto-populate client ID for non-admin users
 	useEffect(() => {
 		if (!isAdmin && session?.user?.userId && !customerId) {
-			setCustomerId(session.user.userId)
+			setCustomerIdWithType(session.user.userId)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isAdmin, session?.user?.userId])
+	}, [isAdmin, session?.user?.userId, acquisitionType])
+
+	// Set acquisition type when component mounts or changes
+	useEffect(() => {
+		setAcquisitionType(acquisitionType)
+	}, [acquisitionType, setAcquisitionType])
 
 	useEffect(() => {
 		setCurrentStep(currentStep)
@@ -95,19 +115,19 @@ export const OrderAddWizard = ({
 
 	useEffect(() => {
 		if (currentStep < 1 || currentStep > TOTAL_STEPS) {
-			setWizardStep(1)
+			setWizardStepWithType(1)
 		}
-	}, [currentStep, setWizardStep])
+	}, [currentStep])
 
 	const handleNext = () => {
 		if (currentStep < TOTAL_STEPS) {
-			setWizardStep(currentStep + 1)
+			setWizardStepWithType(currentStep + 1)
 		}
 	}
 
 	const handleBack = () => {
 		if (currentStep > 1) {
-			setWizardStep(currentStep - 1)
+			setWizardStepWithType(currentStep - 1)
 		}
 	}
 
@@ -148,21 +168,46 @@ export const OrderAddWizard = ({
 					})
 					return s.isIncluded || isDefault
 				})
-				.map(s => ({
-					serviceId: s.serviceId,
-					quantity: Number(s.quantity) || 0,
-					price: Number(s.price) || 0,
-					serviceLocationId: s.serviceLocationId
-				})),
+				.map(s => {
+					// Convert productQuantities to quantityByProduct format
+					const quantityByProduct = s.productQuantities
+						? Object.entries(s.productQuantities)
+								.filter(([_, quantity]) => quantity > 0)
+								.map(([productId, quantity]) => ({
+									productId,
+									quantity: Number(quantity) || 0
+								}))
+						: []
+
+					return {
+						serviceId: s.serviceId,
+						quantity: Number(s.quantity) || 0,
+						price: Number(s.price) || 0,
+						serviceLocationId: s.serviceLocationId,
+						quantityByProduct: quantityByProduct.length > 0 ? quantityByProduct : undefined
+					}
+				}),
 			additionalCosts: (step3Data?.additionalCosts || [])
 				.filter(ac => ac.isIncluded)
 				.map(ac => {
 					const additionalCost = additionalCosts.find(acc => acc.id === ac.additionalCostId)
 					const isOneTime = additionalCost?.billingType === BillingTypeEnum.ONE_TIME
+
+					// Convert productQuantities to quantityByProduct format
+					const quantityByProduct = ac.productQuantities
+						? Object.entries(ac.productQuantities)
+								.filter(([_, quantity]) => quantity > 0)
+								.map(([productId, quantity]) => ({
+									productId,
+									quantity: Number(quantity) || 0
+								}))
+						: []
+
 					return {
 						additionalCostId: ac.additionalCostId,
 						quantity: isOneTime ? 1 : Number(ac.quantity) || 0,
-						price: Number(ac.price) || 0
+						price: Number(ac.price) || 0,
+						quantityByProduct: quantityByProduct.length > 0 ? quantityByProduct : undefined
 					}
 				}),
 			totalAmount: totalAmount,
@@ -175,7 +220,7 @@ export const OrderAddWizard = ({
 			SuccessToast(t('Orders.successfullyCreated'))
 
 			setTimeout(() => {
-				clearWizard()
+				clearWizardWithType()
 				clearItems()
 			}, 2500)
 			push(ROUTES.ORDERS)
@@ -183,7 +228,7 @@ export const OrderAddWizard = ({
 		}
 	}
 
-	const handleStepSubmit = (e: React.FormEvent) => {
+	const handleStepSubmit = (e: FormEvent) => {
 		e.preventDefault()
 		if (currentStep === TOTAL_STEPS) {
 			onSubmit()
@@ -198,6 +243,8 @@ export const OrderAddWizard = ({
 	// Validation check - each step component handles its own validation
 	// We'll check if required data exists for the current step
 	const isValid = () => {
+		const hasProductsInStore = selectedItems.length > 0
+		const hasQuantity = step1Data?.products?.some(p => Number(p.quantity) > 0) || false
 		if (isAdmin) {
 			switch (currentStep) {
 				case 1:
@@ -205,15 +252,13 @@ export const OrderAddWizard = ({
 					return !!customerId
 				case 2:
 					// Step 2: Products
-					const hasProductsInStore = selectedItems.length > 0
-					const hasQuantity = step1Data?.products?.some(p => Number(p.quantity) > 0) || false
 					return hasProductsInStore && hasQuantity
 				case 3:
 					return true // Services are optional
 				case 4:
 					return true // Additional costs are optional
 				case 5:
-					return !!(step4Data?.place && step4Data?.street)
+					return !!(step4Data?.place && step4Data?.street && customerId && hasProductsInStore && hasQuantity)
 				default:
 					return false
 			}
@@ -221,15 +266,13 @@ export const OrderAddWizard = ({
 			switch (currentStep) {
 				case 1:
 					// Step 1: Products (non-admin)
-					const hasProductsInStore = selectedItems.length > 0
-					const hasQuantity = step1Data?.products?.some(p => Number(p.quantity) > 0) || false
 					return hasProductsInStore && hasQuantity
 				case 2:
 					return true // Services are optional
 				case 3:
 					return true // Additional costs are optional
 				case 4:
-					return !!(customerId && step4Data?.place && step4Data?.street)
+					return !!(step4Data?.place && step4Data?.street && customerId && hasProductsInStore && hasQuantity)
 				default:
 					return false
 			}
@@ -243,7 +286,7 @@ export const OrderAddWizard = ({
 			) : (
 				<form onSubmit={handleStepSubmit} style={{ flex: 1 }}>
 					<ManageJourneyWrapper
-						onStepClick={setWizardStep}
+						onStepClick={setWizardStepWithType}
 						stepTitleKey={
 							isAdmin && currentStep === 1
 								? undefined
@@ -263,7 +306,11 @@ export const OrderAddWizard = ({
 								<Step1ClientSelection customers={clients} acquisitionType={acquisitionType} />
 							)}
 							{((isAdmin && currentStep === 2) || (!isAdmin && currentStep === 1)) && (
-								<Step1Products products={allProducts || []} selectedItems={selectedItems} />
+								<Step1Products
+									products={allProducts || []}
+									selectedItems={selectedItems}
+									acquisitionType={acquisitionType}
+								/>
 							)}
 							{((isAdmin && currentStep === 3) || (!isAdmin && currentStep === 2)) && (
 								<Step2Services
@@ -273,7 +320,11 @@ export const OrderAddWizard = ({
 								/>
 							)}
 							{((isAdmin && currentStep === 4) || (!isAdmin && currentStep === 3)) && (
-								<Step3AdditionalCosts additionalCosts={additionalCosts} />
+								<Step3AdditionalCosts
+									additionalCosts={additionalCosts}
+									acquisitionType={acquisitionType}
+									products={selectedItems}
+								/>
 							)}
 							{((isAdmin && currentStep === 5) || (!isAdmin && currentStep === 4)) && (
 								<Step4OrderInformation events={events} acquisitionType={acquisitionType} />

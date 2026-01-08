@@ -28,7 +28,6 @@ export const ProductStateFormTable = ({ name, value, onChange, serviceLocations,
 	const watchedValue = useWatch({ control: form.control, name: name || '' })
 	const productStates = value || watchedValue || []
 
-	// Create onChange handler that updates form when name is provided
 	const handleChange = (newValue: ProductState[]) => {
 		if (onChange) {
 			onChange(newValue)
@@ -37,14 +36,12 @@ export const ProductStateFormTable = ({ name, value, onChange, serviceLocations,
 		}
 	}
 
-	// Initialize with one empty row if empty
 	useEffect(() => {
 		if (name && (!productStates || productStates.length === 0)) {
 			form.setValue(name, [{} as ProductState], { shouldValidate: false })
 		}
 	}, [name, form])
 
-	// Clear opposite field when location changes
 	useEffect(() => {
 		if (Array.isArray(productStates)) {
 			productStates.forEach((state, index) => {

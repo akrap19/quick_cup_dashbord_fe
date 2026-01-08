@@ -115,6 +115,7 @@ export const Inputs = ({ data }: Props) => {
 			return false
 		}
 
+		// Hide edit button when order is completed
 		if (selectedOrder.status === OrderStatusEnum.COMPLETED) {
 			return false
 		}

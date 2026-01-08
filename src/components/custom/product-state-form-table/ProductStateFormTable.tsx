@@ -10,8 +10,6 @@ import { ProductState } from 'api/models/products/productState'
 import { ProductStateStatusEnum } from 'enums/productStateStatusEnum'
 import { ProductStateLocationEnum } from 'enums/productStateLocationEnum'
 import { Base } from 'api/models/common/base'
-import { Text } from '@/components/typography/text'
-import { Box } from '@/components/layout/box'
 
 interface Props {
 	name?: string

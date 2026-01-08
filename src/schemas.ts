@@ -53,11 +53,32 @@ export const productServicePriceSchema = z.object({
 		.default([])
 })
 
-export const productStateSchema = z.object({
-	id: z.string().optional(),
-	status: z.string().min(1),
-	location: z.string().min(1),
-	quantity: z.number().min(1),
-	serviceLocationId: z.string().optional(),
-	userId: z.string().optional()
-})
+export const productStateSchema = z
+	.object({
+		id: z.string().optional(),
+		status: z.string().min(1),
+		location: z.string().min(1),
+		quantity: z.number().min(1),
+		serviceLocationId: z.string().optional(),
+		userId: z.string().optional()
+	})
+	.superRefine((data, ctx) => {
+		if (data.location === 'service') {
+			if (!data.serviceLocationId || data.serviceLocationId.length === 0) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'ValidationMeseges.required',
+					path: ['serviceLocationId']
+				})
+			}
+		}
+		if (data.location === 'user') {
+			if (!data.userId || data.userId.length === 0) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'ValidationMeseges.required',
+					path: ['userId']
+				})
+			}
+		}
+	})

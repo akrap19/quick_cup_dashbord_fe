@@ -207,6 +207,8 @@
 	},
 	"Product": {
 		"productStates": "Stanja proizvoda",
+		"updateProductStates": "Ažuriraj stanja proizvoda",
+		"productStatesUpdated": "Stanja proizvoda su uspješno ažurirana!",
 		"available": "Dostupno",
 		"in_use": "U upotrebi",
 		"maintenance": "Održavanje",
@@ -222,7 +224,8 @@
 		"password": "Molimo provjerite da vaša lozinka zadovoljava kriterije.",
 		"confirmPassword": "Molimo provjerite da se vaše lozinke podudaraju.",
 		"phone": "Nevaljan broj telefona. Molimo pokušajte ponovno.",
-		"invalidRegistrationLink": "Nevaljan ili isteknu link za registraciju"
+		"invalidRegistrationLink": "Nevaljan ili isteknu link za registraciju",
+		"productStateError": "Molimo ispunite sva polja i imajte na umu da količina mora biti veća od 0."
 	},
 	"NoListData": {
 		"letsStart": "Počnimo!"

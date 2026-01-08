@@ -12,6 +12,7 @@ import { Select } from '@/components/inputs/select'
 import { PlusIcon } from '@/components/icons/plus-icon'
 import { TrashIcon } from '@/components/icons/trash-icon'
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@/components/data-display/table/Table'
+import { Text } from '@/components/typography/text'
 
 export type InputType = 'text' | 'number' | 'decimal' | 'select'
 
@@ -36,6 +37,7 @@ interface Props<T = any> extends Omit<ComponentProps<'input'>, 'value' | 'onChan
 	emptyMessage?: string
 	addButtonLabel?: string
 	showActions?: boolean
+	errorMessage?: string
 }
 
 export const FormTable = <T extends Record<string, any> = Record<string, any>>({
@@ -47,6 +49,7 @@ export const FormTable = <T extends Record<string, any> = Record<string, any>>({
 	emptyMessage,
 	addButtonLabel,
 	showActions = true,
+	errorMessage,
 	...rest
 }: Props<T>) => {
 	const t = useTranslations()
@@ -178,6 +181,13 @@ export const FormTable = <T extends Record<string, any> = Record<string, any>>({
 					)}
 				</TableBody>
 			</Table>
+			{errorMessage && (
+				<Box paddingY={1}>
+					<Text fontSize="small" color="destructive.500">
+						{errorMessage}
+					</Text>
+				</Box>
+			)}
 			<Box>
 				<Button type="button" size="small" variant="success" onClick={addRow}>
 					<PlusIcon size="small" />

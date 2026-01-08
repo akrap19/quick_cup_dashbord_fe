@@ -57,7 +57,7 @@ export const content = recipe({
 				height: '78vh',
 				maxWidth: '1212px',
 				maxHeight: '800px',
-				padding: tokens.spacing[20]
+				padding: `${tokens.spacing[9]} ${tokens.spacing[10]} `
 			}
 		}
 	}

@@ -4,6 +4,7 @@ import { ProductPayload } from 'api/models/products/productPayload'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { ProductEditPayload } from 'api/models/products/productEditPayload'
 import { ProductPricesPayload } from 'api/models/products/productPricesPayload'
+import { productStatesPayload } from 'api/models/products/productStatesPayload'
 
 interface Query {
 	search?: string
@@ -65,6 +66,12 @@ export const getAllProductsPrices = async (query: Query) => {
 
 export const getProductPrices = async (payload: ProductPricesPayload) => {
 	const response = await axiosInstanceWithToken.post(`/products/calculate-price`, payload)
+
+	return response?.data
+}
+
+export const bulkUpdateProductStates = async (updates: productStatesPayload[]) => {
+	const response = await axiosInstanceWithToken.post(`/products/bulk-update-product-states`, { updates })
 
 	return response?.data
 }

@@ -17,6 +17,7 @@ import { ListBulletsIcon } from '@/components/icons/list-bullets-icon'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { useHasRoleAccess } from '@/hooks/use-has-role-access'
 import { UserRoleEnum } from 'enums/userRoleEnum'
+import { useOpenedStore } from '@/store/opened'
 
 export const Inputs = () => {
 	const t = useTranslations()
@@ -24,6 +25,8 @@ export const Inputs = () => {
 	const { replace, push } = useRouter()
 	const selectedItems = useBuyStore(state => state.selectedItems)
 	const itemsCount = selectedItems.length
+	const hasSelectedProducts = itemsCount > 0
+	const modalOpened = useOpenedStore()
 
 	const handleFilterChange = (filter: string, value: string) => {
 		const current = qs.parse(searchParams.toString())
@@ -59,7 +62,12 @@ export const Inputs = () => {
 				{useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN]) && (
 					<AddButton buttonLabel={t('Buy.add')} buttonLink={ROUTES.ADD_BUY} />
 				)}
-				{itemsCount > 0 && (
+				{hasSelectedProducts && (
+					<Button variant="primary" size="large" onClick={modalOpened.toggleOpened}>
+						{t('Product.updateProductStates')} ({itemsCount})
+					</Button>
+				)}
+				{itemsCount > 0 && !useHasRoleAccess([UserRoleEnum.SERVICE]) && (
 					<Button variant="success" size="large" onClick={handleCreateBuyOrder}>
 						<ListBulletsIcon />
 						{t('Orders.createBuyOrder')}

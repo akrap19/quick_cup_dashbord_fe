@@ -200,6 +200,8 @@
 	},
 	"Product": {
 		"productStates": "Product States",
+		"updateProductStates": "Update Product States",
+		"productStatesUpdated": "Product states updated successfully!",
 		"available": "Available",
 		"in_use": "In Use",
 		"maintenance": "Maintenance",
@@ -215,7 +217,8 @@
 		"password": "Please make sure your password meets the criteria.",
 		"confirmPassword": "Please make sure your passwords match.",
 		"phone": "Invalid phone number. Please try again.",
-		"invalidRegistrationLink": "Invalid or expired registration link"
+		"invalidRegistrationLink": "Invalid or expired registration link",
+		"productStateError": "Please fill all fields and note that quantity has to be grater than 0."
 	},
 	"NoListData": {
 		"letsStart": "Lets get started!"

@@ -198,6 +198,8 @@
 	},
 	"Product": {
 		"productStates": "Stanja izdelka",
+		"updateProductStates": "Posodobi stanja izdelka",
+		"productStatesUpdated": "Stanja izdelka so bila uspešno posodobljena!",
 		"available": "Na voljo",
 		"in_use": "V uporabi",
 		"maintenance": "Vzdrževanje",
@@ -213,7 +215,8 @@
 		"password": "Prepričaj se, da tvoje geslo izpolnjuje kriterije.",
 		"confirmPassword": "Prepričaj se, da se tvoji gesli ujemata.",
 		"phone": "Neveljavna telefonska številka. Poskusi znova.",
-		"invalidRegistrationLink": "Neveljavna ali potrjena registracijska povezava"
+		"invalidRegistrationLink": "Neveljavna ali potrjena registracijska povezava",
+		"productStateError": "Prosimo izpolnite vsa polja in upoštevajte, da mora biti količina večja od 0."
 	},
 	"NoListData": {
 		"letsStart": "Začnimo!"

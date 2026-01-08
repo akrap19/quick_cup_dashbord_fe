@@ -87,20 +87,18 @@ export const ShopItemCard = ({ shopItem, route, editRoute }: Props) => {
 					<Stack gap={1}>
 						<Box width="100%" position="relative">
 							<Stack gap={2}>
-								{useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.CLIENT]) && (
-									<Box position="absolute" style={{ top: 0, right: 0, zIndex: 1 }}>
-										<Button
-											variant={isItemAlreadyInCart ? 'destructive' : 'success'}
-											size="icon"
-											onClick={handleAddProduct}>
-											{isItemAlreadyInCart ? (
-												<MinusIcon size="small" color="shades.00" />
-											) : (
-												<PlainPlusIcon size="small" color="shades.00" />
-											)}
-										</Button>
-									</Box>
-								)}
+								<Box position="absolute" style={{ top: 0, right: 0, zIndex: 1 }}>
+									<Button
+										variant={isItemAlreadyInCart ? 'destructive' : 'success'}
+										size="icon"
+										onClick={handleAddProduct}>
+										{isItemAlreadyInCart ? (
+											<MinusIcon size="small" color="shades.00" />
+										) : (
+											<PlainPlusIcon size="small" color="shades.00" />
+										)}
+									</Button>
+								</Box>
 								{useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN]) && (
 									<Box position="absolute" style={{ top: '65%', right: 0, zIndex: 1 }}>
 										<Stack gap={2}>

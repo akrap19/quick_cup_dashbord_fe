@@ -10,6 +10,8 @@ import { ProductState } from 'api/models/products/productState'
 import { ProductStateStatusEnum } from 'enums/productStateStatusEnum'
 import { ProductStateLocationEnum } from 'enums/productStateLocationEnum'
 import { Base } from 'api/models/common/base'
+import { Text } from '@/components/typography/text'
+import { Box } from '@/components/layout/box'
 
 interface Props {
 	name?: string
@@ -22,8 +24,20 @@ interface Props {
 export const ProductStateFormTable = ({ name, value, onChange, serviceLocations, users }: Props) => {
 	const t = useTranslations()
 	const form = useFormContext()
+	const {
+		formState: { errors }
+	} = form
 	const watchedValue = useWatch({ control: form.control, name: name || '' })
 	const productStates = value || watchedValue || []
+
+	// Create onChange handler that updates form when name is provided
+	const handleChange = (newValue: ProductState[]) => {
+		if (onChange) {
+			onChange(newValue)
+		} else if (name) {
+			form.setValue(name, newValue, { shouldValidate: false })
+		}
+	}
 
 	// Initialize with one empty row if empty
 	useEffect(() => {
@@ -126,7 +140,7 @@ export const ProductStateFormTable = ({ name, value, onChange, serviceLocations,
 							placeholder={''}
 							value={currentValue || null}
 							disabled={isDisabled}
-							alwaysShowSearch={options.length > 5}
+							alwaysShowSearch={options?.length > 5}
 						/>
 					)
 				}
@@ -142,15 +156,18 @@ export const ProductStateFormTable = ({ name, value, onChange, serviceLocations,
 		[t, statusOptions, locationOptions, serviceLocations, users, name, form]
 	)
 
+	const hasErrors = (errors?.products as any)?.length > 0 ? t('ValidationMeseges.productStateError') : undefined
+
 	return (
 		<FormTable<ProductState>
 			name={name}
 			value={productStates}
-			onChange={onChange}
+			onChange={handleChange}
 			columns={formTableColumns}
 			defaultRow={{} as ProductState}
 			emptyMessage={t('General.noRowsAdded')}
 			addButtonLabel={t('General.addRow')}
+			errorMessage={hasErrors}
 		/>
 	)
 }

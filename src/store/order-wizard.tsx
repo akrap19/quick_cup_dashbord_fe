@@ -40,6 +40,7 @@ export interface Step4OrderInformationData {
 	contactPerson?: string
 	contactPersonContact?: string
 	notes?: string
+	discount?: number
 }
 
 interface OrderData {

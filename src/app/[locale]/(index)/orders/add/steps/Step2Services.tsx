@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import { z } from 'zod'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
@@ -13,6 +13,7 @@ import { Product } from 'api/models/products/product'
 import { Service } from 'api/models/services/service'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { useOrderWizardStore, Step2ServicesData } from '@/store/order-wizard'
+import { applyDiscount } from '@/utils/discount'
 import { Base } from 'api/models/common/base'
 import { NoResult } from '@/components/custom/no-result'
 import { Order } from 'api/models/order/order'
@@ -54,9 +55,12 @@ interface Props {
 
 export const Step2Services = ({ products, acquisitionType, order, serviceLocations = [] }: Props) => {
 	const t = useTranslations()
-	const { getStep2Data, getStep1Data, setStep2Data, setTotalAmount } = useOrderWizardStore()
+	const { getStep2Data, getStep1Data, getStep3Data, getStep4Data, setStep2Data, setTotalAmount } = useOrderWizardStore()
 	const step2Data = getStep2Data(acquisitionType)
 	const step1Data = getStep1Data(acquisitionType)
+	const step3Data = getStep3Data(acquisitionType)
+	const step4Data = getStep4Data(acquisitionType)
+	const discount = step4Data?.discount
 	const isRent = acquisitionType === AcquisitionTypeEnum.RENT
 
 	// Collect unique services from all products (use products prop which is selectedItems from parent)
@@ -155,8 +159,22 @@ export const Step2Services = ({ products, acquisitionType, order, serviceLocatio
 
 	const formServices = useWatch({ control: form.control, name: 'services' }) || []
 
+	// Track if this is the first callback to skip initial calculation
+	const isFirstCallback = useRef(true)
+
 	useEffect(() => {
 		const subscription = form.watch(data => {
+			// Skip calculation on first callback (when navigating to step)
+			if (isFirstCallback.current) {
+				isFirstCallback.current = false
+				const stepData: Step2ServicesData = {
+					services: (data.services || []).filter(
+						(s): s is NonNullable<typeof s> => s !== undefined
+					) as Step2ServicesData['services']
+				}
+				setStep2Data(stepData, acquisitionType)
+				return
+			}
 			const servicesTotal = (data.services || []).reduce((sum, formService) => {
 				if (!formService) return sum
 
@@ -186,14 +204,37 @@ export const Step2Services = ({ products, acquisitionType, order, serviceLocatio
 
 			setStep2Data(stepData, acquisitionType)
 
-			// Update total amount (will be combined with other steps in parent)
+			// Calculate total with all items from store (products, services, additional costs)
 			const step1Total = step1Data?.products?.reduce((sum, p) => sum + (p.price || 0), 0) || 0
-			setTotalAmount(step1Total + servicesTotal, acquisitionType)
+			const additionalCostsTotal =
+				step3Data?.additionalCosts?.reduce((sum, ac) => sum + (ac.isIncluded ? ac.price || 0 : 0), 0) || 0
+			const baseTotal = step1Total + servicesTotal + additionalCostsTotal
+
+			// In edit mode, check if prices match order prices (already discounted)
+			let shouldApplyDiscount = true
+			if (order) {
+				const orderProductsTotal = order.products?.reduce((sum, p) => sum + (p.price || 0), 0) || 0
+				const orderServicesTotal = order.services?.reduce((sum, s) => sum + (s.price || 0), 0) || 0
+				const orderAdditionalCostsTotal = order.additionalCosts?.reduce((sum, ac) => sum + (ac.price || 0), 0) || 0
+
+				const step1Matches = Math.abs(step1Total - orderProductsTotal) < 0.001
+				const step2Matches = Math.abs(servicesTotal - orderServicesTotal) < 0.001
+				const step3Matches = Math.abs(additionalCostsTotal - orderAdditionalCostsTotal) < 0.001
+
+				// If all match, prices are already discounted, so don't apply discount again
+				if (step1Matches && step2Matches && step3Matches) {
+					shouldApplyDiscount = false
+				}
+			}
+
+			// Apply discount only if needed
+			const finalTotal = shouldApplyDiscount ? applyDiscount(baseTotal, discount) : baseTotal
+			setTotalAmount(finalTotal, acquisitionType)
 		})
 
 		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [form.watch, products, isRent, step1Data, acquisitionType])
+	}, [form.watch, products, isRent, step1Data, step3Data, discount, acquisitionType, order])
 
 	const hasServices = uniqueServices.length > 0
 

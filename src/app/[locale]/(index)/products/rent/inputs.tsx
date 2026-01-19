@@ -27,6 +27,8 @@ export const Inputs = () => {
 	const itemsCount = selectedItems.length
 	const hasSelectedProducts = itemsCount > 0
 	const modalOpened = useOpenedStore()
+	const hasAdminAccess = useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN])
+	const hasServiceAccess = useHasRoleAccess([UserRoleEnum.SERVICE])
 
 	const handleFilterChange = (filter: string, value: string) => {
 		const current = qs.parse(searchParams.toString())
@@ -59,15 +61,13 @@ export const Inputs = () => {
 				/>
 			</Box>
 			<Inline gap={4} alignItems="center">
-				{useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN]) && (
-					<AddButton buttonLabel={t('Rent.add')} buttonLink={ROUTES.ADD_RENT} />
-				)}
-				{hasSelectedProducts && (
+				{hasAdminAccess && <AddButton buttonLabel={t('Rent.add')} buttonLink={ROUTES.ADD_RENT} />}
+				{hasSelectedProducts && hasServiceAccess && (
 					<Button variant="primary" size="large" onClick={modalOpened.toggleOpened}>
 						{t('Product.updateProductStates')} ({itemsCount})
 					</Button>
 				)}
-				{itemsCount > 0 && !useHasRoleAccess([UserRoleEnum.SERVICE]) && (
+				{itemsCount > 0 && !hasServiceAccess && (
 					<Button variant="success" size="large" onClick={handleCreateRentOrder}>
 						<ListBulletsIcon />
 						{t('Orders.finishRentOrder')}

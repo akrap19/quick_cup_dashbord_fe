@@ -6,7 +6,6 @@ import { TabsWrapper } from '@/components/custom/layouts/TabsWrapper'
 import { Label } from '@/components/inputs/label'
 import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
-import { Box } from '@/components/layout/box'
 import { Order } from 'api/models/order/order'
 import { handleFullName } from '@/utils/handleFullName'
 import { emptyToDash } from '@/utils/emptyToDash'
@@ -63,14 +62,19 @@ export const OrderInformationDetails = ({ order }: Props) => {
 					{order.contactPersonContact ?? '-'}
 				</Text>
 			</Stack>
-			<Box style={{ gridColumn: 'span 2' }}>
-				<Stack gap={4}>
-					<Label>{t('General.notes')}</Label>
-					<Text fontSize="small" color="neutral.800">
-						{order.notes ?? '-'}
-					</Text>
-				</Stack>
-			</Box>
+			<Stack gap={4}>
+				<Label>{t('General.notes')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{order.notes ?? '-'}
+				</Text>
+			</Stack>
+
+			<Stack gap={4}>
+				<Label>{t('Orders.discount')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{order.discount !== undefined && order.discount !== null ? `${order.discount}%` : '-'}
+				</Text>
+			</Stack>
 		</TabsWrapper>
 	)
 }

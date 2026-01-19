@@ -23,6 +23,8 @@ import { Base } from 'api/models/common/base'
 import { useHasRoleAccess } from '@/hooks/use-has-role-access'
 import { UserRoleEnum } from 'enums/userRoleEnum'
 import { Order } from 'api/models/order/order'
+import { useOrderWizardStore } from '@/store/order-wizard'
+import { applyDiscount } from '@/utils/discount'
 
 interface ServiceListItemProps {
 	service: Service
@@ -55,6 +57,9 @@ export const ServiceListItem = ({
 	const isIncluded = useWatch({ control: form.control, name: isIncludedFieldName }) || false
 	const productQuantities = useWatch({ control: form.control, name: productQuantitiesFieldName }) || {}
 	const isAdminOrMasterAdmin = useHasRoleAccess([UserRoleEnum.ADMIN, UserRoleEnum.MASTER_ADMIN])
+	const { getStep4Data } = useOrderWizardStore()
+	const step4Data = getStep4Data(acquisitionType)
+	const discount = step4Data?.discount
 
 	// Determine input type based on acquisition type
 	const inputType = acquisitionType === AcquisitionTypeEnum.RENT ? service.inputTypeForRent : service.inputTypeForBuy
@@ -237,7 +242,7 @@ export const ServiceListItem = ({
 	}, [serviceId, serviceLocations])
 
 	// Display price always (it's always calculated), but it's only included in total if checkbox is checked (or default)
-	const displayPrice = currentPrice
+	const displayPrice = applyDiscount(currentPrice, discount)
 
 	return (
 		<Box paddingY={3} paddingX={0} style={{ borderBottom: '1px solid #E5E7EB' }}>

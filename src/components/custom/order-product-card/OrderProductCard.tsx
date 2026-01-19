@@ -2,7 +2,9 @@
 
 import { useTranslations } from 'next-intl'
 import { useFormContext } from 'react-hook-form'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
+import { useSearchParams } from 'next/navigation'
+import qs from 'query-string'
 import { ItemCarousel } from '@/components/custom/item-carousel/ItemCarousel'
 import Image from 'next/image'
 import { Button } from '@/components/inputs/button'
@@ -14,25 +16,31 @@ import { Box } from '@/components/layout/box'
 import { Product } from 'api/models/products/product'
 import { useWatch } from 'react-hook-form'
 import { FormControl } from '@/components/inputs/form-control'
-import { NumericInput } from '@/components/inputs/numeric-input'
+import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdown'
 import { useBuyStore } from '@/store/buy'
 import { useRentStore } from '@/store/rent'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { OrderProductCardContainer } from '@/components/custom/order-product-card-container'
+import { useOrderWizardStore } from '@/store/order-wizard'
+import { applyDiscount } from '@/utils/discount'
 
 interface OrderProductCardProps {
 	product: Product
 	index: number
+	acquisitionType: AcquisitionTypeEnum
 }
 
-export const OrderProductCard = ({ product, index }: OrderProductCardProps) => {
+export const OrderProductCard = ({ product, index, acquisitionType }: OrderProductCardProps) => {
 	const t = useTranslations()
 	const form = useFormContext()
+	const searchParams = useSearchParams()
 	const buyStore = useBuyStore()
 	const rentStore = useRentStore()
-	const acquisitionType = form.getValues('acquisitionType')
 	const isRent = acquisitionType === AcquisitionTypeEnum.RENT
 	const store = isRent ? rentStore : buyStore
+	const { getStep4Data } = useOrderWizardStore()
+	const step4Data = getStep4Data(acquisitionType)
+	const discount = step4Data?.discount
 	const quantityFieldName = index >= 0 ? `products.${index}.quantity` : ''
 	const productIdFieldName = index >= 0 ? `products.${index}.productId` : ''
 	const priceFieldName = index >= 0 ? `products.${index}.price` : ''
@@ -40,6 +48,10 @@ export const OrderProductCard = ({ product, index }: OrderProductCardProps) => {
 	const currentPrice = index >= 0 ? priceValue || 0 : 0
 	const productIdInForm = useWatch({ control: form.control, name: productIdFieldName as any })
 	const quantityValue = useWatch({ control: form.control, name: quantityFieldName as any })
+
+	// Get search query from URL parameters for this specific product's quantity field
+	const currentSearchParams = qs.parse(searchParams.toString())
+	const searchQuery = quantityFieldName ? (currentSearchParams[quantityFieldName] as string) || '' : ''
 
 	// Check if product is in store OR in form (for edit mode when store might not be initialized yet)
 	const isProductInStore = store.selectedItems.some(item => item.id === product.id)
@@ -88,7 +100,41 @@ export const OrderProductCard = ({ product, index }: OrderProductCardProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isProductSelected, index, product.id, quantityValue])
 
-	const totalPrice = currentPrice
+	const totalPrice = applyDiscount(currentPrice, discount)
+
+	const quantityOptions = useMemo(() => {
+		if (!product.quantityPerUnit || product.quantityPerUnit <= 0) {
+			return []
+		}
+
+		const maxUnits = 500
+		const allOptions = Array.from({ length: maxUnits }, (_, index) => {
+			const units = index + 1
+			const overallQuantity = units * product.quantityPerUnit
+			return {
+				id: overallQuantity.toString(),
+				name: `${units}(${overallQuantity})`
+			}
+		})
+
+		// Filter options based on search query if present
+		if (!searchQuery || searchQuery.length === 0) {
+			return allOptions
+		}
+
+		const query = searchQuery.toLowerCase().trim()
+		return allOptions.filter(option => {
+			// Search in the name (e.g., "1(10)")
+			const nameMatch = option.name?.toLowerCase().includes(query)
+			// Search in the id (which is the overallQuantity as string)
+			const idMatch = option.id?.toLowerCase().includes(query)
+			// Also extract numbers from name format "units(overallQuantity)" for better matching
+			const nameNumbers = option.name?.match(/\d+/g) || []
+			const numberMatch = nameNumbers.some(num => num.includes(query))
+
+			return nameMatch || idMatch || numberMatch
+		})
+	}, [product.quantityPerUnit, searchQuery])
 
 	const handleToggleProduct = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault()
@@ -132,27 +178,14 @@ export const OrderProductCard = ({ product, index }: OrderProductCardProps) => {
 			<Text fontSize="big" color="neutral.900" fontWeight="semibold">
 				{product.name}
 			</Text>
-
 			<Box flex="1" position="absolute" style={{ bottom: 0, left: 0, width: '140px' }}>
-				<Text color="neutral.700">{t('General.quantity')}</Text>
+				<Text color="neutral.700">{t('General.unitQuantity')}</Text>
 				{index >= 0 && quantityFieldName ? (
 					<FormControl name={quantityFieldName as any}>
-						<NumericInput
-							placeholder={t('General.quantityPlaceholder')}
-							allowNegative={false}
-							decimalScale={3}
-							disabled={!isProductSelected}
-						/>
+						<SearchDropdown options={quantityOptions} placeholder={''} disabled={!isProductSelected} alwaysShowSearch />
 					</FormControl>
 				) : (
-					<NumericInput
-						placeholder={t('General.quantityPlaceholder')}
-						allowNegative={false}
-						decimalScale={3}
-						disabled={true}
-						value=""
-						readOnly
-					/>
+					<SearchDropdown options={[]} placeholder={''} disabled={true} />
 				)}
 			</Box>
 		</>

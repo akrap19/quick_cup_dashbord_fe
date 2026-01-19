@@ -14,10 +14,11 @@ import { ROUTES } from 'parameters'
 import { formatDate } from '@/utils/formatDate'
 
 interface Props {
+	isClient: boolean
 	event: Event
 }
 
-export const EventDetails = ({ event }: Props) => {
+export const EventDetails = ({ event, isClient }: Props) => {
 	const t = useTranslations()
 	useNavbarItems({
 		title: event.title,
@@ -33,12 +34,16 @@ export const EventDetails = ({ event }: Props) => {
 					{event.title}
 				</Text>
 			</Stack>
-			<Stack gap={4}>
-				<Label>{t('General.owner')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{event.userName ?? '-'}
-				</Text>
-			</Stack>
+			{!isClient ? (
+				<Stack gap={4}>
+					<Label>{t('General.owner')}</Label>
+					<Text fontSize="small" color="neutral.800">
+						{event.companyName ?? '-'}
+					</Text>
+				</Stack>
+			) : (
+				<div />
+			)}
 			<Stack gap={4}>
 				<Label>{t('General.location')}</Label>
 				<Text fontSize="small" color="neutral.800">

@@ -14,6 +14,7 @@ import { requiredString } from 'schemas'
 import { BillingTypeEnum } from 'enums/billingTypeEnum'
 import { MethodOfPayment } from 'enums/methodOfPaymentEnum'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
+import { ProductStateStatusEnum } from 'enums/productStateStatusEnum'
 
 import AdditionalCostsForm from '../../form'
 
@@ -22,7 +23,8 @@ const formSchema = z.object({
 	billingType: z.nativeEnum(BillingTypeEnum),
 	methodOfPayment: z.nativeEnum(MethodOfPayment),
 	acquisitionType: z.nativeEnum(AcquisitionTypeEnum),
-	price: z.coerce.number().min(0)
+	price: z.coerce.number().min(0),
+	calculationStatus: z.nativeEnum(ProductStateStatusEnum).optional()
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -43,7 +45,8 @@ const AdditionalCostsEdit = ({ additionalCost }: Props) => {
 			billingType: additionalCost?.billingType ?? BillingTypeEnum.ONE_TIME,
 			methodOfPayment: additionalCost?.methodOfPayment ?? MethodOfPayment.BEFORE,
 			acquisitionType: additionalCost?.acquisitionType ?? AcquisitionTypeEnum.BUY,
-			price: additionalCost?.price ?? 0
+			price: additionalCost?.price ?? 0,
+			calculationStatus: additionalCost?.calculationStatus ?? undefined
 		}
 	})
 
@@ -78,4 +81,3 @@ const AdditionalCostsEdit = ({ additionalCost }: Props) => {
 }
 
 export default AdditionalCostsEdit
-

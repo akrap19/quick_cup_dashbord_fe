@@ -13,6 +13,7 @@ import { ROUTES } from 'parameters'
 import { BillingTypeEnum } from 'enums/billingTypeEnum'
 import { MethodOfPayment } from 'enums/methodOfPaymentEnum'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
+import { ProductStateStatusEnum } from 'enums/productStateStatusEnum'
 
 interface Props {
 	additionalCost: AdditionalCosts
@@ -32,6 +33,10 @@ export const AdditionalCostsDetails = ({ additionalCost }: Props) => {
 		return t(`AdditionalCosts.${value}`)
 	}
 
+	const getProductStateStatusLabel = (value: ProductStateStatusEnum) => {
+		return t(`Product.${value}`)
+	}
+
 	return (
 		<DetailsWrapper>
 			<Stack gap={4}>
@@ -43,9 +48,7 @@ export const AdditionalCostsDetails = ({ additionalCost }: Props) => {
 			<Stack gap={4}>
 				<Label>{t('AdditionalCosts.acquisitionType')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{additionalCost.acquisitionType
-						? getAdditionalCostsLabel(additionalCost.acquisitionType)
-						: '-'}
+					{additionalCost.acquisitionType ? getAdditionalCostsLabel(additionalCost.acquisitionType) : '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
@@ -57,9 +60,7 @@ export const AdditionalCostsDetails = ({ additionalCost }: Props) => {
 			<Stack gap={4}>
 				<Label>{t('AdditionalCosts.methodOfPayment')}</Label>
 				<Text fontSize="small" color="neutral.800">
-					{additionalCost.methodOfPayment
-						? getAdditionalCostsLabel(additionalCost.methodOfPayment)
-						: '-'}
+					{additionalCost.methodOfPayment ? getAdditionalCostsLabel(additionalCost.methodOfPayment) : '-'}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
@@ -68,6 +69,12 @@ export const AdditionalCostsDetails = ({ additionalCost }: Props) => {
 					{additionalCost.price !== null && additionalCost.price !== undefined
 						? `${additionalCost.price.toFixed(2)}€`
 						: '-'}
+				</Text>
+			</Stack>
+			<Stack gap={4}>
+				<Label>{t('AdditionalCosts.finalProductCalculationStatus')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{additionalCost.calculationStatus ? getProductStateStatusLabel(additionalCost.calculationStatus) : '-'}
 				</Text>
 			</Stack>
 		</DetailsWrapper>

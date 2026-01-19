@@ -3,43 +3,47 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import { z } from 'zod'
-import { useEffect } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 
 import { OrderProductCard } from '@/components/custom/order-product-card/OrderProductCard'
 import { Product } from 'api/models/products/product'
-import { requiredString } from 'schemas'
+import { createStep1Schema } from 'schemas'
 import { useOrderWizardStore, Step1ProductsData } from '@/store/order-wizard'
 import { tokens } from '@/style/theme.css'
 import { NoResult } from '@/components/custom/no-result/NoResult'
 import { getProductPrices } from 'api/services/products'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
+import { Text } from '@/components/typography/text'
+import { useTranslations } from 'next-intl'
+import { Stack } from '@/components/layout/stack'
+import { applyDiscount } from '@/utils/discount'
+import { Order } from 'api/models/order/order'
 
-const orderProductSchema = z.object({
-	productId: requiredString.shape.scheme,
-	quantity: z.coerce.number().min(0),
-	price: z.coerce.number().min(0)
-})
-
-const step1Schema = z.object({
-	products: z
-		.array(orderProductSchema)
-		.refine(products => products.length === 0 || products.some(p => Number(p.quantity) > 0), {
-			message: 'At least one product must have quantity greater than 0'
-		})
-})
-
-type Step1Schema = z.infer<typeof step1Schema>
+type Step1Schema = z.infer<ReturnType<typeof createStep1Schema>>
 
 interface Props {
 	products?: Product[]
 	selectedItems?: Product[]
 	acquisitionType: AcquisitionTypeEnum
+	order?: Order
 }
 
-export const Step1Products = ({ products = [], selectedItems = [], acquisitionType }: Props) => {
-	const { getStep1Data, getCustomerId, setStep1Data, setTotalAmount } = useOrderWizardStore()
+export const Step1Products = ({ products = [], selectedItems = [], acquisitionType, order }: Props) => {
+	const t = useTranslations()
+	const { getStep1Data, getStep2Data, getStep3Data, getStep4Data, getCustomerId, setStep1Data, setTotalAmount } =
+		useOrderWizardStore()
 	const step1Data = getStep1Data(acquisitionType)
+	const step2Data = getStep2Data(acquisitionType)
+	const step3Data = getStep3Data(acquisitionType)
+	const step4Data = getStep4Data(acquisitionType)
+	const discount = step4Data?.discount
 	const customerId = getCustomerId(acquisitionType)
+
+	// Use ref to always access the latest products array in validation
+	const productsRef = useRef<Product[]>(products)
+	useEffect(() => {
+		productsRef.current = products
+	}, [products])
 
 	// Initialize form with products from selectedItems (those in store) or from step1Data
 	const getInitialProducts = () => {
@@ -53,6 +57,11 @@ export const Step1Products = ({ products = [], selectedItems = [], acquisitionTy
 			price: 0
 		}))
 	}
+
+	const step1Schema = useMemo(
+		() => createStep1Schema(() => productsRef.current),
+		[] // Empty deps - productsRef.current will always have the latest value
+	)
 
 	const form = useForm<Step1Schema>({
 		mode: 'onChange',
@@ -140,41 +149,91 @@ export const Step1Products = ({ products = [], selectedItems = [], acquisitionTy
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formProducts.map(p => `${p.productId}-${p.quantity}`).join(','), customerId])
 
+	// Track if this is the first callback to skip initial calculation
+	const isFirstCallback = useRef(true)
+
 	// Save to store and calculate total when form changes
 	useEffect(() => {
 		const subscription = form.watch(data => {
-			const productsTotal = (data.products || []).reduce((sum, product) => sum + (product?.price || 0), 0)
-			setTotalAmount(productsTotal, acquisitionType)
-
+			// Skip calculation on first callback (when navigating to step)
+			if (isFirstCallback.current) {
+				isFirstCallback.current = false
+				const stepData: Step1ProductsData = {
+					products: (data.products || []).filter(
+						(p): p is { productId: string; quantity: number; price: number } => !!p
+					)
+				}
+				setStep1Data(stepData, acquisitionType)
+				return
+			}
 			const stepData: Step1ProductsData = {
 				products: (data.products || []).filter((p): p is { productId: string; quantity: number; price: number } => !!p)
 			}
 			setStep1Data(stepData, acquisitionType)
+
+			// Calculate total with all items from store (products, services, additional costs)
+			const productsTotal = (data.products || []).reduce((sum, product) => sum + (product?.price || 0), 0)
+			const servicesTotal =
+				step2Data?.services?.reduce((sum, s) => {
+					return sum + (s.isIncluded ? s.price || 0 : 0)
+				}, 0) || 0
+			const additionalCostsTotal =
+				step3Data?.additionalCosts?.reduce((sum, ac) => sum + (ac.isIncluded ? ac.price || 0 : 0), 0) || 0
+
+			const baseTotal = productsTotal + servicesTotal + additionalCostsTotal
+
+			// In edit mode, check if prices match order prices (already discounted)
+			let shouldApplyDiscount = true
+			if (order) {
+				const orderProductsTotal = order.products?.reduce((sum, p) => sum + (p.price || 0), 0) || 0
+				const orderServicesTotal = order.services?.reduce((sum, s) => sum + (s.price || 0), 0) || 0
+				const orderAdditionalCostsTotal = order.additionalCosts?.reduce((sum, ac) => sum + (ac.price || 0), 0) || 0
+
+				const step1Matches = Math.abs(productsTotal - orderProductsTotal) < 0.001
+				const step2Matches = Math.abs(servicesTotal - orderServicesTotal) < 0.001
+				const step3Matches = Math.abs(additionalCostsTotal - orderAdditionalCostsTotal) < 0.001
+
+				// If all match, prices are already discounted, so don't apply discount again
+				if (step1Matches && step2Matches && step3Matches) {
+					shouldApplyDiscount = false
+				}
+			}
+
+			// Apply discount only if needed
+			const finalTotal = shouldApplyDiscount ? applyDiscount(baseTotal, discount) : baseTotal
+			setTotalAmount(finalTotal, acquisitionType)
 		})
 
 		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [form.watch, acquisitionType])
+	}, [form.watch, discount, acquisitionType, order, step2Data, step3Data])
 
 	return (
 		<FormProvider {...form}>
-			{products && products.length > 0 ? (
-				<div
-					style={{
-						display: 'grid',
-						gridTemplateColumns: 'repeat(2, 1fr)',
-						columnGap: tokens.spacing[6],
-						rowGap: tokens.spacing[6]
-					}}>
-					{products.map((product: Product) => {
-						// Find the exact index of this product in the form array
-						const index = formProducts.findIndex(p => p.productId === product.id)
-						return <OrderProductCard key={product.id} product={product} index={index} />
-					})}
-				</div>
-			) : (
-				<NoResult size="large" noResoultMessage="General.noAvailableProducts" />
-			)}
+			<Stack gap={6}>
+				<Text fontSize="small" color="destructive.500">
+					{t('General.productsRequirements')}
+				</Text>
+				{products && products.length > 0 ? (
+					<div
+						style={{
+							display: 'grid',
+							gridTemplateColumns: 'repeat(2, 1fr)',
+							columnGap: tokens.spacing[6],
+							rowGap: tokens.spacing[6]
+						}}>
+						{products.map((product: Product) => {
+							// Find the exact index of this product in the form array
+							const index = formProducts.findIndex(p => p.productId === product.id)
+							return (
+								<OrderProductCard key={product.id} product={product} index={index} acquisitionType={acquisitionType} />
+							)
+						})}
+					</div>
+				) : (
+					<NoResult size="large" noResoultMessage="General.noAvailableProducts" />
+				)}
+			</Stack>
 		</FormProvider>
 	)
 }

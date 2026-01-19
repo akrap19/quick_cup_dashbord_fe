@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import { z } from 'zod'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import { Stack } from '@/components/layout/stack'
 import { AdditionalCostListItem } from '@/components/custom/additional-cost-card'
@@ -13,6 +13,7 @@ import { BillingTypeEnum } from 'enums/billingTypeEnum'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { Product } from 'api/models/products/product'
 import { Order } from 'api/models/order/order'
+import { applyDiscount } from '@/utils/discount'
 
 const additionalCostSchema = z.object({
 	additionalCostId: z.string(),
@@ -36,10 +37,15 @@ interface Props {
 }
 
 export const Step3AdditionalCosts = ({ additionalCosts, acquisitionType, order, products = [] }: Props) => {
-	const { getStep3Data, getStep1Data, getStep2Data, setStep3Data, setTotalAmount } = useOrderWizardStore()
+	const { getStep3Data, getStep1Data, getStep2Data, getStep4Data, setStep3Data, setTotalAmount } = useOrderWizardStore()
 	const step3Data = getStep3Data(acquisitionType)
 	const step1Data = getStep1Data(acquisitionType)
 	const step2Data = getStep2Data(acquisitionType)
+	const step4Data = getStep4Data(acquisitionType)
+	const discount = step4Data?.discount
+
+	// Track if this is the first callback to skip initial calculation
+	const isFirstCallback = useRef(true)
 
 	// Initialize additional costs
 	const initialAdditionalCosts = useMemo(() => {
@@ -126,6 +132,30 @@ export const Step3AdditionalCosts = ({ additionalCosts, acquisitionType, order, 
 	// Save to store and calculate total when form changes
 	useEffect(() => {
 		const subscription = form.watch(data => {
+			// Skip calculation on first callback (when navigating to step)
+			if (isFirstCallback.current) {
+				isFirstCallback.current = false
+				const stepData: Step3AdditionalCostsData = {
+					additionalCosts:
+						data.additionalCosts?.map(ac => {
+							const productQuantities = ac?.productQuantities
+								? (Object.fromEntries(
+										Object.entries(ac.productQuantities).filter(([_, value]) => value !== undefined)
+									) as Record<string, number>)
+								: undefined
+
+							return {
+								additionalCostId: ac?.additionalCostId || '',
+								isIncluded: ac?.isIncluded || false,
+								quantity: ac?.quantity || 0,
+								price: ac?.price || 0,
+								productQuantities
+							}
+						}) || []
+				}
+				setStep3Data(stepData, acquisitionType)
+				return
+			}
 			const additionalCostsTotal = (data.additionalCosts || []).reduce(
 				(sum, additionalCost) => sum + (additionalCost?.isIncluded ? additionalCost?.price || 0 : 0),
 				0
@@ -158,12 +188,34 @@ export const Step3AdditionalCosts = ({ additionalCosts, acquisitionType, order, 
 				step2Data?.services?.reduce((sum, s) => {
 					return sum + (s.isIncluded ? s.price || 0 : 0)
 				}, 0) || 0
-			setTotalAmount(step1Total + step2Total + additionalCostsTotal, acquisitionType)
+			const baseTotal = step1Total + step2Total + additionalCostsTotal
+
+			// In edit mode, check if prices match order prices (already discounted)
+			// If they match, don't apply discount again. If they changed (recalculated from API), apply discount.
+			let shouldApplyDiscount = true
+			if (order) {
+				const orderProductsTotal = order.products?.reduce((sum, p) => sum + (p.price || 0), 0) || 0
+				const orderServicesTotal = order.services?.reduce((sum, s) => sum + (s.price || 0), 0) || 0
+				const orderAdditionalCostsTotal = order.additionalCosts?.reduce((sum, ac) => sum + (ac.price || 0), 0) || 0
+
+				const step1Matches = Math.abs(step1Total - orderProductsTotal) < 0.001
+				const step2Matches = Math.abs(step2Total - orderServicesTotal) < 0.001
+				const step3Matches = Math.abs(additionalCostsTotal - orderAdditionalCostsTotal) < 0.001
+
+				// If all match, prices are already discounted, so don't apply discount again
+				if (step1Matches && step2Matches && step3Matches) {
+					shouldApplyDiscount = false
+				}
+			}
+
+			// Apply discount only if needed
+			const finalTotal = shouldApplyDiscount ? applyDiscount(baseTotal, discount) : baseTotal
+			setTotalAmount(finalTotal, acquisitionType)
 		})
 
 		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [form.watch, step1Data, step2Data, acquisitionType])
+	}, [form.watch, step1Data, step2Data, discount, acquisitionType])
 
 	const visibleAdditionalCosts = additionalCosts
 
@@ -174,6 +226,7 @@ export const Step3AdditionalCosts = ({ additionalCosts, acquisitionType, order, 
 					const originalIndex = additionalCosts?.findIndex(ac => ac.id === additionalCost.id) ?? index
 					return (
 						<AdditionalCostListItem
+							acquisitionType={acquisitionType}
 							key={additionalCost.id}
 							additionalCost={additionalCost}
 							index={originalIndex}

@@ -50,15 +50,6 @@ const OrderEditPage = async ({ params, searchParams }: Props) => {
 		transformedClientArray.push(orderCustomer)
 	}
 
-	const transformedEventArray =
-		eventsData?.events?.map((event: any) => {
-			return {
-				...event,
-				id: event.id,
-				name: event.title
-			}
-		}) || []
-
 	// Fetch all products for the acquisition type (like in add page)
 	const { data: productsData } = await getProducts({
 		acquisitionType: order?.acquisitionType || AcquisitionTypeEnum.BUY,
@@ -102,7 +93,7 @@ const OrderEditPage = async ({ params, searchParams }: Props) => {
 			order={order}
 			acquisitionType={order?.acquisitionType || AcquisitionTypeEnum.BUY}
 			clients={transformedClientArray}
-			events={transformedEventArray}
+			events={eventsData?.events}
 			additionalCosts={additionalCostsData?.additionalCosts || []}
 			allProducts={transformedProductsArray}
 			serviceLocations={serviceLocations}

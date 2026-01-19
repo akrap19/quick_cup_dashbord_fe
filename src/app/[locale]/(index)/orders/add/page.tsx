@@ -41,14 +41,6 @@ const Page = async ({ searchParams }: Props) => {
 				name: client.companyName
 			}
 		}) || []
-	const transformedEventArray =
-		eventsData?.events?.map((event: any) => {
-			return {
-				...event,
-				id: event.id,
-				name: event.title
-			}
-		}) || []
 	const transformedProductsArray =
 		productsData?.products?.map((product: any) => {
 			return {
@@ -83,7 +75,7 @@ const Page = async ({ searchParams }: Props) => {
 			isAdmin={isAdmin}
 			acquisitionType={searchParams.acquisitionType}
 			clients={transformedClientArray}
-			events={transformedEventArray}
+			events={eventsData?.events}
 			additionalCosts={additionalCostsData?.additionalCosts}
 			allProducts={transformedProductsArray}
 			serviceLocations={serviceLocations}

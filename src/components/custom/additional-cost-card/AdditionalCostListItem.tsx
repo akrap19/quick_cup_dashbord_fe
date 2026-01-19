@@ -3,7 +3,6 @@
 import { useTranslations } from 'next-intl'
 import { useFormContext, useWatch, Controller } from 'react-hook-form'
 import { useEffect, useRef } from 'react'
-import { FormControl } from '@/components/inputs/form-control'
 import { NumericInput } from '@/components/inputs/numeric-input'
 import { Button } from '@/components/inputs/button'
 import { PlainPlusIcon } from '@/components/icons/plain-plus-icon'
@@ -18,6 +17,9 @@ import { OrderStatusEnum } from 'enums/orderStatusEnum'
 import { MethodOfPayment } from 'enums/methodOfPaymentEnum'
 import { Product } from 'api/models/products/product'
 import { Order } from 'api/models/order/order'
+import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
+import { useOrderWizardStore } from '@/store/order-wizard'
+import { applyDiscount } from '@/utils/discount'
 
 interface AdditionalCostListItemProps {
 	additionalCost: AdditionalCosts
@@ -26,6 +28,7 @@ interface AdditionalCostListItemProps {
 	orderStatus?: string
 	order?: Order
 	products?: Product[]
+	acquisitionType?: AcquisitionTypeEnum
 }
 
 export const AdditionalCostListItem = ({
@@ -34,10 +37,15 @@ export const AdditionalCostListItem = ({
 	isEditMode = false,
 	orderStatus,
 	order,
-	products = []
+	products = [],
+	acquisitionType
 }: AdditionalCostListItemProps) => {
 	const t = useTranslations()
 	const form = useFormContext()
+	const { getStep4Data, currentAcquisitionType } = useOrderWizardStore()
+	const effectiveAcquisitionType = acquisitionType || currentAcquisitionType
+	const step4Data = effectiveAcquisitionType ? getStep4Data(effectiveAcquisitionType) : undefined
+	const discount = step4Data?.discount
 	const isIncludedFieldName = `additionalCosts.${index}.isIncluded`
 	const quantityFieldName = `additionalCosts.${index}.quantity`
 	const priceFieldName = `additionalCosts.${index}.price`
@@ -56,10 +64,6 @@ export const AdditionalCostListItem = ({
 
 	const isCreateMode = !isEditMode
 	const isReadOnlyInCreate = isCreateMode && !isBeforePayment
-	// In edit mode: "before" payment items can always be edited, "after" payment items only when status is IN_TRANSIT
-	const canEditQuantity = isEditMode && (isBeforePayment || orderStatus === OrderStatusEnum.IN_TRANSIT)
-	const canEditQuantityInCreate = isCreateMode && isBeforePayment
-	const showQuantityInput = (canEditQuantity || canEditQuantityInCreate) && isIncluded && isByPiece
 
 	// Show product quantity fields for "after" payment method in edit mode
 	const showProductQuantityFields =
@@ -178,11 +182,10 @@ export const AdditionalCostListItem = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isIncluded, isByPiece])
 
-	// For create mode with 'after' payment: show price per item. For 'before' or edit mode: show calculated price if included
-	const displayPrice = isReadOnlyInCreate ? additionalCost.price : isIncluded ? currentPrice : 0
+	const baseDisplayPrice = isReadOnlyInCreate ? additionalCost.price : isIncluded ? currentPrice : additionalCost.price
+	const displayPrice = applyDiscount(baseDisplayPrice, discount)
 
-	// Determine if button should be shown and enabled
-	const showButton = isAfterPayment || isBeforePayment
+	const showButton = isAfterPayment ? (isEditMode ? orderStatus !== OrderStatusEnum.PENDING : false) : true
 	const buttonEnabled = isAfterPayment || (isBeforePayment && !isReadOnlyInCreate)
 
 	return (
@@ -215,7 +218,7 @@ export const AdditionalCostListItem = ({
 								<Text fontSize="medium" color="neutral.900" fontWeight="semibold">
 									{additionalCost.name}
 								</Text>
-								{showQuantityInput && (
+								{/* {showQuantityInput && (
 									<Inline alignItems="center" justifyContent="center" gap={2}>
 										<Text color="neutral.700">{'- ' + t('General.quantity')}</Text>
 										<FormControl name={quantityFieldName as any}>
@@ -226,7 +229,7 @@ export const AdditionalCostListItem = ({
 											/>
 										</FormControl>
 									</Inline>
-								)}
+								)} */}
 							</Inline>
 						</Inline>
 					</Box>

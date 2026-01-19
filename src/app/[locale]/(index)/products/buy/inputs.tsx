@@ -62,7 +62,7 @@ export const Inputs = () => {
 			</Box>
 			<Inline gap={4} alignItems="center">
 				{hasAdminAccess && <AddButton buttonLabel={t('Buy.add')} buttonLink={ROUTES.ADD_BUY} />}
-				{hasSelectedProducts && (
+				{hasSelectedProducts && hasServiceAccess && (
 					<Button variant="primary" size="large" onClick={modalOpened.toggleOpened}>
 						{t('Product.updateProductStates')} ({itemsCount})
 					</Button>

@@ -1,5 +1,6 @@
 {
 	"General": {
+		"productsRequirements": "Minimum order is 2 units of products",
 		"noAvailableProducts": "No available products",
 		"requiredServicesWarning": "Services marked with an asterisk (*) are required",
 		"add": "Add",
@@ -33,12 +34,17 @@
 		"assignedAdmin": "Assigned Admin",
 		"additionalCosts": "Additional Costs",
 		"client": "Client",
+		"clientsPlaceholder": "Select client",
 		"clients": "Clients",
 		"numberOfClients": "Number of Clients",
 		"statusDescription": "Status description",
 		"service": "Service",
 		"services": "Services",
 		"serviceLocation": "Service Location",
+		"city": "City",
+		"cityPlaceholder": "e.g. Zagreb",
+		"address": "Address",
+		"addressPlaceholder": "e.g. Main Street 123",
 		"firstNameContactPerson": "First name of contact person",
 		"lastNameContactPerson": "Last name of contact person",
 		"emailContactPerson": "Email of contact person",
@@ -54,6 +60,7 @@
 		"unit": "Unit",
 		"unitPlaceholder": "e.g. box",
 		"quantityPerUnit": "Quantity per unit",
+		"unitQuantity": "Unit(quantity)",
 		"quantityPerUnitPlaceholder": "e.g. 1",
 		"transportationUnit": "Transportation unit",
 		"transportationUnitPlaceholder": "e.g. pallet",
@@ -79,10 +86,10 @@
 		"inactive": "Inactive",
 		"location": "Location",
 		"locationPlaceholder": "e.g. Hall, Office building, etc.",
-		"customizeProductPrices": "Customize product prices",
-		"stopCustomizingProductPrices": "Stop customizing product prices",
-		"customizeServicePrices": "Customize service prices",
-		"stopCustomizingServicePrices": "Stop customizing service prices",
+		"customizeProductPrices": "Show product price customization",
+		"stopCustomizingProductPrices": "Hide product price customization",
+		"customizeServicePrices": "Show service price customization",
+		"stopCustomizingServicePrices": "Hide service price customization",
 		"loading": "Loading...",
 		"manageContent": "Manage content",
 		"settings": "Settings",
@@ -135,6 +142,7 @@
 		"placePlaceholder": "e.g. City, District, etc.",
 		"street": "Street",
 		"streetPlaceholder": "e.g. Main Street 123",
+		"contactPerson": "Contact person",
 		"published": "Published",
 		"publish": "Publish",
 		"hidden": "Hidden",
@@ -170,6 +178,7 @@
 		"manage": "Manage",
 		"owner": "Owner",
 		"images": "Images",
+		"details": "Details",
 		"ownerPlaceholder": "Select owner",
 		"goToDashboard": "Go to dashboard",
 		"emailSuccessfullyChanged": "Email successfully changed",
@@ -196,7 +205,10 @@
 		"holder": "Holder",
 		"productStates": "Product States",
 		"welcomeTitle": "Welcome to the Quick Cup Dashboard",
-		"welcomeDescription": "Manage your orders, products, services, clients, and events all in one place. Create and track buy and rent orders, manage your product inventory, configure services and locations, handle client relationships, and organize events efficiently."
+		"welcomeDescription": "Manage your orders, products, services, clients, and events all in one place. Create and track buy and rent orders, manage your product inventory, configure services and locations, handle client relationships, and organize events efficiently.",
+		"welcomeDescriptionAdmin": "Manage orders, products, services, clients, and events all in one place. Create and track buy and rent orders, manage product inventory, configure services and service locations.",
+		"welcomeDescriptionService": "Enter product state, manage orders assigned to you, update order statuses, enter actual quantity of services and additional costs in orders. Review and manage orders from payment received to completion.",
+		"welcomeDescriptionClient": "Explore product offerings and their prices, create your own events and manage them, create orders, review active and previous orders and always stay updated on the status and progress of your orders."
 	},
 	"Product": {
 		"productStates": "Product States",
@@ -296,7 +308,8 @@
 		"hideProductPriceList": "Hide product price list",
 		"deleteClientDescription": "Press 'Delete' if you want to remove the client.",
 		"noListDataDescription": "Here you will see a list of all the clients. Clients have the mandate to see data that is added by the Admins and Services, also add feedback for the services and post new orders.",
-		"addClientDescription": "Please note that <important>the user will receive an email invitation,</important> which will grant them access to the dashboard."
+		"addClientDescription": "Please note that <important>the user will receive an email invitation,</important> which will grant them access to the dashboard.",
+		"editClientDescription": "Please note that <important>the user will receive an email invitation,</important> which will grant them access to the dashboard."
 	},
 	"Services": {
 		"add": "Add Service",
@@ -343,6 +356,24 @@
 		"unit": "Unit",
 		"transportationUnit": "Transportation Unit"
 	},
+	"ServiceLocations": {
+		"title": "Service Locations",
+		"add": "Add Service Location",
+		"edit": "Edit Service Location",
+		"delete": "Delete Service Locations",
+		"back": "Back to Service Locations",
+		"search": "Search Service Locations",
+		"searchServiceLocation": "Search Service Location",
+		"noListDataTitle": "Add Service Location",
+		"cancelAdd": "Cancel adding new Service Location",
+		"successfullyCreated": "Service Location successfully created!",
+		"successfullyDeleted": "Service Location successfully deleted!",
+		"successfullyEdited": "Service Location successfully edited!",
+		"successfullBulkDelete": "Service Locations successfully deleted!",
+		"deleteDescription": "Press 'Delete' if you want to remove the Service Location.",
+		"noListDataDescription": "Here you can manage all the service locations that are included in the business. Service locations can include all service locations that the business offers or are needed for the business.",
+		"addDescription": "Add a new service location. Service locations help organize and categorize different types of support and care provided."
+	},
 	"Buy": {
 		"add": "Add Buy Entry",
 		"addNew": "Add new Buy entry",
@@ -363,7 +394,8 @@
 		"atLeastOneProductPriceRequired": "At least one product price is required",
 		"atLeastOneProductStateRequired": "At least one product state is required",
 		"showServicePriceList": "Show service price list",
-		"hideServicePriceList": "Hide service price list"
+		"hideServicePriceList": "Hide service price list",
+		"createBuyOrder": "Create buy order"
 	},
 	"Rent": {
 		"add": "Add Rent Entry",
@@ -451,6 +483,8 @@
 		"contactPersonPlaceholder": "e.g. John Doe",
 		"contactPersonContact": "Contact person phone number",
 		"contactPersonContactPlaceholder": "e.g. +385 345 56 86",
+		"discount": "Discount",
+		"discountPlaceholder": "e.g. 10",
 		"additionalCostsAfterPaymentDescription": "These additional costs will be charged after the order is completed if needed.",
 		"step0Title": "Client Selection",
 		"step0Description": "Select the client for this order.",
@@ -513,7 +547,10 @@
 		"acquisitionTypePlaceholder": "Select acquisition type",
 		"buy": "Buy",
 		"rent": "Rent",
-		"price": "Price"
+		"price": "Price",
+		"includeInFinalProductCalculation": "Include in final product calculation",
+		"finalProductCalculationStatus": "Final product calculation status",
+		"finalProductCalculationStatusPlaceholder": "Select final product calculation status"
 	},
 	"Settings": {
 		"personalInfoSuccessfullyUpdated": "Personal info successfully updated!",

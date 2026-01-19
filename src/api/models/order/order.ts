@@ -13,6 +13,7 @@ export interface Order {
 	totalAmount: number
 	customerName: string
 	notes: string | null
+	discount?: number
 	customerId?: string
 	customer: Client
 	location?: string

@@ -10,6 +10,7 @@ export interface OrderPayload {
 	acquisitionType: AcquisitionTypeEnum
 	customerId: string
 	eventId?: string
+	discount?: number
 	location?: string
 	place: string
 	street: string

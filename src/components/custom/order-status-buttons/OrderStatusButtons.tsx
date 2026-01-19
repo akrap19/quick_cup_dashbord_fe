@@ -86,6 +86,21 @@ export const OrderStatusButtons = ({ selectedItem }: Props) => {
 	}
 
 	const currentStatus = selectedItem.status as OrderStatusEnum
+	const userRole = session?.user?.roles[0]?.name
+	const isService = hasRoleAccess(userRole, [UserRoleEnum.SERVICE])
+
+	// Service users can only change status from PAYMENT_RECEIVED onwards
+	if (
+		isService &&
+		currentStatus !== OrderStatusEnum.PAYMENT_RECEIVED &&
+		currentStatus !== OrderStatusEnum.IN_PRODUCTION &&
+		currentStatus !== OrderStatusEnum.READY &&
+		currentStatus !== OrderStatusEnum.IN_TRANSIT &&
+		currentStatus !== OrderStatusEnum.FINAL_PAYMENT_PENDING
+	) {
+		return null
+	}
+
 	const buttons: JSX.Element[] = []
 
 	switch (currentStatus) {

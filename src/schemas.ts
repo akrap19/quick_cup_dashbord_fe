@@ -82,3 +82,54 @@ export const productStateSchema = z
 			}
 		}
 	})
+
+export const orderProductSchema = z.object({
+	productId: requiredString.shape.scheme,
+	quantity: z.coerce.number().min(0),
+	price: z.coerce.number().min(0)
+})
+
+export const createStep1Schema = (getProducts: () => import('api/models/products/product').Product[]) => {
+	return z.object({
+		products: z.array(orderProductSchema).refine(
+			formProducts => {
+				const products = getProducts()
+
+				// Check if at least one product has quantity > 0
+				const hasAnyQuantity = formProducts.some(p => Number(p.quantity) > 0)
+				if (!hasAnyQuantity) {
+					return false
+				}
+
+				// Calculate total units across all products
+				let totalUnits = 0
+
+				for (const formProduct of formProducts) {
+					const quantity = Number(formProduct.quantity) || 0
+
+					// If quantity is 0, skip (it doesn't contribute to total)
+					if (quantity === 0) {
+						continue
+					}
+
+					// Find the product to get quantityPerUnit
+					const product = products.find(p => p.id === formProduct.productId)
+					if (!product || !product.quantityPerUnit || product.quantityPerUnit <= 0) {
+						// If product not found or quantityPerUnit is invalid, skip
+						continue
+					}
+
+					// Calculate units for this product: units = quantity / quantityPerUnit
+					const units = quantity / product.quantityPerUnit
+					totalUnits += units
+				}
+
+				// Total units across all products must be at least 2
+				return totalUnits >= 2
+			},
+			{
+				message: 'Total units across all products must be at least 2'
+			}
+		)
+	})
+}

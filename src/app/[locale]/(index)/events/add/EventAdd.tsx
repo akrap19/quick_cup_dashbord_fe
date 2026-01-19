@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { useEffect } from 'react'
 
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
@@ -25,18 +26,19 @@ type EventAddProps = {
 	clients: Clients[]
 }
 
-const formSchema = z.object({
-	title: requiredString.shape.scheme,
-	description: z.string().optional(),
-	startDate: requiredString.shape.scheme,
-	endDate: requiredString.shape.scheme,
-	location: z.string().optional(),
-	place: requiredString.shape.scheme,
-	street: requiredString.shape.scheme,
-	userId: requiredString.shape.scheme
-})
+const createFormSchema = (isClient: boolean) =>
+	z.object({
+		title: requiredString.shape.scheme,
+		description: z.string().optional(),
+		startDate: requiredString.shape.scheme,
+		endDate: requiredString.shape.scheme,
+		location: z.string().optional(),
+		place: requiredString.shape.scheme,
+		street: requiredString.shape.scheme,
+		userId: isClient ? z.string().optional() : requiredString.shape.scheme
+	})
 
-type Schema = z.infer<typeof formSchema>
+type Schema = z.infer<ReturnType<typeof createFormSchema>>
 
 const EventAdd = ({ clients, isClient }: EventAddProps) => {
 	const t = useTranslations()
@@ -44,6 +46,8 @@ const EventAdd = ({ clients, isClient }: EventAddProps) => {
 	useNavbarItems({ title: 'Events.add', backLabel: 'Events.back' })
 	const cancelDialog = useOpened()
 	const session = useSession()
+
+	const formSchema = createFormSchema(isClient)
 
 	const form = useForm<Schema>({
 		mode: 'onChange',
@@ -56,15 +60,28 @@ const EventAdd = ({ clients, isClient }: EventAddProps) => {
 			location: '',
 			place: '',
 			street: '',
-			userId: isClient ? session.data?.user?.userId : ''
+			userId: isClient ? session.data?.user?.userId || '' : ''
 		}
 	})
+
+	// Set userId for clients when session loads
+	useEffect(() => {
+		if (isClient && session.data?.user?.userId) {
+			form.setValue('userId', session.data.user.userId)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isClient, session.data?.user?.userId])
 
 	const onSubmit = async () => {
 		const data = form.getValues()
 		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
+
+		// Ensure userId is set for clients
+		const userId = isClient && session.data?.user?.userId ? session.data.user.userId : dataWIhoutEmptyString.userId
+
 		const payload = {
 			...dataWIhoutEmptyString,
+			userId: userId || '',
 			place: dataWIhoutEmptyString.place?.trim() || '',
 			street: dataWIhoutEmptyString.street?.trim() || ''
 		}

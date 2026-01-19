@@ -13,7 +13,7 @@ interface Props {
 const EventAddPage = async ({ searchParams }: Props) => {
 	const { data: clientsData } = await getClients({ search: searchParams.userId, page: 1, limit: 100 })
 	const session = await getServerSession(authOptions)
-	const isClient = session?.user?.roles[0]?.name.toLowerCase() === UserRoleEnum.CLIENT
+	const isClient = session?.user?.roles[0]?.name === UserRoleEnum.CLIENT
 
 	return <EventAdd isClient={isClient} clients={clientsData?.users} />
 }

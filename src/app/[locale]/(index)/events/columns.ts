@@ -23,5 +23,5 @@ export const columns: Array<ColumnDef<Event>> = [
 			return value ? formatDate(value) : '-'
 		}
 	},
-	{ accessorKey: 'location', header: 'General.location' }
+	{ accessorKey: 'companyName', header: 'General.owner' }
 ]

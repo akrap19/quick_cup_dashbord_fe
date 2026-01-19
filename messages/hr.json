@@ -1,5 +1,6 @@
 {
 	"General": {
+		"productsRequirements": "Minimalna narudžba je 2 jedinice proizvoda",
 		"noAvailableProducts": "Nema dostupnih proizvoda",
 		"add": "Dodaj",
 		"save": "Spremi",
@@ -59,6 +60,7 @@
 		"unit": "Jedinica",
 		"unitPlaceholder": "npr. kutija",
 		"quantityPerUnit": "Količina po jedinici",
+		"unitQuantity": "Jedinica(količina)",
 		"quantityPerUnitPlaceholder": "npr. 1",
 		"transportationUnit": "Transportna jedinica",
 		"transportationUnitPlaceholder": "npr. paleta",
@@ -203,7 +205,10 @@
 		"holder": "Nositelj",
 		"productStates": "Stanja proizvoda",
 		"welcomeTitle": "Dobrodošli u Quick Cup Nadzornu Ploču",
-		"welcomeDescription": "Upravljajte narudžbama, proizvodima, uslugama, klijentima i događajima na jednom mjestu. Stvarajte i pratite narudžbe za kupnju i posudbu, upravljajte zalihama proizvoda, konfigurirajte usluge i lokacije, upravljajte odnosima s klijentima i učinkovito organizirajte događaje."
+		"welcomeDescription": "Upravljajte narudžbama, proizvodima, uslugama, klijentima i događajima na jednom mjestu. Stvarajte i pratite narudžbe za kupnju i posudbu, upravljajte zalihama proizvoda, konfigurirajte usluge i lokacije, upravljajte odnosima s klijentima i učinkovito organizirajte događaje.",
+		"welcomeDescriptionAdmin": "Upravljajte narudžbama, proizvodima, uslugama, klijentima i događajima na jednom mjestu. Stvarajte i pratite narudžbe za kupnju i posudbu, upravljajte zalihama proizvoda, konfigurirajte usluge i lokacijama usluga.",
+		"welcomeDescriptionService": "Unosite stanje proizvoda, upravljajte narudžbama koje su vam dodijeljene, ažurirajte status narudžbi, unosite stvarnu kolicinu servisa i dodatnih troskova u narudžbama. Pregledajte i upravljajte narudžbama od primitka plaćanja do završetka.",
+		"welcomeDescriptionClient": "Istražite ponudu proizvoda i njihove cijene, kreirajte vlastite evente i upravljajte njima, izrađujte narudžbe, pregledavajte aktivne i prethodne narudžbe te budite uvijek ažurirani o statusu i napretku svojih narudžbi."
 	},
 	"Product": {
 		"productStates": "Stanja proizvoda",
@@ -333,6 +338,7 @@
 		"isDefaultServiceForRent": "Zadana usluga za najam",
 		"isDefaultService": "Obavezna usluga",
 		"inputOrderTime": "Period unosa u narudžbu",
+		"inputTime": "Vrijeme unosa",
 		"inputTypePlaceholder": "Odaberi ulaznu uslugu",
 		"atLeastOneServicePriceRequired": "Najmanje jedna cijena usluge je obavezna",
 		"deleteServiceDescription": "Pritisnite 'Obriši' ako želite ukloniti Uslugu.",
@@ -471,6 +477,8 @@
 		"contactPersonPlaceholder": "npr. Ana Horvat",
 		"contactPersonContact": "Broj kontakt osobe",
 		"contactPersonContactPlaceholder": "npr. 091/123-456",
+		"discount": "Popust",
+		"discountPlaceholder": "npr. 10",
 		"additionalCostsAfterPaymentDescription": "Ovi dodatni troškovi će biti naplaćeni nakon završetka narudžbe ako bude potrebe.",
 		"step0Title": "Odabir klijenta",
 		"step0Description": "Odaberite klijenta za ovu narudžbu.",
@@ -539,7 +547,10 @@
 		"acquisitionTypePlaceholder": "Odaberi tip nabave",
 		"buy": "Kupnja",
 		"rent": "Posudba",
-		"price": "Cijena"
+		"price": "Cijena",
+		"includeInFinalProductCalculation": "Uključi u konačni izračun proizvoda",
+		"finalProductCalculationStatus": "Status konačnog izračuna proizvoda",
+		"finalProductCalculationStatusPlaceholder": "Odaberi status konačnog izračuna proizvoda"
 	},
 	"Settings": {
 		"personalInfoSuccessfullyUpdated": "Osobni podaci su uspješno ažurirani!",

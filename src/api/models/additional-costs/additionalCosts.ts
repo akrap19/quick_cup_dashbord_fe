@@ -1,6 +1,7 @@
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { BillingTypeEnum } from 'enums/billingTypeEnum'
 import { MethodOfPayment } from 'enums/methodOfPaymentEnum'
+import { ProductStateStatusEnum } from 'enums/productStateStatusEnum'
 
 export interface AdditionalCosts {
 	id: string
@@ -9,4 +10,5 @@ export interface AdditionalCosts {
 	methodOfPayment: MethodOfPayment
 	acquisitionType: AcquisitionTypeEnum
 	price: number
+	calculationStatus?: ProductStateStatusEnum
 }

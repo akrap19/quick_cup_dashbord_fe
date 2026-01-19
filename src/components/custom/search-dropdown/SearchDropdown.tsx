@@ -23,7 +23,7 @@ interface Props {
 	placeholder: string
 	name?: string
 	hasSuccess?: boolean
-	value?: string | null
+	value?: string | number | null
 	disabled?: boolean
 	alwaysShowSearch?: boolean
 	isFilter?: boolean
@@ -71,7 +71,7 @@ export const SearchDropdown = ({
 
 	useEffect(() => {
 		if (value) {
-			handleValueLabel(value)
+			handleValueLabel(value?.toString())
 		}
 		if (value === null) {
 			setChoosenValue(undefined)

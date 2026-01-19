@@ -165,7 +165,12 @@ export const FormTable = <T extends Record<string, any> = Record<string, any>>({
 							))}
 							{showActions && (
 								<TableCell style={{ textAlign: 'center' }}>
-									<Button variant="adaptive" size="icon" onClick={() => removeRow(index)} disabled={rows.length === 1}>
+									<Button
+										type="button"
+										variant="adaptive"
+										size="icon"
+										onClick={() => removeRow(index)}
+										disabled={rows.length === 1}>
 										<TrashIcon size="large" color="destructive.500" />
 									</Button>
 								</TableCell>

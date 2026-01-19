@@ -52,9 +52,13 @@ export const Inputs = ({ data }: Props) => {
 		UserRoleEnum.ADMIN,
 		UserRoleEnum.CLIENT
 	])
-	const hasRoleAccessChangeStatus = useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN])
+	const hasRoleAccessChangeStatus = useHasRoleAccess([
+		UserRoleEnum.MASTER_ADMIN,
+		UserRoleEnum.ADMIN,
+		UserRoleEnum.SERVICE
+	])
 	const isClient = useHasRoleAccess([UserRoleEnum.CLIENT])
-	const isAdminOrMasterAdmin = useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN])
+	const isAdminOrMasterAdmin = useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN, UserRoleEnum.SERVICE])
 
 	const handleEdit = () => {
 		const index = Object.keys(checkedItems || {})
@@ -115,7 +119,6 @@ export const Inputs = ({ data }: Props) => {
 			return false
 		}
 
-		// Hide edit button when order is completed
 		if (selectedOrder.status === OrderStatusEnum.COMPLETED) {
 			return false
 		}

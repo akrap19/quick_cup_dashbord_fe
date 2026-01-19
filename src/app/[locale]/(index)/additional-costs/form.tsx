@@ -1,17 +1,25 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import { useWatch, useFormContext } from 'react-hook-form'
+import { useState, useEffect } from 'react'
 
 import { FormItems } from '@/components/custom/layouts/add-form'
 import { FormControl } from '@/components/inputs/form-control'
 import { RequiredLabel } from '@/components/inputs/required-label'
 import { NumericInput } from '@/components/inputs/numeric-input'
 import { TextInput } from '@/components/inputs/text-input'
+import { Checkbox } from '@/components/inputs/checkbox'
 import { OpenedProps } from '@/hooks/use-toggle'
 import { BillingTypeEnum } from 'enums/billingTypeEnum'
 import { MethodOfPayment } from 'enums/methodOfPaymentEnum'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
+import { ProductStateStatusEnum } from 'enums/productStateStatusEnum'
 import { SearchDropdown } from '@/components/custom/search-dropdown'
+import { Inline } from '@/components/layout/inline'
+import { Box } from '@/components/layout/box'
+import { Stack } from '@/components/layout/stack'
+import { Label } from '@/components/inputs/label'
 
 interface Props {
 	cancelDialog?: OpenedProps
@@ -19,6 +27,22 @@ interface Props {
 
 const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 	const t = useTranslations()
+	const form = useFormContext()
+
+	const calculationStatus = useWatch({ control: form.control, name: 'calculationStatus' })
+	const [isCalculationEnabled, setIsCalculationEnabled] = useState(
+		calculationStatus !== undefined && calculationStatus !== null
+	)
+
+	// Sync checkbox state with calculationStatus value
+	useEffect(() => {
+		if (calculationStatus !== undefined && calculationStatus !== null) {
+			setIsCalculationEnabled(true)
+		} else if (!isCalculationEnabled) {
+			// Keep state if checkbox is explicitly unchecked
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [calculationStatus])
 
 	const billingTypeOptions = Object.values(BillingTypeEnum).map(value => ({
 		id: value,
@@ -33,6 +57,11 @@ const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 	const acquisitionTypeOptions = Object.values(AcquisitionTypeEnum).map(value => ({
 		id: value,
 		name: `AdditionalCosts.${value}`
+	}))
+
+	const productStateStatusOptions = Object.values(ProductStateStatusEnum).map(value => ({
+		id: value,
+		name: `Product.${value}`
 	}))
 
 	return (
@@ -71,6 +100,32 @@ const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 				/>
 				<FormControl.Message />
 			</FormControl>
+			<Box position="relative">
+				<Stack gap={1}>
+					<Label>{t('AdditionalCosts.includeInFinalProductCalculation')}</Label>
+					<Inline alignItems="center" gap={3}>
+						<Checkbox
+							checked={isCalculationEnabled}
+							onChange={e => {
+								setIsCalculationEnabled(e.target.checked)
+								if (!e.target.checked) {
+									form.setValue('calculationStatus', undefined, { shouldValidate: false })
+								}
+							}}
+						/>
+						<Box style={{ flex: 1 }}>
+							<FormControl name="calculationStatus">
+								<SearchDropdown
+									options={productStateStatusOptions}
+									placeholder={t('AdditionalCosts.finalProductCalculationStatusPlaceholder')}
+									disabled={!isCalculationEnabled}
+								/>
+								<FormControl.Message />
+							</FormControl>
+						</Box>
+					</Inline>
+				</Stack>
+			</Box>
 			<FormControl name="price">
 				<FormControl.Label>
 					<RequiredLabel>{t('General.price')}</RequiredLabel>

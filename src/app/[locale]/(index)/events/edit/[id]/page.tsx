@@ -19,7 +19,7 @@ const EventEditPage = async ({ params }: Props) => {
 	const event = (eventData?.event ?? eventData) as Event
 	const { data: clientsData } = await getClients({ search: undefined, page: 1, limit: 100 })
 	const session = await getServerSession(authOptions)
-	const isClient = session?.user?.roles[0]?.name.toLowerCase() === UserRoleEnum.CLIENT
+	const isClient = session?.user?.roles[0]?.name === UserRoleEnum.CLIENT
 
 	return <EventEdit event={event} isClient={isClient} clients={clientsData?.users} />
 }

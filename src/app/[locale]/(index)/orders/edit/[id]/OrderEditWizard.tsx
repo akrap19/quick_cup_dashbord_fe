@@ -22,6 +22,7 @@ import { useRentStore } from '@/store/rent'
 import { Product } from 'api/models/products/product'
 import { AdditionalCosts } from 'api/models/additional-costs/additionalCosts'
 import { BillingTypeEnum } from 'enums/billingTypeEnum'
+import { Event } from 'api/models/event/event'
 import { useStepsStore } from '@/store/steps'
 import { useTableStore } from '@/store/table'
 import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
@@ -42,13 +43,17 @@ import { Step4OrderInformation } from '../../add/steps/Step4OrderInformation'
 import { WizardFooter } from '../../add/WizardFooter'
 import { Stack } from '@/components/layout/stack'
 import { useSession } from 'next-auth/react'
+import { UserRoleEnum } from 'enums/userRoleEnum'
+import { hasRoleAccess } from 'utils/hasRoleAccess'
+import { validateOrderProducts } from 'utils/orderValidation'
+import { applyDiscount, reverseDiscount } from '@/utils/discount'
 
 interface Props {
 	isAdmin: boolean
 	order: Order
 	acquisitionType: AcquisitionTypeEnum
 	clients: Base[]
-	events: Base[]
+	events: Event[]
 	additionalCosts: AdditionalCosts[]
 	allProducts?: Product[]
 	serviceLocations?: Base[]
@@ -113,6 +118,11 @@ export const OrderEditWizard = ({
 	const { data: session } = useSession()
 	const TOTAL_STEPS = isAdmin ? 5 : 4
 
+	// Determine user role for step title/description logic
+	const userRole = session?.user?.roles[0]?.name
+	const isService = hasRoleAccess(userRole, [UserRoleEnum.SERVICE])
+	const isClient = hasRoleAccess(userRole, [UserRoleEnum.CLIENT])
+
 	const cleanupAllData = () => {
 		buyStore.clearItems()
 		rentStore.clearItems()
@@ -125,7 +135,7 @@ export const OrderEditWizard = ({
 	}
 
 	// Helper function to initialize services
-	const initializeServices = (orderServices: any[], orderProducts: Product[]) => {
+	const initializeServices = (orderServices: any[], orderProducts: Product[], discount?: number) => {
 		const orderServicesMap = new Map()
 		orderServices.forEach((s: any) => {
 			// Convert quantityByProduct to productQuantities format
@@ -138,9 +148,12 @@ export const OrderEditWizard = ({
 				})
 			}
 
+			// Reverse discount to get original price
+			const originalPrice = reverseDiscount(s.price || 0, discount)
+
 			orderServicesMap.set(s.serviceId, {
 				quantity: s.quantity || 0,
-				price: s.price || 0,
+				price: originalPrice,
 				serviceLocationId: s.serviceLocationId,
 				productQuantities: Object.keys(productQuantities).length > 0 ? productQuantities : undefined
 			})
@@ -189,11 +202,14 @@ export const OrderEditWizard = ({
 					})
 				}
 
+				// Reverse discount to get original price
+				const originalPrice = reverseDiscount(s.price || 0, discount)
+
 				serviceMap.set(s.serviceId, {
 					serviceId: s.serviceId,
 					isIncluded: true,
 					quantity: s.quantity || 0,
-					price: s.price || 0,
+					price: originalPrice,
 					serviceLocationId: s.serviceLocationId,
 					productQuantities: Object.keys(productQuantities).length > 0 ? productQuantities : undefined
 				})
@@ -222,16 +238,24 @@ export const OrderEditWizard = ({
 	// Initialize wizard store with order data
 	useEffect(() => {
 		const orderAcquisitionType = order?.acquisitionType || acquisitionType
+		const discount = order?.discount
 
 		if (order?.products?.length) {
+			console.log('order?.products', order?.products)
 			setStep1DataWithType({
-				products: order.products.map(p => ({ productId: p.productId, quantity: p.quantity, price: p.price }))
+				products: order.products.map(p => ({
+					productId: p.productId,
+					quantity: p.quantity,
+					// Reverse discount to get original price
+					price: reverseDiscount(p.price || 0, discount)
+				}))
 			})
 		}
 
 		if (allProducts.length && order?.products?.length) {
 			const orderProducts = allProducts.filter(p => new Set(order.products!.map(op => op.productId)).has(p.id))
-			setStep2DataWithType({ services: initializeServices(order?.services || [], orderProducts) })
+
+			setStep2DataWithType({ services: initializeServices(order?.services || [], orderProducts, discount) })
 		}
 
 		if (additionalCosts.length) {
@@ -253,7 +277,8 @@ export const OrderEditWizard = ({
 							additionalCostId: ac.id,
 							isIncluded: true,
 							quantity: existing.quantity || 0,
-							price: existing.price || 0,
+							// Reverse discount to get original price
+							price: reverseDiscount(existing.price || 0, discount),
 							productQuantities: Object.keys(productQuantities).length > 0 ? productQuantities : undefined
 						}
 					}
@@ -270,11 +295,20 @@ export const OrderEditWizard = ({
 			street: order?.street || '',
 			contactPerson: order?.contactPerson,
 			contactPersonContact: order?.contactPersonContact,
-			notes: order?.notes || ''
+			notes: order?.notes || '',
+			discount: order?.discount
 		})
 
 		if (order?.customerId) setCustomerIdWithType(order.customerId)
-		setTotalAmountWithType(order?.totalAmount || 0)
+
+		// Calculate base total from all steps and apply discount
+		const step1Total = order?.products?.reduce((sum, p) => sum + reverseDiscount(p.price || 0, discount), 0) || 0
+		const step2Total = order?.services?.reduce((sum, s) => sum + reverseDiscount(s.price || 0, discount), 0) || 0
+		const step3Total =
+			order?.additionalCosts?.reduce((sum, ac) => sum + reverseDiscount(ac.price || 0, discount), 0) || 0
+		const baseTotal = step1Total + step2Total + step3Total
+		const finalTotal = applyDiscount(baseTotal, discount)
+		setTotalAmountWithType(finalTotal)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [order, acquisitionType])
 
@@ -331,6 +365,8 @@ export const OrderEditWizard = ({
 			})
 		}
 
+		const discount = step4Data.discount
+
 		return {
 			id: order.id,
 			acquisitionType: step4Data.acquisitionType || acquisitionType,
@@ -346,7 +382,7 @@ export const OrderEditWizard = ({
 				.map(p => ({
 					productId: p.productId,
 					quantity: Number(p.quantity) || 0,
-					price: Number(p.price) || 0
+					price: applyDiscount(Number(p.price) || 0, discount)
 				})) as OrderProduct[],
 			services: (step2Data?.services || [])
 				.filter(s => s.isIncluded || isServiceDefault(s))
@@ -364,7 +400,7 @@ export const OrderEditWizard = ({
 					return {
 						serviceId: s.serviceId,
 						quantity: Number(s.quantity) || 0,
-						price: Number(s.price) || 0,
+						price: applyDiscount(Number(s.price) || 0, discount),
 						serviceLocationId: s.serviceLocationId,
 						quantityByProduct: quantityByProduct.length > 0 ? quantityByProduct : undefined
 					}
@@ -388,12 +424,13 @@ export const OrderEditWizard = ({
 					return {
 						additionalCostId: ac.additionalCostId,
 						quantity: isOneTime ? 1 : Number(ac.quantity) || 0,
-						price: Number(ac.price) || 0,
+						price: applyDiscount(Number(ac.price) || 0, discount),
 						quantityByProduct: quantityByProduct.length > 0 ? quantityByProduct : undefined
 					}
 				}),
 			totalAmount,
-			notes: step4Data.notes?.trim() || null
+			notes: step4Data.notes?.trim() || null,
+			discount: step4Data.discount?.toString() === '' ? (null as any) : step4Data.discount
 		}
 	}
 
@@ -424,24 +461,43 @@ export const OrderEditWizard = ({
 	const totalAmountDisplay = t('Orders.totalAmount') + ': ' + totalAmountLabel + '€'
 
 	const isValid = () => {
-		const hasProducts = selectedItems.length > 0 && step1Data?.products?.some(p => Number(p.quantity) > 0)
+		const { isValid: hasProducts } = validateOrderProducts(step1Data, allProducts, selectedItems)
 		const isValidOrderInfo = !!(step4Data?.place && step4Data?.street && customerId)
 
 		if (isAdmin) {
 			return currentStep === 1
 				? !!customerId
 				: currentStep === 2
-					? !!hasProducts
+					? hasProducts
 					: currentStep === 5
 						? isValidOrderInfo && hasProducts
 						: true
 		}
 		return currentStep === 1
-			? !!hasProducts
+			? hasProducts
 			: currentStep === 4
 				? !!(customerId && isValidOrderInfo && hasProducts)
 				: true
 	}
+
+	// Determine step title and description keys based on user role
+	const stepTitleKey =
+		isAdmin && currentStep === 1
+			? undefined // Client selection step has no title
+			: isAdmin && currentStep > 1
+				? `Orders.step${currentStep - 1}Title`
+				: isService || isClient
+					? `Orders.step${currentStep}Title`
+					: undefined
+
+	const stepDescriptionKey =
+		isAdmin && currentStep === 1
+			? undefined // Client selection step has no description
+			: isAdmin && currentStep > 1
+				? `Orders.step${currentStep - 1}Description`
+				: isService || isClient
+					? `Orders.step${currentStep}Description`
+					: undefined
 
 	return (
 		<>
@@ -451,20 +507,8 @@ export const OrderEditWizard = ({
 				<form onSubmit={handleStepSubmit} style={{ flex: 1 }}>
 					<ManageJourneyWrapper
 						onStepClick={setWizardStepWithType}
-						stepTitleKey={
-							isAdmin && currentStep === 1
-								? undefined
-								: isAdmin && currentStep > 1
-									? `Orders.step${currentStep - 1}Title`
-									: undefined
-						}
-						stepDescriptionKey={
-							isAdmin && currentStep === 1
-								? undefined
-								: isAdmin && currentStep > 1
-									? `Orders.step${currentStep - 1}Description`
-									: undefined
-						}>
+						stepTitleKey={stepTitleKey}
+						stepDescriptionKey={stepDescriptionKey}>
 						<Stack gap={6}>
 							{isAdmin && currentStep === 1 && (
 								<Step1ClientSelection customers={clients} acquisitionType={acquisitionType} />
@@ -474,6 +518,7 @@ export const OrderEditWizard = ({
 									products={allProducts || []}
 									selectedItems={selectedItems}
 									acquisitionType={acquisitionType}
+									order={order}
 								/>
 							)}
 							{((isAdmin && currentStep === 3) || (!isAdmin && currentStep === 2)) && (
@@ -493,7 +538,12 @@ export const OrderEditWizard = ({
 								/>
 							)}
 							{((isAdmin && currentStep === 5) || (!isAdmin && currentStep === 4)) && (
-								<Step4OrderInformation events={events} acquisitionType={acquisitionType} />
+								<Step4OrderInformation
+									events={events}
+									acquisitionType={acquisitionType}
+									isAdmin={isAdmin}
+									order={order}
+								/>
 							)}
 						</Stack>
 					</ManageJourneyWrapper>

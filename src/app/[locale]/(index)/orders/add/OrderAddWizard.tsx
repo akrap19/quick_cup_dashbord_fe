@@ -22,6 +22,7 @@ import { useRentStore } from '@/store/rent'
 import { Product } from 'api/models/products/product'
 import { AdditionalCosts } from 'api/models/additional-costs/additionalCosts'
 import { BillingTypeEnum } from 'enums/billingTypeEnum'
+import { Event } from 'api/models/event/event'
 import { useStepsStore } from '@/store/steps'
 import { ManageJourneyWrapper } from '@/components/custom/layouts/manage-journey/ManageJourneyWrapper'
 import { useOrderWizardStore } from '@/store/order-wizard'
@@ -34,12 +35,16 @@ import { Step4OrderInformation } from './steps/Step4OrderInformation'
 import { WizardFooter } from './WizardFooter'
 import { Stack } from '@/components/layout/stack'
 import { useSession } from 'next-auth/react'
+import { UserRoleEnum } from 'enums/userRoleEnum'
+import { hasRoleAccess } from 'utils/hasRoleAccess'
+import { validateOrderProducts } from 'utils/orderValidation'
+import { applyDiscount } from '@/utils/discount'
 
 interface Props {
 	isAdmin: boolean
 	acquisitionType: AcquisitionTypeEnum
 	clients: Base[]
-	events: Base[]
+	events: Event[]
 	additionalCosts: AdditionalCosts[]
 	allProducts?: Product[]
 	serviceLocations?: Base[]
@@ -93,6 +98,11 @@ export const OrderAddWizard = ({
 	const { data: session } = useSession()
 	const TOTAL_STEPS = isAdmin ? 5 : 4
 
+	// Determine user role for step title/description logic
+	const userRole = session?.user?.roles[0]?.name
+	const isService = hasRoleAccess(userRole, [UserRoleEnum.SERVICE])
+	const isClient = hasRoleAccess(userRole, [UserRoleEnum.CLIENT])
+
 	useNavbarItems({ title: isRent ? 'Orders.addRent' : 'Orders.addBuy', backLabel: 'General.back' })
 	useSteps({ totalSteps: TOTAL_STEPS, currentStep })
 
@@ -136,6 +146,8 @@ export const OrderAddWizard = ({
 			return
 		}
 
+		const discount = step4Data.discount
+
 		const payload: OrderPayload = {
 			acquisitionType: step4Data.acquisitionType || acquisitionType,
 			customerId: customerId!,
@@ -150,7 +162,7 @@ export const OrderAddWizard = ({
 				.map(p => ({
 					productId: p.productId,
 					quantity: Number(p.quantity) || 0,
-					price: Number(p.price) || 0
+					price: applyDiscount(Number(p.price) || 0, discount)
 				})) as OrderProduct[],
 			services: (step2Data?.services || [])
 				.filter(s => {
@@ -182,7 +194,7 @@ export const OrderAddWizard = ({
 					return {
 						serviceId: s.serviceId,
 						quantity: Number(s.quantity) || 0,
-						price: Number(s.price) || 0,
+						price: applyDiscount(Number(s.price) || 0, discount),
 						serviceLocationId: s.serviceLocationId,
 						quantityByProduct: quantityByProduct.length > 0 ? quantityByProduct : undefined
 					}
@@ -206,12 +218,13 @@ export const OrderAddWizard = ({
 					return {
 						additionalCostId: ac.additionalCostId,
 						quantity: isOneTime ? 1 : Number(ac.quantity) || 0,
-						price: Number(ac.price) || 0,
+						price: applyDiscount(Number(ac.price) || 0, discount),
 						quantityByProduct: quantityByProduct.length > 0 ? quantityByProduct : undefined
 					}
 				}),
 			totalAmount: totalAmount,
-			notes: step4Data.notes?.trim() ? step4Data.notes.trim() : null
+			notes: step4Data.notes?.trim() ? step4Data.notes.trim() : null,
+			discount: step4Data.discount?.toString() === '' ? undefined : step4Data.discount
 		}
 
 		const result = await createOrder(payload)
@@ -243,8 +256,8 @@ export const OrderAddWizard = ({
 	// Validation check - each step component handles its own validation
 	// We'll check if required data exists for the current step
 	const isValid = () => {
-		const hasProductsInStore = selectedItems.length > 0
-		const hasQuantity = step1Data?.products?.some(p => Number(p.quantity) > 0) || false
+		const { isValid: productsValid } = validateOrderProducts(step1Data, allProducts, selectedItems)
+
 		if (isAdmin) {
 			switch (currentStep) {
 				case 1:
@@ -252,13 +265,13 @@ export const OrderAddWizard = ({
 					return !!customerId
 				case 2:
 					// Step 2: Products
-					return hasProductsInStore && hasQuantity
+					return productsValid
 				case 3:
 					return true // Services are optional
 				case 4:
 					return true // Additional costs are optional
 				case 5:
-					return !!(step4Data?.place && step4Data?.street && customerId && hasProductsInStore && hasQuantity)
+					return !!(step4Data?.place && step4Data?.street && customerId && productsValid)
 				default:
 					return false
 			}
@@ -266,18 +279,37 @@ export const OrderAddWizard = ({
 			switch (currentStep) {
 				case 1:
 					// Step 1: Products (non-admin)
-					return hasProductsInStore && hasQuantity
+					return productsValid
 				case 2:
 					return true // Services are optional
 				case 3:
 					return true // Additional costs are optional
 				case 4:
-					return !!(step4Data?.place && step4Data?.street && customerId && hasProductsInStore && hasQuantity)
+					return !!(step4Data?.place && step4Data?.street && customerId && productsValid)
 				default:
 					return false
 			}
 		}
 	}
+
+	// Determine step title and description keys based on user role
+	const stepTitleKey =
+		isAdmin && currentStep === 1
+			? undefined // Client selection step has no title
+			: isAdmin && currentStep > 1
+				? `Orders.step${currentStep - 1}Title`
+				: isService || isClient
+					? `Orders.step${currentStep}Title`
+					: undefined
+
+	const stepDescriptionKey =
+		isAdmin && currentStep === 1
+			? undefined // Client selection step has no description
+			: isAdmin && currentStep > 1
+				? `Orders.step${currentStep - 1}Description`
+				: isService || isClient
+					? `Orders.step${currentStep}Description`
+					: undefined
 
 	return (
 		<>
@@ -287,20 +319,8 @@ export const OrderAddWizard = ({
 				<form onSubmit={handleStepSubmit} style={{ flex: 1 }}>
 					<ManageJourneyWrapper
 						onStepClick={setWizardStepWithType}
-						stepTitleKey={
-							isAdmin && currentStep === 1
-								? undefined
-								: isAdmin && currentStep > 1
-									? `Orders.step${currentStep - 1}Title`
-									: undefined
-						}
-						stepDescriptionKey={
-							isAdmin && currentStep === 1
-								? undefined
-								: isAdmin && currentStep > 1
-									? `Orders.step${currentStep - 1}Description`
-									: undefined
-						}>
+						stepTitleKey={stepTitleKey}
+						stepDescriptionKey={stepDescriptionKey}>
 						<Stack gap={6}>
 							{isAdmin && currentStep === 1 && (
 								<Step1ClientSelection customers={clients} acquisitionType={acquisitionType} />
@@ -327,7 +347,7 @@ export const OrderAddWizard = ({
 								/>
 							)}
 							{((isAdmin && currentStep === 5) || (!isAdmin && currentStep === 4)) && (
-								<Step4OrderInformation events={events} acquisitionType={acquisitionType} />
+								<Step4OrderInformation events={events} acquisitionType={acquisitionType} isAdmin={isAdmin} />
 							)}
 						</Stack>
 					</ManageJourneyWrapper>

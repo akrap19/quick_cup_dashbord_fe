@@ -1,6 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import { useSession } from 'next-auth/react'
 
 import { BrandLogo } from '@/components/custom/brand-logo/BrandLogo'
 import { Box } from '@/components/layout/box'
@@ -8,10 +9,29 @@ import { Stack } from '@/components/layout/stack'
 import { Heading } from '@/components/typography/heading'
 import { Text } from '@/components/typography/text'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
+import { UserRoleEnum } from 'enums/userRoleEnum'
 
 const HomePage = () => {
 	const t = useTranslations()
+	const { data: session } = useSession()
 	useNavbarItems({ title: 'General.home', useUserDropdown: true })
+	const userRole = session?.user?.roles[0]?.name
+	let descriptionKey = 'General.welcomeDescription'
+
+	switch (userRole) {
+		case UserRoleEnum.ADMIN:
+			descriptionKey = 'General.welcomeDescriptionAdmin'
+			break
+		case UserRoleEnum.SERVICE:
+			descriptionKey = 'General.welcomeDescriptionService'
+			break
+		case UserRoleEnum.CLIENT:
+			descriptionKey = 'General.welcomeDescriptionClient'
+			break
+		default:
+			descriptionKey = 'General.welcomeDescription'
+			break
+	}
 
 	return (
 		<Box
@@ -29,7 +49,7 @@ const HomePage = () => {
 						{t('General.welcomeTitle')}
 					</Heading>
 					<Text fontSize="medium" textAlign="center" color="neutral.600" lineHeight="xlarge">
-						{t('General.welcomeDescription')}
+						{t(descriptionKey)}
 					</Text>
 				</Stack>
 			</Stack>

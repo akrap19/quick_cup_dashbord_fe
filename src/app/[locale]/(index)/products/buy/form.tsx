@@ -38,7 +38,6 @@ interface Props {
 const BuyForm = ({
 	cancelDialog,
 	initialImageUrls,
-	isEdit,
 	showServices,
 	setShowServices,
 	servicesPrices,

@@ -19,6 +19,7 @@ interface Props {
 export const Card = ({ id, children, disableDelete, handleRemoveItem }: Props) => {
 	const t = useTranslations()
 
+
 	return (
 		<div className={card}>
 			<Inline gap={2}>

@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 import { useFormContext, useWatch, Controller } from 'react-hook-form'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { FormControl } from '@/components/inputs/form-control'
 import { Checkbox } from '@/components/inputs/checkbox'
 import { NumericInput } from '@/components/inputs/numeric-input'
@@ -23,13 +23,9 @@ export const AdditionalCostCard = ({ additionalCost, index }: AdditionalCostCard
 	const form = useFormContext()
 	const isIncludedFieldName = `additionalCosts.${index}.isIncluded`
 	const quantityFieldName = `additionalCosts.${index}.quantity`
-	const priceFieldName = `additionalCosts.${index}.price`
 	const additionalCostIdFieldName = `additionalCosts.${index}.additionalCostId`
 
 	const isIncluded = useWatch({ control: form.control, name: isIncludedFieldName }) || false
-	const quantity = useWatch({ control: form.control, name: quantityFieldName }) || 0
-	const currentPrice = useWatch({ control: form.control, name: priceFieldName }) || 0
-	const previousQuantityRef = useRef<number>(quantity)
 	const isByPiece = additionalCost.billingType === BillingTypeEnum.BY_PIECE
 
 	useEffect(() => {
@@ -42,55 +38,25 @@ export const AdditionalCostCard = ({ additionalCost, index }: AdditionalCostCard
 
 	useEffect(() => {
 		if (!isIncluded) {
-			form.setValue(priceFieldName, 0, { shouldValidate: false, shouldDirty: false })
 			if (!isByPiece) {
 				form.setValue(quantityFieldName, 0, { shouldValidate: false, shouldDirty: false })
 			}
 			return
 		}
 
-		if (isByPiece) {
-			if (previousQuantityRef.current === quantity) {
-				return
-			}
-			previousQuantityRef.current = quantity
-
-			if (quantity > 0) {
-				const calculatedPrice = Number.parseFloat((additionalCost.price * quantity).toFixed(3))
-				const currentPriceValue = form.getValues(priceFieldName)
-
-				if (currentPriceValue !== calculatedPrice) {
-					form.setValue(priceFieldName, calculatedPrice, { shouldValidate: false, shouldDirty: false })
-				}
-			} else {
-				const currentPriceValue = form.getValues(priceFieldName)
-				if (currentPriceValue !== 0) {
-					form.setValue(priceFieldName, 0, { shouldValidate: false, shouldDirty: false })
-				}
-			}
-		} else {
-			// For one_time billing, price is always the same and quantity should be 1
-			const currentPriceValue = form.getValues(priceFieldName)
+		if (!isByPiece) {
+			// For one_time billing, quantity should be 1
 			const currentQuantity = form.getValues(quantityFieldName)
-
-			if (currentPriceValue !== additionalCost.price) {
-				form.setValue(priceFieldName, additionalCost.price, { shouldValidate: false, shouldDirty: false })
-			}
 			if (currentQuantity !== 1) {
 				form.setValue(quantityFieldName, 1, { shouldValidate: false, shouldDirty: false })
 			}
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isIncluded, quantity, isByPiece])
 
-	useEffect(() => {
 		if (!isIncluded && isByPiece) {
 			form.setValue(quantityFieldName, 0, { shouldValidate: false, shouldDirty: false })
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isIncluded, isByPiece])
-
-	const displayPrice = isIncluded ? currentPrice : 0
 
 	return (
 		<Box paddingY={3} paddingX={3} borderRadius="small" boxShadow="large">
@@ -126,11 +92,6 @@ export const AdditionalCostCard = ({ additionalCost, index }: AdditionalCostCard
 							)}
 						</Stack>
 					</Inline>
-				</Box>
-				<Box display="flex" alignItems="flex-end" style={{ minHeight: '100px' }}>
-					<Text color="neutral.900" fontSize="medium" fontWeight="semibold">
-						{displayPrice.toFixed(3)}€
-					</Text>
 				</Box>
 			</Inline>
 		</Box>

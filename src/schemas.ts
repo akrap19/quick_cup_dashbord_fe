@@ -28,9 +28,9 @@ export const optionalPhoneNumberScheme = z.object({
 })
 
 export const productPriceSchema = z.object({
-	minQuantity: z.number().min(1),
-	maxQuantity: z.number().min(1).nullish(),
-	price: z.number().min(0)
+	minQuantity: z.number().optional(),
+	maxQuantity: z.number().optional(),
+	price: z.number().optional()
 })
 
 export const servicePriceSchema = z.object({
@@ -56,9 +56,9 @@ export const productServicePriceSchema = z.object({
 export const productStateSchema = z
 	.object({
 		id: z.string().optional(),
-		status: z.string().min(1),
-		location: z.string().min(1),
-		quantity: z.number().min(1),
+		status: z.string().optional(),
+		location: z.string().optional(),
+		quantity: z.number().optional(),
 		serviceLocationId: z.string().optional(),
 		userId: z.string().optional()
 	})
@@ -85,8 +85,7 @@ export const productStateSchema = z
 
 export const orderProductSchema = z.object({
 	productId: requiredString.shape.scheme,
-	quantity: z.coerce.number().min(0),
-	price: z.coerce.number().min(0)
+	quantity: z.coerce.number().min(0)
 })
 
 export const createStep1Schema = (getProducts: () => import('api/models/products/product').Product[]) => {

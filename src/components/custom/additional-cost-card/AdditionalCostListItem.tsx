@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 import { useFormContext, useWatch, Controller } from 'react-hook-form'
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { NumericInput } from '@/components/inputs/numeric-input'
 import { Button } from '@/components/inputs/button'
 import { PlainPlusIcon } from '@/components/icons/plain-plus-icon'
@@ -18,8 +18,9 @@ import { MethodOfPayment } from 'enums/methodOfPaymentEnum'
 import { Product } from 'api/models/products/product'
 import { Order } from 'api/models/order/order'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
-import { useOrderWizardStore } from '@/store/order-wizard'
-import { applyDiscount } from '@/utils/discount'
+import { FormControl } from '@/components/inputs/form-control'
+import { FileUpload } from '@/components/custom/upload/file-upload/FileUpload'
+import { getFileUrl } from '@/utils/downloadFile'
 
 interface AdditionalCostListItemProps {
 	additionalCost: AdditionalCosts
@@ -42,21 +43,17 @@ export const AdditionalCostListItem = ({
 }: AdditionalCostListItemProps) => {
 	const t = useTranslations()
 	const form = useFormContext()
-	const { getStep4Data, currentAcquisitionType } = useOrderWizardStore()
-	const effectiveAcquisitionType = acquisitionType || currentAcquisitionType
-	const step4Data = effectiveAcquisitionType ? getStep4Data(effectiveAcquisitionType) : undefined
-	const discount = step4Data?.discount
 	const isIncludedFieldName = `additionalCosts.${index}.isIncluded`
 	const quantityFieldName = `additionalCosts.${index}.quantity`
-	const priceFieldName = `additionalCosts.${index}.price`
 	const additionalCostIdFieldName = `additionalCosts.${index}.additionalCostId`
 	const productQuantitiesFieldName = `additionalCosts.${index}.productQuantities`
+	const productFileIdsFieldName = `additionalCosts.${index}.productFileIds`
+	const productFileInfosFieldName = `additionalCosts.${index}.productFileInfos`
 
 	const isIncluded = useWatch({ control: form.control, name: isIncludedFieldName }) || false
-	const quantity = useWatch({ control: form.control, name: quantityFieldName }) || 0
-	const currentPrice = useWatch({ control: form.control, name: priceFieldName }) || 0
 	const productQuantities = useWatch({ control: form.control, name: productQuantitiesFieldName }) || {}
-	const previousQuantityRef = useRef<number>(quantity)
+	const productFileIds = useWatch({ control: form.control, name: productFileIdsFieldName }) || {}
+	const productFileInfos = useWatch({ control: form.control, name: productFileInfosFieldName }) || {}
 	const previousProductQuantitiesSumRef = useRef<number>(0)
 	const isByPiece = additionalCost.billingType === BillingTypeEnum.BY_PIECE
 	const isBeforePayment = additionalCost.methodOfPayment === MethodOfPayment.BEFORE
@@ -68,6 +65,24 @@ export const AdditionalCostListItem = ({
 	// Show product quantity fields for "after" payment method in edit mode
 	const showProductQuantityFields =
 		isEditMode && isAfterPayment && isIncluded && order && order.status !== OrderStatusEnum.PENDING
+
+	// Show quantity input for "by piece" billing type when not showing product quantities
+	const showQuantityInput = isByPiece && isIncluded && !showProductQuantityFields
+
+	// Show file upload when enableUpload is true and additional cost is included
+	const showFileUpload = additionalCost.enableUpload && isIncluded
+
+	// Get products that should show file upload (products with quantity > 0)
+	const productsToShowFileUpload = useMemo(() => {
+		if (!showFileUpload) return []
+		if (showProductQuantityFields) {
+			// In edit mode with product quantities, show for products with quantity > 0
+			return products.filter(product => (productQuantities[product.id] || 0) > 0)
+		}
+		// In create mode, show for all products (they are already selected in step 1)
+		// We show file upload for all products in the list
+		return products
+	}, [showFileUpload, showProductQuantityFields, products, productQuantities])
 
 	// Get form products
 	const formProducts = useWatch({ control: form.control, name: 'products' }) || []
@@ -114,66 +129,34 @@ export const AdditionalCostListItem = ({
 				const currentQuantity = form.getValues(quantityFieldName)
 				if (currentQuantity !== productQuantitiesSum) {
 					form.setValue(quantityFieldName, productQuantitiesSum, { shouldValidate: false, shouldDirty: false })
-					previousQuantityRef.current = productQuantitiesSum
 				}
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isIncluded, isByPiece, showProductQuantityFields, productQuantities])
 
-	// Calculate price based on quantity
+	// Update quantity for one_time billing
 	useEffect(() => {
 		if (!isIncluded) {
-			const currentPriceValue = form.getValues(priceFieldName)
-			if (currentPriceValue !== 0) {
-				form.setValue(priceFieldName, 0, { shouldValidate: false, shouldDirty: false })
-			}
 			if (!isByPiece) {
 				const currentQuantity = form.getValues(quantityFieldName)
 				if (currentQuantity !== 0) {
 					form.setValue(quantityFieldName, 0, { shouldValidate: false, shouldDirty: false })
 				}
 			}
-			previousQuantityRef.current = 0
 			previousProductQuantitiesSumRef.current = 0
 			return
 		}
 
-		if (isByPiece) {
-			// Only proceed if quantity actually changed
-			if (previousQuantityRef.current === quantity) {
-				return
-			}
-			previousQuantityRef.current = quantity
-
-			// Calculate and update price
-			if (quantity > 0) {
-				const calculatedPrice = Number.parseFloat((additionalCost.price * quantity).toFixed(3))
-				const currentPriceValue = form.getValues(priceFieldName)
-
-				if (currentPriceValue !== calculatedPrice) {
-					form.setValue(priceFieldName, calculatedPrice, { shouldValidate: false, shouldDirty: false })
-				}
-			} else {
-				const currentPriceValue = form.getValues(priceFieldName)
-				if (currentPriceValue !== 0) {
-					form.setValue(priceFieldName, 0, { shouldValidate: false, shouldDirty: false })
-				}
-			}
-		} else {
-			// For one_time billing, price is always the same and quantity should be 1
-			const currentPriceValue = form.getValues(priceFieldName)
+		if (!isByPiece) {
+			// For one_time billing, quantity should be 1
 			const currentQuantity = form.getValues(quantityFieldName)
-
-			if (currentPriceValue !== additionalCost.price) {
-				form.setValue(priceFieldName, additionalCost.price, { shouldValidate: false, shouldDirty: false })
-			}
 			if (currentQuantity !== 1) {
 				form.setValue(quantityFieldName, 1, { shouldValidate: false, shouldDirty: false })
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isIncluded, quantity, isByPiece, additionalCost.price])
+	}, [isIncluded, isByPiece])
 
 	useEffect(() => {
 		if (!isIncluded && isByPiece) {
@@ -181,9 +164,6 @@ export const AdditionalCostListItem = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isIncluded, isByPiece])
-
-	const baseDisplayPrice = isReadOnlyInCreate ? additionalCost.price : isIncluded ? currentPrice : additionalCost.price
-	const displayPrice = applyDiscount(baseDisplayPrice, discount)
 
 	const showButton = isAfterPayment ? (isEditMode ? orderStatus !== OrderStatusEnum.PENDING : false) : true
 	const buttonEnabled = isAfterPayment || (isBeforePayment && !isReadOnlyInCreate)
@@ -218,25 +198,27 @@ export const AdditionalCostListItem = ({
 								<Text fontSize="medium" color="neutral.900" fontWeight="semibold">
 									{additionalCost.name}
 								</Text>
-								{/* {showQuantityInput && (
+								{showQuantityInput && (
 									<Inline alignItems="center" justifyContent="center" gap={2}>
 										<Text color="neutral.700">{'- ' + t('General.quantity')}</Text>
-										<FormControl name={quantityFieldName as any}>
-											<NumericInput
-												placeholder={t('General.quantityPlaceholder')}
-												allowNegative={false}
-												decimalScale={0}
-											/>
-										</FormControl>
+										<Box style={{ width: '140px' }}>
+											<FormControl name={quantityFieldName as any}>
+												<NumericInput
+													placeholder={t('General.quantityPlaceholder')}
+													allowNegative={false}
+													decimalScale={0}
+												/>
+											</FormControl>
+										</Box>
+										{additionalCost.maxPieces !== undefined && additionalCost.maxPieces !== null && (
+											<Text color="neutral.600" fontSize="small">
+												({t('AdditionalCosts.maxPieces')}: {additionalCost.maxPieces})
+											</Text>
+										)}
 									</Inline>
-								)} */}
+								)}
 							</Inline>
 						</Inline>
-					</Box>
-					<Box display="flex" alignItems="flex-start" paddingTop={1}>
-						<Text color="neutral.900" fontSize="medium" fontWeight="semibold">
-							{displayPrice.toFixed(3)}€
-						</Text>
 					</Box>
 				</Inline>
 				{showProductQuantityFields && products.length > 0 && (
@@ -244,29 +226,127 @@ export const AdditionalCostListItem = ({
 						<Stack gap={2}>
 							{products.map(product => {
 								return (
-									<Inline key={product.id} alignItems="center" gap={2}>
-										<Text color="neutral.700" fontSize="small" style={{ minWidth: '120px' }}>
-											{product.name}:
-										</Text>
-										<Box style={{ width: '140px' }}>
-											<Controller
-												defaultValue={productQuantities[product.id] || 0}
-												name={`${productQuantitiesFieldName}.${product.id}` as any}
-												control={form.control}
-												render={({ field }) => (
-													<NumericInput
-														placeholder={t('General.quantityPlaceholder')}
-														allowNegative={false}
-														decimalScale={0}
-														value={field.value || 0}
-														onValueChange={values => {
-															field.onChange(values.floatValue || 0)
+									<Stack key={product.id} gap={2}>
+										<Inline alignItems="center" gap={2}>
+											<Text color="neutral.700" fontSize="small" style={{ minWidth: '120px' }}>
+												{product.name}:
+											</Text>
+											<Box style={{ width: '140px' }}>
+												<Controller
+													defaultValue={productQuantities[product.id] || 0}
+													name={`${productQuantitiesFieldName}.${product.id}` as any}
+													control={form.control}
+													render={({ field }) => (
+														<NumericInput
+															placeholder={t('General.quantityPlaceholder')}
+															allowNegative={false}
+															decimalScale={0}
+															value={field.value || 0}
+															onValueChange={values => {
+																field.onChange(values.floatValue || 0)
+															}}
+														/>
+													)}
+												/>
+											</Box>
+										</Inline>
+										{showFileUpload && ((productQuantities[product.id] || 0) > 0 || productFileIds[product.id]) && (
+											<Box paddingLeft={3}>
+												<Stack gap={1}>
+													<Text color="neutral.700" fontSize="small">
+														{t('General.uploadFile')}:
+													</Text>
+													<Controller
+														defaultValue={productFileIds[product.id] || ''}
+														name={`${productFileIdsFieldName}.${product.id}` as any}
+														control={form.control}
+														render={({ field }) => {
+															const fileId = field.value || productFileIds[product.id] || ''
+															// Get file info from store (includes blob URL for preview)
+															const fileInfo = productFileInfos[product.id]
+															// Use stored file info if available, otherwise construct URL from fileId
+															const fileUrl = fileInfo?.url || (fileId ? getFileUrl(fileId) : undefined)
+															// Only create initialFile if we have both fileId and fileUrl
+															const initialFile =
+																fileId && fileUrl ? { id: fileId, name: fileInfo?.name, url: fileUrl } : undefined
+															return (
+																<FileUpload
+																	id={`additional-cost-${additionalCost.id}-product-${product.id}-file`}
+																	value={fileId}
+																	onChange={field.onChange}
+																	onFileChangeFull={fileInfo => {
+																		field.onChange(fileInfo?.id || '')
+																		// Store file info for preview persistence
+																		if (fileInfo) {
+																			form.setValue(`${productFileInfosFieldName}.${product.id}` as any, fileInfo, {
+																				shouldValidate: false
+																			})
+																		} else {
+																			form.setValue(`${productFileInfosFieldName}.${product.id}` as any, undefined, {
+																				shouldValidate: false
+																			})
+																		}
+																	}}
+																	initialFile={initialFile}
+																/>
+															)
 														}}
 													/>
-												)}
-											/>
-										</Box>
-									</Inline>
+												</Stack>
+											</Box>
+										)}
+									</Stack>
+								)
+							})}
+						</Stack>
+					</Box>
+				)}
+				{showFileUpload && !showProductQuantityFields && productsToShowFileUpload.length > 0 && (
+					<Box paddingLeft={showButton ? 5 : 0}>
+						<Stack gap={3}>
+							{productsToShowFileUpload.map(product => {
+								return (
+									<Stack key={product.id} gap={1}>
+										<Text color="neutral.700" fontSize="small" fontWeight="semibold">
+											{product.name}:
+										</Text>
+										<Controller
+											defaultValue={productFileIds[product.id] || ''}
+											name={`${productFileIdsFieldName}.${product.id}` as any}
+											control={form.control}
+											render={({ field }) => {
+												const fileId = field.value || productFileIds[product.id] || ''
+												// Get file info from store (includes blob URL for preview)
+												const fileInfo = productFileInfos[product.id]
+												// Use stored file info if available, otherwise construct URL from fileId
+												const fileUrl = fileInfo?.url || (fileId ? getFileUrl(fileId) : undefined)
+												// Only create initialFile if we have both fileId and fileUrl
+												const initialFile =
+													fileId && fileUrl ? { id: fileId, name: fileInfo?.name, url: fileUrl } : undefined
+												return (
+													<FileUpload
+														id={`additional-cost-${additionalCost.id}-product-${product.id}-file`}
+														value={fileId}
+														onChange={field.onChange}
+														onFileChangeFull={fileInfo => {
+															field.onChange(fileInfo?.id || '')
+															// Store file info for preview persistence
+															if (fileInfo) {
+																form.setValue(`${productFileInfosFieldName}.${product.id}` as any, fileInfo, {
+																	shouldValidate: false
+																})
+															} else {
+																form.setValue(`${productFileInfosFieldName}.${product.id}` as any, undefined, {
+																	shouldValidate: false
+																})
+															}
+														}}
+														initialFile={initialFile}
+													/>
+												)
+											}}
+										/>
+									</Stack>
 								)
 							})}
 						</Stack>

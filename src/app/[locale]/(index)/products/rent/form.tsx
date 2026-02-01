@@ -155,9 +155,7 @@ const RentForm = ({
 			</Stack>
 			<Box style={{ gridColumn: 'span 2' }}>
 				<FormControl name="prices">
-					<FormControl.Label>
-						<RequiredLabel>{t('General.price')}</RequiredLabel>
-					</FormControl.Label>
+					<FormControl.Label>{t('General.price')}</FormControl.Label>
 					<FormTable<ProductPrice>
 						name="prices"
 						columns={formTableColumns}

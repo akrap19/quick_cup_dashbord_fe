@@ -5,12 +5,10 @@ import { OrderAdditionalCostPayload } from './orderAdditionalCostPayload'
 
 export interface OrderPayload {
 	id?: string
-	totalAmount: number
 	notes?: string | null
 	acquisitionType: AcquisitionTypeEnum
 	customerId: string
 	eventId?: string
-	discount?: number
 	location?: string
 	place: string
 	street: string

@@ -16,10 +16,6 @@ interface OrderProductDetailsCardProps {
 export const OrderProductDetailsCard = ({ orderProduct }: OrderProductDetailsCardProps) => {
 	const t = useTranslations()
 	const product = orderProduct.product
-	const formattedPrice = new Intl.NumberFormat(undefined, {
-		minimumFractionDigits: 2,
-		maximumFractionDigits: 2
-	}).format(orderProduct.price)
 
 	if (!product) {
 		return null
@@ -71,13 +67,7 @@ export const OrderProductDetailsCard = ({ orderProduct }: OrderProductDetailsCar
 		</Stack>
 	)
 
-	const rightSection = (
-		<Stack alignItems="flex-end" justifyContent="flex-end" style={{ height: '150px' }}>
-			<Text color="neutral.900" fontSize="medium" fontWeight="semibold">
-				{formattedPrice}€
-			</Text>
-		</Stack>
-	)
+	const rightSection = null
 
 	return (
 		<OrderProductCardContainer

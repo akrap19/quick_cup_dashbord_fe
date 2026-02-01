@@ -27,6 +27,8 @@ const formSchema = z.object({
 	billingType: z.nativeEnum(BillingTypeEnum),
 	methodOfPayment: z.nativeEnum(MethodOfPayment),
 	acquisitionType: z.nativeEnum(AcquisitionTypeEnum),
+	maxPieces: z.coerce.number().min(0).optional(),
+	enableUpload: z.boolean().optional(),
 	price: z.coerce.number().min(0),
 	calculationStatus: z.nativeEnum(ProductStateStatusEnum).optional()
 })
@@ -47,6 +49,8 @@ const AdditionalCostsAdd = () => {
 			billingType: BillingTypeEnum.ONE_TIME,
 			methodOfPayment: MethodOfPayment.BEFORE,
 			acquisitionType: AcquisitionTypeEnum.BUY,
+			maxPieces: undefined,
+			enableUpload: false,
 			price: 0,
 			calculationStatus: undefined
 		}
@@ -58,7 +62,8 @@ const AdditionalCostsAdd = () => {
 		const payload = {
 			...dataWithoutEmptyString,
 			name: dataWithoutEmptyString.name?.trim() || '',
-			price: Number(dataWithoutEmptyString.price) || 0
+			price: Number(dataWithoutEmptyString.price) || 0,
+			maxPieces: dataWithoutEmptyString.maxPieces ? Number(dataWithoutEmptyString.maxPieces) : undefined
 		}
 		const result = await createAdditionalCost(payload)
 

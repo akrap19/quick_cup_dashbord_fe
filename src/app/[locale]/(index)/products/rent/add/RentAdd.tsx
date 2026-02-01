@@ -13,6 +13,7 @@ import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastme
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { useOpened } from '@/hooks/use-toggle'
 import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
+import { validateProductPrices, validateProductStates } from 'utils'
 import { createProduct } from 'api/services/products'
 import { ROUTES } from 'parameters'
 import { productPriceSchema, productServicePriceSchema, productStateSchema, requiredString } from 'schemas'
@@ -30,9 +31,9 @@ const formSchema = z.object({
 	unitsPerTransportationUnit: z.coerce.number().min(1),
 	description: z.string().optional(),
 	imageIds: z.array(z.string()).optional(),
-	prices: z.array(productPriceSchema).min(1, 'Rent.atLeastOneProductPriceRequired'),
+	prices: z.array(productPriceSchema).optional(),
 	servicePrices: z.array(productServicePriceSchema).optional().default([]),
-	productStates: z.array(productStateSchema).min(1, 'Rent.atLeastOneProductStateRequired')
+	productStates: z.array(productStateSchema).optional()
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -84,6 +85,12 @@ const RentAdd = ({ servicesPrices, users, serviceLocations }: Props) => {
 	const onSubmit = async () => {
 		const data = form.getValues()
 
+		// Filter out invalid/empty prices - keep only valid entries with minQuantity and price
+		const validPrices = validateProductPrices(data.prices)
+
+		// Filter out invalid/empty product states - keep only valid entries with status, location, and quantity
+		const validProductStates = validateProductStates(data.productStates)
+
 		const hasPriceChanged = (initialPrice: any, currentPrice: any) => {
 			return (
 				initialPrice?.minQuantity !== currentPrice?.minQuantity ||
@@ -127,16 +134,21 @@ const RentAdd = ({ servicesPrices, users, serviceLocations }: Props) => {
 			.filter((service): service is NonNullable<typeof service> => service !== null)
 
 		// No transformation needed - serviceLocationId is already the location ID
-		const transformedProductStates = data.productStates
+		const transformedProductStates = validProductStates
 
 		const shortenedDataWithServicePrices = {
 			...data,
 			servicePrices: showServices && changedServices.length > 0 ? changedServices : undefined,
-			productStates: transformedProductStates
+			productStates: transformedProductStates,
+			prices: validPrices
 		}
 
 		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(shortenedDataWithServicePrices)
-		const result = await createProduct({ ...dataWIhoutEmptyString, acquisitionType: AcquisitionTypeEnum.RENT })
+		const payload = {
+			...dataWIhoutEmptyString,
+			acquisitionType: AcquisitionTypeEnum.RENT
+		}
+		const result = await createProduct(payload)
 		if (result?.message === 'OK') {
 			SuccessToast(t('Rent.successfullyCreated'))
 			push(ROUTES.RENT)

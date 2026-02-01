@@ -10,6 +10,7 @@ export interface ProductEditPayload {
 	quantityPerUnit: number
 	transportationUnit: string
 	unitsPerTransportationUnit: number
+	designTemplateId?: string
 	description: string
 	imageIdsToAdd: string[]
 	imageIdsToRemove: string[]

@@ -30,6 +30,7 @@ const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 	const form = useFormContext()
 
 	const calculationStatus = useWatch({ control: form.control, name: 'calculationStatus' })
+	const billingType = useWatch({ control: form.control, name: 'billingType' })
 	const [isCalculationEnabled, setIsCalculationEnabled] = useState(
 		calculationStatus !== undefined && calculationStatus !== null
 	)
@@ -43,6 +44,14 @@ const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [calculationStatus])
+
+	// Clear maxPieces when billingType changes from BY_PIECE to something else
+	useEffect(() => {
+		if (billingType !== BillingTypeEnum.BY_PIECE) {
+			form.setValue('maxPieces', undefined, { shouldValidate: false, shouldDirty: false })
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [billingType])
 
 	const billingTypeOptions = Object.values(BillingTypeEnum).map(value => ({
 		id: value,
@@ -83,13 +92,28 @@ const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 				/>
 				<FormControl.Message />
 			</FormControl>
-			<FormControl name="billingType">
-				<FormControl.Label>
-					<RequiredLabel>{t('AdditionalCosts.billingType')}</RequiredLabel>
-				</FormControl.Label>
-				<SearchDropdown options={billingTypeOptions} placeholder={t('AdditionalCosts.billingTypePlaceholder')} />
-				<FormControl.Message />
-			</FormControl>
+			<Inline gap={3} alignItems="flex-start">
+				<Box style={{ flex: 1 }}>
+					<FormControl name="billingType">
+						<FormControl.Label>
+							<RequiredLabel>{t('AdditionalCosts.billingType')}</RequiredLabel>
+						</FormControl.Label>
+						<SearchDropdown options={billingTypeOptions} placeholder={t('AdditionalCosts.billingTypePlaceholder')} />
+						<FormControl.Message />
+					</FormControl>
+				</Box>
+				{billingType === BillingTypeEnum.BY_PIECE && (
+					<Box style={{ flex: 1 }}>
+						<FormControl name="maxPieces">
+							<FormControl.Label>
+								<Label>{t('AdditionalCosts.maxPieces')}</Label>
+							</FormControl.Label>
+							<NumericInput placeholder={t('AdditionalCosts.maxPiecesPlaceholder')} decimalScale={0} />
+							<FormControl.Message />
+						</FormControl>
+					</Box>
+				)}
+			</Inline>
 			<FormControl name="methodOfPayment">
 				<FormControl.Label>
 					<RequiredLabel>{t('AdditionalCosts.methodOfPayment')}</RequiredLabel>
@@ -124,6 +148,18 @@ const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 							</FormControl>
 						</Box>
 					</Inline>
+				</Stack>
+			</Box>
+			<Box position="relative">
+				<Stack gap={1} alignItems="flex-start">
+					<Label>{t('AdditionalCosts.enableUpload')}</Label>
+					<Checkbox
+						checked={form.watch('enableUpload') || false}
+						onChange={e => {
+							form.setValue('enableUpload', e.target.checked, { shouldValidate: true })
+						}}
+					/>
+					<FormControl.Message />
 				</Stack>
 			</Box>
 			<FormControl name="price">

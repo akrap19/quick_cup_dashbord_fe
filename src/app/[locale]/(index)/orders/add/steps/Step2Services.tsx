@@ -13,7 +13,6 @@ import { Product } from 'api/models/products/product'
 import { Service } from 'api/models/services/service'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { useOrderWizardStore, Step2ServicesData } from '@/store/order-wizard'
-import { applyDiscount } from '@/utils/discount'
 import { Base } from 'api/models/common/base'
 import { NoResult } from '@/components/custom/no-result'
 import { Order } from 'api/models/order/order'
@@ -23,8 +22,7 @@ const step2Schema = z.object({
 		.array(
 			z.object({
 				productId: z.string(),
-				quantity: z.coerce.number().min(0),
-				price: z.coerce.number().min(0)
+				quantity: z.coerce.number().min(0)
 			})
 		)
 		.optional()
@@ -35,7 +33,6 @@ const step2Schema = z.object({
 				serviceId: z.string(),
 				isIncluded: z.boolean().default(false),
 				quantity: z.coerce.number().min(0),
-				price: z.coerce.number().min(0),
 				productQuantities: z.record(z.string(), z.coerce.number().min(0)).optional(),
 				serviceLocationId: z.string().optional()
 			})
@@ -55,12 +52,9 @@ interface Props {
 
 export const Step2Services = ({ products, acquisitionType, order, serviceLocations = [] }: Props) => {
 	const t = useTranslations()
-	const { getStep2Data, getStep1Data, getStep3Data, getStep4Data, setStep2Data, setTotalAmount } = useOrderWizardStore()
+	const { getStep2Data, getStep1Data, setStep2Data } = useOrderWizardStore()
 	const step2Data = getStep2Data(acquisitionType)
 	const step1Data = getStep1Data(acquisitionType)
-	const step3Data = getStep3Data(acquisitionType)
-	const step4Data = getStep4Data(acquisitionType)
-	const discount = step4Data?.discount
 	const isRent = acquisitionType === AcquisitionTypeEnum.RENT
 
 	// Collect unique services from all products (use products prop which is selectedItems from parent)
@@ -103,7 +97,6 @@ export const Step2Services = ({ products, acquisitionType, order, serviceLocatio
 						serviceId: serviceId,
 						isIncluded: savedService.isIncluded,
 						quantity: savedService.quantity,
-						price: savedService.price,
 						productQuantities: savedService.productQuantities,
 						serviceLocationId: savedService.serviceLocationId
 					}
@@ -115,7 +108,6 @@ export const Step2Services = ({ products, acquisitionType, order, serviceLocatio
 					serviceId: serviceId,
 					isIncluded: isDefault || false,
 					quantity: 0,
-					price: 0,
 					serviceLocationId: undefined
 				}
 			})
@@ -130,7 +122,6 @@ export const Step2Services = ({ products, acquisitionType, order, serviceLocatio
 				serviceId: serviceId,
 				isIncluded: isDefault || false,
 				quantity: 0,
-				price: 0,
 				serviceLocationId: undefined
 			}
 		})
@@ -175,26 +166,6 @@ export const Step2Services = ({ products, acquisitionType, order, serviceLocatio
 				setStep2Data(stepData, acquisitionType)
 				return
 			}
-			const servicesTotal = (data.services || []).reduce((sum, formService) => {
-				if (!formService) return sum
-
-				// Find if this service is default
-				let isDefault = false
-				products.forEach((product: Product) => {
-					if (product.servicePrices && product.servicePrices.length > 0) {
-						const service = product.servicePrices.find(
-							s => (s.id && s.id === formService.serviceId) || (s.serviceId && s.serviceId === formService.serviceId)
-						)
-						if (service) {
-							isDefault = isRent ? service.isDefaultServiceForRent : service.isDefaultServiceForBuy
-
-							if (isDefault) return
-						}
-					}
-				})
-
-				return sum + (formService.isIncluded || isDefault ? formService.price || 0 : 0)
-			}, 0)
 
 			const stepData: Step2ServicesData = {
 				services: (data.services || []).filter(
@@ -203,38 +174,11 @@ export const Step2Services = ({ products, acquisitionType, order, serviceLocatio
 			}
 
 			setStep2Data(stepData, acquisitionType)
-
-			// Calculate total with all items from store (products, services, additional costs)
-			const step1Total = step1Data?.products?.reduce((sum, p) => sum + (p.price || 0), 0) || 0
-			const additionalCostsTotal =
-				step3Data?.additionalCosts?.reduce((sum, ac) => sum + (ac.isIncluded ? ac.price || 0 : 0), 0) || 0
-			const baseTotal = step1Total + servicesTotal + additionalCostsTotal
-
-			// In edit mode, check if prices match order prices (already discounted)
-			let shouldApplyDiscount = true
-			if (order) {
-				const orderProductsTotal = order.products?.reduce((sum, p) => sum + (p.price || 0), 0) || 0
-				const orderServicesTotal = order.services?.reduce((sum, s) => sum + (s.price || 0), 0) || 0
-				const orderAdditionalCostsTotal = order.additionalCosts?.reduce((sum, ac) => sum + (ac.price || 0), 0) || 0
-
-				const step1Matches = Math.abs(step1Total - orderProductsTotal) < 0.001
-				const step2Matches = Math.abs(servicesTotal - orderServicesTotal) < 0.001
-				const step3Matches = Math.abs(additionalCostsTotal - orderAdditionalCostsTotal) < 0.001
-
-				// If all match, prices are already discounted, so don't apply discount again
-				if (step1Matches && step2Matches && step3Matches) {
-					shouldApplyDiscount = false
-				}
-			}
-
-			// Apply discount only if needed
-			const finalTotal = shouldApplyDiscount ? applyDiscount(baseTotal, discount) : baseTotal
-			setTotalAmount(finalTotal, acquisitionType)
 		})
 
 		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [form.watch, products, isRent, step1Data, step3Data, discount, acquisitionType, order])
+	}, [form.watch, acquisitionType])
 
 	const hasServices = uniqueServices.length > 0
 
@@ -272,7 +216,6 @@ export const Step2Services = ({ products, acquisitionType, order, serviceLocatio
 											serviceId: serviceId,
 											isIncluded: isDefault || false,
 											quantity: 0,
-											price: 0,
 											serviceLocationId: undefined
 										}
 									],

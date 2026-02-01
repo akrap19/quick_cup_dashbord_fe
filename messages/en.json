@@ -164,6 +164,11 @@
 		"logOut": "Log out",
 		"requiredFieldWarning": "Fields marked with an asterisk (*) are mandatory",
 		"uploadAudio": "Upload audio",
+		"uploadFile": "Upload file",
+		"fileUploadInstructions": "(max size 10MB)",
+		"designTemplate": "Design template",
+		"download": "Download",
+		"fileUploadError": "Maximum size for files is 10MB",
 		"maxPhotoUploadCountinstructions": "Upload max 10 photos",
 		"photoUploadInstructions": "(max size per photo 10MB)",
 		"photoUploadError": "Maximum size for images is 10MB",
@@ -208,7 +213,8 @@
 		"welcomeDescription": "Manage your orders, products, services, clients, and events all in one place. Create and track buy and rent orders, manage your product inventory, configure services and locations, handle client relationships, and organize events efficiently.",
 		"welcomeDescriptionAdmin": "Manage orders, products, services, clients, and events all in one place. Create and track buy and rent orders, manage product inventory, configure services and service locations.",
 		"welcomeDescriptionService": "Enter product state, manage orders assigned to you, update order statuses, enter actual quantity of services and additional costs in orders. Review and manage orders from payment received to completion.",
-		"welcomeDescriptionClient": "Explore product offerings and their prices, create your own events and manage them, create orders, review active and previous orders and always stay updated on the status and progress of your orders."
+		"welcomeDescriptionClient": "Explore product offerings and their prices, create your own events and manage them, create orders, review active and previous orders and always stay updated on the status and progress of your orders.",
+		"nothingChosen": "Nothing has been chosen"
 	},
 	"Product": {
 		"productStates": "Product States",
@@ -416,7 +422,10 @@
 		"tableName": "Rent entry",
 		"showServicePriceList": "Show service price list",
 		"hideServicePriceList": "Hide service price list",
-		"createRentOrder": "Create rent order"
+		"createRentOrder": "Create rent order",
+		"myProducts": "My products",
+		"usersProducts": "User's products",
+		"productsToBeRented": "Products to be rented"
 	},
 	"Events": {
 		"add": "Add Event",
@@ -536,6 +545,8 @@
 		"tableName": "Name",
 		"billingType": "Billing Type",
 		"billingTypePlaceholder": "Select billing type",
+		"maxPieces": "Max Pieces",
+		"maxPiecesPlaceholder": "Enter max pieces",
 		"namePlaceholder": "e.g. design",
 		"by_piece": "By Piece",
 		"one_time": "One Time",
@@ -547,6 +558,7 @@
 		"acquisitionTypePlaceholder": "Select acquisition type",
 		"buy": "Buy",
 		"rent": "Rent",
+		"enableUpload": "Enable Upload",
 		"price": "Price",
 		"includeInFinalProductCalculation": "Include in final product calculation",
 		"finalProductCalculationStatus": "Final product calculation status",

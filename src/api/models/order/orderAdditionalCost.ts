@@ -6,7 +6,6 @@ export interface OrderAdditionalCost {
 	orderId: string
 	additionalCostId: string
 	additionalCost: AdditionalCosts
-	price: number
 	quantity: number | null
 	quantityByProduct?: QuantityByProduct[]
 	createdAt: string

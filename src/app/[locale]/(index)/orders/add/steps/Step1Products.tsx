@@ -11,39 +11,39 @@ import { createStep1Schema } from 'schemas'
 import { useOrderWizardStore, Step1ProductsData } from '@/store/order-wizard'
 import { tokens } from '@/style/theme.css'
 import { NoResult } from '@/components/custom/no-result/NoResult'
-import { getProductPrices } from 'api/services/products'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { Text } from '@/components/typography/text'
 import { useTranslations } from 'next-intl'
 import { Stack } from '@/components/layout/stack'
-import { applyDiscount } from '@/utils/discount'
-import { Order } from 'api/models/order/order'
+import { Heading } from '@/components/typography/heading'
 
 type Step1Schema = z.infer<ReturnType<typeof createStep1Schema>>
 
 interface Props {
 	products?: Product[]
+	myProducts?: Product[]
 	selectedItems?: Product[]
 	acquisitionType: AcquisitionTypeEnum
-	order?: Order
 }
 
-export const Step1Products = ({ products = [], selectedItems = [], acquisitionType, order }: Props) => {
+export const Step1Products = ({
+	products = [],
+	myProducts = [],
+	selectedItems = [],
+	acquisitionType
+}: Props) => {
 	const t = useTranslations()
-	const { getStep1Data, getStep2Data, getStep3Data, getStep4Data, getCustomerId, setStep1Data, setTotalAmount } =
-		useOrderWizardStore()
+	const { getStep1Data, setStep1Data } = useOrderWizardStore()
 	const step1Data = getStep1Data(acquisitionType)
-	const step2Data = getStep2Data(acquisitionType)
-	const step3Data = getStep3Data(acquisitionType)
-	const step4Data = getStep4Data(acquisitionType)
-	const discount = step4Data?.discount
-	const customerId = getCustomerId(acquisitionType)
+
+	// Combine all products for validation
+	const allProductsForValidation = useMemo(() => [...products, ...myProducts], [products, myProducts])
 
 	// Use ref to always access the latest products array in validation
-	const productsRef = useRef<Product[]>(products)
+	const productsRef = useRef<Product[]>(allProductsForValidation)
 	useEffect(() => {
-		productsRef.current = products
-	}, [products])
+		productsRef.current = allProductsForValidation
+	}, [allProductsForValidation])
 
 	// Initialize form with products from selectedItems (those in store) or from step1Data
 	const getInitialProducts = () => {
@@ -53,8 +53,7 @@ export const Step1Products = ({ products = [], selectedItems = [], acquisitionTy
 		// Only initialize products that are in selectedItems (store)
 		return selectedItems.map(product => ({
 			productId: product.id,
-			quantity: 0,
-			price: 0
+			quantity: 0
 		}))
 	}
 
@@ -85,8 +84,7 @@ export const Step1Products = ({ products = [], selectedItems = [], acquisitionTy
 		if (productsToAdd.length > 0) {
 			const newProducts = productsToAdd.map(product => ({
 				productId: product.id,
-				quantity: 0,
-				price: 0
+				quantity: 0
 			}))
 			form.setValue('products', [...currentFormProducts, ...newProducts], { shouldValidate: false })
 		}
@@ -99,7 +97,6 @@ export const Step1Products = ({ products = [], selectedItems = [], acquisitionTy
 				const originalIndex = currentFormProducts.findIndex((p: any) => p.productId === productToRemove.productId)
 				if (originalIndex >= 0) {
 					form.setValue(`products.${originalIndex}.quantity`, undefined as any, { shouldValidate: false })
-					form.setValue(`products.${originalIndex}.price`, 0, { shouldValidate: false })
 					form.setValue(`products.${originalIndex}.productId`, undefined as any, { shouldValidate: false })
 				}
 			})
@@ -108,46 +105,6 @@ export const Step1Products = ({ products = [], selectedItems = [], acquisitionTy
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedItems.map(p => p.id).join(',')])
-
-	// Calculate prices using API when quantity changes
-	useEffect(() => {
-		if (!customerId) return
-
-		const calculatePrices = async () => {
-			const currentProducts = form.getValues('products') || []
-
-			for (let index = 0; index < currentProducts.length; index++) {
-				const formProduct = currentProducts[index]
-				if (!formProduct) continue
-
-				const quantity = Number(formProduct.quantity) || 0
-
-				if (quantity > 0) {
-					try {
-						const response = await getProductPrices({
-							productId: formProduct.productId,
-							quantity: quantity,
-							userId: customerId
-						})
-
-						const totalPrice = response?.data?.totalPrice ?? 0
-						form.setValue(`products.${index}.price`, totalPrice, {
-							shouldValidate: false,
-							shouldDirty: false
-						})
-					} catch (error) {
-						// On error, set price to 0
-						form.setValue(`products.${index}.price`, 0, { shouldValidate: false, shouldDirty: false })
-					}
-				} else {
-					form.setValue(`products.${index}.price`, 0, { shouldValidate: false, shouldDirty: false })
-				}
-			}
-		}
-
-		calculatePrices()
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [formProducts.map(p => `${p.productId}-${p.quantity}`).join(','), customerId])
 
 	// Track if this is the first callback to skip initial calculation
 	const isFirstCallback = useRef(true)
@@ -159,54 +116,24 @@ export const Step1Products = ({ products = [], selectedItems = [], acquisitionTy
 			if (isFirstCallback.current) {
 				isFirstCallback.current = false
 				const stepData: Step1ProductsData = {
-					products: (data.products || []).filter(
-						(p): p is { productId: string; quantity: number; price: number } => !!p
-					)
+					products: (data.products || []).filter((p): p is { productId: string; quantity: number } => !!p)
 				}
 				setStep1Data(stepData, acquisitionType)
 				return
 			}
 			const stepData: Step1ProductsData = {
-				products: (data.products || []).filter((p): p is { productId: string; quantity: number; price: number } => !!p)
+				products: (data.products || []).filter((p): p is { productId: string; quantity: number } => !!p)
 			}
 			setStep1Data(stepData, acquisitionType)
-
-			// Calculate total with all items from store (products, services, additional costs)
-			const productsTotal = (data.products || []).reduce((sum, product) => sum + (product?.price || 0), 0)
-			const servicesTotal =
-				step2Data?.services?.reduce((sum, s) => {
-					return sum + (s.isIncluded ? s.price || 0 : 0)
-				}, 0) || 0
-			const additionalCostsTotal =
-				step3Data?.additionalCosts?.reduce((sum, ac) => sum + (ac.isIncluded ? ac.price || 0 : 0), 0) || 0
-
-			const baseTotal = productsTotal + servicesTotal + additionalCostsTotal
-
-			// In edit mode, check if prices match order prices (already discounted)
-			let shouldApplyDiscount = true
-			if (order) {
-				const orderProductsTotal = order.products?.reduce((sum, p) => sum + (p.price || 0), 0) || 0
-				const orderServicesTotal = order.services?.reduce((sum, s) => sum + (s.price || 0), 0) || 0
-				const orderAdditionalCostsTotal = order.additionalCosts?.reduce((sum, ac) => sum + (ac.price || 0), 0) || 0
-
-				const step1Matches = Math.abs(productsTotal - orderProductsTotal) < 0.001
-				const step2Matches = Math.abs(servicesTotal - orderServicesTotal) < 0.001
-				const step3Matches = Math.abs(additionalCostsTotal - orderAdditionalCostsTotal) < 0.001
-
-				// If all match, prices are already discounted, so don't apply discount again
-				if (step1Matches && step2Matches && step3Matches) {
-					shouldApplyDiscount = false
-				}
-			}
-
-			// Apply discount only if needed
-			const finalTotal = shouldApplyDiscount ? applyDiscount(baseTotal, discount) : baseTotal
-			setTotalAmount(finalTotal, acquisitionType)
 		})
 
 		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [form.watch, discount, acquisitionType, order, step2Data, step3Data])
+	}, [form.watch, acquisitionType])
+
+	const hasProducts = products && products.length > 0
+	const hasMyProducts = myProducts && myProducts.length > 0
+	const hasAnyProducts = hasProducts || hasMyProducts
 
 	return (
 		<FormProvider {...form}>
@@ -214,22 +141,58 @@ export const Step1Products = ({ products = [], selectedItems = [], acquisitionTy
 				<Text fontSize="small" color="destructive.500">
 					{t('General.productsRequirements')}
 				</Text>
-				{products && products.length > 0 ? (
-					<div
-						style={{
-							display: 'grid',
-							gridTemplateColumns: 'repeat(2, 1fr)',
-							columnGap: tokens.spacing[6],
-							rowGap: tokens.spacing[6]
-						}}>
-						{products.map((product: Product) => {
-							// Find the exact index of this product in the form array
-							const index = formProducts.findIndex(p => p.productId === product.id)
-							return (
-								<OrderProductCard key={product.id} product={product} index={index} acquisitionType={acquisitionType} />
-							)
-						})}
-					</div>
+				{hasAnyProducts ? (
+					<Stack gap={6}>
+						{hasProducts && (
+							<div
+								style={{
+									display: 'grid',
+									gridTemplateColumns: 'repeat(2, 1fr)',
+									columnGap: tokens.spacing[6],
+									rowGap: tokens.spacing[6]
+								}}>
+								{products.map((product: Product) => {
+									// Find the exact index of this product in the form array
+									const index = formProducts.findIndex(p => p.productId === product.id)
+									return (
+										<OrderProductCard
+											key={product.id}
+											product={product}
+											index={index}
+											acquisitionType={acquisitionType}
+										/>
+									)
+								})}
+							</div>
+						)}
+						{hasMyProducts && (
+							<Stack gap={4}>
+								<Heading variant="h4" color="neutral.900">
+									{t('Rent.myProducts')}
+								</Heading>
+								<div
+									style={{
+										display: 'grid',
+										gridTemplateColumns: 'repeat(2, 1fr)',
+										columnGap: tokens.spacing[6],
+										rowGap: tokens.spacing[6]
+									}}>
+									{myProducts.map((product: Product) => {
+										// Find the exact index of this product in the form array
+										const index = formProducts.findIndex(p => p.productId === product.id)
+										return (
+											<OrderProductCard
+												key={product.id}
+												product={product}
+												index={index}
+												acquisitionType={acquisitionType}
+											/>
+										)
+									})}
+								</div>
+							</Stack>
+						)}
+					</Stack>
 				) : (
 					<NoResult size="large" noResoultMessage="General.noAvailableProducts" />
 				)}

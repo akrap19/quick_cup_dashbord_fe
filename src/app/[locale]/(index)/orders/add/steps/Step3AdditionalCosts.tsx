@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, useForm, useWatch } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useEffect, useMemo, useRef } from 'react'
 
@@ -9,40 +9,99 @@ import { Stack } from '@/components/layout/stack'
 import { AdditionalCostListItem } from '@/components/custom/additional-cost-card'
 import { AdditionalCosts } from 'api/models/additional-costs/additionalCosts'
 import { useOrderWizardStore, Step3AdditionalCostsData } from '@/store/order-wizard'
-import { BillingTypeEnum } from 'enums/billingTypeEnum'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { Product } from 'api/models/products/product'
 import { Order } from 'api/models/order/order'
-import { applyDiscount } from '@/utils/discount'
+import { BillingTypeEnum } from 'enums/billingTypeEnum'
 
-const additionalCostSchema = z.object({
-	additionalCostId: z.string(),
-	isIncluded: z.boolean().default(false),
-	quantity: z.coerce.number().min(0).default(0),
-	price: z.coerce.number().min(0).default(0),
-	productQuantities: z.record(z.string(), z.coerce.number().min(0)).optional()
-})
+const createAdditionalCostSchema = (additionalCosts: AdditionalCosts[]) => {
+	return z
+		.object({
+			additionalCostId: z.string().optional(),
+			isIncluded: z.boolean().default(false),
+			quantity: z.coerce.number().min(0).default(0),
+			productQuantities: z.record(z.string(), z.coerce.number().min(0)).optional(),
+			productFileIds: z.record(z.string(), z.string()).optional(),
+			productFileInfos: z
+				.record(z.string(), z.object({ id: z.string(), name: z.string().optional(), url: z.string().optional() }))
+				.optional()
+		})
+		.superRefine((data, ctx) => {
+			// Skip validation if not included - this step is optional
+			if (!data.isIncluded) {
+				return
+			}
 
-const step3Schema = z.object({
-	additionalCosts: z.array(additionalCostSchema).optional().default([])
-})
+			// Only require additionalCostId when isIncluded is true
+			if (!data.additionalCostId || data.additionalCostId.length === 0) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Additional cost ID is required',
+					path: ['additionalCostId']
+				})
+				return
+			}
 
-type Step3Schema = z.infer<typeof step3Schema>
+			const additionalCost = additionalCosts.find(ac => ac.id === data.additionalCostId)
+
+			if (!additionalCost) {
+				return
+			}
+
+			// Only validate maxPieces for BY_PIECE billing type
+			if (additionalCost.billingType !== BillingTypeEnum.BY_PIECE) {
+				return
+			}
+
+			// For BY_PIECE, quantity must be greater than 0 if included
+			if (data.quantity <= 0) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Quantity must be greater than 0',
+					path: ['quantity']
+				})
+				return
+			}
+
+			// If maxPieces is defined, validate against it
+			if (additionalCost.maxPieces !== undefined && additionalCost.maxPieces !== null) {
+				if (data.quantity > additionalCost.maxPieces) {
+					ctx.addIssue({
+						code: z.ZodIssueCode.custom,
+						message: 'Quantity cannot exceed max pieces',
+						path: ['quantity']
+					})
+				}
+			}
+		})
+}
+
+const createStep3Schema = (additionalCosts: AdditionalCosts[]) => {
+	const additionalCostSchema = createAdditionalCostSchema(additionalCosts)
+	return z.object({
+		additionalCosts: z.array(additionalCostSchema).optional().default([])
+	})
+}
+
+type Step3Schema = z.infer<ReturnType<typeof createStep3Schema>>
 
 interface Props {
 	additionalCosts: AdditionalCosts[]
 	acquisitionType: AcquisitionTypeEnum
 	order?: Order
 	products?: Product[]
+	onValidationChange?: (isValid: boolean) => void
 }
 
-export const Step3AdditionalCosts = ({ additionalCosts, acquisitionType, order, products = [] }: Props) => {
-	const { getStep3Data, getStep1Data, getStep2Data, getStep4Data, setStep3Data, setTotalAmount } = useOrderWizardStore()
+export const Step3AdditionalCosts = ({
+	additionalCosts,
+	acquisitionType,
+	order,
+	products = [],
+	onValidationChange
+}: Props) => {
+	const { getStep3Data, setStep3Data } = useOrderWizardStore()
 	const step3Data = getStep3Data(acquisitionType)
-	const step1Data = getStep1Data(acquisitionType)
-	const step2Data = getStep2Data(acquisitionType)
-	const step4Data = getStep4Data(acquisitionType)
-	const discount = step4Data?.discount
 
 	// Track if this is the first callback to skip initial calculation
 	const isFirstCallback = useRef(true)
@@ -53,13 +112,18 @@ export const Step3AdditionalCosts = ({ additionalCosts, acquisitionType, order, 
 			return step3Data.additionalCosts
 		}
 
-		return additionalCosts?.map((additionalCost: AdditionalCosts) => ({
+		if (!additionalCosts || additionalCosts.length === 0) {
+			return []
+		}
+
+		return additionalCosts.map((additionalCost: AdditionalCosts) => ({
 			additionalCostId: additionalCost.id,
 			isIncluded: false,
-			quantity: 0,
-			price: 0
+			quantity: 0
 		}))
 	}, [additionalCosts, step3Data])
+
+	const step3Schema = useMemo(() => createStep3Schema(additionalCosts), [additionalCosts])
 
 	const form = useForm<Step3Schema>({
 		mode: 'onChange',
@@ -69,67 +133,54 @@ export const Step3AdditionalCosts = ({ additionalCosts, acquisitionType, order, 
 		}
 	})
 
-	const formAdditionalCosts = useWatch({ control: form.control, name: 'additionalCosts' }) || []
-
-	// Calculate prices based on quantity and isIncluded
+	// Watch form validation state and notify parent
 	useEffect(() => {
-		formAdditionalCosts.forEach((formCost, index) => {
-			const additionalCost = additionalCosts.find(ac => ac.id === formCost.additionalCostId)
-			if (!additionalCost) return
+		if (!onValidationChange) return
 
-			if (!formCost.isIncluded) {
-				const currentPrice = form.getValues(`additionalCosts.${index}.price`)
-				if (currentPrice !== 0) {
-					form.setValue(`additionalCosts.${index}.price`, 0, { shouldValidate: false, shouldDirty: false })
-				}
-				if (additionalCost.billingType === BillingTypeEnum.BY_PIECE) {
-					form.setValue(`additionalCosts.${index}.quantity`, 0, { shouldValidate: false, shouldDirty: false })
-				}
+		// Initial validation check - ensure form is valid when all items are not included
+		const checkValidation = async () => {
+			// Check if all items are not included - if so, form is always valid
+			const currentValues = form.getValues()
+			const allNotIncluded = !currentValues.additionalCosts || currentValues.additionalCosts.every(ac => !ac.isIncluded)
+
+			if (allNotIncluded) {
+				onValidationChange(true)
 				return
 			}
 
-			if (additionalCost.billingType === BillingTypeEnum.BY_PIECE) {
-				// Use quantity field directly (it will be updated by AdditionalCostListItem if productQuantities exist)
-				const quantity = Number(formCost.quantity) || 0
+			await form.trigger()
+			onValidationChange(form.formState.isValid)
+		}
 
-				if (quantity > 0) {
-					const calculatedPrice = Number.parseFloat((additionalCost.price * quantity).toFixed(3))
-					const currentPrice = form.getValues(`additionalCosts.${index}.price`)
-					if (currentPrice !== calculatedPrice) {
-						form.setValue(`additionalCosts.${index}.price`, calculatedPrice, {
-							shouldValidate: false,
-							shouldDirty: false
-						})
-					}
-				} else {
-					const currentPrice = form.getValues(`additionalCosts.${index}.price`)
-					if (currentPrice !== 0) {
-						form.setValue(`additionalCosts.${index}.price`, 0, { shouldValidate: false, shouldDirty: false })
-					}
+		// Trigger validation when step becomes active to ensure errors are shown
+		checkValidation()
+
+		// Subscribe to form state changes to track validation
+		const subscription = form.watch(() => {
+			// Use setTimeout to ensure validation has completed
+			setTimeout(() => {
+				const currentValues = form.getValues()
+				const allNotIncluded =
+					!currentValues.additionalCosts || currentValues.additionalCosts.every(ac => !ac.isIncluded)
+
+				if (allNotIncluded) {
+					onValidationChange(true)
+					return
 				}
-			} else {
-				// ONE_TIME billing
-				const currentPrice = form.getValues(`additionalCosts.${index}.price`)
-				if (currentPrice !== additionalCost.price) {
-					form.setValue(`additionalCosts.${index}.price`, additionalCost.price, {
-						shouldValidate: false,
-						shouldDirty: false
-					})
-				}
-				const currentQuantity = form.getValues(`additionalCosts.${index}.quantity`)
-				if (currentQuantity !== 1) {
-					form.setValue(`additionalCosts.${index}.quantity`, 1, { shouldValidate: false, shouldDirty: false })
-				}
-			}
+
+				form.trigger().then(() => {
+					onValidationChange(form.formState.isValid)
+				})
+			}, 0)
 		})
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [
-		formAdditionalCosts
-			.map(ac => `${ac.additionalCostId}-${ac.isIncluded}-${ac.quantity}-${JSON.stringify(ac.productQuantities || {})}`)
-			.join(',')
-	])
 
-	// Save to store and calculate total when form changes
+		return () => {
+			subscription.unsubscribe()
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [onValidationChange, form])
+
+	// Save to store when form changes
 	useEffect(() => {
 		const subscription = form.watch(data => {
 			// Skip calculation on first callback (when navigating to step)
@@ -144,23 +195,31 @@ export const Step3AdditionalCosts = ({ additionalCosts, acquisitionType, order, 
 									) as Record<string, number>)
 								: undefined
 
+							const productFileIds = ac?.productFileIds
+								? (Object.fromEntries(
+										Object.entries(ac.productFileIds).filter(([_, value]) => value !== undefined && value !== '')
+									) as Record<string, string>)
+								: undefined
+
+							const productFileInfos = ac?.productFileInfos
+								? (Object.fromEntries(
+										Object.entries(ac.productFileInfos).filter(([_, value]) => value !== undefined)
+									) as Record<string, { id: string; name?: string; url?: string }>)
+								: undefined
+
 							return {
 								additionalCostId: ac?.additionalCostId || '',
 								isIncluded: ac?.isIncluded || false,
 								quantity: ac?.quantity || 0,
-								price: ac?.price || 0,
-								productQuantities
+								productQuantities,
+								productFileIds,
+								productFileInfos
 							}
 						}) || []
 				}
 				setStep3Data(stepData, acquisitionType)
 				return
 			}
-			const additionalCostsTotal = (data.additionalCosts || []).reduce(
-				(sum, additionalCost) => sum + (additionalCost?.isIncluded ? additionalCost?.price || 0 : 0),
-				0
-			)
-
 			const stepData: Step3AdditionalCostsData = {
 				additionalCosts:
 					data.additionalCosts?.map(ac => {
@@ -171,51 +230,34 @@ export const Step3AdditionalCosts = ({ additionalCosts, acquisitionType, order, 
 								) as Record<string, number>)
 							: undefined
 
+						const productFileIds = ac?.productFileIds
+							? (Object.fromEntries(
+									Object.entries(ac.productFileIds).filter(([_, value]) => value !== undefined && value !== '')
+								) as Record<string, string>)
+							: undefined
+
+						const productFileInfos = ac?.productFileInfos
+							? (Object.fromEntries(
+									Object.entries(ac.productFileInfos).filter(([_, value]) => value !== undefined)
+								) as Record<string, { id: string; name?: string; url?: string }>)
+							: undefined
+
 						return {
 							additionalCostId: ac?.additionalCostId || '',
 							isIncluded: ac?.isIncluded || false,
 							quantity: ac?.quantity || 0,
-							price: ac?.price || 0,
-							productQuantities
+							productQuantities,
+							productFileIds,
+							productFileInfos
 						}
 					}) || []
 			}
 			setStep3Data(stepData, acquisitionType)
-
-			// Update total amount (combine all steps)
-			const step1Total = step1Data?.products?.reduce((sum, p) => sum + (p.price || 0), 0) || 0
-			const step2Total =
-				step2Data?.services?.reduce((sum, s) => {
-					return sum + (s.isIncluded ? s.price || 0 : 0)
-				}, 0) || 0
-			const baseTotal = step1Total + step2Total + additionalCostsTotal
-
-			// In edit mode, check if prices match order prices (already discounted)
-			// If they match, don't apply discount again. If they changed (recalculated from API), apply discount.
-			let shouldApplyDiscount = true
-			if (order) {
-				const orderProductsTotal = order.products?.reduce((sum, p) => sum + (p.price || 0), 0) || 0
-				const orderServicesTotal = order.services?.reduce((sum, s) => sum + (s.price || 0), 0) || 0
-				const orderAdditionalCostsTotal = order.additionalCosts?.reduce((sum, ac) => sum + (ac.price || 0), 0) || 0
-
-				const step1Matches = Math.abs(step1Total - orderProductsTotal) < 0.001
-				const step2Matches = Math.abs(step2Total - orderServicesTotal) < 0.001
-				const step3Matches = Math.abs(additionalCostsTotal - orderAdditionalCostsTotal) < 0.001
-
-				// If all match, prices are already discounted, so don't apply discount again
-				if (step1Matches && step2Matches && step3Matches) {
-					shouldApplyDiscount = false
-				}
-			}
-
-			// Apply discount only if needed
-			const finalTotal = shouldApplyDiscount ? applyDiscount(baseTotal, discount) : baseTotal
-			setTotalAmount(finalTotal, acquisitionType)
 		})
 
 		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [form.watch, step1Data, step2Data, discount, acquisitionType])
+	}, [form.watch, acquisitionType])
 
 	const visibleAdditionalCosts = additionalCosts
 

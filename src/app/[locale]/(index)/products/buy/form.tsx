@@ -13,6 +13,7 @@ import { RichTextEditor } from '@/components/inputs/rich-text-editor'
 import { Stack } from '@/components/layout/stack'
 import { Box } from '@/components/layout/box'
 import { PhotoUpload } from '@/components/custom/upload/photo-upload'
+import { FileUpload } from '@/components/custom/upload/file-upload'
 import { FormTable, FormTableColumn } from '@/components/custom/form-table'
 import { ProductPrice } from 'api/models/products/productPrice'
 import { ServicePrice } from 'api/models/services/servicePrice'
@@ -26,6 +27,7 @@ import { Base } from 'api/models/common/base'
 interface Props {
 	cancelDialog?: OpenedProps
 	initialImageUrls?: string[]
+	initialDesignTemplate?: { id?: string; name?: string; url?: string }
 	isEdit?: boolean
 	showServices: boolean
 	setShowServices: Dispatch<SetStateAction<boolean>>
@@ -38,6 +40,7 @@ interface Props {
 const BuyForm = ({
 	cancelDialog,
 	initialImageUrls,
+	initialDesignTemplate,
 	showServices,
 	setShowServices,
 	servicesPrices,
@@ -151,12 +154,14 @@ const BuyForm = ({
 					<FormControl.Label>{t('General.images')}</FormControl.Label>
 					<PhotoUpload initialImagesUrls={initialImageUrls} placeholder={t('General.descriptionPlaceholder')} />
 				</FormControl>
+				<FormControl name="designTemplateId">
+					<FormControl.Label>{t('General.designTemplate')}</FormControl.Label>
+					<FileUpload initialFile={initialDesignTemplate} />
+				</FormControl>
 			</Stack>
 			<Box style={{ gridColumn: 'span 2' }}>
 				<FormControl name="prices">
-					<FormControl.Label>
-						<RequiredLabel>{t('General.price')}</RequiredLabel>
-					</FormControl.Label>
+					<FormControl.Label>{t('General.price')}</FormControl.Label>
 					<FormTable<ProductPrice>
 						name="prices"
 						columns={formTableColumns}

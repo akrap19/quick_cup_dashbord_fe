@@ -1,7 +1,7 @@
 'use client'
 
 import { useFormContext, useWatch, Controller } from 'react-hook-form'
-import { useEffect, useMemo, useRef, useCallback } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Text } from '@/components/typography/text'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
@@ -15,7 +15,6 @@ import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { InputTypeEnum } from 'enums/inputTypeEnum'
 import { OrderStatusEnum } from 'enums/orderStatusEnum'
 import { Product } from 'api/models/products/product'
-import { getServicePrices } from 'api/services/services'
 import { useTranslations } from 'next-intl'
 import { RequiredLabel } from '@/components/inputs/required-label'
 import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdown'
@@ -23,8 +22,6 @@ import { Base } from 'api/models/common/base'
 import { useHasRoleAccess } from '@/hooks/use-has-role-access'
 import { UserRoleEnum } from 'enums/userRoleEnum'
 import { Order } from 'api/models/order/order'
-import { useOrderWizardStore } from '@/store/order-wizard'
-import { applyDiscount } from '@/utils/discount'
 
 interface ServiceListItemProps {
 	service: Service
@@ -47,19 +44,13 @@ export const ServiceListItem = ({
 	const form = useFormContext()
 	const serviceIdFieldName = `services.${serviceIndex}.serviceId`
 	const isIncludedFieldName = `services.${serviceIndex}.isIncluded`
-	const quantityFieldName = `services.${serviceIndex}.quantity`
-	const priceFieldName = `services.${serviceIndex}.price`
 	const productQuantitiesFieldName = `services.${serviceIndex}.productQuantities`
 	const serviceLocationIdFieldName = `services.${serviceIndex}.serviceLocationId`
 
 	const formProducts = useWatch({ control: form.control, name: 'products' }) || []
-	const currentPrice = useWatch({ control: form.control, name: priceFieldName }) || 0
 	const isIncluded = useWatch({ control: form.control, name: isIncludedFieldName }) || false
 	const productQuantities = useWatch({ control: form.control, name: productQuantitiesFieldName }) || {}
 	const isAdminOrMasterAdmin = useHasRoleAccess([UserRoleEnum.ADMIN, UserRoleEnum.MASTER_ADMIN])
-	const { getStep4Data } = useOrderWizardStore()
-	const step4Data = getStep4Data(acquisitionType)
-	const discount = step4Data?.discount
 
 	// Determine input type based on acquisition type
 	const inputType = acquisitionType === AcquisitionTypeEnum.RENT ? service.inputTypeForRent : service.inputTypeForBuy
@@ -116,133 +107,12 @@ export const ServiceListItem = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [productsWithService.length, serviceId])
 
-	// Memoize products for calculation to avoid unnecessary recalculations
-	const productsForCalculation = useMemo(() => {
-		const result: { productId: string; quantity: number }[] = []
-
-		productsWithService.forEach(product => {
-			// Use custom quantity if available and fields are shown, otherwise use product quantity
-			let productQuantity = 0
-			if (showProductQuantityFields && productQuantities && productQuantities[product.id] !== undefined) {
-				productQuantity = productQuantities[product.id] || 0
-			} else {
-				const formProduct = formProducts.find((p: any) => p.productId === product.id)
-				productQuantity = formProduct?.quantity || 0
-			}
-
-			if (productQuantity > 0) {
-				result.push({
-					productId: product.id,
-					quantity: productQuantity
-				})
-			}
-		})
-
-		return result
-	}, [productsWithService, formProducts, productQuantities, showProductQuantityFields])
-
-	// Ref to track debounce timeout
-	const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-	const lastCalculationRef = useRef<string>('')
-
-	// Memoize the calculation key to detect actual changes
-	const calculationKey = useMemo(() => {
-		return JSON.stringify({
-			serviceId,
-			products: productsForCalculation,
-			acquisitionType
-		})
-	}, [serviceId, productsForCalculation, acquisitionType])
-
-	// Calculate total price for this service across all products using API endpoint
-	const calculatePrice = useCallback(async () => {
-		if (!serviceId) return
-
-		// If no products with this service, set price to 0
-		if (productsForCalculation.length === 0) {
-			const currentPriceValue = form.getValues(priceFieldName)
-			if (currentPriceValue !== 0) {
-				form.setValue(priceFieldName, 0, { shouldValidate: false, shouldDirty: false })
-				form.setValue(quantityFieldName, 0, { shouldValidate: false, shouldDirty: false })
-			}
-			return
-		}
-
-		try {
-			const response = await getServicePrices(serviceId, {
-				products: productsForCalculation,
-				acquisitionType
-			})
-
-			if (response) {
-				const calculatedPrice = Number.parseFloat((response.totalPrice || 0).toFixed(3))
-				const currentPriceValue = form.getValues(priceFieldName)
-
-				if (currentPriceValue !== calculatedPrice) {
-					form.setValue(priceFieldName, calculatedPrice, { shouldValidate: false, shouldDirty: false })
-				}
-
-				form.setValue(quantityFieldName, Math.ceil(response.combinedCalculatedQuantity), {
-					shouldValidate: false,
-					shouldDirty: false
-				})
-
-				// Update product quantities from API response
-				if (response.products && Array.isArray(response.products)) {
-					const currentProductQuantities = form.getValues(productQuantitiesFieldName) || {}
-					const updatedProductQuantities: Record<string, number> = { ...currentProductQuantities }
-					response.products.forEach(product => {
-						if (product.productId && product.quantity !== undefined) {
-							updatedProductQuantities[product.productId] = product.quantity
-						}
-					})
-					form.setValue(productQuantitiesFieldName, updatedProductQuantities, {
-						shouldValidate: false,
-						shouldDirty: false
-					})
-				}
-			}
-		} catch (error: any) {
-			// On error, set price to 0
-			form.setValue(priceFieldName, 0, { shouldValidate: false, shouldDirty: false })
-		}
-	}, [serviceId, productsForCalculation, acquisitionType, priceFieldName, quantityFieldName, form])
-
-	// Debounced effect for price calculation
-	useEffect(() => {
-		// Skip if calculation key hasn't changed
-		if (lastCalculationRef.current === calculationKey) {
-			return
-		}
-
-		// Clear existing timeout
-		if (debounceTimeoutRef.current) {
-			clearTimeout(debounceTimeoutRef.current)
-		}
-
-		// Set new debounced calculation
-		debounceTimeoutRef.current = setTimeout(() => {
-			lastCalculationRef.current = calculationKey
-			calculatePrice()
-		}, 300) // 300ms debounce delay
-
-		// Cleanup function
-		return () => {
-			if (debounceTimeoutRef.current) {
-				clearTimeout(debounceTimeoutRef.current)
-			}
-		}
-	}, [calculationKey, calculatePrice])
-
 	// Get service locations for this specific service
 	const locationsForThisService = useMemo(() => {
 		if (!serviceId || !serviceLocations) return []
 		// Filter locations that belong to this service
 		return serviceLocations.filter(location => (location as any).name.includes(service.serviceName || service.name))
 	}, [serviceId, serviceLocations])
-
-	// Display price always (it's always calculated), but it's only included in total if checkbox is checked (or default)
-	const displayPrice = applyDiscount(currentPrice, discount)
 
 	return (
 		<Box paddingY={3} paddingX={0} style={{ borderBottom: '1px solid #E5E7EB' }}>
@@ -284,11 +154,6 @@ export const ServiceListItem = ({
 								</Text>
 							)}
 						</Inline>
-					</Box>
-					<Box display="flex" alignItems="flex-start" paddingTop={1}>
-						<Text color="neutral.900" fontSize="medium" fontWeight="semibold">
-							{displayPrice.toFixed(3)}€
-						</Text>
 					</Box>
 				</Inline>
 				{showProductQuantityFields && isIncluded && productsWithService.length > 0 && (

@@ -117,7 +117,7 @@ export const UpdateProductStatesModal = ({ users, serviceLocations }: Props) => 
 			// Transform data to bulk update payload format
 			const updates: productStatesPayload[] = data.products.map(productData => {
 				// Transform productStates to only include required fields with proper types
-				const transformedProductStates: ProductState[] = productData.productStates.map(state => ({
+				const transformedProductStates: any = productData.productStates.map(state => ({
 					status: state.status as ProductStateStatusEnum,
 					location: state.location as ProductStateLocationEnum,
 					quantity: state.quantity,

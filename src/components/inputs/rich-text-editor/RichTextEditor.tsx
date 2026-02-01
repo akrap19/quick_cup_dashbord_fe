@@ -20,6 +20,9 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 	const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), [])
 
 	function removeAllLastHtmlTags(htmlString: string) {
+		if (typeof htmlString !== 'string') {
+			return ''
+		}
 		const regex = /<\/[^>]*>$/
 
 		while (regex.test(htmlString)) {
@@ -31,6 +34,9 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 	}
 
 	function extractLastHtmlTags(htmlString: string) {
+		if (typeof htmlString !== 'string') {
+			return ''
+		}
 		const regex = /(<\/[^>]*>)+$/
 		const match = htmlString.match(regex)
 
@@ -43,7 +49,10 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 	const onChangeWithMaxLengthCheck = (value: string) => {
 		if (!onChange) return
 
-		const textWithoutHtmlTags = removeHtmlTags(value)
+		// Ensure value is a string
+		const stringValue = typeof value === 'string' ? value : ''
+
+		const textWithoutHtmlTags = removeHtmlTags(stringValue)
 		const trimmedText = textWithoutHtmlTags?.trim() || ''
 
 		// Normalize empty HTML values (like <p><br></p>, <p></p>, etc.) to empty string
@@ -55,19 +64,19 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 		// If maxLength is provided, enforce it
 		if (maxLength && trimmedText.length > maxLength) {
 			const valueForReplace = trimmedText.slice(maxLength)
-			const stringWithoutLastHtmlTags = removeAllLastHtmlTags(value)
+			const stringWithoutLastHtmlTags = removeAllLastHtmlTags(stringValue)
 			const lastIndex = stringWithoutLastHtmlTags.lastIndexOf(valueForReplace)
 			const valueForChange =
 				stringWithoutLastHtmlTags.slice(0, lastIndex) +
 				stringWithoutLastHtmlTags.slice(lastIndex + valueForReplace.length)
-			const finalValue = valueForChange + extractLastHtmlTags(value)
+			const finalValue = valueForChange + extractLastHtmlTags(stringValue)
 
 			onChange(finalValue as any)
 			return
 		}
 
 		// Otherwise, pass the value through normally
-		onChange(value as any)
+		onChange(stringValue as any)
 	}
 
 	useEffect(() => {
@@ -107,7 +116,7 @@ export const RichTextEditor = ({ placeholder, value, onChange, maxLength, hasSuc
 				className="ql-test"
 				theme="snow"
 				placeholder={placeholder}
-				value={value as any}
+				value={typeof value === 'string' ? value : ''}
 				onChange={onChangeWithMaxLengthCheck}
 			/>
 		</Box>

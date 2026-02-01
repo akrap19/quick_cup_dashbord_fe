@@ -2,13 +2,14 @@ import { Service } from '../services/service'
 
 export interface QuantityByProduct {
 	productId: string
-	quantity: number
+	quantity?: number
+	fileId?: string
+	fileUrl?: string
 }
 
 export interface OrderService {
 	serviceId: string
 	quantity: number
-	price: number
 	service?: Service
 	serviceLocationId?: string
 	serviceLocations?: OrderServiceLocation

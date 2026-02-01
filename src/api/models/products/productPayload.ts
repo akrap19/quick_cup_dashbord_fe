@@ -9,6 +9,7 @@ export interface ProductPayload {
 	unit: string
 	quantityPerUnit: number
 	transportationUnit: string
+	designTemplateId?: string
 	unitsPerTransportationUnit: number
 	description: string
 	imageIds?: string[]

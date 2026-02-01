@@ -29,9 +29,10 @@ interface Props {
 	shopItem: Product
 	route: string
 	editRoute: string
+	allowClientEdit?: boolean
 }
 
-export const ShopItemCard = ({ shopItem, route, editRoute }: Props) => {
+export const ShopItemCard = ({ shopItem, route, editRoute, allowClientEdit = false }: Props) => {
 	const t = useTranslations()
 	const confirmDialog = useOpened()
 	const router = useRouter()
@@ -40,6 +41,9 @@ export const ShopItemCard = ({ shopItem, route, editRoute }: Props) => {
 	const rentStore = useRentStore()
 	const { selectedItems, addItem, removeItem } = isRentRoute ? rentStore : buyStore
 	const isItemAlreadyInCart = selectedItems.find(item => item.id === shopItem.id)
+	const hasAdminAccess = useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN])
+	const isClient = useHasRoleAccess([UserRoleEnum.CLIENT])
+	const canEdit = hasAdminAccess || (allowClientEdit && isClient)
 
 	const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault()
@@ -99,15 +103,17 @@ export const ShopItemCard = ({ shopItem, route, editRoute }: Props) => {
 										)}
 									</Button>
 								</Box>
-								{useHasRoleAccess([UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN]) && (
+								{canEdit && (
 									<Box position="absolute" style={{ top: '65%', right: 0, zIndex: 1 }}>
 										<Stack gap={2}>
 											<Button variant="warning" size="icon" onClick={handleEdit}>
 												<PencilIcon size="small" color="shades.00" />
 											</Button>
-											<Button variant="destructive" size="icon" onClick={handleConfirmDialog}>
-												<TrashIcon size="small" color="shades.00" />
-											</Button>
+											{hasAdminAccess && (
+												<Button variant="destructive" size="icon" onClick={handleConfirmDialog}>
+													<TrashIcon size="small" color="shades.00" />
+												</Button>
+											)}
 										</Stack>
 									</Box>
 								)}

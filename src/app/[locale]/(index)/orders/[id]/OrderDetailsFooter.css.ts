@@ -15,6 +15,6 @@ export const footer = style({
 	borderColor: tokens.borders.color['neutral.300'],
 	bottom: '0',
 	right: '0',
-	padding: `${tokens.spacing[4]} ${tokens.spacing[10]} ${tokens.spacing[4]} ${tokens.spacing[10]}`,
+	padding: `${tokens.spacing[4]} ${tokens.spacing[16]} ${tokens.spacing[4]} ${tokens.spacing[10]}`,
 	zIndex: 1000
 })

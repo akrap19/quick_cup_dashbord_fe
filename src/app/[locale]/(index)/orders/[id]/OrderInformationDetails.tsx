@@ -68,13 +68,6 @@ export const OrderInformationDetails = ({ order }: Props) => {
 					{order.notes ?? '-'}
 				</Text>
 			</Stack>
-
-			<Stack gap={4}>
-				<Label>{t('Orders.discount')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{order.discount !== undefined && order.discount !== null ? `${order.discount}%` : '-'}
-				</Text>
-			</Stack>
 		</TabsWrapper>
 	)
 }

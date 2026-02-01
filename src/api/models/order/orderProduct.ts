@@ -6,7 +6,6 @@ export interface OrderProduct {
 	productId: string
 	product?: Product
 	quantity: number
-	price: number
 	createdAt?: string
 	updatedAt?: string
 }

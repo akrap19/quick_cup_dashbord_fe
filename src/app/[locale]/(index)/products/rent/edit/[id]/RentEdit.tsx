@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { FormWrapper } from '@/components/custom/layouts/add-form'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { replaceEmptyStringFromObjectWithNull } from '@/utils/replaceEmptyStringFromObjectWithNull'
+import { validateProductPrices, validateProductStates } from 'utils'
 import { Product } from 'api/models/products/product'
 import { updateProduct } from 'api/services/products'
 import { productPriceSchema, productServicePriceSchema, productStateSchema, requiredString } from 'schemas'
@@ -26,9 +27,9 @@ const formSchema = z.object({
 	unitsPerTransportationUnit: z.coerce.number().min(1),
 	description: z.string().optional(),
 	imageIds: z.array(z.string()).optional(),
-	prices: z.array(productPriceSchema).min(1, 'Rent.atLeastOneProductPriceRequired'),
+	prices: z.array(productPriceSchema).optional(),
 	servicePrices: z.array(productServicePriceSchema).optional().default([]),
-	productStates: z.array(productStateSchema).min(1, 'Rent.atLeastOneProductStateRequired')
+	productStates: z.array(productStateSchema).optional()
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -129,7 +130,10 @@ const RentEdit = ({ product, servicesPrices, users, serviceLocations }: Props) =
 			unitsPerTransportationUnit: product?.unitsPerTransportationUnit ?? undefined,
 			description: product?.description ?? '',
 			imageIds: initialImageIds,
-			prices: product?.prices ?? [],
+			prices:
+				product?.prices && product.prices.length > 0
+					? product.prices
+					: [{ minQuantity: undefined, maxQuantity: undefined, price: undefined }],
 			servicePrices: initialProductServicePrices,
 			productStates: normalizedProductStates
 		}
@@ -142,6 +146,12 @@ const RentEdit = ({ product, servicesPrices, users, serviceLocations }: Props) =
 		const imageIdsToAdd = currentImageIds.filter(id => !initialImageIds.includes(id))
 
 		const imageIdsToRemove = initialImageIds.filter(id => !currentImageIds.includes(id))
+
+		// Filter out invalid/empty prices - keep only valid entries with minQuantity and price
+		const validPrices = validateProductPrices(data.prices)
+
+		// Filter out invalid/empty product states - keep only valid entries with status, location, and quantity
+		const validProductStates = validateProductStates(data.productStates)
 
 		const hasPriceChanged = (initialPrice: any, currentPrice: any) => {
 			return (
@@ -187,7 +197,7 @@ const RentEdit = ({ product, servicesPrices, users, serviceLocations }: Props) =
 			.filter((service): service is NonNullable<typeof service> => service !== null)
 
 		// Transform productStates to only include required fields: status, location, quantity, serviceLocationId, userId
-		const transformedProductStates = data.productStates.map(state => ({
+		const transformedProductStates = validProductStates.map((state: any) => ({
 			status: state.status,
 			location: state.location,
 			quantity: state.quantity,
@@ -211,7 +221,7 @@ const RentEdit = ({ product, servicesPrices, users, serviceLocations }: Props) =
 			acquisitionType: AcquisitionTypeEnum.RENT,
 			imageIdsToAdd,
 			imageIdsToRemove,
-			prices: data.prices.map(price => ({
+			prices: validPrices.map((price: any) => ({
 				minQuantity: price.minQuantity,
 				maxQuantity: price.maxQuantity,
 				price: price.price

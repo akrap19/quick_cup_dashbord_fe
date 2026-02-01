@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { FormEvent, useEffect } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 
 import { CancelAddDialog } from '@/components/overlay/cancel-add-dialog'
 import { SuccessToast } from '@/components/overlay/toast-messages/SuccessToastmessage'
@@ -34,6 +34,7 @@ import {
 	Step4OrderInformationData
 } from '@/store/order-wizard'
 import { Order } from 'api/models/order/order'
+import { getFileUrl } from '@/utils/downloadFile'
 
 import { Step1ClientSelection } from '../../add/steps/Step1ClientSelection'
 import { Step1Products } from '../../add/steps/Step1Products'
@@ -46,7 +47,6 @@ import { useSession } from 'next-auth/react'
 import { UserRoleEnum } from 'enums/userRoleEnum'
 import { hasRoleAccess } from 'utils/hasRoleAccess'
 import { validateOrderProducts } from 'utils/orderValidation'
-import { applyDiscount, reverseDiscount } from '@/utils/discount'
 
 interface Props {
 	isAdmin: boolean
@@ -86,14 +86,12 @@ export const OrderEditWizard = ({
 		getStep3Data,
 		getStep4Data,
 		getCustomerId,
-		getTotalAmount,
 		setCurrentStep: setWizardStep,
 		setStep1Data,
 		setStep2Data,
 		setStep3Data,
 		setStep4Data,
 		setCustomerId,
-		setTotalAmount,
 		clearWizard,
 		setAcquisitionType
 	} = useOrderWizardStore()
@@ -105,18 +103,32 @@ export const OrderEditWizard = ({
 	const step3Data = getStep3Data(acquisitionType)
 	const step4Data = getStep4Data(acquisitionType)
 	const customerId = getCustomerId(acquisitionType)
-	const totalAmount = getTotalAmount(acquisitionType)
 
 	// Wrapper functions that include acquisition type
-	const setWizardStepWithType = (step: number) => setWizardStep(step, acquisitionType)
+	const setWizardStepWithType = (step: number) => {
+		// Check if current step is valid before allowing navigation
+		if (!isValid()) {
+			return
+		}
+		setWizardStep(step, acquisitionType)
+	}
+	// Function for top navigation that bypasses validation
+	const handleStepNavigation = (step: number) => {
+		setWizardStep(step, acquisitionType)
+	}
 	const setStep1DataWithType = (data: Step1ProductsData) => setStep1Data(data, acquisitionType)
 	const setStep2DataWithType = (data: Step2ServicesData) => setStep2Data(data, acquisitionType)
 	const setStep3DataWithType = (data: Step3AdditionalCostsData) => setStep3Data(data, acquisitionType)
 	const setStep4DataWithType = (data: Step4OrderInformationData) => setStep4Data(data, acquisitionType)
 	const setCustomerIdWithType = (id: string) => setCustomerId(id, acquisitionType)
-	const setTotalAmountWithType = (amount: number) => setTotalAmount(amount, acquisitionType)
 	const { data: session } = useSession()
 	const TOTAL_STEPS = isAdmin ? 5 : 4
+
+	// Track Step3 form validation state
+	const [step3FormValid, setStep3FormValid] = useState(true)
+
+	// Track loading state for order data initialization
+	const [isDataLoading, setIsDataLoading] = useState(true)
 
 	// Determine user role for step title/description logic
 	const userRole = session?.user?.roles[0]?.name
@@ -135,7 +147,7 @@ export const OrderEditWizard = ({
 	}
 
 	// Helper function to initialize services
-	const initializeServices = (orderServices: any[], orderProducts: Product[], discount?: number) => {
+	const initializeServices = (orderServices: any[], orderProducts: Product[]) => {
 		const orderServicesMap = new Map()
 		orderServices.forEach((s: any) => {
 			// Convert quantityByProduct to productQuantities format
@@ -148,12 +160,8 @@ export const OrderEditWizard = ({
 				})
 			}
 
-			// Reverse discount to get original price
-			const originalPrice = reverseDiscount(s.price || 0, discount)
-
 			orderServicesMap.set(s.serviceId, {
 				quantity: s.quantity || 0,
-				price: originalPrice,
 				serviceLocationId: s.serviceLocationId,
 				productQuantities: Object.keys(productQuantities).length > 0 ? productQuantities : undefined
 			})
@@ -165,7 +173,6 @@ export const OrderEditWizard = ({
 				serviceId: string
 				isIncluded: boolean
 				quantity: number
-				price: number
 				serviceLocationId?: string
 				productQuantities?: Record<string, number>
 			}
@@ -181,7 +188,6 @@ export const OrderEditWizard = ({
 						serviceId,
 						isIncluded: isDefault || !!orderService,
 						quantity: orderService?.quantity || 0,
-						price: orderService?.price || 0,
 						serviceLocationId: orderService?.serviceLocationId,
 						productQuantities: orderService?.productQuantities
 					})
@@ -202,14 +208,10 @@ export const OrderEditWizard = ({
 					})
 				}
 
-				// Reverse discount to get original price
-				const originalPrice = reverseDiscount(s.price || 0, discount)
-
 				serviceMap.set(s.serviceId, {
 					serviceId: s.serviceId,
 					isIncluded: true,
 					quantity: s.quantity || 0,
-					price: originalPrice,
 					serviceLocationId: s.serviceLocationId,
 					productQuantities: Object.keys(productQuantities).length > 0 ? productQuantities : undefined
 				})
@@ -238,16 +240,12 @@ export const OrderEditWizard = ({
 	// Initialize wizard store with order data
 	useEffect(() => {
 		const orderAcquisitionType = order?.acquisitionType || acquisitionType
-		const discount = order?.discount
 
 		if (order?.products?.length) {
-			console.log('order?.products', order?.products)
 			setStep1DataWithType({
 				products: order.products.map(p => ({
 					productId: p.productId,
-					quantity: p.quantity,
-					// Reverse discount to get original price
-					price: reverseDiscount(p.price || 0, discount)
+					quantity: p.quantity
 				}))
 			})
 		}
@@ -255,7 +253,7 @@ export const OrderEditWizard = ({
 		if (allProducts.length && order?.products?.length) {
 			const orderProducts = allProducts.filter(p => new Set(order.products!.map(op => op.productId)).has(p.id))
 
-			setStep2DataWithType({ services: initializeServices(order?.services || [], orderProducts, discount) })
+			setStep2DataWithType({ services: initializeServices(order?.services || [], orderProducts) })
 		}
 
 		if (additionalCosts.length) {
@@ -263,12 +261,31 @@ export const OrderEditWizard = ({
 				additionalCosts: additionalCosts.map(ac => {
 					const existing = order?.additionalCosts?.find((oac: any) => oac.additionalCostId === ac.id)
 					if (existing) {
-						// Convert quantityByProduct to productQuantities format
+						// Convert quantityByProduct to productQuantities, productFileIds, and productFileInfos format
 						const productQuantities: Record<string, number> = {}
+						const productFileIds: Record<string, string> = {}
+						const productFileInfos: Record<string, { id: string; name?: string; url?: string }> = {}
 						if ((existing as any).quantityByProduct && Array.isArray((existing as any).quantityByProduct)) {
 							;(existing as any).quantityByProduct.forEach((qbp: any) => {
-								if (qbp.productId && qbp.quantity !== undefined) {
-									productQuantities[qbp.productId] = Number(qbp.quantity) || 0
+								if (qbp.productId) {
+									// Process quantity if available
+									if (qbp.quantity !== undefined) {
+										productQuantities[qbp.productId] = Number(qbp.quantity) || 0
+									}
+									// Process fileId if available (even if quantity is undefined or 0)
+									if (qbp.fileId) {
+										productFileIds[qbp.productId] = qbp.fileId
+										// Store file info with URL if available
+										const fileUrl = qbp.fileUrl || (qbp.fileId ? getFileUrl(qbp.fileId) : undefined)
+										productFileInfos[qbp.productId] = {
+											id: qbp.fileId,
+											url: fileUrl
+										}
+										// If there's a fileId but no quantity entry, set quantity to 0 so the file upload field shows
+										if (qbp.quantity === undefined && !productQuantities[qbp.productId]) {
+											productQuantities[qbp.productId] = 0
+										}
+									}
 								}
 							})
 						}
@@ -277,12 +294,12 @@ export const OrderEditWizard = ({
 							additionalCostId: ac.id,
 							isIncluded: true,
 							quantity: existing.quantity || 0,
-							// Reverse discount to get original price
-							price: reverseDiscount(existing.price || 0, discount),
-							productQuantities: Object.keys(productQuantities).length > 0 ? productQuantities : undefined
+							productQuantities: Object.keys(productQuantities).length > 0 ? productQuantities : undefined,
+							productFileIds: Object.keys(productFileIds).length > 0 ? productFileIds : undefined,
+							productFileInfos: Object.keys(productFileInfos).length > 0 ? productFileInfos : undefined
 						}
 					}
-					return { additionalCostId: ac.id, isIncluded: false, quantity: 0, price: 0 }
+					return { additionalCostId: ac.id, isIncluded: false, quantity: 0 }
 				})
 			})
 		}
@@ -295,22 +312,18 @@ export const OrderEditWizard = ({
 			street: order?.street || '',
 			contactPerson: order?.contactPerson,
 			contactPersonContact: order?.contactPersonContact,
-			notes: order?.notes || '',
-			discount: order?.discount
+			notes: order?.notes || ''
 		})
 
 		if (order?.customerId) setCustomerIdWithType(order.customerId)
 
-		// Calculate base total from all steps and apply discount
-		const step1Total = order?.products?.reduce((sum, p) => sum + reverseDiscount(p.price || 0, discount), 0) || 0
-		const step2Total = order?.services?.reduce((sum, s) => sum + reverseDiscount(s.price || 0, discount), 0) || 0
-		const step3Total =
-			order?.additionalCosts?.reduce((sum, ac) => sum + reverseDiscount(ac.price || 0, discount), 0) || 0
-		const baseTotal = step1Total + step2Total + step3Total
-		const finalTotal = applyDiscount(baseTotal, discount)
-		setTotalAmountWithType(finalTotal)
+		// Mark data loading as complete once initialization is done
+		// Check if we have the order data (allProducts can be empty, that's fine)
+		if (order) {
+			setIsDataLoading(false)
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [order, acquisitionType])
+	}, [order, acquisitionType, allProducts])
 
 	const title = acquisitionType === AcquisitionTypeEnum.RENT ? 'Orders.editRent' : 'Orders.editBuy'
 	useNavbarItems({ title, backLabel: 'General.back' })
@@ -351,7 +364,8 @@ export const OrderEditWizard = ({
 
 	const handleBack = () => {
 		if (currentStep > 1) {
-			setWizardStepWithType(currentStep - 1)
+			// Always allow going back, bypass validation
+			setWizardStep(currentStep - 1, acquisitionType)
 		}
 	}
 
@@ -364,8 +378,6 @@ export const OrderEditWizard = ({
 				return service && (isRent ? service.isDefaultServiceForRent : service.isDefaultServiceForBuy)
 			})
 		}
-
-		const discount = step4Data.discount
 
 		return {
 			id: order.id,
@@ -381,8 +393,7 @@ export const OrderEditWizard = ({
 				.filter(p => Number(p.quantity) > 0)
 				.map(p => ({
 					productId: p.productId,
-					quantity: Number(p.quantity) || 0,
-					price: applyDiscount(Number(p.price) || 0, discount)
+					quantity: Number(p.quantity) || 0
 				})) as OrderProduct[],
 			services: (step2Data?.services || [])
 				.filter(s => s.isIncluded || isServiceDefault(s))
@@ -400,7 +411,6 @@ export const OrderEditWizard = ({
 					return {
 						serviceId: s.serviceId,
 						quantity: Number(s.quantity) || 0,
-						price: applyDiscount(Number(s.price) || 0, discount),
 						serviceLocationId: s.serviceLocationId,
 						quantityByProduct: quantityByProduct.length > 0 ? quantityByProduct : undefined
 					}
@@ -408,33 +418,67 @@ export const OrderEditWizard = ({
 			additionalCosts: (step3Data?.additionalCosts || [])
 				.filter(ac => ac.isIncluded)
 				.map(ac => {
-					const isOneTime =
-						additionalCosts.find(acc => acc.id === ac.additionalCostId)?.billingType === BillingTypeEnum.ONE_TIME
+					const additionalCost = additionalCosts.find(acc => acc.id === ac.additionalCostId)
+					const isOneTime = additionalCost?.billingType === BillingTypeEnum.ONE_TIME
+					const hasFileUpload = additionalCost?.enableUpload
 
-					// Convert productQuantities to quantityByProduct format
-					const quantityByProduct = ac.productQuantities
-						? Object.entries(ac.productQuantities)
-								.filter(([_, quantity]) => quantity > 0)
-								.map(([productId, quantity]) => ({
+					// Convert productQuantities to quantityByProduct format, including fileId if available
+					const quantityByProductMap = new Map<string, { productId: string; quantity: number; fileId?: string }>()
+
+					// Add entries from productQuantities
+					if (ac.productQuantities) {
+						Object.entries(ac.productQuantities)
+							.filter(([_, quantity]) => quantity > 0)
+							.forEach(([productId, quantity]) => {
+								quantityByProductMap.set(productId, {
 									productId,
-									quantity: Number(quantity) || 0
-								}))
-						: []
+									quantity: Number(quantity) || 0,
+									fileId: ac.productFileIds?.[productId] || undefined
+								})
+							})
+					}
+
+					// If enableUpload is true, add entries for products with fileId but no quantity entry
+					if (hasFileUpload && ac.productFileIds) {
+						Object.entries(ac.productFileIds)
+							.filter(([_, fileId]) => fileId && fileId !== '')
+							.forEach(([productId, fileId]) => {
+								// Only add if not already in the map (from productQuantities)
+								if (!quantityByProductMap.has(productId)) {
+									quantityByProductMap.set(productId, {
+										productId,
+										quantity: 1,
+										fileId: fileId
+									})
+								} else {
+									// Update existing entry to include fileId
+									const existing = quantityByProductMap.get(productId)!
+									quantityByProductMap.set(productId, {
+										...existing,
+										fileId: fileId
+									})
+								}
+							})
+					}
+
+					const quantityByProduct = Array.from(quantityByProductMap.values())
 
 					return {
 						additionalCostId: ac.additionalCostId,
 						quantity: isOneTime ? 1 : Number(ac.quantity) || 0,
-						price: applyDiscount(Number(ac.price) || 0, discount),
 						quantityByProduct: quantityByProduct.length > 0 ? quantityByProduct : undefined
 					}
 				}),
-			totalAmount,
-			notes: step4Data.notes?.trim() || null,
-			discount: step4Data.discount?.toString() === '' ? (null as any) : step4Data.discount
+			notes: step4Data.notes?.trim() || null
 		}
 	}
 
 	const onSubmit = async () => {
+		// Check if all steps are valid before submitting
+		if (!isValid()) {
+			return
+		}
+
 		if (!step1Data || !step4Data) return
 
 		const result = await updateOrder(buildPayload())
@@ -448,17 +492,20 @@ export const OrderEditWizard = ({
 		}
 	}
 
-	const handleStepSubmit = (e: FormEvent) => {
+	const handleStepSubmit = async (e: FormEvent) => {
 		e.preventDefault()
+
+		// Check if current step is valid before proceeding
+		if (!isValid()) {
+			return
+		}
+
 		if (currentStep === TOTAL_STEPS) {
 			onSubmit()
 		} else {
 			handleNext()
 		}
 	}
-
-	const totalAmountLabel = totalAmount === 0 ? '0' : totalAmount.toFixed(3)
-	const totalAmountDisplay = t('Orders.totalAmount') + ': ' + totalAmountLabel + '€'
 
 	const isValid = () => {
 		const { isValid: hasProducts } = validateOrderProducts(step1Data, allProducts, selectedItems)
@@ -469,15 +516,19 @@ export const OrderEditWizard = ({
 				? !!customerId
 				: currentStep === 2
 					? hasProducts
-					: currentStep === 5
-						? isValidOrderInfo && hasProducts
-						: true
+					: currentStep === 4
+						? step3FormValid
+						: currentStep === 5
+							? isValidOrderInfo && hasProducts
+							: true
 		}
 		return currentStep === 1
 			? hasProducts
-			: currentStep === 4
-				? !!(customerId && isValidOrderInfo && hasProducts)
-				: true
+			: currentStep === 3
+				? step3FormValid
+				: currentStep === 4
+					? !!(customerId && isValidOrderInfo && hasProducts)
+					: true
 	}
 
 	// Determine step title and description keys based on user role
@@ -501,12 +552,12 @@ export const OrderEditWizard = ({
 
 	return (
 		<>
-			{navbarIsLoading ? (
+			{navbarIsLoading || isDataLoading ? (
 				<Loader />
 			) : (
 				<form onSubmit={handleStepSubmit} style={{ flex: 1 }}>
 					<ManageJourneyWrapper
-						onStepClick={setWizardStepWithType}
+						onStepClick={handleStepNavigation}
 						stepTitleKey={stepTitleKey}
 						stepDescriptionKey={stepDescriptionKey}>
 						<Stack gap={6}>
@@ -518,7 +569,6 @@ export const OrderEditWizard = ({
 									products={allProducts || []}
 									selectedItems={selectedItems}
 									acquisitionType={acquisitionType}
-									order={order}
 								/>
 							)}
 							{((isAdmin && currentStep === 3) || (!isAdmin && currentStep === 2)) && (
@@ -535,6 +585,7 @@ export const OrderEditWizard = ({
 									acquisitionType={acquisitionType}
 									order={order}
 									products={selectedItems}
+									onValidationChange={setStep3FormValid}
 								/>
 							)}
 							{((isAdmin && currentStep === 5) || (!isAdmin && currentStep === 4)) && (
@@ -550,7 +601,6 @@ export const OrderEditWizard = ({
 					<WizardFooter
 						currentStep={currentStep}
 						totalSteps={TOTAL_STEPS}
-						totalAmountLabel={totalAmountDisplay}
 						onBack={() => cancelDialog.toggleOpened()}
 						onPrevious={handleBack}
 						isValid={isValid()}

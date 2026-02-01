@@ -3,7 +3,7 @@ import { OrderAddWizard } from './OrderAddWizard'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { getEvents } from 'api/services/events'
 import { getAdditionalCosts } from 'api/services/additionalCosts'
-import { getProducts } from 'api/services/products'
+import { getProducts, getMyProducts } from 'api/services/products'
 import { getServiceLocationsOptions } from 'api/services/services'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from 'app/api/auth/[...nextauth]/auth'
@@ -55,6 +55,21 @@ const Page = async ({ searchParams }: Props) => {
 	const session = await getServerSession(authOptions)
 	const userRole = session?.user?.roles[0]?.name
 	const isAdmin = await hasRoleAccess(userRole, [UserRoleEnum.ADMIN, UserRoleEnum.MASTER_ADMIN])
+	const isClient = userRole === UserRoleEnum.CLIENT
+	const isRent = searchParams.acquisitionType === AcquisitionTypeEnum.RENT
+
+	// Fetch My products only for clients and rent orders
+	const myProductsData = isClient && isRent ? await getMyProducts() : null
+	const transformedMyProductsArray =
+		myProductsData?.products?.map((product: any) => {
+			return {
+				...product,
+				id: product.id,
+				name: product.name ?? '-',
+				description: product.description ?? '-',
+				images: product.images?.map((image: any) => image.url) ?? []
+			}
+		}) || []
 
 	let serviceLocations: Base[] = []
 	if (isAdmin) {
@@ -78,6 +93,7 @@ const Page = async ({ searchParams }: Props) => {
 			events={eventsData?.events}
 			additionalCosts={additionalCostsData?.additionalCosts}
 			allProducts={transformedProductsArray}
+			myProducts={transformedMyProductsArray}
 			serviceLocations={serviceLocations}
 		/>
 	)

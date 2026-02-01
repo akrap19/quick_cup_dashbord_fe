@@ -6,7 +6,6 @@ export interface Step1ProductsData {
 	products: Array<{
 		productId: string
 		quantity: number
-		price: number
 	}>
 }
 
@@ -15,7 +14,6 @@ export interface Step2ServicesData {
 		serviceId: string
 		isIncluded: boolean
 		quantity: number
-		price: number
 		productQuantities?: Record<string, number>
 		serviceLocationId?: string
 	}>
@@ -26,8 +24,9 @@ export interface Step3AdditionalCostsData {
 		additionalCostId: string
 		isIncluded: boolean
 		quantity: number
-		price: number
 		productQuantities?: Record<string, number>
+		productFileIds?: Record<string, string>
+		productFileInfos?: Record<string, { id: string; name?: string; url?: string }>
 	}>
 }
 
@@ -40,7 +39,6 @@ export interface Step4OrderInformationData {
 	contactPerson?: string
 	contactPersonContact?: string
 	notes?: string
-	discount?: number
 }
 
 interface OrderData {
@@ -50,7 +48,6 @@ interface OrderData {
 	step2Data?: Step2ServicesData
 	step3Data?: Step3AdditionalCostsData
 	step4Data?: Step4OrderInformationData
-	totalAmount: number
 }
 
 type OrderWizardStore = {
@@ -64,7 +61,6 @@ type OrderWizardStore = {
 	getStep2Data: (type: AcquisitionTypeEnum) => Step2ServicesData | undefined
 	getStep3Data: (type: AcquisitionTypeEnum) => Step3AdditionalCostsData | undefined
 	getStep4Data: (type: AcquisitionTypeEnum) => Step4OrderInformationData | undefined
-	getTotalAmount: (type: AcquisitionTypeEnum) => number
 	// Setters that set data for a specific acquisition type
 	setCurrentStep: (step: number, type: AcquisitionTypeEnum) => void
 	setCustomerId: (id: string, type: AcquisitionTypeEnum) => void
@@ -72,7 +68,6 @@ type OrderWizardStore = {
 	setStep2Data: (data: Step2ServicesData, type: AcquisitionTypeEnum) => void
 	setStep3Data: (data: Step3AdditionalCostsData, type: AcquisitionTypeEnum) => void
 	setStep4Data: (data: Step4OrderInformationData, type: AcquisitionTypeEnum) => void
-	setTotalAmount: (amount: number, type: AcquisitionTypeEnum) => void
 	setAcquisitionType: (type: AcquisitionTypeEnum) => void
 	clearWizard: (type?: AcquisitionTypeEnum) => void
 }
@@ -83,8 +78,7 @@ const defaultOrderData: OrderData = {
 	step1Data: undefined,
 	step2Data: undefined,
 	step3Data: undefined,
-	step4Data: undefined,
-	totalAmount: 0
+	step4Data: undefined
 }
 
 export const useOrderWizardStore = create<OrderWizardStore>()(
@@ -117,10 +111,6 @@ export const useOrderWizardStore = create<OrderWizardStore>()(
 			getStep4Data: type => {
 				const order = type === AcquisitionTypeEnum.BUY ? get().buyOrder : get().rentOrder
 				return order.step4Data
-			},
-			getTotalAmount: type => {
-				const order = type === AcquisitionTypeEnum.BUY ? get().buyOrder : get().rentOrder
-				return order.totalAmount
 			},
 			// Setters
 			setCurrentStep: (step, type) =>
@@ -164,13 +154,6 @@ export const useOrderWizardStore = create<OrderWizardStore>()(
 						return { buyOrder: { ...state.buyOrder, step4Data: data } }
 					}
 					return { rentOrder: { ...state.rentOrder, step4Data: data } }
-				}),
-			setTotalAmount: (amount, type) =>
-				set(state => {
-					if (type === AcquisitionTypeEnum.BUY) {
-						return { buyOrder: { ...state.buyOrder, totalAmount: amount } }
-					}
-					return { rentOrder: { ...state.rentOrder, totalAmount: amount } }
 				}),
 			setAcquisitionType: type => set({ currentAcquisitionType: type }),
 			clearWizard: type => {

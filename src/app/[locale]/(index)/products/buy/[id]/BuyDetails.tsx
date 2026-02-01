@@ -23,6 +23,7 @@ import { replaceNullInListWithDash } from '@/utils/replaceNullInListWithDash'
 import { Button } from '@/components/inputs/button'
 import { useHasRoleAccess } from '@/hooks/use-has-role-access'
 import { UserRoleEnum } from 'enums/userRoleEnum'
+import { DesignTemplateDisplay } from '@/components/custom/design-template-display'
 
 interface Props {
 	product: Product
@@ -32,6 +33,7 @@ export const BuyDetails = ({ product }: Props) => {
 	const t = useTranslations()
 	const [showServicePriceList, setShowServicePriceList] = useState(false)
 	const title = product?.name ?? '-'
+	const isClient = useHasRoleAccess([UserRoleEnum.CLIENT])
 
 	useNavbarItems({
 		title,
@@ -75,23 +77,29 @@ export const BuyDetails = ({ product }: Props) => {
 				</Text>
 			</Stack>
 			{product?.images && product?.images.length > 0 && (
-				<Inline justifyContent="center" alignItems="center">
-					<Box style={{ width: '242px', height: '300px' }}>
-						<ItemCarousel>
-							{product?.images?.map((item: any) => (
-								<Image
-									key={item}
-									alt="quick cup image"
-									src={item?.url}
-									width={242}
-									height={300}
-									style={{ objectFit: 'contain' }}
-									priority
-								/>
-							))}
-						</ItemCarousel>
-					</Box>
-				</Inline>
+				<Stack gap={4}>
+					<Label>{t('General.images')}</Label>
+					<Inline justifyContent="center" alignItems="center">
+						<Box style={{ width: '242px', height: '300px' }}>
+							<ItemCarousel>
+								{product?.images?.map((item: any) => (
+									<Image
+										key={item}
+										alt="quick cup image"
+										src={item?.url}
+										width={242}
+										height={300}
+										style={{ objectFit: 'contain' }}
+										priority
+									/>
+								))}
+							</ItemCarousel>
+						</Box>
+					</Inline>
+				</Stack>
+			)}
+			{product?.designTemplate && (
+				<DesignTemplateDisplay productId={product.id} designTemplate={product.designTemplate} />
 			)}
 			<Stack gap={4}>
 				<Label>{t('General.description')}</Label>
@@ -103,15 +111,17 @@ export const BuyDetails = ({ product }: Props) => {
 					}}
 				/>
 			</Stack>
-			<Box style={{ gridColumn: 'span 2' }}>
-				<DataTable
-					columns={columns}
-					data={replaceNullInListWithDash(product?.prices ?? [])}
-					enableCheckboxes={false}
-					enableRowClick={false}
-					equalColumnWidths={true}
-				/>
-			</Box>
+			{!isClient && product?.prices && product?.prices.length > 0 && (
+				<Box style={{ gridColumn: 'span 2' }}>
+					<DataTable
+						columns={columns}
+						data={replaceNullInListWithDash(product?.prices ?? [])}
+						enableCheckboxes={false}
+						enableRowClick={false}
+						equalColumnWidths={true}
+					/>
+				</Box>
+			)}
 			{product?.productStates && product?.productStates.length > 0 && (
 				<Box style={{ gridColumn: 'span 2' }}>
 					<Stack gap={4}>
@@ -126,7 +136,7 @@ export const BuyDetails = ({ product }: Props) => {
 					</Stack>
 				</Box>
 			)}
-			{product.servicePrices && product.servicePrices.length > 0 && (
+			{!isClient && product?.servicePrices && product?.servicePrices.length > 0 && (
 				<Box style={{ gridColumn: 'span 2', width: '100%' }}>
 					<Stack gap={6}>
 						<div>

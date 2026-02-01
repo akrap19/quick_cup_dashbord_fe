@@ -9,6 +9,8 @@ export interface AdditionalCosts {
 	billingType: BillingTypeEnum
 	methodOfPayment: MethodOfPayment
 	acquisitionType: AcquisitionTypeEnum
+	maxPieces?: number
+	enableUpload?: boolean
 	price: number
 	calculationStatus?: ProductStateStatusEnum
 }

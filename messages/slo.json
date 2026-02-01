@@ -163,6 +163,11 @@
 		"logOut": "Odjava",
 		"requiredFieldWarning": "Polja označena z zvezdico (*) so obvezna",
 		"uploadAudio": "Naloži audio",
+		"uploadFile": "Naloži datoteko",
+		"fileUploadInstructions": "(največja velikost 10MB)",
+		"designTemplate": "Predloga oblikovanja",
+		"download": "Prenesi",
+		"fileUploadError": "Največja velikost za datoteke je 10MB",
 		"maxPhotoUploadCountinstructions": "Naloži največ 10 fotografij",
 		"photoUploadInstructions": "(največja velikost na fotografijo 10MB)",
 		"photoUploadError": "Največja velikost za slike je 10MB",
@@ -208,7 +213,8 @@
 		"welcomeDescription": "Upravljajte z naročili, izdelki, storitvami, strankami in dogodki na enem mestu. Ustvarjajte in spremljajte naročila za nakup in najem, upravljajte zalogo izdelkov, konfigurirajte storitve in lokacije, upravljajte odnose s strankami in učinkovito organizirajte dogodke.",
 		"welcomeDescriptionAdmin": "Upravljajte z naročili, izdelki, storitvami, strankami in dogodki na enem mestu. Ustvarjajte in spremljajte naročila za nakup in najem, upravljajte zalogo izdelkov, konfigurirajte storitve in lokacije storitev.",
 		"welcomeDescriptionService": "Vnesite stanje izdelka, upravljajte z naročili, ki so vam dodeljena, posodabljajte status naročil, vnesite dejansko količino storitev in dodatnih stroškov v naročilih. Pregledajte in upravljajte naročila od prejema plačila do zaključka.",
-		"welcomeDescriptionClient": "Raziščite ponudbo izdelkov in njihove cene, ustvarite svoje dogodke in upravljajte z njimi, izdelajte naročila, pregledajte aktivna in pretekla naročila ter ostanite vedno posodobljeni o statusu in napredku svojih naročil."
+		"welcomeDescriptionClient": "Raziščite ponudbo izdelkov in njihove cene, ustvarite svoje dogodke in upravljajte z njimi, izdelajte naročila, pregledajte aktivna in pretekla naročila ter ostanite vedno posodobljeni o statusu in napredku svojih naročil.",
+		"nothingChosen": "Nič ni bilo izbrano"
 	},
 	"Product": {
 		"productStates": "Stanja izdelka",
@@ -416,7 +422,10 @@
 		"tableName": "Vnos za najem",
 		"showServicePriceList": "Prikaži seznam cen storitev",
 		"hideServicePriceList": "Skrij seznam cen storitev",
-		"createRentOrder": "Ustvari naročilo za najem"
+		"createRentOrder": "Ustvari naročilo za najem",
+		"myProducts": "Moji izdelki",
+		"usersProducts": "Uporabniški izdelki",
+		"productsToBeRented": "Izdelki za najem"
 	},
 	"Events": {
 		"add": "Dodaj dogodek",
@@ -536,6 +545,8 @@
 		"tableName": "Ime",
 		"billingType": "Tip obračuna",
 		"billingTypePlaceholder": "Izberi tip obračuna",
+		"maxPieces": "Maksimalno kosov",
+		"maxPiecesPlaceholder": "Vnesi maksimalno kosov",
 		"namePlaceholder": "npr. dizajn",
 		"by_piece": "Po kosu",
 		"one_time": "Enkratno",
@@ -547,6 +558,7 @@
 		"acquisitionTypePlaceholder": "Izberi tip pridobitve",
 		"buy": "Nakup",
 		"rent": "Najem",
+		"enableUpload": "Omogoči nalaganje",
 		"price": "Cena",
 		"includeInFinalProductCalculation": "Vključi v končni izračun izdelka",
 		"finalProductCalculationStatus": "Status končnega izračuna izdelka",

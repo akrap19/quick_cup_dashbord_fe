@@ -1,10 +1,11 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import { useSession } from 'next-auth/react'
 
 import { EditButton } from '@/components/custom/button/edit-button'
 import { TabsWrapper } from '@/components/custom/layouts/TabsWrapper'
-import { Text } from '@/components/typography/text'
+import { Heading } from '@/components/typography/heading'
 import { Box } from '@/components/layout/box'
 import { useNavbarItems } from '@/hooks/use-navbar-items'
 import { Order } from 'api/models/order/order'
@@ -17,6 +18,7 @@ import { OrderDetailsFooter } from './OrderDetailsFooter'
 import { OrderInformationDetails } from './OrderInformationDetails'
 import { useNavbarItemsStore } from '@/store/navbar'
 import { Loader } from '@/components/custom/loader/Loader'
+import { NoResult } from '@/components/custom/no-result/NoResult'
 
 interface Props {
 	order: Order
@@ -24,15 +26,25 @@ interface Props {
 
 export const OrderDetails = ({ order }: Props) => {
 	const t = useTranslations()
-	const totalAmount = order.totalAmount === 0 ? 0 : order.totalAmount?.toFixed(3)
-	const totalAmountLabel = t('Orders.totalAmount') + ': ' + totalAmount + '€'
-
+	const { data: session } = useSession()
 	const { navbarIsLoading } = useNavbarItemsStore()
 	useNavbarItems({
 		title: order.orderNumber,
 		backLabel: 'Orders.back',
 		actionButton: <EditButton buttonLabel="Orders.edit" buttonLink={ROUTES.EDIT_ORDERS + order?.id} />
 	})
+
+	const currentUserId = session?.user?.userId
+
+	// Group products by ownership
+	const productsToRent =
+		order.products?.filter(orderProduct => !orderProduct.product?.ownedBy || orderProduct.product.ownedBy === '') || []
+	const ownedProducts =
+		order.products?.filter(orderProduct => orderProduct.product?.ownedBy && orderProduct.product.ownedBy !== '') || []
+
+	// Determine ownership label for owned products section
+	const hasOwnedByCurrentUser = ownedProducts.some(orderProduct => orderProduct.product?.ownedBy === currentUserId)
+	const ownershipSectionTitle = hasOwnedByCurrentUser ? t('Rent.myProducts') : t('Rent.usersProducts')
 
 	return navbarIsLoading ? (
 		<Box style={{ width: 'calc(100vw - 400px)' }}>
@@ -50,17 +62,37 @@ export const OrderDetails = ({ order }: Props) => {
 
 				<Tabs.Panel value="products">
 					<TabsWrapper>
-						{order.products && order.products.length > 0 ? (
-							order.products.map(orderProduct => (
-								<Box key={orderProduct.id || orderProduct.productId}>
-									<OrderProductDetailsCard orderProduct={orderProduct} />
+						{/* Products to be rented section */}
+						{productsToRent.length > 0 && (
+							<>
+								{productsToRent.map(orderProduct => (
+									<Box key={orderProduct.id || orderProduct.productId}>
+										<OrderProductDetailsCard orderProduct={orderProduct} />
+									</Box>
+								))}
+							</>
+						)}
+
+						{/* Owned products section */}
+						{ownedProducts.length > 0 && (
+							<>
+								<Box style={{ gridColumn: 'span 2' }}>
+									<Heading variant="h4" color="neutral.900">
+										{ownershipSectionTitle}
+									</Heading>
 								</Box>
-							))
-						) : (
+								{ownedProducts.map(orderProduct => (
+									<Box key={orderProduct.id || orderProduct.productId}>
+										<OrderProductDetailsCard orderProduct={orderProduct} />
+									</Box>
+								))}
+							</>
+						)}
+
+						{/* No products message */}
+						{productsToRent.length === 0 && ownedProducts.length === 0 && (
 							<Box style={{ gridColumn: 'span 2' }}>
-								<Text fontSize="small" color="neutral.600">
-									{t('General.noData') || 'No products found'}
-								</Text>
+								<NoResult size="large" noResoultMessage="General.nothingChosen" />
 							</Box>
 						)}
 					</TabsWrapper>
@@ -74,9 +106,7 @@ export const OrderDetails = ({ order }: Props) => {
 							</Box>
 						) : (
 							<Box style={{ gridColumn: 'span 2' }}>
-								<Text fontSize="small" color="neutral.600">
-									{t('General.noData') || 'No services found'}
-								</Text>
+								<NoResult size="large" noResoultMessage="General.nothingChosen" />
 							</Box>
 						)}
 					</TabsWrapper>
@@ -90,9 +120,7 @@ export const OrderDetails = ({ order }: Props) => {
 							</Box>
 						) : (
 							<Box style={{ gridColumn: 'span 2' }}>
-								<Text fontSize="small" color="neutral.600">
-									{t('General.noData') || 'No additional costs found'}
-								</Text>
+								<NoResult size="large" noResoultMessage="General.nothingChosen" />
 							</Box>
 						)}
 					</TabsWrapper>
@@ -102,7 +130,7 @@ export const OrderDetails = ({ order }: Props) => {
 					<OrderInformationDetails order={order} />
 				</Tabs.Panel>
 			</Tabs>
-			<OrderDetailsFooter totalAmountLabel={totalAmountLabel} status={order?.status || ''} />
+			<OrderDetailsFooter status={order?.status || ''} />
 		</>
 	)
 }

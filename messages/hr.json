@@ -163,6 +163,11 @@
 		"logOut": "Odjava",
 		"requiredFieldWarning": "Polja označena zvjezdicom (*) su obavezna",
 		"uploadAudio": "Učitaj audio",
+		"uploadFile": "Učitaj datoteku",
+		"fileUploadInstructions": "(maksimalna veličina 10MB)",
+		"designTemplate": "Predložak dizajna",
+		"download": "Preuzmi",
+		"fileUploadError": "Maksimalna veličina za datoteke je 10MB",
 		"maxPhotoUploadCountinstructions": "Učitaj najviše 10 fotografija",
 		"photoUploadInstructions": "(maksimalna veličina po fotografiji 10MB)",
 		"photoUploadError": "Maksimalna veličina za slike je 10MB",
@@ -208,7 +213,8 @@
 		"welcomeDescription": "Upravljajte narudžbama, proizvodima, uslugama, klijentima i događajima na jednom mjestu. Stvarajte i pratite narudžbe za kupnju i posudbu, upravljajte zalihama proizvoda, konfigurirajte usluge i lokacije, upravljajte odnosima s klijentima i učinkovito organizirajte događaje.",
 		"welcomeDescriptionAdmin": "Upravljajte narudžbama, proizvodima, uslugama, klijentima i događajima na jednom mjestu. Stvarajte i pratite narudžbe za kupnju i posudbu, upravljajte zalihama proizvoda, konfigurirajte usluge i lokacijama usluga.",
 		"welcomeDescriptionService": "Unosite stanje proizvoda, upravljajte narudžbama koje su vam dodijeljene, ažurirajte status narudžbi, unosite stvarnu kolicinu servisa i dodatnih troskova u narudžbama. Pregledajte i upravljajte narudžbama od primitka plaćanja do završetka.",
-		"welcomeDescriptionClient": "Istražite ponudu proizvoda i njihove cijene, kreirajte vlastite evente i upravljajte njima, izrađujte narudžbe, pregledavajte aktivne i prethodne narudžbe te budite uvijek ažurirani o statusu i napretku svojih narudžbi."
+		"welcomeDescriptionClient": "Istražite ponudu proizvoda i njihove cijene, kreirajte vlastite evente i upravljajte njima, izrađujte narudžbe, pregledavajte aktivne i prethodne narudžbe te budite uvijek ažurirani o statusu i napretku svojih narudžbi.",
+		"nothingChosen": "Ništa nije odabrano"
 	},
 	"Product": {
 		"productStates": "Stanja proizvoda",
@@ -416,7 +422,10 @@
 		"tableName": "Unos za posudbu",
 		"showServicePriceList": "Prikaži listu cijena usluga",
 		"hideServicePriceList": "Sakrij listu cijena usluga",
-		"createRentOrder": "Kreiraj narudžbu za posudbu"
+		"createRentOrder": "Kreiraj narudžbu za posudbu",
+		"myProducts": "Moji proizvodi",
+		"usersProducts": "Korisnički proizvodi",
+		"productsToBeRented": "Proizvodi za posudbu"
 	},
 	"Events": {
 		"add": "Dodaj događaj",
@@ -536,6 +545,8 @@
 		"tableName": "Naziv",
 		"billingType": "Tip naplate",
 		"billingTypePlaceholder": "Odaberi tip naplate",
+		"maxPieces": "Maksimalno komada",
+		"maxPiecesPlaceholder": "Unesi maksimalno komada",
 		"namePlaceholder": "npr. dizajn",
 		"by_piece": "Po komadu",
 		"one_time": "Jednokratno",
@@ -547,6 +558,7 @@
 		"acquisitionTypePlaceholder": "Odaberi tip nabave",
 		"buy": "Kupnja",
 		"rent": "Posudba",
+		"enableUpload": "Omogući učitavanje",
 		"price": "Cijena",
 		"includeInFinalProductCalculation": "Uključi u konačni izračun proizvoda",
 		"finalProductCalculationStatus": "Status konačnog izračuna proizvoda",

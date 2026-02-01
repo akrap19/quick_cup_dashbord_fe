@@ -10,6 +10,7 @@ import Image from 'next/image'
 import { Button } from '@/components/inputs/button'
 import { PlainPlusIcon } from '@/components/icons/plain-plus-icon'
 import { MinusIcon } from '@/components/icons/minus-icon'
+import { DownloadIcon } from '@/components/icons/download-icon'
 import { Text } from '@/components/typography/text'
 import { Stack } from '@/components/layout/stack'
 import { Box } from '@/components/layout/box'
@@ -21,8 +22,9 @@ import { useBuyStore } from '@/store/buy'
 import { useRentStore } from '@/store/rent'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { OrderProductCardContainer } from '@/components/custom/order-product-card-container'
-import { useOrderWizardStore } from '@/store/order-wizard'
-import { applyDiscount } from '@/utils/discount'
+import { downloadDesignTemplate } from 'api/services/products'
+import { tokens } from '@/style/theme.css'
+import { Tooltip } from '@/components/overlay/tooltip'
 
 interface OrderProductCardProps {
 	product: Product
@@ -38,14 +40,8 @@ export const OrderProductCard = ({ product, index, acquisitionType }: OrderProdu
 	const rentStore = useRentStore()
 	const isRent = acquisitionType === AcquisitionTypeEnum.RENT
 	const store = isRent ? rentStore : buyStore
-	const { getStep4Data } = useOrderWizardStore()
-	const step4Data = getStep4Data(acquisitionType)
-	const discount = step4Data?.discount
 	const quantityFieldName = index >= 0 ? `products.${index}.quantity` : ''
 	const productIdFieldName = index >= 0 ? `products.${index}.productId` : ''
-	const priceFieldName = index >= 0 ? `products.${index}.price` : ''
-	const priceValue = useWatch({ control: form.control, name: priceFieldName as any })
-	const currentPrice = index >= 0 ? priceValue || 0 : 0
 	const productIdInForm = useWatch({ control: form.control, name: productIdFieldName as any })
 	const quantityValue = useWatch({ control: form.control, name: quantityFieldName as any })
 
@@ -76,7 +72,7 @@ export const OrderProductCard = ({ product, index, acquisitionType }: OrderProdu
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isProductInForm, isProductInStore, product.id])
 
-	// Clear quantity and price when product is deselected
+	// Clear quantity when product is deselected
 	useEffect(() => {
 		if (!isProductSelected) {
 			if (index >= 0) {
@@ -84,7 +80,6 @@ export const OrderProductCard = ({ product, index, acquisitionType }: OrderProdu
 				// Only clear if this field actually belongs to this product
 				if (currentProductId === product.id || !currentProductId) {
 					form.setValue(quantityFieldName as any, undefined, { shouldValidate: false })
-					form.setValue(priceFieldName as any, 0, { shouldValidate: false })
 				}
 			} else if (quantityValue !== undefined && quantityValue !== null && quantityValue !== '') {
 				// If index is -1 but quantity still has a value, clear it from any potential form field
@@ -93,14 +88,11 @@ export const OrderProductCard = ({ product, index, acquisitionType }: OrderProdu
 				const productIndex = allProducts.findIndex((p: any) => p?.productId === product.id)
 				if (productIndex >= 0) {
 					form.setValue(`products.${productIndex}.quantity`, undefined, { shouldValidate: false })
-					form.setValue(`products.${productIndex}.price`, 0, { shouldValidate: false })
 				}
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isProductSelected, index, product.id, quantityValue])
-
-	const totalPrice = applyDiscount(currentPrice, discount)
 
 	const quantityOptions = useMemo(() => {
 		if (!product.quantityPerUnit || product.quantityPerUnit <= 0) {
@@ -145,7 +137,6 @@ export const OrderProductCard = ({ product, index, acquisitionType }: OrderProdu
 
 			form.setValue(productIdFieldName as any, undefined, { shouldValidate: false })
 			form.setValue(quantityFieldName as any, undefined, { shouldValidate: false })
-			form.setValue(priceFieldName as any, 0, { shouldValidate: false })
 		} else {
 			store.addItem(product)
 		}
@@ -191,8 +182,16 @@ export const OrderProductCard = ({ product, index, acquisitionType }: OrderProdu
 		</>
 	)
 
+	const handleDownloadDesignTemplate = async (e: React.MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault()
+		e.stopPropagation()
+		if (product.designTemplate) {
+			await downloadDesignTemplate(product.id, product.designTemplate.name)
+		}
+	}
+
 	const rightSection = (
-		<Stack alignItems="flex-end" justifyContent="space-between" style={{ height: '150px' }}>
+		<Stack alignItems="flex-end" justifyContent="space-between" gap={2} style={{ height: '150px' }}>
 			<Button
 				variant={isProductSelected ? 'destructive' : 'success'}
 				size="icon"
@@ -204,9 +203,21 @@ export const OrderProductCard = ({ product, index, acquisitionType }: OrderProdu
 					<PlainPlusIcon size="small" color="shades.00" />
 				)}
 			</Button>
-			<Text color="neutral.900" fontSize="medium" fontWeight="semibold">
-				{totalPrice?.toFixed(3)}€
-			</Text>
+
+			{product.designTemplate && !isRent ? (
+				<Tooltip content={`${t('General.download')} ${t('General.designTemplate').toLowerCase()}`} side="top">
+					<Button
+						variant="primary"
+						size="icon"
+						onClick={handleDownloadDesignTemplate}
+						type="button"
+						style={{ fill: tokens.colors['primary.500'] }}>
+						<DownloadIcon size="small" />
+					</Button>
+				</Tooltip>
+			) : (
+				<div />
+			)}
 		</Stack>
 	)
 

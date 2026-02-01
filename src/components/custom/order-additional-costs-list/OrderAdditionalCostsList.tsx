@@ -8,6 +8,8 @@ import { OrderAdditionalCost } from 'api/models/order/orderAdditionalCost'
 import { OrderProduct } from 'api/models/order/orderProduct'
 import { useTranslations } from 'next-intl'
 import { useMemo } from 'react'
+import { getFileUrl } from '@/utils/downloadFile'
+import { FilePreview } from '@/components/custom/file-preview'
 
 interface OrderAdditionalCostsListProps {
 	additionalCosts: OrderAdditionalCost[]
@@ -65,11 +67,6 @@ export const OrderAdditionalCostsList = ({ additionalCosts, products = [] }: Ord
 											)}
 										</Stack>
 									</Box>
-									<Box display="flex" alignItems="flex-start" paddingTop={1}>
-										<Text color="neutral.900" fontSize="medium" fontWeight="semibold">
-											{orderAdditionalCost.price.toFixed(3)}€
-										</Text>
-									</Box>
 								</Inline>
 
 								{/* Show product breakdown if we have quantityByProduct */}
@@ -77,34 +74,41 @@ export const OrderAdditionalCostsList = ({ additionalCosts, products = [] }: Ord
 									<Box paddingLeft={2}>
 										<Stack gap={2}>
 											{orderAdditionalCost
-												.quantityByProduct!.filter(qbp => qbp.quantity > 0)
+												.quantityByProduct!.filter(qbp => {
+													const quantity = qbp.quantity ?? 0
+													return quantity > 0 || !!qbp.fileId || !!qbp.fileUrl
+												})
 												.map(qbp => {
 													const product = productsMap.get(qbp.productId)
 													const productName =
 														product?.product?.name || product?.product?.productName || t('General.product')
-
-													// Calculate price per product proportionally
-													const productPrice =
-														totalQuantity > 0 ? (orderAdditionalCost.price * qbp.quantity) / totalQuantity : 0
+													const fileId = qbp.fileId
+													// Use fileUrl if available, otherwise construct from fileId
+													const fileUrl = qbp.fileUrl || (fileId ? getFileUrl(fileId) : null)
+													const quantity = qbp.quantity ?? 0
 
 													return (
-														<Inline key={qbp.productId} justifyContent="space-between" alignItems="center" gap={3}>
-															<Box display="flex" style={{ flex: 1 }}>
-																<Stack gap={1}>
-																	<Text color="neutral.700" fontSize="small" fontWeight="semibold">
-																		{productName}
-																	</Text>
-																	<Text color="neutral.600" fontSize="small">
-																		{t('General.quantity')}: {Math.round(qbp.quantity)}
-																	</Text>
-																</Stack>
-															</Box>
-															<Box display="flex" alignItems="flex-start">
-																<Text color="neutral.700" fontSize="small" fontWeight="semibold">
-																	{productPrice.toFixed(3)}€
-																</Text>
-															</Box>
-														</Inline>
+														<Stack key={qbp.productId} gap={2}>
+															<Inline justifyContent="space-between" alignItems="center" gap={3}>
+																<Box display="flex" style={{ flex: 1 }}>
+																	<Stack gap={1}>
+																		<Text color="neutral.700" fontSize="small" fontWeight="semibold">
+																			{productName}
+																		</Text>
+																		{quantity > 0 && (
+																			<Text color="neutral.600" fontSize="small">
+																				{t('General.quantity')}: {Math.round(quantity)}
+																			</Text>
+																		)}
+																	</Stack>
+																</Box>
+															</Inline>
+															{fileUrl && fileId && (
+																<Box paddingLeft={2}>
+																	<FilePreview fileId={fileId} fileUrl={fileUrl} />
+																</Box>
+															)}
+														</Stack>
 													)
 												})}
 										</Stack>

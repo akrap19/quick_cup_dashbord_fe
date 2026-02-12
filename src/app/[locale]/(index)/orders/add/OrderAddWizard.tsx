@@ -64,6 +64,7 @@ export const OrderAddWizard = ({
 	const { push, refresh } = useRouter()
 	const cancelDialog = useOpened()
 	const { navbarIsLoading } = useNavbarItemsStore()
+	const [isSubmitting, setIsSubmitting] = useState(false)
 	const isRent = acquisitionType === AcquisitionTypeEnum.RENT
 	const buyStore = useBuyStore()
 	const rentStore = useRentStore()
@@ -163,6 +164,8 @@ export const OrderAddWizard = ({
 		if (!step1Data || !step4Data) {
 			return
 		}
+
+		setIsSubmitting(true)
 
 		const payload: OrderPayload = {
 			acquisitionType: step4Data.acquisitionType || acquisitionType,
@@ -281,6 +284,8 @@ export const OrderAddWizard = ({
 			}, 2500)
 			push(ROUTES.ORDERS)
 			refresh()
+		} else {
+			setIsSubmitting(false)
 		}
 	}
 
@@ -409,6 +414,7 @@ export const OrderAddWizard = ({
 						onBack={() => cancelDialog.toggleOpened()}
 						onPrevious={handleBack}
 						isValid={isValid()}
+						isSubmitting={isSubmitting}
 					/>
 				</form>
 			)}

@@ -55,7 +55,9 @@ const ServiceLocationAdd = ({ serviceId }: Props) => {
 		if (result?.message === 'OK') {
 			SuccessToast(t('ServiceLocations.successfullyCreated'))
 			refresh()
-			back()
+			setTimeout(() => {
+				back()
+			}, 500)
 		}
 	}
 

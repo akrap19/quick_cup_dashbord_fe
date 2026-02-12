@@ -50,6 +50,7 @@ const ClientAdd = ({ productsPrices }: Props) => {
 	const confirmDialog = useOpened()
 	const cancelDialog = useOpened()
 	const [showProducts, setShowProducts] = useState(false)
+	const [isSubmitting, setIsSubmitting] = useState(false)
 	useNavbarItems({ title: 'Clients.add', backLabel: 'Clients.back' })
 
 	const initialProductPrices = useMemo(
@@ -87,6 +88,7 @@ const ClientAdd = ({ productsPrices }: Props) => {
 	}
 
 	const onSubmit = async () => {
+		setIsSubmitting(true)
 		const data = form.getValues()
 
 		const hasPriceChanged = (initialPrice: any, currentPrice: any) => {
@@ -143,6 +145,8 @@ const ClientAdd = ({ productsPrices }: Props) => {
 			SuccessToast(t('Clients.successfullyCreated'))
 			push(ROUTES.CLIENTS)
 			refresh()
+		} else {
+			setIsSubmitting(false)
 		}
 	}
 
@@ -165,6 +169,7 @@ const ClientAdd = ({ productsPrices }: Props) => {
 				title="Clients.addNew"
 				description="Clients.addClientDescription"
 				buttonLabel="General.addAndInvite"
+				buttonActionLoading={isSubmitting}
 				confirmDialog={confirmDialog}
 				onSubmit={onSubmit}
 			/>

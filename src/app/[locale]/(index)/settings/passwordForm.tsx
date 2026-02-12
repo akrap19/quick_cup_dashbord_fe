@@ -104,11 +104,11 @@ export const PasswordForm = () => {
 							</Box>
 							<Divider />
 							<Inline gap={4}>
-								<Button variant="secondary" onClick={() => form.reset()}>
+								<Button variant="secondary" onClick={() => form.reset()} disabled={form.formState.isSubmitting}>
 									{t('General.reset')}
 								</Button>
-								<Button type="submit" disabled={!form.formState.isValid}>
-									{t('Settings.updatePassword')}
+								<Button type="submit" disabled={!form.formState.isValid || form.formState.isSubmitting}>
+									{t(form.formState.isSubmitting ? 'General.loading' : 'Settings.updatePassword')}
 								</Button>
 							</Inline>
 						</Stack>

@@ -22,7 +22,12 @@ export const Actions = ({ customSubmitLabel, disableSubmit, customHandleBack }: 
 	const formContext = useFormContext()
 	const { currentStep, setCurrentStep } = useStepsStore()
 	const submitDisabled =
-		disableSubmit !== undefined ? disableSubmit : formContext ? !formContext?.formState.isValid : false
+		disableSubmit !== undefined
+			? disableSubmit
+			: formContext
+				? !formContext?.formState.isValid || formContext?.formState.isSubmitting
+				: false
+	const isSubmitting = formContext?.formState.isSubmitting ?? false
 
 	const handleBack = () => {
 		if (currentStep) {
@@ -41,7 +46,7 @@ export const Actions = ({ customSubmitLabel, disableSubmit, customHandleBack }: 
 					{t('General.back')}
 				</Button>
 				<Button type="submit" variant="primary" disabled={submitDisabled}>
-					{t(customSubmitLabel ?? 'General.next')}
+					{t(isSubmitting ? 'General.loading' : (customSubmitLabel ?? 'General.next'))}
 				</Button>
 			</Inline>
 			<CancelButton />

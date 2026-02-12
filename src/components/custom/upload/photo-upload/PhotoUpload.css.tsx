@@ -22,6 +22,13 @@ export const photoUploadLabel = style({
 	userSelect: 'none'
 })
 
+export const loadingText = style({
+	fontSize: tokens.typography.size.small,
+	fontWeight: tokens.typography.weight.semibold,
+	lineHeight: tokens.typography.lineHeight.xxlarge,
+	color: tokens.colors['neutral.800'],
+	textAlign: 'center'
+})
 export const imageDeleteIconContainer = style({
 	position: 'absolute',
 	top: tokens.spacing[2],

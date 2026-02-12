@@ -77,7 +77,8 @@ const ServiceForm = ({ isEdit, cancelDialog }: Props) => {
 				label: t('General.price'),
 				type: 'decimal',
 				placeholder: t('General.pricePlaceholder'),
-				transform: (val: any) => (val !== undefined && val !== null && val !== '' ? Number(val) : 0)
+				optional: true,
+				transform: (val: any) => (val !== undefined && val !== null && val !== '' ? Number(val) : undefined)
 			}
 		],
 		[t]
@@ -166,9 +167,7 @@ const ServiceForm = ({ isEdit, cancelDialog }: Props) => {
 						</FormControl>
 						<Box style={{ gridColumn: 'span 2' }}>
 							<FormControl name="buyPrices">
-								<FormControl.Label>
-									<RequiredLabel>{t('General.price')}</RequiredLabel>
-								</FormControl.Label>
+								<FormControl.Label>{t('General.price')}</FormControl.Label>
 								<FormTable<ServicePrice>
 									name="buyPrices"
 									columns={formTableColumns}
@@ -207,9 +206,7 @@ const ServiceForm = ({ isEdit, cancelDialog }: Props) => {
 						</FormControl>
 						<Box style={{ gridColumn: 'span 2' }}>
 							<FormControl name="rentPrices">
-								<FormControl.Label>
-									<RequiredLabel>{t('General.price')}</RequiredLabel>
-								</FormControl.Label>
+								<FormControl.Label>{t('General.price')}</FormControl.Label>
 								<FormTable<ServicePrice>
 									name="rentPrices"
 									columns={formTableColumns}

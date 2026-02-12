@@ -46,10 +46,14 @@ const AdminEdit = ({ admin }: Props) => {
 		const data = form.getValues()
 		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
 		const result = await updateAdmin({ ...dataWIhoutEmptyString, userId: admin.userId })
+
 		if (result?.message === 'OK') {
 			localStorage.setItem('editMessage', 'Admins.successfullyEdited')
 			refresh()
-			back()
+
+			setTimeout(() => {
+				back()
+			}, 500)
 		}
 	}
 

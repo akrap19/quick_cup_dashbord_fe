@@ -125,6 +125,8 @@ export const SearchDropdown = ({
 					alwaysShowSearch={alwaysShowSearch}
 					setValue={setValue}
 					width={inputWidth}
+					value={value}
+					onClose={() => setIsOpen(false)}
 				/>
 			)}
 		</div>

@@ -16,6 +16,7 @@ const SuccessPage = () => {
 	const t = useTranslations()
 	const searchParams = useSearchParams()
 	const [countdown, setCountdown] = useState<number>(30)
+	const [isSubmitting, setIsSubmitting] = useState(false)
 	const email = searchParams.get('email') ? decodeURIComponent(searchParams.get('email')!) : null
 
 	const onSubmit = async (e: any) => {
@@ -23,11 +24,13 @@ const SuccessPage = () => {
 		e.stopPropagation()
 
 		if (email) {
+			setIsSubmitting(true)
 			const result = await forgotPassword(email)
 
 			if (result?.message === 'OK') {
 				setCountdown(30)
 			}
+			setIsSubmitting(false)
 		}
 	}
 
@@ -65,8 +68,12 @@ const SuccessPage = () => {
 			</Stack>
 			<form className={atoms({ width: '100%' })} onSubmit={onSubmit}>
 				<Stack>
-					<Button size="large" type="submit" disabled={email === null || countdown !== 0}>
-						{countdown === 0 ? t('Authorization.ForgotPassword.resend') : countdown}
+					<Button size="large" type="submit" disabled={email === null || countdown !== 0 || isSubmitting}>
+						{isSubmitting
+							? t('General.loading')
+							: countdown === 0
+								? t('Authorization.ForgotPassword.resend')
+								: countdown}
 					</Button>
 				</Stack>
 			</form>

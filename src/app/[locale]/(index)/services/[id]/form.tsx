@@ -11,9 +11,10 @@ import { OpenedProps } from '@/hooks/use-toggle'
 
 interface Props {
 	cancelDialog?: OpenedProps
+	isEdit?: boolean
 }
 
-const ServiceLocationForm = ({ cancelDialog }: Props) => {
+const ServiceLocationForm = ({ cancelDialog, isEdit = false }: Props) => {
 	const t = useTranslations()
 
 	return (
@@ -43,7 +44,7 @@ const ServiceLocationForm = ({ cancelDialog }: Props) => {
 				<FormControl.Label>
 					<RequiredLabel>{t('General.email')}</RequiredLabel>
 				</FormControl.Label>
-				<TextInput placeholder={t('General.emailPlaceholder')} />
+				<TextInput placeholder={t('General.emailPlaceholder')} disabled={isEdit} />
 				<FormControl.Message />
 			</FormControl>
 		</FormItems>

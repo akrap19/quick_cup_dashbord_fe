@@ -73,6 +73,7 @@ export const OrderEditWizard = ({
 	const { push, refresh } = useRouter()
 	const cancelDialog = useOpened()
 	const { navbarIsLoading, clearNavbarItems } = useNavbarItemsStore()
+	const [isSubmitting, setIsSubmitting] = useState(false)
 	const isRent = acquisitionType === AcquisitionTypeEnum.RENT
 	const buyStore = useBuyStore()
 	const rentStore = useRentStore()
@@ -481,6 +482,7 @@ export const OrderEditWizard = ({
 
 		if (!step1Data || !step4Data) return
 
+		setIsSubmitting(true)
 		const result = await updateOrder(buildPayload())
 		if (result?.message === 'OK') {
 			SuccessToast(t('Orders.successfullyEdited'))
@@ -489,6 +491,8 @@ export const OrderEditWizard = ({
 			}, 2500)
 			push(ROUTES.ORDERS)
 			refresh()
+		} else {
+			setIsSubmitting(false)
 		}
 	}
 
@@ -604,6 +608,7 @@ export const OrderEditWizard = ({
 						onBack={() => cancelDialog.toggleOpened()}
 						onPrevious={handleBack}
 						isValid={isValid()}
+						isSubmitting={isSubmitting}
 					/>
 				</form>
 			)}

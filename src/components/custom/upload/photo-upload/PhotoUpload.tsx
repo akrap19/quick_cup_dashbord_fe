@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import { InputHTMLAttributes, useEffect, useRef, useState } from 'react'
 
 import { UploadIcon } from '@/components/icons/upload-icon'
+import { PulseLoader } from '@/components/custom/loader/PulseLoader'
 import { Box } from '@/components/layout/box'
 import { Inline } from '@/components/layout/inline'
 import { ErrorToast } from '@/components/overlay/toast-messages/ErrorToastmessage'
@@ -23,6 +24,7 @@ export const PhotoUpload = ({ initialImagesUrls, onPhotosChange, ...rest }: Prop
 	const t = useTranslations()
 	const [photos, setPhotos] = useState<string[]>([])
 	const [mediaId, setMediaId] = useState<string[]>([])
+	const [isLoading, setIsLoading] = useState(false)
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
 	const handleFileChange = (event: any) => {
@@ -42,26 +44,31 @@ export const PhotoUpload = ({ initialImagesUrls, onPhotosChange, ...rest }: Prop
 			const newUploadedMediaId: string[] = [...mediaId]
 
 			const handleAllFileUploads = async () => {
-				// eslint-disable-next-line
-				for (const file of files) {
+				setIsLoading(true)
+				try {
 					// eslint-disable-next-line
-					const result = await handleFileUpload(file)
-					if (result) {
-						newPhotosForUpload.push(result.urlObject)
-						newUploadedMediaId.push(result.mediaId)
+					for (const file of files) {
+						// eslint-disable-next-line
+						const result = await handleFileUpload(file)
+						if (result) {
+							newPhotosForUpload.push(result.urlObject)
+							newUploadedMediaId.push(result.mediaId)
+						}
 					}
-				}
 
-				setPhotos(newPhotosForUpload)
-				setMediaId(newUploadedMediaId)
-				handleInputValue(newUploadedMediaId)
+					setPhotos(newPhotosForUpload)
+					setMediaId(newUploadedMediaId)
+					handleInputValue(newUploadedMediaId)
 
-				if (onPhotosChange) {
-					onPhotosChange(newPhotosForUpload)
-				}
+					if (onPhotosChange) {
+						onPhotosChange(newPhotosForUpload)
+					}
 
-				if (fileInputRef.current) {
-					fileInputRef.current.value = ''
+					if (fileInputRef.current) {
+						fileInputRef.current.value = ''
+					}
+				} finally {
+					setIsLoading(false)
 				}
 			}
 
@@ -142,12 +149,23 @@ export const PhotoUpload = ({ initialImagesUrls, onPhotosChange, ...rest }: Prop
 				ref={fileInputRef}
 			/>
 			<label htmlFor={rest.id} className={styles.photoUploadLabel}>
-				<Box padding={2}>
-					<UploadIcon size="xlarge" />
-				</Box>
-				{t('General.maxPhotoUploadCountinstructions')}
-				<br />
-				{t('General.photoUploadInstructions')}
+				{isLoading ? (
+					<>
+						<Box padding={2}>
+							<PulseLoader />
+						</Box>
+						{t('General.loading')}
+					</>
+				) : (
+					<>
+						<Box padding={2}>
+							<UploadIcon size="xlarge" />
+						</Box>
+						{t('General.maxPhotoUploadCountinstructions')}
+						<br />
+						{t('General.photoUploadInstructions')}
+					</>
+				)}
 			</label>
 			<div style={{ width: '242px', height: '300px' }}>
 				<ItemCarousel key={photos.join(',')}>

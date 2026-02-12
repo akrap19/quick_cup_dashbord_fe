@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -33,6 +34,7 @@ const AdminAdd = () => {
 	const { push, refresh } = useRouter()
 	const confirmDialog = useOpened()
 	const cancelDialog = useOpened()
+	const [isSubmitting, setIsSubmitting] = useState(false)
 	useNavbarItems({ title: 'Admins.add', backLabel: 'Admins.back' })
 
 	const form = useForm<Schema>({
@@ -51,6 +53,7 @@ const AdminAdd = () => {
 	}
 
 	const onSubmit = async () => {
+		setIsSubmitting(true)
 		const data = form.getValues()
 		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
 		const result = await createAdmin(dataWIhoutEmptyString)
@@ -58,6 +61,8 @@ const AdminAdd = () => {
 			SuccessToast(t('Admins.successfullyCreated'))
 			push(ROUTES.ADMINS)
 			refresh()
+		} else {
+			setIsSubmitting(false)
 		}
 	}
 
@@ -74,6 +79,7 @@ const AdminAdd = () => {
 				title="Admins.addNew"
 				description="Admins.addAdminDescription"
 				buttonLabel="General.addAndInvite"
+				buttonActionLoading={isSubmitting}
 				confirmDialog={confirmDialog}
 				onSubmit={onSubmit}
 			/>

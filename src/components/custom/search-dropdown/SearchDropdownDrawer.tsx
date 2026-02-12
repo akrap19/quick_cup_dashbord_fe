@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import qs from 'query-string'
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useDebounce } from 'rooks'
 
@@ -13,7 +13,12 @@ import { Stack } from '@/components/layout/stack'
 import { Text } from '@/components/typography/text'
 import { Base } from 'api/models/common/base'
 
-import { dropdownListContainer, dropdownListItem, dropdownListItemsContainer } from './SearchDropdown.css'
+import {
+	dropdownListContainer,
+	dropdownListItem,
+	dropdownListItemClear,
+	dropdownListItemsContainer
+} from './SearchDropdown.css'
 import { SearchInput } from '../inputs/search-input'
 import { NoResult } from '../no-result'
 
@@ -24,15 +29,24 @@ interface Props {
 	alwaysShowSearch?: boolean
 	setValue?: Dispatch<SetStateAction<any>>
 	width?: number
+	value?: string | number | null
+	onClose?: () => void
 }
 
-export const SearchDropdownDrawer = ({ name, options, placeholder, alwaysShowSearch, setValue, width }: Props) => {
+export const SearchDropdownDrawer = ({
+	name,
+	options,
+	placeholder,
+	alwaysShowSearch,
+	setValue,
+	width,
+	value,
+	onClose
+}: Props) => {
 	const t = useTranslations()
 	const searchParams = useSearchParams()
 	const formContext = useFormContext()
 	const { replace } = useRouter()
-	const [isOpen, setIsOpen] = useState(false)
-	const ref = useRef<HTMLDivElement>(null)
 	const currentSearchParamas = qs.parse(searchParams.toString())
 	const searchParamsValuelength = name ? (currentSearchParamas[name] ? currentSearchParamas[name]?.length : 0) : 0
 	const noResultMessage =
@@ -57,6 +71,22 @@ export const SearchDropdownDrawer = ({ name, options, placeholder, alwaysShowSea
 
 	const debouncedFilterChange = useDebounce(handleFilterChange, 300)
 
+	const handleClearOption = (e: React.MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault()
+
+		if (name) {
+			if (formContext) {
+				formContext.setValue(name, undefined)
+				formContext.trigger(name)
+			} else if (setValue) {
+				setValue(undefined)
+			}
+		}
+		if (onClose) {
+			onClose()
+		}
+	}
+
 	const handleDropdownOption = (e: React.MouseEvent<HTMLButtonElement>, option: Base) => {
 		e.preventDefault()
 
@@ -64,26 +94,18 @@ export const SearchDropdownDrawer = ({ name, options, placeholder, alwaysShowSea
 			if (formContext) {
 				formContext.setValue(name, option.id)
 				formContext.trigger(name)
-				setIsOpen(!isOpen)
 			} else if (setValue) {
 				setValue(option)
 			}
 		}
-	}
-
-	const handleClickOutside = (event: MouseEvent) => {
-		if (ref.current && !ref.current.contains(event.target as Node)) {
-			setIsOpen(false)
+		if (onClose) {
+			onClose()
 		}
 	}
 
-	useEffect(() => {
-		document.addEventListener('mousedown', handleClickOutside)
-
-		return () => {
-			document.removeEventListener('mousedown', handleClickOutside)
-		}
-	}, [])
+	const filteredOptions = options?.filter(option => option.id !== value) || []
+	const hasOptions = filteredOptions.length > 0
+	const hasValue = value !== null && value !== undefined && value !== ''
 
 	return (
 		<Box className={dropdownListContainer} style={width ? { width: `${width}px` } : undefined}>
@@ -100,17 +122,24 @@ export const SearchDropdownDrawer = ({ name, options, placeholder, alwaysShowSea
 				)}
 				<Box className={dropdownListItemsContainer}>
 					<Stack gap={1}>
-						{options && options?.length > 0 ? (
-							options?.map(option => (
-								<Button size="auto" variant="adaptive" onClick={e => handleDropdownOption(e, option)}>
+						{hasValue && (
+							<Button size="auto" variant="adaptive" onClick={handleClearOption}>
+								<Box className={dropdownListItemClear}>
+									<Text fontSize="small">{t('General.clear')}</Text>
+								</Box>
+							</Button>
+						)}
+						{hasOptions ? (
+							filteredOptions?.map(option => (
+								<Button key={option.id} size="auto" variant="adaptive" onClick={e => handleDropdownOption(e, option)}>
 									<Box className={dropdownListItem}>
 										<Text fontSize="small">{t(option.name)}</Text>
 									</Box>
 								</Button>
 							))
-						) : (
+						) : !hasValue ? (
 							<NoResult size="small" noResoultMessage={t(noResultMessage)} />
-						)}
+						) : null}
 					</Stack>
 				</Box>
 			</Stack>

@@ -74,92 +74,96 @@ export const ServiceDetails = ({ service }: Props) => {
 								{emptyToDash(service?.description)}
 							</Text>
 						</Stack>
-						{(acquisitionType === AcquisitionTypeEnum.BUY || (acquisitionType as string) === 'both') && (
-							<Stack gap={4} style={{ gridColumn: 'span 2' }}>
-								<Box style={{ gridColumn: 'span 2' }}>
-									<Heading variant="h4">{t('General.buy')}</Heading>
-								</Box>
-								<div
-									style={{
-										display: 'grid',
-										gridTemplateColumns: 'repeat(2, 1fr)',
-										columnGap: tokens.spacing[6],
-										rowGap: tokens.spacing[8]
-									}}>
-									<Stack gap={4}>
-										<Label>{t('Services.inputOrderTime')}</Label>
-										<Text fontSize="small" color="neutral.800">
-											{service?.inputTypeForBuy ? getServiceLabel(service.inputTypeForBuy) : '-'}
-										</Text>
-									</Stack>
-									<Stack gap={4}>
-										<Label>{t('Services.isDefaultService')}</Label>
-										<Text fontSize="small" color="neutral.800">
-											{service?.isDefaultServiceForBuy !== undefined
-												? service.isDefaultServiceForBuy
-													? t('General.yes')
-													: t('General.no')
-												: '-'}
-										</Text>
-									</Stack>
-									<Box style={{ gridColumn: 'span 2', width: '100%' }}>
-										<Stack gap={4}>
-											<Label>{t('General.price')}</Label>
-											<DataTable
-												columns={priceColumns}
-												data={replaceNullInListWithDash(service?.buyPrices ?? [])}
-												enableCheckboxes={false}
-												enableRowClick={false}
-												equalColumnWidths={true}
-											/>
-										</Stack>
+						{service?.buyPrices &&
+							service?.buyPrices.length > 0 &&
+							(acquisitionType === AcquisitionTypeEnum.BUY || (acquisitionType as string) === 'both') && (
+								<Stack gap={4} style={{ gridColumn: 'span 2' }}>
+									<Box style={{ gridColumn: 'span 2' }}>
+										<Heading variant="h4">{t('General.buy')}</Heading>
 									</Box>
-								</div>
-							</Stack>
-						)}
-						{(acquisitionType === AcquisitionTypeEnum.RENT || (acquisitionType as string) === 'both') && (
-							<Stack gap={4} style={{ gridColumn: 'span 2' }}>
-								<Box style={{ gridColumn: 'span 2' }}>
-									<Heading variant="h4">{t('General.rent')}</Heading>
-								</Box>
-								<div
-									style={{
-										display: 'grid',
-										gridTemplateColumns: 'repeat(2, 1fr)',
-										columnGap: tokens.spacing[6],
-										rowGap: tokens.spacing[8]
-									}}>
-									<Stack gap={4}>
-										<Label>{t('Services.inputOrderTime')}</Label>
-										<Text fontSize="small" color="neutral.800">
-											{service?.inputTypeForRent ? getServiceLabel(service.inputTypeForRent) : '-'}
-										</Text>
-									</Stack>
-									<Stack gap={4}>
-										<Label>{t('Services.isDefaultService')}</Label>
-										<Text fontSize="small" color="neutral.800">
-											{service?.isDefaultServiceForRent !== undefined
-												? service.isDefaultServiceForRent
-													? t('General.yes')
-													: t('General.no')
-												: '-'}
-										</Text>
-									</Stack>
-									<Box style={{ gridColumn: 'span 2', width: '100%' }}>
+									<div
+										style={{
+											display: 'grid',
+											gridTemplateColumns: 'repeat(2, 1fr)',
+											columnGap: tokens.spacing[6],
+											rowGap: tokens.spacing[8]
+										}}>
 										<Stack gap={4}>
-											<Label>{t('General.price')}</Label>
-											<DataTable
-												columns={priceColumns}
-												data={replaceNullInListWithDash(service?.rentPrices ?? [])}
-												enableCheckboxes={false}
-												enableRowClick={false}
-												equalColumnWidths={true}
-											/>
+											<Label>{t('Services.inputOrderTime')}</Label>
+											<Text fontSize="small" color="neutral.800">
+												{service?.inputTypeForBuy ? getServiceLabel(service.inputTypeForBuy) : '-'}
+											</Text>
 										</Stack>
+										<Stack gap={4}>
+											<Label>{t('Services.isDefaultService')}</Label>
+											<Text fontSize="small" color="neutral.800">
+												{service?.isDefaultServiceForBuy !== undefined
+													? service.isDefaultServiceForBuy
+														? t('General.yes')
+														: t('General.no')
+													: '-'}
+											</Text>
+										</Stack>
+										<Box style={{ gridColumn: 'span 2', width: '100%' }}>
+											<Stack gap={4}>
+												<Label>{t('General.price')}</Label>
+												<DataTable
+													columns={priceColumns}
+													data={replaceNullInListWithDash(service?.buyPrices ?? [])}
+													enableCheckboxes={false}
+													enableRowClick={false}
+													equalColumnWidths={true}
+												/>
+											</Stack>
+										</Box>
+									</div>
+								</Stack>
+							)}
+						{service?.rentPrices &&
+							service?.rentPrices.length > 0 &&
+							(acquisitionType === AcquisitionTypeEnum.RENT || (acquisitionType as string) === 'both') && (
+								<Stack gap={4} style={{ gridColumn: 'span 2' }}>
+									<Box style={{ gridColumn: 'span 2' }}>
+										<Heading variant="h4">{t('General.rent')}</Heading>
 									</Box>
-								</div>
-							</Stack>
-						)}
+									<div
+										style={{
+											display: 'grid',
+											gridTemplateColumns: 'repeat(2, 1fr)',
+											columnGap: tokens.spacing[6],
+											rowGap: tokens.spacing[8]
+										}}>
+										<Stack gap={4}>
+											<Label>{t('Services.inputOrderTime')}</Label>
+											<Text fontSize="small" color="neutral.800">
+												{service?.inputTypeForRent ? getServiceLabel(service.inputTypeForRent) : '-'}
+											</Text>
+										</Stack>
+										<Stack gap={4}>
+											<Label>{t('Services.isDefaultService')}</Label>
+											<Text fontSize="small" color="neutral.800">
+												{service?.isDefaultServiceForRent !== undefined
+													? service.isDefaultServiceForRent
+														? t('General.yes')
+														: t('General.no')
+													: '-'}
+											</Text>
+										</Stack>
+										<Box style={{ gridColumn: 'span 2', width: '100%' }}>
+											<Stack gap={4}>
+												<Label>{t('General.price')}</Label>
+												<DataTable
+													columns={priceColumns}
+													data={replaceNullInListWithDash(service?.rentPrices ?? [])}
+													enableCheckboxes={false}
+													enableRowClick={false}
+													equalColumnWidths={true}
+												/>
+											</Stack>
+										</Box>
+									</div>
+								</Stack>
+							)}
 					</div>
 				</Stack>
 			</Box>

@@ -95,11 +95,11 @@ export const PersonalInfoForm = ({ settings, session }: Props) => {
 							</Columns>
 							<Divider />
 							<Inline gap={4}>
-								<Button variant="secondary" onClick={() => form.reset()}>
+								<Button variant="secondary" onClick={() => form.reset()} disabled={form.formState.isSubmitting}>
 									{t('General.reset')}
 								</Button>
-								<Button type="submit" disabled={!form.formState.isValid}>
-									{t('General.saveChanges')}
+								<Button type="submit" disabled={!form.formState.isValid || form.formState.isSubmitting}>
+									{t(form.formState.isSubmitting ? 'General.loading' : 'General.saveChanges')}
 								</Button>
 							</Inline>
 						</Stack>

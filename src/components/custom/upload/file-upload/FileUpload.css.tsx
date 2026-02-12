@@ -29,3 +29,11 @@ export const fileDeleteIconContainer = style({
 	zIndex: 1
 })
 
+export const loadingText = style({
+	fontSize: tokens.typography.size.small,
+	fontWeight: tokens.typography.weight.semibold,
+	lineHeight: tokens.typography.lineHeight.xxlarge,
+	color: tokens.colors['neutral.800'],
+	textAlign: 'center'
+})
+

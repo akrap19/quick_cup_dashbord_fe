@@ -34,9 +34,9 @@ export const productPriceSchema = z.object({
 })
 
 export const servicePriceSchema = z.object({
-	minQuantity: z.number().min(1),
-	maxQuantity: z.number().min(1).nullish(),
-	price: z.number().min(0)
+	minQuantity: z.number().min(0).nullish().optional(),
+	maxQuantity: z.number().min(0).nullish().optional(),
+	price: z.number().min(0).optional()
 })
 
 export const productServicePriceSchema = z.object({

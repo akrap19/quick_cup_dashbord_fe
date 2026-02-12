@@ -177,11 +177,11 @@ export const UpdateProductStatesModal = ({ users, serviceLocations }: Props) => 
 						</Stack>
 						<Box position="absolute" style={{ bottom: tokens.spacing[6], right: tokens.spacing[10] }}>
 							<Inline gap={3} justifyContent="flex-end">
-								<Button type="button" variant="secondary" onClick={onClose}>
+								<Button type="button" variant="secondary" onClick={onClose} disabled={form.formState.isSubmitting}>
 									{t('General.cancel')}
 								</Button>
-								<Button type="submit" variant="primary">
-									{t('General.save')}
+								<Button type="submit" variant="primary" disabled={form.formState.isSubmitting}>
+									{t(form.formState.isSubmitting ? 'General.loading' : 'General.save')}
 								</Button>
 							</Inline>
 						</Box>

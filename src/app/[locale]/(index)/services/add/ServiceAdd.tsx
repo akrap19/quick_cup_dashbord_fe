@@ -96,7 +96,20 @@ const ServiceAdd = () => {
 
 	const onSubmit = async () => {
 		const data = form.getValues()
-		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
+
+		// Filter out empty price objects (objects where price is undefined/null)
+		const filteredBuyPrices = (data.buyPrices || []).filter(price => price.price !== undefined && price.price !== null)
+		const filteredRentPrices = (data.rentPrices || []).filter(
+			price => price.price !== undefined && price.price !== null
+		)
+
+		const dataWithFilteredPrices = {
+			...data,
+			buyPrices: filteredBuyPrices,
+			rentPrices: filteredRentPrices
+		}
+
+		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(dataWithFilteredPrices)
 		const result = await createService(dataWIhoutEmptyString)
 
 		if (result?.message === 'OK') {

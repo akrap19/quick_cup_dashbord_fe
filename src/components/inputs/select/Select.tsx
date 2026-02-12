@@ -27,6 +27,7 @@ type Props = InputHTMLAttributes<HTMLSelectElement> & SelectVariants & CustomInp
 
 export const Select = ({ hasError, startIcon, sizes, options, value, ...rest }: Props) => {
 	const t = useTranslations()
+	const hasValue = value !== undefined && value !== null && value !== ''
 
 	return (
 		<InputWrapper startIcon={startIcon} endIcon={<BlockIcon icon={CarretIcon} size="medium" />}>
@@ -42,6 +43,11 @@ export const Select = ({ hasError, startIcon, sizes, options, value, ...rest }: 
 					endIconSpacing,
 					startIcon && startIconSpacing
 				)}>
+				{hasValue && (
+					<option value="">
+						{t('General.clear')}
+					</option>
+				)}
 				{options?.map(option => (
 					<option key={option.value} value={option.value} disabled={option.disabled}>
 						{t(option.label)}

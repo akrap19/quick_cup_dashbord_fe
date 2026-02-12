@@ -61,7 +61,7 @@ const ServiceLocationEdit = ({ serviceLocation, serviceId }: Props) => {
 		<FormWrapper>
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<ServiceLocationForm />
+					<ServiceLocationForm isEdit={true} />
 				</form>
 			</FormProvider>
 		</FormWrapper>

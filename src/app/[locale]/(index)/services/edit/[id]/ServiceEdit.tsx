@@ -94,22 +94,30 @@ const ServiceEdit = ({ service }: Props) => {
 
 	const onSubmit = async () => {
 		const data = form.getValues()
+
+		// Filter out empty price objects (objects where price is undefined/null)
+		const filteredBuyPrices = (data.buyPrices || [])
+			.filter(price => price.price !== undefined && price.price !== null)
+			.map(price => ({
+				minQuantity: price.minQuantity,
+				maxQuantity: price.maxQuantity,
+				price: price.price
+			}))
+
+		const filteredRentPrices = (data.rentPrices || [])
+			.filter(price => price.price !== undefined && price.price !== null)
+			.map(price => ({
+				minQuantity: price.minQuantity,
+				maxQuantity: price.maxQuantity,
+				price: price.price
+			}))
+
 		const dataWIhoutEmptyString = replaceEmptyStringFromObjectWithNull(data)
 		const result = await updateService({
 			...dataWIhoutEmptyString,
 			id: service?.id,
-			buyPrices:
-				data.buyPrices?.map(price => ({
-					minQuantity: price.minQuantity,
-					maxQuantity: price.maxQuantity,
-					price: price.price
-				})) ?? [],
-			rentPrices:
-				data.rentPrices?.map(price => ({
-					minQuantity: price.minQuantity,
-					maxQuantity: price.maxQuantity,
-					price: price.price
-				})) ?? []
+			buyPrices: filteredBuyPrices,
+			rentPrices: filteredRentPrices
 		})
 
 		if (result?.message === 'OK') {

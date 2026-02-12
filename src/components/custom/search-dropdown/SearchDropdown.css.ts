@@ -56,4 +56,15 @@ export const dropdownListItem = style({
 	':hover': { backgroundColor: tokens.colors['neutral.100'] }
 })
 
+export const dropdownListItemClear = style({
+	color: tokens.colors['destructive.500'],
+	backgroundColor: tokens.colors['destructive.50'],
+	padding: tokens.spacing[1],
+	borderRadius: tokens.borders.radius.small,
+	width: '100%',
+	textAlign: 'left',
+
+	':hover': { backgroundColor: tokens.colors['destructive.100'] }
+})
+
 export type DropdownPresentationlabelVariants = RecipeVariants<typeof DropdownPresentationlabel>

@@ -43,7 +43,6 @@ export const OrderProductCard = ({ product, index, acquisitionType }: OrderProdu
 	const productIdFieldName = isValidIndex ? `products.${index}.productId` : ''
 
 	const productIdInForm = useWatch({ control: form.control, name: productIdFieldName as any })
-	const quantityValue = useWatch({ control: form.control, name: quantityFieldName as any })
 
 	const searchQuery = useMemo(
 		() => (quantityFieldName ? (qs.parse(searchParams.toString())[quantityFieldName] as string) || '' : ''),

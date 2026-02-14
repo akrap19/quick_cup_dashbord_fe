@@ -61,7 +61,6 @@ export const Step2Services = ({ products, acquisitionType, order, serviceLocatio
 	const uniqueServices = useMemo(() => {
 		const serviceMap = new Map<string, Service>()
 
-		console.log('products', products)
 		products.forEach((product: Product) => {
 			if (product.servicePrices && product.servicePrices.length > 0) {
 				product.servicePrices.forEach((service: Service) => {

@@ -12,7 +12,6 @@ const withNextIntl = createNextIntlPlugin()
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: false,
-	basePath: '/dashboard',
 	images: {
 		domains: ['via.placeholder.com', 'storage.googleapis.com', 'files.quickcup.eu']
 	},

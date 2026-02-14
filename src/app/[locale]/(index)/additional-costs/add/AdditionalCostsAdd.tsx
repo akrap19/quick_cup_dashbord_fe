@@ -46,12 +46,12 @@ const AdditionalCostsAdd = () => {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			name: '',
-			billingType: BillingTypeEnum.ONE_TIME,
-			methodOfPayment: MethodOfPayment.BEFORE,
-			acquisitionType: AcquisitionTypeEnum.BUY,
+			billingType: undefined,
+			methodOfPayment: undefined,
+			acquisitionType: undefined,
 			maxPieces: undefined,
 			enableUpload: false,
-			price: 0,
+			price: undefined,
 			calculationStatus: undefined
 		}
 	})

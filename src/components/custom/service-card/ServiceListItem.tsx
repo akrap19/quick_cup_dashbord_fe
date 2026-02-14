@@ -14,6 +14,7 @@ import { Service } from 'api/models/services/service'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { InputTypeEnum } from 'enums/inputTypeEnum'
 import { OrderStatusEnum } from 'enums/orderStatusEnum'
+import { PriceCalculationUnit } from 'enums/priceCalculationUnit'
 import { Product } from 'api/models/products/product'
 import { useTranslations } from 'next-intl'
 import { RequiredLabel } from '@/components/inputs/required-label'
@@ -45,12 +46,17 @@ export const ServiceListItem = ({
 	const serviceIdFieldName = `services.${serviceIndex}.serviceId`
 	const isIncludedFieldName = `services.${serviceIndex}.isIncluded`
 	const productQuantitiesFieldName = `services.${serviceIndex}.productQuantities`
+	const quantityFieldName = `services.${serviceIndex}.quantity`
 	const serviceLocationIdFieldName = `services.${serviceIndex}.serviceLocationId`
 
 	const formProducts = useWatch({ control: form.control, name: 'products' }) || []
 	const isIncluded = useWatch({ control: form.control, name: isIncludedFieldName }) || false
 	const productQuantities = useWatch({ control: form.control, name: productQuantitiesFieldName }) || {}
+	const quantity = useWatch({ control: form.control, name: quantityFieldName }) || 0
 	const isAdminOrMasterAdmin = useHasRoleAccess([UserRoleEnum.ADMIN, UserRoleEnum.MASTER_ADMIN])
+
+	// Check if service uses transportation unit calculation
+	const isTransportationUnit = service.priceCalculationUnit === PriceCalculationUnit.TRANSPORTATION_UNIT
 
 	// Determine input type based on acquisition type
 	const inputType = acquisitionType === AcquisitionTypeEnum.RENT ? service.inputTypeForRent : service.inputTypeForBuy
@@ -159,33 +165,59 @@ export const ServiceListItem = ({
 				{showProductQuantityFields && isIncluded && productsWithService.length > 0 && (
 					<Box paddingLeft={showButton ? 5 : 0}>
 						<Stack gap={2}>
-							{productsWithService.map(product => {
-								return (
-									<Inline key={product.id} alignItems="center" gap={2}>
-										<Text color="neutral.700" fontSize="small" style={{ minWidth: '120px' }}>
-											{product.name}:
-										</Text>
-										<Box style={{ width: '140px' }}>
-											<Controller
-												defaultValue={productQuantities[product.id] || 0}
-												name={`${productQuantitiesFieldName}.${product.id}` as any}
-												control={form.control}
-												render={({ field }) => (
-													<NumericInput
-														placeholder={t('General.quantityPlaceholder')}
-														allowNegative={false}
-														decimalScale={0}
-														value={field.value || 0}
-														onValueChange={values => {
-															field.onChange(values.floatValue || 0)
-														}}
-													/>
-												)}
-											/>
-										</Box>
-									</Inline>
-								)
-							})}
+							{isTransportationUnit ? (
+								<Inline alignItems="center" gap={2}>
+									<Text color="neutral.700" fontSize="small" style={{ minWidth: '120px' }}>
+										{t('General.quantity')}:
+									</Text>
+									<Box style={{ width: '140px' }}>
+										<Controller
+											defaultValue={quantity}
+											name={quantityFieldName as any}
+											control={form.control}
+											render={({ field }) => (
+												<NumericInput
+													placeholder={t('General.quantityPlaceholder')}
+													allowNegative={false}
+													decimalScale={0}
+													value={field.value || 0}
+													onValueChange={values => {
+														field.onChange(values.floatValue || 0)
+													}}
+												/>
+											)}
+										/>
+									</Box>
+								</Inline>
+							) : (
+								productsWithService.map(product => {
+									return (
+										<Inline key={product.id} alignItems="center" gap={2}>
+											<Text color="neutral.700" fontSize="small" style={{ minWidth: '120px' }}>
+												{product.name}:
+											</Text>
+											<Box style={{ width: '140px' }}>
+												<Controller
+													defaultValue={productQuantities[product.id] || 0}
+													name={`${productQuantitiesFieldName}.${product.id}` as any}
+													control={form.control}
+													render={({ field }) => (
+														<NumericInput
+															placeholder={t('General.quantityPlaceholder')}
+															allowNegative={false}
+															decimalScale={0}
+															value={field.value || 0}
+															onValueChange={values => {
+																field.onChange(values.floatValue || 0)
+															}}
+														/>
+													)}
+												/>
+											</Box>
+										</Inline>
+									)
+								})
+							)}
 						</Stack>
 					</Box>
 				)}

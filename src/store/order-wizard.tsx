@@ -63,7 +63,7 @@ type OrderWizardStore = {
 	getStep4Data: (type: AcquisitionTypeEnum) => Step4OrderInformationData | undefined
 	// Setters that set data for a specific acquisition type
 	setCurrentStep: (step: number, type: AcquisitionTypeEnum) => void
-	setCustomerId: (id: string, type: AcquisitionTypeEnum) => void
+	setCustomerId: (id: string | undefined, type: AcquisitionTypeEnum) => void
 	setStep1Data: (data: Step1ProductsData, type: AcquisitionTypeEnum) => void
 	setStep2Data: (data: Step2ServicesData, type: AcquisitionTypeEnum) => void
 	setStep3Data: (data: Step3AdditionalCostsData, type: AcquisitionTypeEnum) => void

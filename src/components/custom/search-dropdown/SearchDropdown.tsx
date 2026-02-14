@@ -65,18 +65,17 @@ export const SearchDropdown = ({
 
 	const handleValueLabel = (id: string) => {
 		const selectedOption = options?.find((option: Base) => option.id === id)
-
 		setChoosenValue(selectedOption)
 	}
 
 	useEffect(() => {
 		if (value) {
 			handleValueLabel(value?.toString())
-		}
-		if (value === null) {
+		} else if (value === null || value === undefined) {
 			setChoosenValue(undefined)
 		}
-	}, [value])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [value, options])
 
 	useEffect(() => {
 		document.addEventListener('mousedown', handleClickOutside)

@@ -8,6 +8,7 @@ import { OrderService } from 'api/models/order/orderService'
 import { OrderProduct } from 'api/models/order/orderProduct'
 import { useTranslations } from 'next-intl'
 import { ProductBreakdown } from './ProductBreakdown'
+import { PriceCalculationUnit } from 'enums/priceCalculationUnit'
 
 interface ServiceItemProps {
 	orderService: OrderService
@@ -28,7 +29,8 @@ export const ServiceItem = ({ orderService, products, productsMap, isLast }: Ser
 		totalQuantity = Object.values(orderService.productQuantities).reduce((sum, qty) => sum + qty, 0)
 	}
 
-	const shouldShowBreakdown = products && products.length > 0
+	const shouldShowBreakdown =
+		orderService?.service && orderService.service.priceCalculationUnit !== PriceCalculationUnit.TRANSPORTATION_UNIT
 
 	return (
 		<Box paddingY={3} paddingX={0} style={!isLast ? { borderBottom: '1px solid #E5E7EB' } : undefined}>

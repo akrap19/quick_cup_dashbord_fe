@@ -58,9 +58,7 @@ export const Step1ClientSelection = ({ customers, acquisitionType }: Props) => {
 
 	useEffect(() => {
 		const subscription = form.watch(data => {
-			if (data.customerId) {
-				setCustomerId(data.customerId, acquisitionType)
-			}
+			setCustomerId(data.customerId, acquisitionType)
 		})
 
 		return () => subscription.unsubscribe()
@@ -87,6 +85,7 @@ export const Step1ClientSelection = ({ customers, acquisitionType }: Props) => {
 						</Box>
 						<FormControl name="customerId">
 							<SearchDropdown
+								name="customerId"
 								options={customers}
 								placeholder={t('General.client')}
 								alwaysShowSearch={true}

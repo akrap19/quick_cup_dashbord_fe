@@ -14,6 +14,7 @@ import { BillingTypeEnum } from 'enums/billingTypeEnum'
 import { MethodOfPayment } from 'enums/methodOfPaymentEnum'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { ProductStateStatusEnum } from 'enums/productStateStatusEnum'
+import { AdditionalCostCalculationTypeEnum } from 'enums/additionalCostCalculationTypeEnum'
 
 interface Props {
 	additionalCost: AdditionalCosts
@@ -29,7 +30,7 @@ export const AdditionalCostsDetails = ({ additionalCost }: Props) => {
 		)
 	})
 
-	const getAdditionalCostsLabel = (value: BillingTypeEnum | MethodOfPayment | AcquisitionTypeEnum) => {
+	const getAdditionalCostsLabel = (value: BillingTypeEnum | MethodOfPayment | AcquisitionTypeEnum | AdditionalCostCalculationTypeEnum) => {
 		return t(`AdditionalCosts.${value}`)
 	}
 
@@ -52,12 +53,24 @@ export const AdditionalCostsDetails = ({ additionalCost }: Props) => {
 				</Text>
 			</Stack>
 			<Stack gap={4}>
+				<Label>{t('AdditionalCosts.methodOfPayment')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{additionalCost.methodOfPayment ? getAdditionalCostsLabel(additionalCost.methodOfPayment) : '-'}
+				</Text>
+			</Stack>
+			<Stack gap={4}>
 				<Label>{t('AdditionalCosts.billingType')}</Label>
 				<Text fontSize="small" color="neutral.800">
 					{additionalCost.billingType ? getAdditionalCostsLabel(additionalCost.billingType) : '-'}
 				</Text>
 			</Stack>
-			{additionalCost.billingType === BillingTypeEnum.BY_PIECE && (
+			<Stack gap={4}>
+				<Label>{t('AdditionalCosts.calculationType')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{additionalCost.calculationType ? getAdditionalCostsLabel(additionalCost.calculationType) : '-'}
+				</Text>
+			</Stack>
+			{additionalCost.calculationType && (
 				<Stack gap={4}>
 					<Label>{t('AdditionalCosts.maxPieces')}</Label>
 					<Text fontSize="small" color="neutral.800">
@@ -68,21 +81,9 @@ export const AdditionalCostsDetails = ({ additionalCost }: Props) => {
 				</Stack>
 			)}
 			<Stack gap={4}>
-				<Label>{t('AdditionalCosts.methodOfPayment')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{additionalCost.methodOfPayment ? getAdditionalCostsLabel(additionalCost.methodOfPayment) : '-'}
-				</Text>
-			</Stack>
-			<Stack gap={4}>
 				<Label>{t('AdditionalCosts.finalProductCalculationStatus')}</Label>
 				<Text fontSize="small" color="neutral.800">
 					{additionalCost.calculationStatus ? getProductStateStatusLabel(additionalCost.calculationStatus) : '-'}
-				</Text>
-			</Stack>
-			<Stack gap={4}>
-				<Label>{t('AdditionalCosts.enableUpload')}</Label>
-				<Text fontSize="small" color="neutral.800">
-					{additionalCost.enableUpload ? t('General.yes') : t('General.no')}
 				</Text>
 			</Stack>
 			<Stack gap={4}>
@@ -91,6 +92,12 @@ export const AdditionalCostsDetails = ({ additionalCost }: Props) => {
 					{additionalCost.price !== null && additionalCost.price !== undefined
 						? `${additionalCost.price.toFixed(2)}€`
 						: '-'}
+				</Text>
+			</Stack>
+			<Stack gap={4}>
+				<Label>{t('AdditionalCosts.enableUpload')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{additionalCost.enableUpload ? t('General.yes') : t('General.no')}
 				</Text>
 			</Stack>
 		</DetailsWrapper>

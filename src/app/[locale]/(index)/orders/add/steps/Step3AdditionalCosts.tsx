@@ -13,6 +13,7 @@ import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { Product } from 'api/models/products/product'
 import { Order } from 'api/models/order/order'
 import { BillingTypeEnum } from 'enums/billingTypeEnum'
+import { AdditionalCostCalculationTypeEnum } from 'enums/additionalCostCalculationTypeEnum'
 
 const createAdditionalCostSchema = (additionalCosts: AdditionalCosts[]) => {
 	return z
@@ -27,12 +28,8 @@ const createAdditionalCostSchema = (additionalCosts: AdditionalCosts[]) => {
 				.optional()
 		})
 		.superRefine((data, ctx) => {
-			// Skip validation if not included - this step is optional
-			if (!data.isIncluded) {
-				return
-			}
+			if (!data.isIncluded) return
 
-			// Only require additionalCostId when isIncluded is true
 			if (!data.additionalCostId || data.additionalCostId.length === 0) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
@@ -43,33 +40,70 @@ const createAdditionalCostSchema = (additionalCosts: AdditionalCosts[]) => {
 			}
 
 			const additionalCost = additionalCosts.find(ac => ac.id === data.additionalCostId)
+			if (!additionalCost) return
 
-			if (!additionalCost) {
-				return
-			}
+			const calculationType = additionalCost.calculationType
+			const isOverall = calculationType === AdditionalCostCalculationTypeEnum.OVERALL
+			const isByProduct = calculationType === AdditionalCostCalculationTypeEnum.BY_PRODUCT
 
-			// Only validate maxPieces for BY_PIECE billing type
-			if (additionalCost.billingType !== BillingTypeEnum.BY_PIECE) {
-				return
-			}
+			// Skip quantity validation if upload is enabled
+			if (additionalCost.enableUpload) return
 
-			// For BY_PIECE, quantity must be greater than 0 if included
-			if (data.quantity <= 0) {
-				ctx.addIssue({
-					code: z.ZodIssueCode.custom,
-					message: 'Quantity must be greater than 0',
-					path: ['quantity']
-				})
-				return
-			}
+			// Only validate if calculation type exists and billing type is BY_PIECE
+			if (!calculationType || additionalCost.billingType !== BillingTypeEnum.BY_PIECE) return
 
-			// If maxPieces is defined, validate against it
-			if (additionalCost.maxPieces !== undefined && additionalCost.maxPieces !== null) {
-				if (data.quantity > additionalCost.maxPieces) {
+			// Validate overall calculation type
+			if (isOverall) {
+				if (data.quantity <= 0) {
 					ctx.addIssue({
 						code: z.ZodIssueCode.custom,
-						message: 'Quantity cannot exceed max pieces',
+						message: 'Quantity must be greater than 0',
 						path: ['quantity']
+					})
+					return
+				}
+
+				if (additionalCost.maxPieces !== undefined && additionalCost.maxPieces !== null) {
+					if (data.quantity > additionalCost.maxPieces) {
+						ctx.addIssue({
+							code: z.ZodIssueCode.custom,
+							message: 'Quantity cannot exceed max pieces',
+							path: ['quantity']
+						})
+					}
+				}
+			}
+
+			// Validate by_product calculation type
+			if (isByProduct) {
+				if (!data.productQuantities || Object.keys(data.productQuantities).length === 0) {
+					ctx.addIssue({
+						code: z.ZodIssueCode.custom,
+						message: 'At least one product quantity must be greater than 0',
+						path: ['productQuantities']
+					})
+					return
+				}
+
+				const hasValidQuantity = Object.values(data.productQuantities).some(qty => (qty || 0) > 0)
+				if (!hasValidQuantity) {
+					ctx.addIssue({
+						code: z.ZodIssueCode.custom,
+						message: 'At least one product quantity must be greater than 0',
+						path: ['productQuantities']
+					})
+					return
+				}
+
+				if (additionalCost.maxPieces !== undefined && additionalCost.maxPieces !== null) {
+					Object.entries(data.productQuantities).forEach(([productId, qty]) => {
+						if (qty > additionalCost.maxPieces!) {
+							ctx.addIssue({
+								code: z.ZodIssueCode.custom,
+								message: `Product quantity cannot exceed max pieces (${additionalCost.maxPieces})`,
+								path: ['productQuantities', productId]
+							})
+						}
 					})
 				}
 			}
@@ -77,9 +111,8 @@ const createAdditionalCostSchema = (additionalCosts: AdditionalCosts[]) => {
 }
 
 const createStep3Schema = (additionalCosts: AdditionalCosts[]) => {
-	const additionalCostSchema = createAdditionalCostSchema(additionalCosts)
 	return z.object({
-		additionalCosts: z.array(additionalCostSchema).optional().default([])
+		additionalCosts: z.array(createAdditionalCostSchema(additionalCosts)).optional().default([])
 	})
 }
 
@@ -93,6 +126,22 @@ interface Props {
 	onValidationChange?: (isValid: boolean) => void
 }
 
+const filterUndefined = <T,>(obj: Record<string, T> | undefined): Record<string, T> | undefined => {
+	if (!obj) return undefined
+	const filtered = Object.fromEntries(Object.entries(obj).filter(([_, value]) => value !== undefined && value !== ''))
+	return Object.keys(filtered).length > 0 ? (filtered as Record<string, T>) : undefined
+}
+
+const filterProductQuantities = (
+	obj: Record<string, number | undefined> | undefined
+): Record<string, number> | undefined => {
+	if (!obj) return undefined
+	const filtered = Object.fromEntries(
+		Object.entries(obj).filter(([_, value]) => value !== undefined && typeof value === 'number')
+	) as Record<string, number>
+	return Object.keys(filtered).length > 0 ? filtered : undefined
+}
+
 export const Step3AdditionalCosts = ({
 	additionalCosts,
 	acquisitionType,
@@ -102,22 +151,13 @@ export const Step3AdditionalCosts = ({
 }: Props) => {
 	const { getStep3Data, setStep3Data } = useOrderWizardStore()
 	const step3Data = getStep3Data(acquisitionType)
-
-	// Track if this is the first callback to skip initial calculation
 	const isFirstCallback = useRef(true)
 
-	// Initialize additional costs
 	const initialAdditionalCosts = useMemo(() => {
-		if (step3Data?.additionalCosts) {
-			return step3Data.additionalCosts
-		}
-
-		if (!additionalCosts || additionalCosts.length === 0) {
-			return []
-		}
-
-		return additionalCosts.map((additionalCost: AdditionalCosts) => ({
-			additionalCostId: additionalCost.id,
+		if (step3Data?.additionalCosts) return step3Data.additionalCosts
+		if (!additionalCosts || additionalCosts.length === 0) return []
+		return additionalCosts.map((ac: AdditionalCosts) => ({
+			additionalCostId: ac.id,
 			isIncluded: false,
 			quantity: 0
 		}))
@@ -128,18 +168,14 @@ export const Step3AdditionalCosts = ({
 	const form = useForm<Step3Schema>({
 		mode: 'onChange',
 		resolver: zodResolver(step3Schema),
-		defaultValues: {
-			additionalCosts: initialAdditionalCosts
-		}
+		defaultValues: { additionalCosts: initialAdditionalCosts }
 	})
 
-	// Watch form validation state and notify parent
+	// Validation tracking
 	useEffect(() => {
 		if (!onValidationChange) return
 
-		// Initial validation check - ensure form is valid when all items are not included
 		const checkValidation = async () => {
-			// Check if all items are not included - if so, form is always valid
 			const currentValues = form.getValues()
 			const allNotIncluded = !currentValues.additionalCosts || currentValues.additionalCosts.every(ac => !ac.isIncluded)
 
@@ -148,16 +184,25 @@ export const Step3AdditionalCosts = ({
 				return
 			}
 
+			// Check if any included additional cost has enableUpload - if so, always allow next
+			const hasEnableUpload = currentValues.additionalCosts?.some(ac => {
+				if (!ac.isIncluded || !ac.additionalCostId) return false
+				const additionalCost = additionalCosts.find(acc => acc.id === ac.additionalCostId)
+				return additionalCost?.enableUpload === true
+			})
+
+			if (hasEnableUpload) {
+				onValidationChange(true)
+				return
+			}
+
 			await form.trigger()
 			onValidationChange(form.formState.isValid)
 		}
 
-		// Trigger validation when step becomes active to ensure errors are shown
 		checkValidation()
 
-		// Subscribe to form state changes to track validation
 		const subscription = form.watch(() => {
-			// Use setTimeout to ensure validation has completed
 			setTimeout(() => {
 				const currentValues = form.getValues()
 				const allNotIncluded =
@@ -168,89 +213,47 @@ export const Step3AdditionalCosts = ({
 					return
 				}
 
+				// Check if any included additional cost has enableUpload - if so, always allow next
+				const hasEnableUpload = currentValues.additionalCosts?.some(ac => {
+					if (!ac.isIncluded || !ac.additionalCostId) return false
+					const additionalCost = additionalCosts.find(acc => acc.id === ac.additionalCostId)
+					return additionalCost?.enableUpload === true
+				})
+
+				if (hasEnableUpload) {
+					onValidationChange(true)
+					return
+				}
+
 				form.trigger().then(() => {
 					onValidationChange(form.formState.isValid)
 				})
 			}, 0)
 		})
 
-		return () => {
-			subscription.unsubscribe()
-		}
+		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [onValidationChange, form])
+	}, [onValidationChange, form, additionalCosts])
 
-	// Save to store when form changes
+	// Save to store
 	useEffect(() => {
 		const subscription = form.watch(data => {
-			// Skip calculation on first callback (when navigating to step)
-			if (isFirstCallback.current) {
-				isFirstCallback.current = false
-				const stepData: Step3AdditionalCostsData = {
-					additionalCosts:
-						data.additionalCosts?.map(ac => {
-							const productQuantities = ac?.productQuantities
-								? (Object.fromEntries(
-										Object.entries(ac.productQuantities).filter(([_, value]) => value !== undefined)
-									) as Record<string, number>)
-								: undefined
-
-							const productFileIds = ac?.productFileIds
-								? (Object.fromEntries(
-										Object.entries(ac.productFileIds).filter(([_, value]) => value !== undefined && value !== '')
-									) as Record<string, string>)
-								: undefined
-
-							const productFileInfos = ac?.productFileInfos
-								? (Object.fromEntries(
-										Object.entries(ac.productFileInfos).filter(([_, value]) => value !== undefined)
-									) as Record<string, { id: string; name?: string; url?: string }>)
-								: undefined
-
-							return {
-								additionalCostId: ac?.additionalCostId || '',
-								isIncluded: ac?.isIncluded || false,
-								quantity: ac?.quantity || 0,
-								productQuantities,
-								productFileIds,
-								productFileInfos
-							}
-						}) || []
-				}
-				setStep3Data(stepData, acquisitionType)
-				return
-			}
 			const stepData: Step3AdditionalCostsData = {
 				additionalCosts:
-					data.additionalCosts?.map(ac => {
-						// Filter out undefined values from productQuantities
-						const productQuantities = ac?.productQuantities
-							? (Object.fromEntries(
-									Object.entries(ac.productQuantities).filter(([_, value]) => value !== undefined)
-								) as Record<string, number>)
-							: undefined
+					data.additionalCosts?.map(ac => ({
+						additionalCostId: ac?.additionalCostId || '',
+						isIncluded: ac?.isIncluded || false,
+						quantity: ac?.quantity || 0,
+						productQuantities: filterProductQuantities(ac?.productQuantities),
+						productFileIds: filterUndefined(ac?.productFileIds) as Record<string, string> | undefined,
+						productFileInfos: filterUndefined(ac?.productFileInfos) as
+							| Record<string, { id: string; name?: string; url?: string }>
+							| undefined
+					})) || []
+			}
 
-						const productFileIds = ac?.productFileIds
-							? (Object.fromEntries(
-									Object.entries(ac.productFileIds).filter(([_, value]) => value !== undefined && value !== '')
-								) as Record<string, string>)
-							: undefined
-
-						const productFileInfos = ac?.productFileInfos
-							? (Object.fromEntries(
-									Object.entries(ac.productFileInfos).filter(([_, value]) => value !== undefined)
-								) as Record<string, { id: string; name?: string; url?: string }>)
-							: undefined
-
-						return {
-							additionalCostId: ac?.additionalCostId || '',
-							isIncluded: ac?.isIncluded || false,
-							quantity: ac?.quantity || 0,
-							productQuantities,
-							productFileIds,
-							productFileInfos
-						}
-					}) || []
+			if (isFirstCallback.current) {
+				isFirstCallback.current = false
 			}
 			setStep3Data(stepData, acquisitionType)
 		})
@@ -259,22 +262,18 @@ export const Step3AdditionalCosts = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [form.watch, acquisitionType])
 
-	const visibleAdditionalCosts = additionalCosts
-
 	return (
 		<FormProvider {...form}>
 			<Stack gap={0}>
-				{visibleAdditionalCosts?.map((additionalCost: AdditionalCosts, index: number) => {
+				{additionalCosts?.map((additionalCost: AdditionalCosts, index: number) => {
 					const originalIndex = additionalCosts?.findIndex(ac => ac.id === additionalCost.id) ?? index
 					return (
 						<AdditionalCostListItem
-							acquisitionType={acquisitionType}
 							key={additionalCost.id}
 							additionalCost={additionalCost}
 							index={originalIndex}
 							isEditMode={!!order}
 							orderStatus={order?.status}
-							order={order}
 							products={products}
 						/>
 					)

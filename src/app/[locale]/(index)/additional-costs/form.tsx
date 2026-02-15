@@ -15,6 +15,7 @@ import { BillingTypeEnum } from 'enums/billingTypeEnum'
 import { MethodOfPayment } from 'enums/methodOfPaymentEnum'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { ProductStateStatusEnum } from 'enums/productStateStatusEnum'
+import { AdditionalCostCalculationTypeEnum } from 'enums/additionalCostCalculationTypeEnum'
 import { SearchDropdown } from '@/components/custom/search-dropdown'
 import { Inline } from '@/components/layout/inline'
 import { Box } from '@/components/layout/box'
@@ -30,7 +31,7 @@ const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 	const form = useFormContext()
 
 	const calculationStatus = useWatch({ control: form.control, name: 'calculationStatus' })
-	const billingType = useWatch({ control: form.control, name: 'billingType' })
+	const calculationType = useWatch({ control: form.control, name: 'calculationType' })
 	const [isCalculationEnabled, setIsCalculationEnabled] = useState(
 		calculationStatus !== undefined && calculationStatus !== null
 	)
@@ -45,13 +46,13 @@ const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [calculationStatus])
 
-	// Clear maxPieces when billingType changes from BY_PIECE to something else
+	// Clear maxPieces when billingType changes from BY_PIECE to something else or when calculationType is cleared
 	useEffect(() => {
-		if (billingType !== BillingTypeEnum.BY_PIECE) {
-			form.setValue('maxPieces', undefined, { shouldValidate: false, shouldDirty: false })
+		if (!calculationType) {
+			form.setValue('maxPieces', null, { shouldValidate: false, shouldDirty: false })
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [billingType])
+	}, [calculationType])
 
 	const billingTypeOptions = Object.values(BillingTypeEnum).map(value => ({
 		id: value,
@@ -73,6 +74,11 @@ const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 		name: `Product.${value}`
 	}))
 
+	const calculationTypeOptions = Object.values(AdditionalCostCalculationTypeEnum).map(value => ({
+		id: value,
+		name: t(`AdditionalCosts.${value}`)
+	}))
+
 	return (
 		<FormItems openCancelDialog={cancelDialog?.toggleOpened}>
 			<FormControl name="name">
@@ -92,17 +98,37 @@ const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 				/>
 				<FormControl.Message />
 			</FormControl>
+			<FormControl name="methodOfPayment">
+				<FormControl.Label>
+					<RequiredLabel>{t('AdditionalCosts.methodOfPayment')}</RequiredLabel>
+				</FormControl.Label>
+				<SearchDropdown
+					options={methodOfPaymentOptions}
+					placeholder={t('AdditionalCosts.methodOfPaymentPlaceholder')}
+				/>
+				<FormControl.Message />
+			</FormControl>
+			<FormControl name="billingType">
+				<FormControl.Label>
+					<RequiredLabel>{t('AdditionalCosts.billingType')}</RequiredLabel>
+				</FormControl.Label>
+				<SearchDropdown options={billingTypeOptions} placeholder={t('AdditionalCosts.billingTypePlaceholder')} />
+				<FormControl.Message />
+			</FormControl>
 			<Inline gap={3} alignItems="flex-start">
 				<Box style={{ flex: 1 }}>
-					<FormControl name="billingType">
+					<FormControl name="calculationType">
 						<FormControl.Label>
-							<RequiredLabel>{t('AdditionalCosts.billingType')}</RequiredLabel>
+							<Label>{t('AdditionalCosts.calculationType')}</Label>
 						</FormControl.Label>
-						<SearchDropdown options={billingTypeOptions} placeholder={t('AdditionalCosts.billingTypePlaceholder')} />
+						<SearchDropdown
+							options={calculationTypeOptions}
+							placeholder={t('AdditionalCosts.calculationTypePlaceholder')}
+						/>
 						<FormControl.Message />
 					</FormControl>
 				</Box>
-				{billingType === BillingTypeEnum.BY_PIECE && (
+				{calculationType && (
 					<Box style={{ flex: 1 }}>
 						<FormControl name="maxPieces">
 							<FormControl.Label>
@@ -114,16 +140,6 @@ const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 					</Box>
 				)}
 			</Inline>
-			<FormControl name="methodOfPayment">
-				<FormControl.Label>
-					<RequiredLabel>{t('AdditionalCosts.methodOfPayment')}</RequiredLabel>
-				</FormControl.Label>
-				<SearchDropdown
-					options={methodOfPaymentOptions}
-					placeholder={t('AdditionalCosts.methodOfPaymentPlaceholder')}
-				/>
-				<FormControl.Message />
-			</FormControl>
 			<Box position="relative">
 				<Stack gap={1}>
 					<Label>{t('AdditionalCosts.includeInFinalProductCalculation')}</Label>
@@ -133,7 +149,7 @@ const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 							onChange={e => {
 								setIsCalculationEnabled(e.target.checked)
 								if (!e.target.checked) {
-									form.setValue('calculationStatus', undefined, { shouldValidate: false })
+									form.setValue('calculationStatus', null, { shouldValidate: false })
 								}
 							}}
 						/>
@@ -150,6 +166,13 @@ const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 					</Inline>
 				</Stack>
 			</Box>
+			<FormControl name="price">
+				<FormControl.Label>
+					<Label>{t('General.price')}</Label>
+				</FormControl.Label>
+				<NumericInput placeholder={t('General.pricePlaceholder')} decimalScale={2} />
+				<FormControl.Message />
+			</FormControl>
 			<Box position="relative">
 				<Stack gap={1} alignItems="flex-start">
 					<Label>{t('AdditionalCosts.enableUpload')}</Label>
@@ -162,13 +185,6 @@ const AdditionalCostsForm = ({ cancelDialog }: Props) => {
 					<FormControl.Message />
 				</Stack>
 			</Box>
-			<FormControl name="price">
-				<FormControl.Label>
-					<RequiredLabel>{t('General.price')}</RequiredLabel>
-				</FormControl.Label>
-				<NumericInput placeholder={t('General.pricePlaceholder')} decimalScale={2} />
-				<FormControl.Message />
-			</FormControl>
 		</FormItems>
 	)
 }

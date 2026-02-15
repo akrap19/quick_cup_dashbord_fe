@@ -15,6 +15,7 @@ import { BillingTypeEnum } from 'enums/billingTypeEnum'
 import { MethodOfPayment } from 'enums/methodOfPaymentEnum'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { ProductStateStatusEnum } from 'enums/productStateStatusEnum'
+import { AdditionalCostCalculationTypeEnum } from 'enums/additionalCostCalculationTypeEnum'
 
 import AdditionalCostsForm from '../../form'
 
@@ -23,10 +24,11 @@ const formSchema = z.object({
 	billingType: z.nativeEnum(BillingTypeEnum),
 	methodOfPayment: z.nativeEnum(MethodOfPayment),
 	acquisitionType: z.nativeEnum(AcquisitionTypeEnum),
-	maxPieces: z.coerce.number().min(0).optional(),
+	calculationType: z.nativeEnum(AdditionalCostCalculationTypeEnum).nullable().optional(),
+	maxPieces: z.coerce.number().min(0).nullable().optional(),
 	enableUpload: z.boolean().optional(),
-	price: z.coerce.number().min(0),
-	calculationStatus: z.nativeEnum(ProductStateStatusEnum).optional()
+	price: z.coerce.number().min(0).nullable().optional(),
+	calculationStatus: z.nativeEnum(ProductStateStatusEnum).nullable().optional()
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -44,13 +46,14 @@ const AdditionalCostsEdit = ({ additionalCost }: Props) => {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			name: additionalCost?.name ?? '',
-			billingType: additionalCost?.billingType ?? BillingTypeEnum.ONE_TIME,
-			methodOfPayment: additionalCost?.methodOfPayment ?? MethodOfPayment.BEFORE,
-			acquisitionType: additionalCost?.acquisitionType ?? AcquisitionTypeEnum.BUY,
-			maxPieces: additionalCost?.maxPieces ?? undefined,
+			billingType: additionalCost?.billingType ?? undefined,
+			methodOfPayment: additionalCost?.methodOfPayment ?? undefined,
+			acquisitionType: additionalCost?.acquisitionType ?? undefined,
+			calculationType: additionalCost?.calculationType ?? null,
+			maxPieces: additionalCost?.maxPieces ?? null,
 			enableUpload: additionalCost?.enableUpload ?? false,
-			price: additionalCost?.price ?? 0,
-			calculationStatus: additionalCost?.calculationStatus ?? undefined
+			price: additionalCost?.price ?? null,
+			calculationStatus: additionalCost?.calculationStatus ?? null
 		}
 	})
 
@@ -60,7 +63,7 @@ const AdditionalCostsEdit = ({ additionalCost }: Props) => {
 		const payload = {
 			...dataWithoutEmptyString,
 			name: dataWithoutEmptyString.name?.trim() || '',
-			price: Number(dataWithoutEmptyString.price) || 0,
+			price: dataWithoutEmptyString.price ? Number(dataWithoutEmptyString.price) : undefined,
 			maxPieces: dataWithoutEmptyString.maxPieces ? Number(dataWithoutEmptyString.maxPieces) : undefined,
 			id: additionalCost?.id
 		}

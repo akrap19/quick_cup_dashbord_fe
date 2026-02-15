@@ -105,6 +105,13 @@ export const OrderAddWizard = ({
 	useNavbarItems({ title: isRent ? 'Orders.addRent' : 'Orders.addBuy', backLabel: 'General.back' })
 	useSteps({ totalSteps: TOTAL_STEPS, currentStep })
 
+	// Clear wizard and store data when creating a new order
+	useEffect(() => {
+		clearWizardWithType()
+		clearItems()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [acquisitionType])
+
 	useEffect(() => {
 		if (!isAdmin && session?.user?.userId && !customerId) {
 			setCustomerIdWithType(session.user.userId)

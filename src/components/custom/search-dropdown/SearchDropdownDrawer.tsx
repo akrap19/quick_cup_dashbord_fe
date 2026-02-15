@@ -76,10 +76,10 @@ export const SearchDropdownDrawer = ({
 
 		if (name) {
 			if (formContext) {
-				formContext.setValue(name, undefined)
+				formContext.setValue(name, null)
 				formContext.trigger(name)
 			} else if (setValue) {
-				setValue(undefined)
+				setValue(null)
 			}
 		}
 		if (onClose) {

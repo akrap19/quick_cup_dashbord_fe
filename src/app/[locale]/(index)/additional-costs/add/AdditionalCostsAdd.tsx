@@ -18,6 +18,7 @@ import { BillingTypeEnum } from 'enums/billingTypeEnum'
 import { MethodOfPayment } from 'enums/methodOfPaymentEnum'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 import { ProductStateStatusEnum } from 'enums/productStateStatusEnum'
+import { AdditionalCostCalculationTypeEnum } from 'enums/additionalCostCalculationTypeEnum'
 
 import AdditionalCostsForm from '../form'
 import { useOpened } from '@/hooks/use-toggle'
@@ -27,10 +28,11 @@ const formSchema = z.object({
 	billingType: z.nativeEnum(BillingTypeEnum),
 	methodOfPayment: z.nativeEnum(MethodOfPayment),
 	acquisitionType: z.nativeEnum(AcquisitionTypeEnum),
-	maxPieces: z.coerce.number().min(0).optional(),
+	calculationType: z.nativeEnum(AdditionalCostCalculationTypeEnum).nullable().optional(),
+	maxPieces: z.coerce.number().min(0).nullable().optional(),
 	enableUpload: z.boolean().optional(),
-	price: z.coerce.number().min(0),
-	calculationStatus: z.nativeEnum(ProductStateStatusEnum).optional()
+	price: z.coerce.number().min(0).nullable().optional(),
+	calculationStatus: z.nativeEnum(ProductStateStatusEnum).nullable().optional()
 })
 
 type Schema = z.infer<typeof formSchema>
@@ -49,10 +51,11 @@ const AdditionalCostsAdd = () => {
 			billingType: undefined,
 			methodOfPayment: undefined,
 			acquisitionType: undefined,
-			maxPieces: undefined,
+			calculationType: null,
+			maxPieces: null,
 			enableUpload: false,
-			price: undefined,
-			calculationStatus: undefined
+			price: null,
+			calculationStatus: null
 		}
 	})
 
@@ -62,7 +65,7 @@ const AdditionalCostsAdd = () => {
 		const payload = {
 			...dataWithoutEmptyString,
 			name: dataWithoutEmptyString.name?.trim() || '',
-			price: Number(dataWithoutEmptyString.price) || 0,
+			price: dataWithoutEmptyString.price ? Number(dataWithoutEmptyString.price) : undefined,
 			maxPieces: dataWithoutEmptyString.maxPieces ? Number(dataWithoutEmptyString.maxPieces) : undefined
 		}
 		const result = await createAdditionalCost(payload)

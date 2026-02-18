@@ -12,6 +12,7 @@ export interface OrderPayload {
 	location?: string
 	place: string
 	street: string
+	serviceLocationId?: string | null
 	additionalCosts: OrderAdditionalCostPayload[]
 	contactPerson?: string
 	contactPersonContact?: string

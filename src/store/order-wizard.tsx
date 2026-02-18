@@ -44,6 +44,7 @@ export interface Step4OrderInformationData {
 interface OrderData {
 	currentStep: number
 	customerId?: string
+	serviceLocationId?: string | null
 	step1Data?: Step1ProductsData
 	step2Data?: Step2ServicesData
 	step3Data?: Step3AdditionalCostsData
@@ -57,6 +58,7 @@ type OrderWizardStore = {
 	// Getters that return data for a specific acquisition type
 	getCurrentStep: (type: AcquisitionTypeEnum) => number
 	getCustomerId: (type: AcquisitionTypeEnum) => string | undefined
+	getServiceLocationId: (type: AcquisitionTypeEnum) => string | null | undefined
 	getStep1Data: (type: AcquisitionTypeEnum) => Step1ProductsData | undefined
 	getStep2Data: (type: AcquisitionTypeEnum) => Step2ServicesData | undefined
 	getStep3Data: (type: AcquisitionTypeEnum) => Step3AdditionalCostsData | undefined
@@ -64,6 +66,7 @@ type OrderWizardStore = {
 	// Setters that set data for a specific acquisition type
 	setCurrentStep: (step: number, type: AcquisitionTypeEnum) => void
 	setCustomerId: (id: string | undefined, type: AcquisitionTypeEnum) => void
+	setServiceLocationId: (id: string | null | undefined, type: AcquisitionTypeEnum) => void
 	setStep1Data: (data: Step1ProductsData, type: AcquisitionTypeEnum) => void
 	setStep2Data: (data: Step2ServicesData, type: AcquisitionTypeEnum) => void
 	setStep3Data: (data: Step3AdditionalCostsData, type: AcquisitionTypeEnum) => void
@@ -96,6 +99,10 @@ export const useOrderWizardStore = create<OrderWizardStore>()(
 				const order = type === AcquisitionTypeEnum.BUY ? get().buyOrder : get().rentOrder
 				return order.customerId
 			},
+			getServiceLocationId: type => {
+				const order = type === AcquisitionTypeEnum.BUY ? get().buyOrder : get().rentOrder
+				return order.serviceLocationId
+			},
 			getStep1Data: type => {
 				const order = type === AcquisitionTypeEnum.BUY ? get().buyOrder : get().rentOrder
 				return order.step1Data
@@ -126,6 +133,13 @@ export const useOrderWizardStore = create<OrderWizardStore>()(
 						return { buyOrder: { ...state.buyOrder, customerId: id } }
 					}
 					return { rentOrder: { ...state.rentOrder, customerId: id } }
+				}),
+			setServiceLocationId: (id, type) =>
+				set(state => {
+					if (type === AcquisitionTypeEnum.BUY) {
+						return { buyOrder: { ...state.buyOrder, serviceLocationId: id } }
+					}
+					return { rentOrder: { ...state.rentOrder, serviceLocationId: id } }
 				}),
 			setStep1Data: (data, type) =>
 				set(state => {

@@ -75,6 +75,7 @@
 		"optional": "Optional",
 		"addPrice": "Add Price",
 		"noPricesAdded": "No prices added. Click \"Add Price\" to add a price tier.",
+		"noPrices": "No prices",
 		"addRow": "Add Row",
 		"noRowsAdded": "No rows added. Click the add button to add a row.",
 		"duration": "Duration",
@@ -496,8 +497,9 @@
 		"discount": "Discount",
 		"discountPlaceholder": "e.g. 10",
 		"additionalCostsAfterPaymentDescription": "These additional costs will be charged after the order is completed if needed.",
-		"step0Title": "Client Selection",
-		"step0Description": "Select the client for this order.",
+		"step0Title": "Client and Dedicated Service Location Selection",
+		"step0Description": "Select the client for which you want to create an order.",
+		"step0ServiceLocationDescription": "Select the dedicated service location that will handle this order.",
 		"step1Title": "Products",
 		"step1Description": "Select the products you want to add to your order.",
 		"step2Title": "Services",
@@ -526,7 +528,9 @@
 		"statusFinalPaymentPendingDescription": "Your order has been delivered or is ready for pickup. Final invoice has been sent. Please complete the final payment to finalize your order.",
 		"statusCompleted": "Order Completed",
 		"statusCompletedDescription": "Your order has been completed. Final invoice has been sent. Thank you for your business!",
-		"setServiceLocations": "Set Service Locations"
+		"setServiceLocations": "Set Service Locations",
+		"dedicatedServiceLocation": "Dedicated Service Location",
+		"setDedicatedServiceLocation": "Set Dedicated Service Location"
 	},
 	"AdditionalCosts": {
 		"add": "Add Additional Cost",

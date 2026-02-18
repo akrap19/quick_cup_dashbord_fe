@@ -5,6 +5,7 @@ import { OrderService } from './orderService'
 import { OrderAdditionalCost } from './orderAdditionalCost'
 import { Client } from '../clients/client'
 import { Event } from '../event/event'
+import { ServiceLocation } from '../service-locations/serviceLocation'
 
 export interface Order {
 	id: string
@@ -17,6 +18,7 @@ export interface Order {
 	location?: string
 	place: string
 	street: string
+	serviceLocation?: ServiceLocation
 	acquisitionType?: AcquisitionTypeEnum
 	eventId?: string
 	event?: Event

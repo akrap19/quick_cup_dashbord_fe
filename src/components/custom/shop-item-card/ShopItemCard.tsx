@@ -104,7 +104,7 @@ export const ShopItemCard = ({ shopItem, route, editRoute, allowClientEdit = fal
 									</Button>
 								</Box>
 								{canEdit && (
-									<Box position="absolute" style={{ top: '65%', right: 0, zIndex: 1 }}>
+									<Box position="absolute" style={{ top: hasAdminAccess ? '65%' : '78%', right: 0, zIndex: 1 }}>
 										<Stack gap={2}>
 											<Button variant="warning" size="icon" onClick={handleEdit}>
 												<PencilIcon size="small" color="shades.00" />

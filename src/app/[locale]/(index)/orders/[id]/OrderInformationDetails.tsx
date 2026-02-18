@@ -17,6 +17,7 @@ interface Props {
 export const OrderInformationDetails = ({ order }: Props) => {
 	const t = useTranslations()
 
+	console.log(order)
 	return (
 		<TabsWrapper>
 			<Stack gap={4}>
@@ -25,7 +26,14 @@ export const OrderInformationDetails = ({ order }: Props) => {
 					{handleFullName(order.customer.firstName, order.customer.lastName)}
 				</Text>
 			</Stack>
-			<div />
+			<Stack gap={4}>
+				<Label>{t('Orders.dedicatedServiceLocation')}</Label>
+				<Text fontSize="small" color="neutral.800">
+					{order.serviceLocation
+						? `${order.serviceLocation.serviceName || ''}${order.serviceLocation.serviceName && order.serviceLocation.city ? ' - ' : ''}${order.serviceLocation.city || ''}`
+						: '-'}
+				</Text>
+			</Stack>
 			<Stack gap={4}>
 				<Label>{t('General.event')}</Label>
 				<Text fontSize="small" color="neutral.800">

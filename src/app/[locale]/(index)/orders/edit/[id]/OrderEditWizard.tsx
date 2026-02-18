@@ -83,12 +83,14 @@ export const OrderEditWizard = ({
 		getStep3Data,
 		getStep4Data,
 		getCustomerId,
+		getServiceLocationId,
 		setCurrentStep: setWizardStep,
 		setStep1Data,
 		setStep2Data,
 		setStep3Data,
 		setStep4Data,
 		setCustomerId,
+		setServiceLocationId,
 		clearWizard,
 		setAcquisitionType
 	} = useOrderWizardStore()
@@ -281,6 +283,7 @@ export const OrderEditWizard = ({
 		})
 
 		if (order?.customerId) setCustomerIdWithType(order.customerId)
+		setServiceLocationId(order?.serviceLocation?.id || null, acquisitionType)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [order, acquisitionType, allProducts])
 
@@ -319,6 +322,8 @@ export const OrderEditWizard = ({
 		if (!isValid() || !step1Data || !step4Data) return
 		setIsSubmitting(true)
 
+		const serviceLocationId = getServiceLocationId(acquisitionType)
+
 		const payload: OrderPayload = {
 			id: order.id,
 			acquisitionType: step4Data.acquisitionType || acquisitionType,
@@ -327,6 +332,7 @@ export const OrderEditWizard = ({
 			location: step4Data.location?.trim(),
 			place: step4Data.place!.trim(),
 			street: step4Data.street!.trim(),
+			serviceLocationId: serviceLocationId || null,
 			contactPerson: step4Data.contactPerson?.trim(),
 			contactPersonContact: step4Data.contactPersonContact?.trim(),
 			products: step1Data.products
@@ -459,7 +465,11 @@ export const OrderEditWizard = ({
 						stepDescriptionKey={stepDescriptionKey}>
 						<Stack gap={6}>
 							{isAdmin && currentStep === 1 && (
-								<Step1ClientSelection customers={clients} acquisitionType={acquisitionType} />
+								<Step1ClientSelection
+									customers={clients}
+									acquisitionType={acquisitionType}
+									serviceLocations={serviceLocations}
+								/>
 							)}
 							{(isAdmin ? currentStep === 2 : currentStep === 1) && (
 								<Step1Products

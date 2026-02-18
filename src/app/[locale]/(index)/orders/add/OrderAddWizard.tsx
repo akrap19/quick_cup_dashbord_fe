@@ -75,6 +75,7 @@ export const OrderAddWizard = ({
 		getStep3Data,
 		getStep4Data,
 		getCustomerId,
+		getServiceLocationId,
 		setCurrentStep: setWizardStep,
 		setCustomerId,
 		clearWizard,
@@ -145,6 +146,8 @@ export const OrderAddWizard = ({
 		if (!isValid() || !step1Data || !step4Data) return
 		setIsSubmitting(true)
 
+		const serviceLocationId = getServiceLocationId(acquisitionType)
+
 		const payload: OrderPayload = {
 			acquisitionType: step4Data.acquisitionType || acquisitionType,
 			customerId: customerId!,
@@ -152,6 +155,7 @@ export const OrderAddWizard = ({
 			location: step4Data.location?.trim(),
 			place: step4Data.place!.trim(),
 			street: step4Data.street!.trim(),
+			serviceLocationId: serviceLocationId || null,
 			contactPerson: step4Data.contactPerson?.trim(),
 			contactPersonContact: step4Data.contactPersonContact?.trim(),
 			products: step1Data.products
@@ -288,7 +292,11 @@ export const OrderAddWizard = ({
 						stepDescriptionKey={stepDescriptionKey}>
 						<Stack gap={6}>
 							{isAdmin && currentStep === 1 && (
-								<Step1ClientSelection customers={clients} acquisitionType={acquisitionType} />
+								<Step1ClientSelection
+									customers={clients}
+									acquisitionType={acquisitionType}
+									serviceLocations={serviceLocations}
+								/>
 							)}
 							{(isAdmin ? currentStep === 2 : currentStep === 1) && (
 								<Step1Products

@@ -67,6 +67,24 @@ export const OrderStatusButtons = ({ selectedItem }: Props) => {
 		push(ROUTES.EDIT_ORDERS + selectedItem.id)
 	}
 
+	const handleNavigateToSetServiceLocation = () => {
+		if (!selectedItem?.id) {
+			return
+		}
+
+		// Navigate to step 1 (client selection) for admin to set service location
+		const clientSelectionStep = 1
+
+		const acquisitionType = selectedItem.acquisitionType || AcquisitionTypeEnum.BUY
+
+		// Set the step and acquisition type in the store before navigating
+		setAcquisitionType(acquisitionType)
+		setCurrentStep(clientSelectionStep, acquisitionType)
+
+		// Navigate to edit order page
+		push(ROUTES.EDIT_ORDERS + selectedItem.id)
+	}
+
 	// Check if all services have service locations set
 	const hasAllServiceLocations = () => {
 		const services = selectedItem.services || []
@@ -88,6 +106,8 @@ export const OrderStatusButtons = ({ selectedItem }: Props) => {
 	const currentStatus = selectedItem.status as OrderStatusEnum
 	const userRole = session?.user?.roles[0]?.name
 	const isService = hasRoleAccess(userRole, [UserRoleEnum.SERVICE])
+	const isAdmin = hasRoleAccess(userRole, [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN])
+	const hasServiceLocation = !!selectedItem.serviceLocation?.id
 
 	// Service users can only change status from PAYMENT_RECEIVED onwards
 	if (
@@ -115,14 +135,24 @@ export const OrderStatusButtons = ({ selectedItem }: Props) => {
 			)
 			break
 		case OrderStatusEnum.ACCEPTED:
-			buttons.push(
-				<Button
-					key="payment-pending"
-					variant="primary"
-					onClick={() => handleStatusUpdate(OrderStatusEnum.PAYMENT_PENDING)}>
-					{t('Orders.statusPaymentPending')}
-				</Button>
-			)
+			if (isAdmin && !hasServiceLocation) {
+				buttons.push(
+					<Button key="set-service-location" variant="primary" onClick={handleNavigateToSetServiceLocation}>
+						{t('Orders.setDedicatedServiceLocation')}
+					</Button>
+				)
+			}
+			{
+				hasServiceLocation &&
+					buttons.push(
+						<Button
+							key="payment-pending"
+							variant="primary"
+							onClick={() => handleStatusUpdate(OrderStatusEnum.PAYMENT_PENDING)}>
+							{t('Orders.statusPaymentPending')}
+						</Button>
+					)
+			}
 			break
 		case OrderStatusEnum.PAYMENT_PENDING:
 			buttons.push(

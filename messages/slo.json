@@ -80,6 +80,7 @@
 		"optional": "Neobvezno",
 		"addPrice": "Dodaj ceno",
 		"noPricesAdded": "Ni dodanih cen. Kliknite \"Dodaj ceno\" za dodajanje cenovnega sloja.",
+		"noPrices": "Ni cen",
 		"addRow": "Dodaj vrstico",
 		"noRowsAdded": "Ni dodanih vrstic. Kliknite gumb za dodajanje, da dodate vrstico.",
 		"duration": "Trajanje",
@@ -496,8 +497,9 @@
 		"discount": "Popust",
 		"discountPlaceholder": "npr. 10",
 		"additionalCostsAfterPaymentDescription": "Ti dodatni stroški bodo zaračunani po zaključku naročila ako bo potrebno.",
-		"step0Title": "Izbira stranke",
-		"step0Description": "Izberite stranko za to naročilo.",
+		"step0Title": "Izbira stranke in namenske lokacije storitve",
+		"step0Description": "Izberite stranko, za katero želite ustvariti naročilo.",
+		"step0ServiceLocationDescription": "Izberite namensko lokacijo storitve, ki bo upravljala s tem naročilom.",
 		"step1Title": "Izdelki",
 		"step1Description": "Izberite izdelke, ki jih želite dodati v svoje naročilo.",
 		"step2Title": "Storitve",
@@ -526,7 +528,9 @@
 		"statusFinalPaymentPendingDescription": "Tvoje naročilo je bilo dostavljeno ali je pripravljeno za prevzem. Končni račun je bil poslan. Prosimo, dokončaj končno plačilo, da finaliziraš naročilo.",
 		"statusCompleted": "Naročilo zaključeno",
 		"statusCompletedDescription": "Tvoje naročilo je bilo zaključeno. Končni račun je bil poslan. Hvala za poslovanje!",
-		"setServiceLocations": "Nastavi lokacije storitev"
+		"setServiceLocations": "Nastavi lokacije storitev",
+		"dedicatedServiceLocation": "Namenska lokacija storitve",
+		"setDedicatedServiceLocation": "Nastavi namensko lokacijo storitve"
 	},
 	"AdditionalCosts": {
 		"add": "Dodaj dodatni strošek",

@@ -108,6 +108,8 @@ export const OrderStatusButtons = ({ selectedItem }: Props) => {
 	const isService = hasRoleAccess(userRole, [UserRoleEnum.SERVICE])
 	const isAdmin = hasRoleAccess(userRole, [UserRoleEnum.MASTER_ADMIN, UserRoleEnum.ADMIN])
 	const hasServiceLocation = !!selectedItem.serviceLocation?.id
+	const acquisitionType = selectedItem.acquisitionType || AcquisitionTypeEnum.BUY
+	const isRent = acquisitionType === AcquisitionTypeEnum.RENT
 
 	// Service users can only change status from PAYMENT_RECEIVED onwards
 	if (
@@ -195,14 +197,23 @@ export const OrderStatusButtons = ({ selectedItem }: Props) => {
 			)
 			break
 		case OrderStatusEnum.IN_TRANSIT:
-			buttons.push(
-				<Button
-					key="final-payment-pending"
-					variant="primary"
-					onClick={() => handleStatusUpdate(OrderStatusEnum.FINAL_PAYMENT_PENDING)}>
-					{t('Orders.statusFinalPaymentPending')}
-				</Button>
-			)
+			// For rent orders, skip FINAL_PAYMENT_PENDING and go directly to COMPLETED
+			if (isRent) {
+				buttons.push(
+					<Button key="completed" variant="success" onClick={() => handleStatusUpdate(OrderStatusEnum.COMPLETED)}>
+						{t('Orders.statusCompleted')}
+					</Button>
+				)
+			} else {
+				buttons.push(
+					<Button
+						key="final-payment-pending"
+						variant="primary"
+						onClick={() => handleStatusUpdate(OrderStatusEnum.FINAL_PAYMENT_PENDING)}>
+						{t('Orders.statusFinalPaymentPending')}
+					</Button>
+				)
+			}
 			break
 		case OrderStatusEnum.FINAL_PAYMENT_PENDING:
 			buttons.push(

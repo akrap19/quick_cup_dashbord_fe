@@ -67,11 +67,11 @@ export const ManageJourneyWrapper = ({ children, onStepClick, stepTitleKey, step
 						})}
 				</Box>
 				{(stepTitleKey || stepDescriptionKey) && (
-					<Box paddingBottom={6} paddingX={6}>
+					<Box display="flex" flexDirection="column" alignItems="center" paddingBottom={4} paddingX={6}>
 						<Heading variant="h3" color="neutral.900" textAlign="center">
 							{t(stepTitleKey || `Orders.step${currentStep}Title`)}
 						</Heading>
-						<Text lineHeight="xlarge" color="neutral.700" textAlign="center">
+						<Text lineHeight="xlarge" color="neutral.700" textAlign="center" style={{ maxWidth: '600px' }}>
 							{t(stepDescriptionKey || `Orders.step${currentStep}Description`)}
 						</Text>
 					</Box>

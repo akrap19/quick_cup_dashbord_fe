@@ -116,7 +116,7 @@ export const downloadDesignTemplate = async (productId: string, filename?: strin
 
 export const getMyProducts = async (userId?: string) => {
 	const response = await fetchWithToken(`products/my-products`, {
-		userId: userId ?? undefined,
+		userid: userId ?? undefined,
 		search: undefined,
 		page: 1,
 		limit: 100

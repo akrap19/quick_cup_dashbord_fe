@@ -16,7 +16,7 @@ export const personal = async (firstName: string, lastName: string, phoneNumber?
 	return response?.data
 }
 
-export const password = async (oldPassword: string, newPassword: string) => {
+export const password = async (oldPassword: string | null, newPassword: string | null) => {
 	const response = await axiosInstanceWithToken.put(`/user/password`, { oldPassword, newPassword })
 
 	return response?.data

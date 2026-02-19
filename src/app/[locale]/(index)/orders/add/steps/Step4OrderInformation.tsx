@@ -107,8 +107,8 @@ export const Step4OrderInformation = ({ events, acquisitionType, isAdmin = false
 				acquisitionType: data.acquisitionType as AcquisitionTypeEnum,
 				eventId: data.eventId,
 				location: data.location,
-				place: data.place,
-				street: data.street,
+				place: data.place as any,
+				street: data.street as any,
 				contactPerson: data.contactPerson,
 				contactPersonContact: data.contactPersonContact,
 				notes: data.notes

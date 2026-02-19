@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import { z } from 'zod'
 import { useEffect, useMemo } from 'react'
+import { useSession } from 'next-auth/react'
 
 import { OrderProductCard } from '@/components/custom/order-product-card/OrderProductCard'
 import { Product } from 'api/models/products/product'
@@ -12,6 +13,7 @@ import { useOrderWizardStore, Step1ProductsData } from '@/store/order-wizard'
 import { tokens } from '@/style/theme.css'
 import { NoResult } from '@/components/custom/no-result/NoResult'
 import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
+import { UserRoleEnum } from 'enums/userRoleEnum'
 import { Text } from '@/components/typography/text'
 import { useTranslations } from 'next-intl'
 import { Stack } from '@/components/layout/stack'
@@ -35,8 +37,12 @@ const gridStyle = {
 
 export const Step1Products = ({ products = [], myProducts = [], selectedItems = [], acquisitionType }: Props) => {
 	const t = useTranslations()
+	const { data: session } = useSession()
 	const { getStep1Data, setStep1Data } = useOrderWizardStore()
 	const step1Data = getStep1Data(acquisitionType)
+
+	const userRole = session?.user?.roles[0]?.name
+	const isClient = userRole === UserRoleEnum.CLIENT
 
 	const allProductsForValidation = useMemo(() => [...products, ...myProducts], [products, myProducts])
 	const step1Schema = useMemo(() => createStep1Schema(() => allProductsForValidation), [allProductsForValidation])
@@ -113,7 +119,7 @@ export const Step1Products = ({ products = [], myProducts = [], selectedItems = 
 						{myProducts.length > 0 && (
 							<Stack gap={4}>
 								<Heading variant="h4" color="neutral.900">
-									{t('Rent.myProducts')}
+									{isClient ? t('Rent.myProducts') : t('Rent.clientProducts')}
 								</Heading>
 								{renderProductGrid(myProducts)}
 							</Stack>

@@ -3,13 +3,17 @@
 import type { ColumnDef } from '@tanstack/react-table'
 
 import { Order } from 'api/models/order/order'
+import { AcquisitionTypeEnum } from 'enums/acquisitionTypeEnum'
 
-const getStatusDescriptionKey = (status: string): string => {
+const getStatusDescriptionKey = (status: string, acquisitionType?: AcquisitionTypeEnum): string => {
 	const statusMap: Record<string, string> = {
 		PENDING: 'statusPendingDescription',
 		ACCEPTED: 'statusAcceptedDescription',
 		DECLINED: 'statusDeclinedDescription',
-		PAYMENT_PENDING: 'statusPaymentPendingDescription',
+		PAYMENT_PENDING:
+			acquisitionType === AcquisitionTypeEnum.RENT
+				? 'statusPaymentPendingRentDescription'
+				: 'statusPaymentPendingDescription',
 		PAYMENT_RECEIVED: 'statusPaymentReceivedDescription',
 		IN_PRODUCTION: 'statusInProductionDescription',
 		READY: 'statusReadyDescription',
@@ -26,6 +30,6 @@ export const columns: Array<ColumnDef<Order>> = [
 	{
 		id: 'statusDescription',
 		header: 'General.statusDescription',
-		accessorFn: row => getStatusDescriptionKey(row.status)
+		accessorFn: row => getStatusDescriptionKey(row.status, row.acquisitionType)
 	}
 ]

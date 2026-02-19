@@ -6,10 +6,11 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useEffect } from 'react'
 import { useSession } from 'next-auth/react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { FormControl } from '@/components/inputs/form-control'
-import { Text } from '@/components/typography/text'
 import { SearchDropdown } from '@/components/custom/search-dropdown/SearchDropdown'
+import { RequiredLabel } from '@/components/inputs/required-label'
 import { Base } from 'api/models/common/base'
 import { requiredString } from 'schemas'
 import { useOrderWizardStore } from '@/store/order-wizard'
@@ -35,6 +36,8 @@ interface Props {
 
 export const Step1ClientSelection = ({ customers, acquisitionType, serviceLocations = [] }: Props) => {
 	const t = useTranslations()
+	const router = useRouter()
+	const searchParams = useSearchParams()
 	const { getCustomerId, setCustomerId, getServiceLocationId, setServiceLocationId } = useOrderWizardStore()
 	const customerId = getCustomerId(acquisitionType)
 	const serviceLocationId = getServiceLocationId(acquisitionType)
@@ -56,16 +59,19 @@ export const Step1ClientSelection = ({ customers, acquisitionType, serviceLocati
 		if (!isAdmin && currentUserId && !customerId) {
 			form.setValue('customerId', currentUserId)
 			setCustomerId(currentUserId, acquisitionType)
+			// Update URL with customerId for server component access
+			const params = new URLSearchParams(searchParams.toString())
+			params.set('customerId', currentUserId)
+			router.replace(`?${params.toString()}`, { scroll: false })
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isAdmin, currentUserId, acquisitionType])
+	}, [isAdmin, currentUserId, acquisitionType, router, searchParams])
 
 	// Sync form with store values (for edit mode)
 	useEffect(() => {
 		const currentServiceLocationId = getServiceLocationId(acquisitionType)
 		const formValue = form.getValues('serviceLocationId')
-		// Only update if the store value is different from form value
-		// This handles the case when editing an order and the store is initialized with order data
+
 		if (currentServiceLocationId !== formValue && (currentServiceLocationId || formValue)) {
 			form.setValue('serviceLocationId', currentServiceLocationId || undefined, { shouldValidate: false })
 		}
@@ -74,13 +80,20 @@ export const Step1ClientSelection = ({ customers, acquisitionType, serviceLocati
 
 	useEffect(() => {
 		const subscription = form.watch(data => {
-			setCustomerId(data.customerId, acquisitionType)
+			setCustomerId(data.customerId as any, acquisitionType)
 			setServiceLocationId(data.serviceLocationId || null, acquisitionType)
+
+			// Update URL with customerId for server component access
+			if (data.customerId) {
+				const params = new URLSearchParams(searchParams.toString())
+				params.set('customerId', data.customerId)
+				router.replace(`?${params.toString()}`, { scroll: false })
+			}
 		})
 
 		return () => subscription.unsubscribe()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [form.watch, acquisitionType])
+	}, [form.watch, acquisitionType, router, searchParams])
 
 	return (
 		<FormProvider {...form}>
@@ -91,17 +104,17 @@ export const Step1ClientSelection = ({ customers, acquisitionType, serviceLocati
 					justifyContent="center"
 					alignItems="center"
 					style={{ height: 'calc(100vh - 400px)' }}>
-					<Stack gap={4} style={{ width: '100%', maxWidth: '420px' }}>
+					<Stack gap={4} alignItems="center" style={{ width: '100%', maxWidth: '420px' }}>
+						<Box style={{ width: '100%', maxWidth: '320px' }}>
+							<Heading variant="h3" color="neutral.900" textAlign="center">
+								{t('Orders.step0Title')}
+							</Heading>
+						</Box>
 						<Stack gap={2} style={{ width: '100%', maxWidth: '420px' }}>
-							<Box>
-								<Heading variant="h3" color="neutral.900" textAlign="center">
-									{t('Orders.step0Title')}
-								</Heading>
-								<Text lineHeight="xlarge" color="neutral.700" textAlign="center">
-									{t('Orders.step0Description')}
-								</Text>
-							</Box>
 							<FormControl name="customerId">
+								<FormControl.Label>
+									<RequiredLabel>{t('General.client')}</RequiredLabel>
+								</FormControl.Label>
 								<SearchDropdown
 									name="customerId"
 									options={customers}
@@ -113,10 +126,10 @@ export const Step1ClientSelection = ({ customers, acquisitionType, serviceLocati
 							</FormControl>
 						</Stack>
 						<Stack gap={2} style={{ width: '100%', maxWidth: '420px' }}>
-							<Text lineHeight="xlarge" color="neutral.700" textAlign="center">
-								{t('Orders.step0ServiceLocationDescription')}
-							</Text>
 							<FormControl name="serviceLocationId">
+								<FormControl.Label>
+									<RequiredLabel>{t('Orders.dedicatedServiceLocation')}</RequiredLabel>
+								</FormControl.Label>
 								<SearchDropdown
 									name="serviceLocationId"
 									options={serviceLocations}

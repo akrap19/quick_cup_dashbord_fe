@@ -17,6 +17,7 @@ interface Props {
 		searchClients: string
 		searchEvents: string
 		searchAdditionalCosts: string
+		clientId?: string
 	}
 }
 
@@ -55,13 +56,12 @@ const Page = async ({ searchParams }: Props) => {
 	const session = await getServerSession(authOptions)
 	const userRole = session?.user?.roles[0]?.name
 	const isAdmin = await hasRoleAccess(userRole, [UserRoleEnum.ADMIN, UserRoleEnum.MASTER_ADMIN])
-	const isClient = userRole === UserRoleEnum.CLIENT
-	const isRent = searchParams.acquisitionType === AcquisitionTypeEnum.RENT
 
 	// Fetch My products only for clients and rent orders
-	const myProductsData = isClient && isRent ? await getMyProducts() : null
+	console.log(searchParams.clientId)
+	const myProductsData = await getMyProducts(searchParams.clientId)
 	const transformedMyProductsArray =
-		myProductsData?.products?.map((product: any) => {
+		(await myProductsData?.products?.map((product: any) => {
 			return {
 				...product,
 				id: product.id,
@@ -69,7 +69,7 @@ const Page = async ({ searchParams }: Props) => {
 				description: product.description ?? '-',
 				images: product.images?.map((image: any) => image.url) ?? []
 			}
-		}) || []
+		})) || []
 
 	let serviceLocations: Base[] = []
 	if (isAdmin) {
